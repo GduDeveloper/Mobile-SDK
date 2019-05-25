@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+       <Button
+           android:layout_width="wrap_content"
+           android:text="生成并上传航迹"
+           android:onClick="onClick"
+           android:layout_height="wrap_content" />
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:orientation="horizontal"
+           android:layout_height="wrap_content">
+              <Button
+                  android:layout_width="wrap_content"
+                  android:text="开始任务"
+                  android:id="@+id/btn_begin"
+                  android:onClick="onClick"
+                  android:layout_height="wrap_content" />
+
+              <Button
+                  android:layout_width="wrap_content"
+                  android:text="暂停任务"
+                  android:id="@+id/btn_pause"
+                  android:onClick="onClick"
+                  android:layout_height="wrap_content" />
+
+              <Button
+                  android:layout_width="wrap_content"
+                  android:text="继续任务"
+                  android:id="@+id/btn_goon"
+                  android:onClick="onClick"
+                  android:layout_height="wrap_content" />
+
+              <Button
+                  android:layout_width="wrap_content"
+                  android:text="结束任务"
+                  android:id="@+id/btn_end"
+                  android:onClick="onClick"
+                  android:layout_height="wrap_content" />
+       </LinearLayout>
+       <TextView
+           android:id="@+id/fly_info_textview"
+           android:textColor="#ff0000"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content" />
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_weight="1"
+           android:layout_height="0dp">
+       <TextView
+           android:layout_width="match_parent"
+           android:text=""
+           android:id="@+id/txt_info"
+           android:layout_height="match_parent" />
+       </ScrollView>
+</LinearLayout>

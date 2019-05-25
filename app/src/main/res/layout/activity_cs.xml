@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#000000"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.gdu.api.GduPlayView
+        android:id="@+id/surface_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/start_preview"
+            android:onClick="start_preview"
+            android:text="开启视频流"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/stop_preview"
+            android:onClick="stop_preview"
+            android:text="关闭视频流"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            android:text="开始录像"
+            android:onClick="onClick"
+            android:id="@+id/btn_beginRecord"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="结束录像"
+            android:onClick="onClick"
+            android:id="@+id/btn_stopRecord"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:onClick="onClick"
+            android:id="@+id/btn_takePicture"
+            android:text="拍照"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="一键起飞"
+            android:visibility="gone"
+            android:onClick="onClick"
+            android:id="@+id/oneKeyFly"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="云台角度"
+            android:onClick="onClick"
+            android:id="@+id/gimbalAngle"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:id="@+id/connect_status_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/info_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/record_info_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:text="生成并上传航迹"
+            android:onClick="onClick"
+            android:layout_height="wrap_content" />
+        <Button
+            android:layout_width="wrap_content"
+            android:text="开始任务"
+            android:id="@+id/btn_begin"
+            android:onClick="onClick"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="暂停任务"
+            android:id="@+id/btn_pause"
+            android:onClick="onClick"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="继续任务"
+            android:id="@+id/btn_goon"
+            android:onClick="onClick"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="结束任务"
+            android:id="@+id/btn_end"
+            android:onClick="onClick"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_open_gimbal"
+            android:text="开启相机"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_close_gimbal"
+            android:text="关闭相机"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_set_gimbal_time"
+            android:text="相机授时"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_picture_period"
+            android:text="设置拍照间隔"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="150dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_single_take_picture"
+            android:text="单拍"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_continue_take_picture"
+            android:text="开始连拍"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_continue_stop_picture"
+            android:text="关闭连拍"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btn_open_gimbal_fpv"
+            android:text="开启相机FPV"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btn_close_gimbal_fpv"
+            android:text="关闭相机FPV"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="400dp"
+        android:visibility="gone"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="100dp"
+        android:layout_height="300dp"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/tv_planningInfo"
+            android:textColor="#ff0000"
+            android:layout_height="match_parent" />
+    </ScrollView>
+    <TextView
+        android:id="@+id/pps_textview"
+        android:layout_above="@+id/fly_info_textview"
+        android:textColor="#ff0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/fly_info_textview"
+        android:textColor="#ff0000"
+        android:text="1235324513"
+        android:layout_alignParentBottom="true"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/video_pic_textview"
+        android:layout_marginTop="100dp"
+        android:textColor="#ff0000"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
