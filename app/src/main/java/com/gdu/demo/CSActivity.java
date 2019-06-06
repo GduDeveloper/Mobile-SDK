@@ -3,6 +3,7 @@ package com.gdu.demo;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -285,8 +286,21 @@ public class CSActivity extends Activity {
             case R.id.btn_stopRecord:
                 mGduPlayView.stopVideo();
                 break;
+            case R.id.routePlan:
+                Intent intent1 = new Intent(this, SeniorPlanningActivity.class);
+                startActivity(intent1);
+                break;
             case R.id.oneKeyFly:
-//                mGduControlManager.oneKeyFly();
+                mGduControlManager.oneKeyFly();
+                break;
+            case R.id.oneKeyLand:
+                mGduControlManager.oneKeyLand();
+                break;
+            case R.id.oneKeyBack:
+                mGduControlManager.oneKeyBack();
+                break;
+            case R.id.cancelBack:
+                mGduControlManager.cancelBack();
                 break;
             case R.id.btn_takePicture:
 //                mGduPlayView.takeLocalPicture("/mnt/sdcard/gdu/ron.jpg");
