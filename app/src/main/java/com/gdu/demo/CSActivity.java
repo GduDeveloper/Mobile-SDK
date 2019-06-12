@@ -195,6 +195,11 @@ public class CSActivity extends Activity {
             public void onReciprocal(int i) {
                 toast("低电量返航倒计时： " + i);
             }
+
+            @Override
+            public void onSmartBack(int i) {
+
+            }
         });
     }
 
