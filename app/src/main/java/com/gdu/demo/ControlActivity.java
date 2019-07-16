@@ -136,11 +136,31 @@ public class ControlActivity extends Activity {
 
 
     public void oneKeyFly(View view) {
-        mGduControlManager.oneKeyFly();
+        mGduControlManager.oneKeyFly(new GduControlManager.OnControlListener() {
+            @Override
+            public void onControlSucceed(Object o) {
+
+            }
+
+            @Override
+            public void onControlFailed(int i) {
+
+            }
+        });
     }
 
     public void oneKeyDown(View view) {
-        mGduControlManager.oneKeyLand();
+        mGduControlManager.oneKeyLand(new GduControlManager.OnControlListener() {
+            @Override
+            public void onControlSucceed(Object o) {
+
+            }
+
+            @Override
+            public void onControlFailed(int i) {
+
+            }
+        });
     }
 
     public void oneKeyLock(View view) {

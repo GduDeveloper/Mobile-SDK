@@ -296,16 +296,56 @@ public class CSActivity extends Activity {
                 startActivity(intent1);
                 break;
             case R.id.oneKeyFly:
-                mGduControlManager.oneKeyFly();
+                mGduControlManager.oneKeyFly(new GduControlManager.OnControlListener() {
+                    @Override
+                    public void onControlSucceed(Object o) {
+
+                    }
+
+                    @Override
+                    public void onControlFailed(int i) {
+
+                    }
+                });
                 break;
             case R.id.oneKeyLand:
-                mGduControlManager.oneKeyLand();
+                mGduControlManager.oneKeyLand(new GduControlManager.OnControlListener() {
+                    @Override
+                    public void onControlSucceed(Object o) {
+
+                    }
+
+                    @Override
+                    public void onControlFailed(int i) {
+
+                    }
+                });
                 break;
             case R.id.oneKeyBack:
-                mGduControlManager.oneKeyBack();
+                mGduControlManager.oneKeyBack(new GduControlManager.OnControlListener() {
+                    @Override
+                    public void onControlSucceed(Object o) {
+
+                    }
+
+                    @Override
+                    public void onControlFailed(int i) {
+
+                    }
+                });
                 break;
             case R.id.cancelBack:
-                mGduControlManager.cancelBack();
+                mGduControlManager.cancelBack(new GduControlManager.OnControlListener() {
+                    @Override
+                    public void onControlSucceed(Object o) {
+
+                    }
+
+                    @Override
+                    public void onControlFailed(int i) {
+
+                    }
+                });
                 break;
             case R.id.btn_takePicture:
 //                mGduPlayView.takeLocalPicture("/mnt/sdcard/gdu/ron.jpg");
