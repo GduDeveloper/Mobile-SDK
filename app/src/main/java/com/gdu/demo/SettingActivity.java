@@ -232,17 +232,6 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     }
 
     public void setAll(View view){
-//        mGduSettingManager.setLimitHeightAndDistance(500, 500, new GduSettingManager.OnSettingListener() {
-//            @Override
-//            public void onSetSucceed(Object o) {
-//
-//            }
-//
-//            @Override
-//            public void onSetFailed() {
-//
-//            }
-//        });
         mGduSettingManager.setReturnHeight(110, new GduSettingManager.OnSettingListener() {
             @Override
             public void onSetSucceed(Object o) {

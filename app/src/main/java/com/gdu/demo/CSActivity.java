@@ -15,8 +15,6 @@ import com.gdu.api.GduControlManager;
 import com.gdu.api.GduDroneApi;
 import com.gdu.api.GduInfoManager;
 import com.gdu.api.GduPlayView;
-import com.gdu.api.GduSettingManager;
-import com.gdu.api.gimbal.GimbalEnWei;
 import com.gdu.api.listener.OnDroneConnectListener;
 import com.gdu.api.listener.OnGduInfoListener;
 import com.gdu.api.listener.OnGetH264CallBack;
@@ -27,16 +25,10 @@ import com.gdu.api.listener.OnTakePictureListener;
 import com.gdu.demo.util.SeniorPlanningUtils;
 import com.gdu.drone.DroneException;
 import com.gdu.drone.DroneInfo;
-import com.gdu.drone.GimbalType;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-//import com.gdu.api.listener.OnRecordListener;
-//import com.gdu.api.listener.OnTakePictureListener;
 
 /**
  * Created by zhangzhilai on 2018/5/31.
@@ -55,11 +47,9 @@ public class CSActivity extends Activity {
     private GduInfoManager mGduInfoManager;
     private GduControlManager mGduControlManager;
     private TextView mVideoPicTextView;
-//    private CustomRTMPSender mCustomRTMPSender;
     private SeniorPlanningUtils seniorPlanningUtils;
     private TextView textView_planningInfo;
 
-    private GimbalEnWei mGimbalEnWei;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +59,6 @@ public class CSActivity extends Activity {
         initView();
         initData();
         initListener();
-        timeShow();
     }
 
     private void initData() {
@@ -77,12 +66,6 @@ public class CSActivity extends Activity {
         mGduInfoManager = GduInfoManager.getInstance(gduDroneApi);
         mGduControlManager = new GduControlManager();
         seniorPlanningUtils = new SeniorPlanningUtils(this,textView_planningInfo);
-//        mCustomRTMPSender = new CustomRTMPSender();
-        gduDroneApi.setCurrentGimbal(GimbalType.ByrdT_EnWei_Zoom);
-        GduSettingManager gduSettingManager = new GduSettingManager();
-        if (gduSettingManager.getGimbal() instanceof GimbalEnWei) {
-            mGimbalEnWei = (GimbalEnWei) gduSettingManager.getGimbal();
-        }
     }
 
     private void initListener() {
@@ -348,7 +331,6 @@ public class CSActivity extends Activity {
                 });
                 break;
             case R.id.btn_takePicture:
-//                mGduPlayView.takeLocalPicture("/mnt/sdcard/gdu/ron.jpg");
                 mGduPlayView.setPicPath("/storage/emulated/0/LandUAV/测试/media/photo");
                 mGduPlayView.takePicture();
                 break;
@@ -365,124 +347,6 @@ public class CSActivity extends Activity {
 //                        toast("setGimbalAngle failed " + i);
 //                    }
 //                });
-                break;
-            case R.id.btn_open_gimbal:
-                mGimbalEnWei.openGimbal(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_set_gimbal_time:
-                mGimbalEnWei.setGimbalTime(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_picture_period:
-                mGimbalEnWei.setTakePicturePeriodTime(1.5f, new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_close_gimbal:
-                mGimbalEnWei.closeGimbal(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_single_take_picture:
-                mGimbalEnWei.takeSinglePicture(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_continue_take_picture:
-                mGimbalEnWei.takePicture(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_continue_stop_picture:
-                mGimbalEnWei.stopPicture(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_open_gimbal_fpv:
-                mGimbalEnWei.openGimbalFPV(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
-                break;
-            case R.id.btn_close_gimbal_fpv:
-//                mGduPlayView.closeGimbalFPV();
-                mGimbalEnWei.closeGimbalFPV(new GduSettingManager.OnSettingListener() {
-                    @Override
-                    public void onSetSucceed(Object o) {
-                        toast("onSetSucceed");
-                    }
-
-                    @Override
-                    public void onSetFailed() {
-                        toast("onSetFailed");
-                    }
-                });
                 break;
                 default:
                     seniorPlanningUtils.onClick(view);
@@ -502,25 +366,6 @@ public class CSActivity extends Activity {
         }
     }
 
-
-    private Timer timer;
-    private TimerTask timerTask;
-    private void timeShow(){
-        timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String lost = mGduPlayView.getLostData() + "";
-                        mInfoTextView.setText(lost);
-                    }
-                });
-            }
-        }, 1000, 1000);
-
-    }
 
     @Override
     protected void onResume() {

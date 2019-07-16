@@ -74,15 +74,12 @@ public class MainActivity extends Activity {
             @Override
             public void onInfoUpdate(DroneInfo droneInfo) {
                 if (droneInfo != null) {
-//                    Log.d("test", "test info " + droneInfo.getString());
                     Log.d("test", "test onInfoUpdate2 " + droneInfo.getString());
-//                    Log.d("test", "test info " + droneInfo.getString());
                 }
             }
 
             @Override
             public void onExceptionUpdate(DroneException droneException) {
-//                Log.d("test", "test Exception " + droneException.getString());
                 Log.d("test", "test onExceptionUpdate2 " + droneException.getString());
             }
         });
@@ -98,7 +95,6 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mGduDroneApi.onResume();
-//        mGduDroneApi.connectUSB2();
     }
 
     @Override

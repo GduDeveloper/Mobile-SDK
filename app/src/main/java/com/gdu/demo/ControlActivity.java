@@ -41,27 +41,6 @@ public class ControlActivity extends Activity {
 
     private void init(){
         mGduControlManager = new GduControlManager();
-//        mGduControlManager.setOnRecordListener(new OnRecordListener() {
-//            @Override
-//            public void onRecordStart() {
-//                show(mRecordTextView, "onRecordStart");
-//            }
-//
-//            @Override
-//            public void onRecording() {
-//                show(mRecordTextView, "onRecording");
-//            }
-//
-//            @Override
-//            public void onRecordEnd() {
-//                show(mRecordTextView, "onRecordEnd");
-//            }
-//
-//            @Override
-//            public void onRecordError(int errorCode) {
-//                show(mRecordTextView, "onRecordError " + errorCode);
-//            }
-//        });
     }
 
     @Override
@@ -80,7 +59,6 @@ public class ControlActivity extends Activity {
     }
 
     public void startCamera(View view) {
-//        mGduControlManager.takeVideo();
     }
 
     public void takePicture(View view) {
