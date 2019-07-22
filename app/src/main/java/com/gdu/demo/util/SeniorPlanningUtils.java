@@ -21,7 +21,6 @@ import com.gdu.api.RoutePlanning.OnRoutePlanListener;
 import com.gdu.api.RoutePlanning.RoutePlanBean;
 import com.gdu.api.RoutePlanning.RoutePlanManager;
 import com.gdu.api.RoutePlanning.RoutePlanPoint;
-import com.gdu.api.gimbal.GimbalEnWei;
 import com.gdu.demo.R;
 import com.gdu.drone.GimbalType;
 
@@ -41,17 +40,12 @@ public class SeniorPlanningUtils
 
     private GduSettingManager mGduSettingManager;
 
-    private GimbalEnWei mGimbalEnWei;
-
     public SeniorPlanningUtils(Activity activity, TextView textView )
     {
         stringBuffer = new StringBuffer();
         routePlanManager = GduDroneApi.getInstance().getRoutePlanManager();
         mGduSettingManager = new GduSettingManager();
         GduDroneApi.getInstance().setCurrentGimbal(GimbalType.ByrdT_EnWei_Zoom);
-        if (mGduSettingManager.getGimbal() instanceof GimbalEnWei) {
-            mGimbalEnWei = (GimbalEnWei) mGduSettingManager.getGimbal();
-        }
 
         routePlanManager.setOnRoutePlanListener(onRoutePlanListener);
         this.textView = textView;
@@ -72,19 +66,6 @@ public class SeniorPlanningUtils
                 case 1:
                     stringBuffer.append("\n").append(msg.obj.toString());
                     textView.setText(stringBuffer.toString());
-                    if (mGimbalEnWei != null) {
-                        mGimbalEnWei.closeGimbal(new GduSettingManager.OnSettingListener() {
-                            @Override
-                            public void onSetSucceed(Object o) {
-
-                            }
-
-                            @Override
-                            public void onSetFailed() {
-
-                            }
-                        });
-                    }
                     break;
             }
         }
@@ -195,7 +176,7 @@ public class SeniorPlanningUtils
             RoutePlanPoint pathPlanBean = new RoutePlanPoint();
             pathPlanBean.latitude = 34.1515101 ;
             pathPlanBean.longitude = 114.1515102;
-            pathPlanBean.height = 20+ i;
+            pathPlanBean.height = 20;
             List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
             RoutePlanBean.subActionBean subActionBean = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
             subActionBeans.add(subActionBean);

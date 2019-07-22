@@ -1,7 +1,9 @@
 package com.gdu.demo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +15,10 @@ import com.gdu.api.listener.OnDroneConnectListener;
 import com.gdu.api.listener.OnGduInfoListener;
 import com.gdu.drone.DroneException;
 import com.gdu.drone.DroneInfo;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 public class MainActivity extends Activity {
 
     private GduDroneApi mGduDroneApi;
@@ -23,6 +29,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ce_saga);
         mConnectStatusTextView = (TextView) findViewById(R.id.connect_status_textview);
+        requestStoragePermission();
         init();
         initListener();
         GduDroneApi.getInstance().registerSomething(this);
@@ -74,7 +81,7 @@ public class MainActivity extends Activity {
             @Override
             public void onInfoUpdate(DroneInfo droneInfo) {
                 if (droneInfo != null) {
-                    Log.d("test", "test onInfoUpdate2 " + droneInfo.getString());
+                    Log.d("gdu", "gdu onInfoUpdate2 " + droneInfo.getString());
                 }
             }
 
@@ -95,6 +102,17 @@ public class MainActivity extends Activity {
     protected void onResume() {
         super.onResume();
         mGduDroneApi.onResume();
+    }
+
+    public boolean requestStoragePermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, 1);
+            return false;
+        }
+        return true;
     }
 
     @Override
