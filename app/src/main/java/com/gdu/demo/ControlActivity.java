@@ -10,6 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gdu.api.GduControlManager;
+import com.gdu.api.listener.OnRecordListener;
+import com.gdu.api.listener.OnTakePictureListener;
 import com.gdu.drone.CameraMode;
 import com.gdu.drone.SwitchType;
 
@@ -23,6 +25,7 @@ public class ControlActivity extends Activity {
     private Context mContext;
     private GduControlManager mGduControlManager;
     private TextView mRecordTextView;
+    private TextView mPictureTextView;
     private TextView mObstacleTypeTextView;
 
     @Override
@@ -36,11 +39,50 @@ public class ControlActivity extends Activity {
 
     private void initView() {
         mRecordTextView = (TextView) findViewById(R.id.record_textview);
+        mPictureTextView = (TextView) findViewById(R.id.picture_textview);
         mObstacleTypeTextView = (TextView) findViewById(R.id.obstacle_type_textview);
     }
 
     private void init(){
         mGduControlManager = new GduControlManager();
+        mGduControlManager.setOnRecordListener(new OnRecordListener() {
+            @Override
+            public void onRecordStart(String videoName) {
+                show(mRecordTextView, "onRecordStart" + videoName);
+            }
+
+            @Override
+            public void onRecording(short time) {
+                show(mRecordTextView, "onRecording" + time);
+            }
+
+            @Override
+            public void onRecordEnd(String videoName) {
+                show(mRecordTextView, "onRecordEnd" + videoName);
+            }
+
+            @Override
+            public void onRecordError(int errorCode) {
+                show(mRecordTextView, "onRecordError " + errorCode);
+            }
+        });
+
+        mGduControlManager.setOnTakePictureListener(new OnTakePictureListener() {
+            @Override
+            public void onTakePictureSucceed(String name) {
+                show(mPictureTextView, "name" + name);
+            }
+
+            @Override
+            public void onTakePictureFailed(int errorCode) {
+                show(mPictureTextView, "" + errorCode);
+            }
+
+            @Override
+            public String getPictureName() {
+                return null;
+            }
+        });
     }
 
     @Override
@@ -59,6 +101,17 @@ public class ControlActivity extends Activity {
     }
 
     public void startCamera(View view) {
+        mGduControlManager.takeVideo(new GduControlManager.OnControlListener() {
+            @Override
+            public void onControlSucceed(Object type) {
+
+            }
+
+            @Override
+            public void onControlFailed(int errorCode) {
+
+            }
+        });
     }
 
     public void takePicture(View view) {
@@ -77,7 +130,7 @@ public class ControlActivity extends Activity {
     }
 
     public void stopCamera(View view) {
-//        mGduControlManager.stopVideo();
+        mGduControlManager.stopVideo();
     }
 
     public void switchCamera(View view) {

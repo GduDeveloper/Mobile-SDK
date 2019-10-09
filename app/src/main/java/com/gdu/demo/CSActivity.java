@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.gdu.api.GduControlManager;
 import com.gdu.api.GduDroneApi;
 import com.gdu.api.GduInfoManager;
@@ -25,9 +28,6 @@ import com.gdu.api.listener.OnTakePictureListener;
 import com.gdu.demo.util.SeniorPlanningUtils;
 import com.gdu.drone.DroneException;
 import com.gdu.drone.DroneInfo;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 
 /**

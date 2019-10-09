@@ -55,12 +55,6 @@
                 android:onClick="onClick"
                 android:id="@+id/gimbalAngle"
                 android:layout_height="wrap_content" />
-            <Button
-                android:text="预览流"
-                android:onClick="onClick"
-                android:id="@+id/preview_set"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
 
 
             <TextView
