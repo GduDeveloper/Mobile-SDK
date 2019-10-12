@@ -59,6 +59,24 @@
                 android:id="@+id/btn_seniorPlanning"
                 android:text="航迹飞行"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:onClick="gimbal4k"
+                android:text="云台_4k"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:onClick="gimbal10X"
+                android:text="云台_10倍"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:onClick="gimbal30X"
+                android:text="云台_30倍"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

@@ -35,6 +35,9 @@
         <activity android:name=".ControlActivity" />
         <activity android:name=".CalibrateActivity" />
         <activity android:name=".SeniorPlanningActivity" />
+        <activity android:name=".GimbalSetting4kActivity" />
+        <activity android:name=".GimbalSettingZoom10Activity" />
+        <activity android:name=".GimbalSettingZoom30Activity" />
     </application>
 
 </manifest>

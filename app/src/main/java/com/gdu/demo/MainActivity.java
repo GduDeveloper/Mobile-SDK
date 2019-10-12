@@ -8,6 +8,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.gdu.api.GduDroneApi;
 import com.gdu.api.GduInfoManager;
@@ -15,9 +19,8 @@ import com.gdu.api.listener.OnDroneConnectListener;
 import com.gdu.api.listener.OnGduInfoListener;
 import com.gdu.drone.DroneException;
 import com.gdu.drone.DroneInfo;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import com.gdu.drone.GimbalType;
+import com.gdu.gdusocketmodel.GlobalVariable;
 
 public class MainActivity extends Activity {
 
@@ -174,4 +177,33 @@ public class MainActivity extends Activity {
     }
 
 
+    public void gimbal4k(View view) {
+        if(GlobalVariable.gimbalType != GimbalType.ByrdT_4k)
+        {
+            Toast.makeText(this,"当前挂载的云台，非4k云台",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent  intent = new Intent(this, GimbalSetting4kActivity.class);
+        startActivity(intent);
+    }
+
+    public void gimbal10X(View view) {
+//        if(GlobalVariable.gimbalType != GimbalType.ByrdT_10X_Zoom)
+//        {
+//            Toast.makeText(this,"当前挂载的云台，非10倍变倍云台",Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+        Intent  intent = new Intent(this, GimbalSettingZoom10Activity.class);
+        startActivity(intent);
+    }
+
+    public void gimbal30X(View view) {
+        if(GlobalVariable.gimbalType != GimbalType.ByrdT_30X_Zoom)
+        {
+            Toast.makeText(this,"当前挂载的云台，非30倍变倍云台",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent  intent = new Intent(this, GimbalSettingZoom30Activity.class);
+        startActivity(intent);
+    }
 }
