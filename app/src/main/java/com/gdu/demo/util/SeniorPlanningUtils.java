@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.gdu.api.GduDroneApi;
 import com.gdu.api.GduSettingManager;
 import com.gdu.api.RoutePlanning.EnumPointAction;
@@ -26,9 +29,6 @@ import com.gdu.drone.GimbalType;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 public class SeniorPlanningUtils
 {
@@ -176,10 +176,21 @@ public class SeniorPlanningUtils
             RoutePlanPoint pathPlanBean = new RoutePlanPoint();
             pathPlanBean.latitude = 34.1515101 ;
             pathPlanBean.longitude = 114.1515102;
+            pathPlanBean.droneHeadAngle = 80;
             pathPlanBean.height = 20;
             List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
-            RoutePlanBean.subActionBean subActionBean = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
-            subActionBeans.add(subActionBean);
+            RoutePlanBean.subActionBean subActionBean1 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-30");
+            RoutePlanBean.subActionBean subActionBean3 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+            RoutePlanBean.subActionBean subActionBean4 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-45");
+            RoutePlanBean.subActionBean subActionBean6 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+            RoutePlanBean.subActionBean subActionBean7 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-75");
+            RoutePlanBean.subActionBean subActionBean9 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+            subActionBeans.add(subActionBean1);
+            subActionBeans.add(subActionBean3);
+            subActionBeans.add(subActionBean4);
+            subActionBeans.add(subActionBean6);
+            subActionBeans.add(subActionBean7);
+            subActionBeans.add(subActionBean9);
             pathPlanBean.actions = subActionBeans;
             data.add(pathPlanBean);
         }
@@ -187,7 +198,7 @@ public class SeniorPlanningUtils
 //        List<RoutePlanPoint> data = createPlanPoints();
         if(stringBuffer!= null && stringBuffer.length() >  0)
         stringBuffer.delete(0,stringBuffer.length()-1);
-        routePlanManager.updateSeniorPlanning2Drone(data);
+        routePlanManager.updateSeniorPlanning2Drone(data, 1);
     }
 
     private List<RoutePlanPoint> createPlanPoints()

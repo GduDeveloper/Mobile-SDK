@@ -188,11 +188,11 @@ public class MainActivity extends Activity {
     }
 
     public void gimbal10X(View view) {
-//        if(GlobalVariable.gimbalType != GimbalType.ByrdT_10X_Zoom)
-//        {
-//            Toast.makeText(this,"当前挂载的云台，非10倍变倍云台",Toast.LENGTH_SHORT).show();
-//            return;
-//        }
+        if(GlobalVariable.gimbalType != GimbalType.ByrdT_10X_Zoom)
+        {
+            Toast.makeText(this,"当前挂载的云台，非10倍变倍云台",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Intent  intent = new Intent(this, GimbalSettingZoom10Activity.class);
         startActivity(intent);
     }

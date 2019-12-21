@@ -17,6 +17,7 @@ import com.gdu.drone.ControlHand;
 public class SettingActivity extends Activity implements View.OnClickListener {
 
     private TextView mControlHandTextView;
+    private TextView mElevationTypeTextView;
 
     private TextView mLimitHeightTextView;
     private TextView mLimitDistanceTextView;
@@ -52,6 +53,7 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         mLimitDistanceTextView = (TextView)findViewById(R.id.limit_distance_textview);
         mReturnHeightTextView  = (TextView)findViewById(R.id.return_height_textview);
         mLimitHeightAndWidthTextView  = (TextView)findViewById(R.id.limit_height_width_textview);
+        mElevationTypeTextView = (TextView) findViewById(R.id.elevation_type_textview);
     }
 
     @Override
@@ -266,6 +268,65 @@ public class SettingActivity extends Activity implements View.OnClickListener {
             }
         });
 
+    }
+
+    /**
+     * 设置海拔高程
+     *
+     * @param view
+     */
+    public void setElevationType1(View view) {
+        mGduSettingManager.setElevationType((byte) 2, new GduSettingManager.OnSettingListener() {
+            @Override
+            public void onSetSucceed(Object o) {
+                showText(mElevationTypeTextView, "设置成功");
+            }
+
+            @Override
+            public void onSetFailed() {
+                showText(mElevationTypeTextView, "设置失败");
+            }
+        });
+    }
+
+    /**
+     * 设置椭球高程
+     *
+     * @param view
+     */
+    public void setElevationType2(View view) {
+        mGduSettingManager.setElevationType((byte) 1, new GduSettingManager.OnSettingListener() {
+            @Override
+            public void onSetSucceed(Object o) {
+                showText(mElevationTypeTextView, "设置成功");
+            }
+
+            @Override
+            public void onSetFailed() {
+                showText(mElevationTypeTextView, "设置失败");
+            }
+        });
+    }
+
+    public void getElevationType(View view) {
+        mGduSettingManager.getElevationType(new GduSettingManager.OnSettingListener() {
+            @Override
+            public void onSetSucceed(Object o) {
+                String type = "" + o;
+                if ((byte) o == 1) {
+                    type = "椭球高程";
+                }
+                if ((byte) o == 2) {
+                    type = "海拔高程";
+                }
+                showText(mElevationTypeTextView, type);
+            }
+
+            @Override
+            public void onSetFailed() {
+                showText(mElevationTypeTextView, "获取失败");
+            }
+        });
     }
 
     @Override
