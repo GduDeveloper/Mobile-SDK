@@ -53,6 +53,12 @@
                 android:layout_height="wrap_content" />
 
             <Button
+                android:onClick="targetRecognize"
+                android:text="目标识别"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <Button
                 android:layout_width="match_parent"
                 android:onClick="map"
                 android:layout_weight="1"

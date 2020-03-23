@@ -38,6 +38,8 @@
         <activity android:name=".GimbalSetting4kActivity" />
         <activity android:name=".GimbalSettingZoom10Activity" />
         <activity android:name=".GimbalSettingZoom30Activity" />
+        <activity android:name=".AIActivity"
+            android:screenOrientation="landscape"/>
     </application>
 
 </manifest>

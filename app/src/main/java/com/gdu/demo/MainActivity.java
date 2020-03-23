@@ -206,4 +206,9 @@ public class MainActivity extends Activity {
         Intent  intent = new Intent(this, GimbalSettingZoom30Activity.class);
         startActivity(intent);
     }
+
+    public void targetRecognize(View view) {
+        Intent intent = new Intent(this, AIActivity.class);
+        startActivity(intent);
+    }
 }

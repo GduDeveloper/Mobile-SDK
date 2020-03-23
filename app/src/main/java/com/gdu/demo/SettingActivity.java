@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.gdu.api.GduSettingManager;
@@ -24,6 +27,9 @@ public class SettingActivity extends Activity implements View.OnClickListener {
     private TextView mReturnHeightTextView;
     private TextView mLimitHeightAndWidthTextView;
 
+    private CheckBox mSimulateFlightCheckBox;
+    private Button mSimulateFlightParamButton;
+
     private GduSettingManager mGduSettingManager;
 
     @Override
@@ -32,6 +38,43 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_setting);
         initManager();
         initView();
+        initListener();
+    }
+
+    private void initListener() {
+        mSimulateFlightCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                mGduSettingManager.switchSimulateFlight(isChecked, new GduSettingManager.OnSettingListener() {
+                    @Override
+                    public void onSetSucceed(Object o) {
+                        Log.e("switchSimulateFlight ","onSetSucceed");
+                    }
+
+                    @Override
+                    public void onSetFailed() {
+                        Log.e("switchSimulateFlight ","onSetFailed");
+                    }
+                });
+            }
+        });
+
+        mSimulateFlightParamButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGduSettingManager.setSimulateFlightInitParam((short) 90, 114.4193178, 30.4694783, (byte) 30, 20, 20, new GduSettingManager.OnSettingListener() {
+                    @Override
+                    public void onSetSucceed(Object o) {
+
+                    }
+
+                    @Override
+                    public void onSetFailed() {
+
+                    }
+                });
+            }
+        });
     }
 
     private void initManager() {
@@ -54,6 +97,8 @@ public class SettingActivity extends Activity implements View.OnClickListener {
         mReturnHeightTextView  = (TextView)findViewById(R.id.return_height_textview);
         mLimitHeightAndWidthTextView  = (TextView)findViewById(R.id.limit_height_width_textview);
         mElevationTypeTextView = (TextView) findViewById(R.id.elevation_type_textview);
+        mSimulateFlightCheckBox  =(CheckBox) findViewById(R.id.simulate_flight_check);
+        mSimulateFlightParamButton  =(Button) findViewById(R.id.set_simulate_flight_param);
     }
 
     @Override
