@@ -32,22 +32,18 @@ public class AIActivity extends Activity {
         mGduPlayView.init(new OnPreviewListener() {
             @Override
             public void onStartPreviewSucceed() {
-//                toast("onStartPreviewSucceed");
             }
 
             @Override
             public void onStartPreviewFailed(int errorCode) {
-//                toast("onStartPreviewFailed " + errorCode);
             }
 
             @Override
             public void onStopPreviewSucceed() {
-//                toast("onStopPreviewSucceed");
             }
 
             @Override
             public void onStopPreviewFailed(int errorCode) {
-//                toast("onStopPreviewFailed " + errorCode);
             }
         });
         mGduAIManager = new GduAIManager();
