@@ -193,8 +193,7 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
     };
 
 
-    public void ZoomStop(View view)
-    {
+    public void ZoomStop(View view) {
         gimbal.zoom(ZoomMotion.STOP_ZOOM, new GduSettingManager.OnSettingListener() {
             @Override
             public void onSetSucceed(Object data) {
@@ -210,57 +209,50 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
 
 
     @Override
-    public void onClick(View view)
-    {
+    public void onClick(View view) {
 
-        if(selectListDialog == null )
-        {
+        if (selectListDialog == null) {
             selectListDialog = new SelectListDialog();
-            testData = new TestData(gimbal,mContext);
+            testData = new TestData(gimbal, mContext);
         }
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.btn_getCameraInfo:
                 gimbal.getCameraArgs(getCameraInfo);
                 break;
             case R.id.btn_ev:
                 String strs[] = new String[testData.mZoom10xEVValues.length];
-                for (int i = 0 ; i < strs.length; i ++ )
-                {
+                for (int i = 0; i < strs.length; i++) {
                     strs[i] = testData.mZoom10xEVValues[i].getValue();
                 }
                 selectListDialog.createDialog(strs,
-                        mContext, ValueType.EV_10ZOOM,testData.onSelectValueListener);
+                        mContext, ValueType.EV_10ZOOM, testData.onSelectValueListener);
                 break;
             case R.id.btn_wb:
                 selectListDialog.createDialog(testData.wb_str,
-                        mContext, ValueType.WB,testData.onSelectValueListener);
+                        mContext, ValueType.WB, testData.onSelectValueListener);
                 break;
             case R.id.btn_iso:
                 String strs_iso[] = new String[testData.mZoom10xISOValues.length];
-                for (int i = 0 ; i < strs_iso.length; i ++ )
-                {
+                for (int i = 0; i < strs_iso.length; i++) {
                     strs_iso[i] = testData.mZoom10xISOValues[i].getValue();
                 }
                 selectListDialog.createDialog(strs_iso,
-                        mContext, ValueType.ISO_10Zoom,testData.onSelectValueListener);
+                        mContext, ValueType.ISO_10Zoom, testData.onSelectValueListener);
                 break;
             case R.id.btn_photoSize:
                 String[] photosize = new String[testData.mZoom30_photoSize.length];
-                for (int i = 0; i < photosize.length ; i ++ )
-                {
+                for (int i = 0; i < photosize.length; i++) {
                     photosize[i] = testData.mZoom30_photoSize[i].getValue();
                 }
-                selectListDialog.createDialog(photosize,mContext,ValueType.PHOTOSIZE_Zoom30,testData.onSelectValueListener);
+                selectListDialog.createDialog(photosize, mContext, ValueType.PHOTOSIZE_Zoom30, testData.onSelectValueListener);
                 break;
 
             case R.id.btn_videoSize:
                 String[] videosize = new String[testData.mZoom30_videoSize.length];
-                for (int i = 0; i < videosize.length ; i ++ )
-                {
+                for (int i = 0; i < videosize.length; i++) {
                     videosize[i] = testData.mZoom30_videoSize[i].getValue();
                 }
-                selectListDialog.createDialog(videosize,mContext,ValueType.VIDEOSIZE_Zoom30,testData.onSelectValueListener);
+                selectListDialog.createDialog(videosize, mContext, ValueType.VIDEOSIZE_Zoom30, testData.onSelectValueListener);
                 break;
         }
     }
@@ -268,14 +260,13 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
     private GduSettingManager.OnSettingListener getCameraInfo = new GduSettingManager.OnSettingListener() {
         @Override
         public void onSetSucceed(final Object data) {
-            if(data != null)
-            {
+            if (data != null) {
 
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        String Str = ((GimbalBean)data).toString() + ",zoom:"+ gimbal.getZoomValue();
-                       mInfoTextView.setText(Str);
+                        String Str = ((GimbalBean) data).toString() + ",zoom:" + gimbal.getZoomValue();
+                        mInfoTextView.setText(Str);
                     }
                 });
             }
@@ -283,7 +274,7 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
 
         @Override
         public void onSetFailed() {
-                toast("获取相机参数失败");
+            toast("获取相机参数失败");
         }
     };
 
@@ -304,7 +295,6 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
             }
         });
     }
-
 
 
     @Override
@@ -337,10 +327,8 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
     }
 
 
-    public void facusByZone(View view)
-    {
-        if(gimbal != null)
-        {
+    public void facusByZone(View view) {
+        if (gimbal != null) {
             gimbal.focusByZone((byte) 0, (byte) 0, (byte) 50, (byte) 50, new GduSettingManager.OnSettingListener() {
                 @Override
                 public void onSetSucceed(Object data) {
@@ -363,12 +351,12 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
         zoom(ZoomMotion.SUB_ZOOM);
     }
 
-    private void zoom(ZoomMotion zoomMotion){
+    private void zoom(ZoomMotion zoomMotion) {
         if (gimbal != null) {
             gimbal.zoom(zoomMotion, new GduSettingManager.OnSettingListener() {
                 @Override
                 public void onSetSucceed(Object data) {
-                    toast("变倍成功 " +data.toString());
+                    toast("变倍成功 " + data.toString());
                 }
 
                 @Override
@@ -388,12 +376,12 @@ public class GimbalSettingZoom30Activity extends Activity implements View.OnClic
         focus(FocusMotion.SUB_FOCUS);
     }
 
-    private void focus(FocusMotion focusMotion){
+    private void focus(FocusMotion focusMotion) {
         if (gimbal != null) {
             gimbal.focus(FocusType.MANUAL_FOCUS, focusMotion, new GduSettingManager.OnSettingListener() {
                 @Override
                 public void onSetSucceed(Object data) {
-                    toast("变焦成功 " +data.toString());
+                    toast("变焦成功 " + data.toString());
                 }
 
                 @Override

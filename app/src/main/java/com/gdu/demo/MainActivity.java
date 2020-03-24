@@ -188,13 +188,13 @@ public class MainActivity extends Activity {
     }
 
     public void gimbal10X(View view) {
-        if(GlobalVariable.gimbalType != GimbalType.ByrdT_10X_Zoom)
-        {
+//        if(GlobalVariable.gimbalType == GimbalType.ByrdT_10X_Zoom || GlobalVariable.gimbalType == GimbalType.ByrdT_10X_C_Zoom) {
+        if(true) {
+            Intent  intent = new Intent(this, GimbalSettingZoom10Activity.class);
+            startActivity(intent);
+        } else {
             Toast.makeText(this,"当前挂载的云台，非10倍变倍云台",Toast.LENGTH_SHORT).show();
-            return;
         }
-        Intent  intent = new Intent(this, GimbalSettingZoom10Activity.class);
-        startActivity(intent);
     }
 
     public void gimbal30X(View view) {
