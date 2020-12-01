@@ -83,6 +83,12 @@
                 android:text="云台_30倍"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:onClick="upgrade"
+                android:text="升级"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

@@ -211,4 +211,9 @@ public class MainActivity extends Activity {
         Intent intent = new Intent(this, AIActivity.class);
         startActivity(intent);
     }
+
+    public void upgrade(View view) {
+        Intent intent = new Intent(this, UpgradeActivity.class);
+        startActivity(intent);
+    }
 }
