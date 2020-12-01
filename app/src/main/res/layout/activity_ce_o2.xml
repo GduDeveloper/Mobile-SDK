@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:onClick="startConnect"
+                android:text="连接遥控器"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="startConnectWifi"
+                android:text="连接飞机"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:onClick="saveLog"
+                android:text="保存LOG"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="preview"
+                android:text="预览"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="setting"
+                android:text="设置"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="control"
+                android:text="控制"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="multimedia"
+                android:text="多媒体"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="calibrate"
+                android:text="校磁"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="map"
+                android:text="航迹规划"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="upgrade"
+                android:text="升级"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="gimbal"
+                android:text="云台"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="dashboard"
+                android:text="控制盘"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="custom"
+                android:text="自定义协议"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <Button
+                android:onClick="test"
+                android:text="test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/connect_status_textview"
+                android:textColor="#ff0000"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
