@@ -255,7 +255,7 @@ public class ControlActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        mObstacleTypeTextView.setText(isOpen + "");
+                        mObstacleTypeTextView.setText(isOpen + "视觉");
                     }
                 });
 
@@ -324,6 +324,32 @@ public class ControlActivity extends Activity {
             @Override
             public void onControlFailed(int errorCode) {
                 toast("onControlFailed " + errorCode);
+            }
+        });
+    }
+
+    public void openReturnObstacleALG(View view) {
+        mGduControlManager.toggleObstacleALG(true, SwitchType.OBSTACLE_TYPE_RETURN, new GduControlManager.OnControlListener() {
+            @Override
+            public void onControlSucceed(Object type) {
+                final boolean isOpen = (boolean) type;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mObstacleTypeTextView.setText(isOpen + "返航");
+                    }
+                });
+
+            }
+
+            @Override
+            public void onControlFailed(int errorCode) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mObstacleTypeTextView.setText("fail");
+                    }
+                });
             }
         });
     }
