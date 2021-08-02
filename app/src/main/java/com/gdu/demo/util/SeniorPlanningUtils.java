@@ -13,6 +13,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gdu.api.GduDroneApi;
+import com.gdu.api.GduInfoManager;
 import com.gdu.api.GduSettingManager;
 import com.gdu.api.RoutePlanning.EnumPointAction;
 import com.gdu.api.RoutePlanning.EnumRoutePlanningErrStatus;
@@ -25,6 +26,7 @@ import com.gdu.api.RoutePlanning.RoutePlanBean;
 import com.gdu.api.RoutePlanning.RoutePlanManager;
 import com.gdu.api.RoutePlanning.RoutePlanPoint;
 import com.gdu.demo.R;
+import com.gdu.drone.DroneInfo;
 import com.gdu.drone.GimbalType;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class SeniorPlanningUtils
     private int MY_PERMISSIONS_REQUEST_WRITESDK = 1;
 
     private GduSettingManager mGduSettingManager;
+    private GduInfoManager mGduInfoManager;
 
     public SeniorPlanningUtils(Activity activity, TextView textView )
     {
@@ -46,7 +49,7 @@ public class SeniorPlanningUtils
         routePlanManager = GduDroneApi.getInstance().getRoutePlanManager();
         mGduSettingManager = new GduSettingManager();
         GduDroneApi.getInstance().setCurrentGimbal(GimbalType.ByrdT_EnWei_Zoom);
-
+        mGduInfoManager = GduInfoManager.getInstance(GduDroneApi.getInstance());
         routePlanManager.setOnRoutePlanListener(onRoutePlanListener);
         this.textView = textView;
         this.activity = activity;
@@ -131,6 +134,7 @@ public class SeniorPlanningUtils
         switch (view.getId())
         {
             case R.id.btn_begin:
+//                setR8Action2();
                 routePlanManager.sendTaskStartCmd(EnumRoutePlanningOrder.TASK_BEGIN, new OnRouteCmdListener() {
                     @Override
                     public void setSuccess(boolean isSuccess, Object object) {
@@ -171,35 +175,149 @@ public class SeniorPlanningUtils
             return;
         }
         List<RoutePlanPoint> data = new ArrayList<>();
-        for (int i = 0 ; i < 1500 ; i ++ )
-        {
-            RoutePlanPoint pathPlanBean = new RoutePlanPoint();
-            pathPlanBean.latitude = 34.1515101 ;
-            pathPlanBean.longitude = 114.1515102;
-            pathPlanBean.droneHeadAngle = 80;
-            pathPlanBean.height = 20;
-            List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
-            RoutePlanBean.subActionBean subActionBean1 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-30");
-            RoutePlanBean.subActionBean subActionBean3 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
-            RoutePlanBean.subActionBean subActionBean4 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-45");
-            RoutePlanBean.subActionBean subActionBean6 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
-            RoutePlanBean.subActionBean subActionBean7 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-75");
-            RoutePlanBean.subActionBean subActionBean9 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
-            subActionBeans.add(subActionBean1);
-            subActionBeans.add(subActionBean3);
-            subActionBeans.add(subActionBean4);
-            subActionBeans.add(subActionBean6);
-            subActionBeans.add(subActionBean7);
-            subActionBeans.add(subActionBean9);
-            pathPlanBean.actions = subActionBeans;
-            data.add(pathPlanBean);
-        }
+//        for (int i = 0 ; i < 1500 ; i ++ )
+//        {
+//            RoutePlanPoint pathPlanBean = new RoutePlanPoint();
+//            pathPlanBean.latitude = 34.1515101 ;
+//            pathPlanBean.longitude = 114.1515102;
+//            pathPlanBean.droneHeadAngle = 80;
+//            pathPlanBean.height = 20;
+//            List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
+//            RoutePlanBean.subActionBean subActionBean1 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-30");
+//            RoutePlanBean.subActionBean subActionBean3 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+//            RoutePlanBean.subActionBean subActionBean4 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-45");
+//            RoutePlanBean.subActionBean subActionBean6 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+//            RoutePlanBean.subActionBean subActionBean7 = new RoutePlanBean.subActionBean(EnumPointAction.GimbalAngle, "-75");
+//            RoutePlanBean.subActionBean subActionBean9 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+//            subActionBeans.add(subActionBean1);
+//            subActionBeans.add(subActionBean3);
+//            subActionBeans.add(subActionBean4);
+//            subActionBeans.add(subActionBean6);
+//            subActionBeans.add(subActionBean7);
+//            subActionBeans.add(subActionBean9);
+//            pathPlanBean.actions = subActionBeans;
+//            data.add(pathPlanBean);
+//        }
 //        routePlanManager.updateSeniorPlanning2Drone(createPlanPoints(),-45,20,5,2);
 //        List<RoutePlanPoint> data = createPlanPoints();
         if(stringBuffer!= null && stringBuffer.length() >  0)
         stringBuffer.delete(0,stringBuffer.length()-1);
-        routePlanManager.updateSeniorPlanning2Drone(data, 1);
+        data = createVR8();
+        routePlanManager.updateSeniorPlanning2Drone(data, 0);
     }
+    DroneInfo droneInfo;
+    private List<RoutePlanPoint> createVR8(){
+    droneInfo = mGduInfoManager.getDroneInfo();
+    List<RoutePlanPoint> data = new ArrayList<>();
+        RoutePlanPoint pathPlanBean = new RoutePlanPoint();
+        pathPlanBean.latitude = droneInfo.getLatitude();
+        pathPlanBean.longitude = droneInfo.getLongitude();
+        pathPlanBean.droneHeadAngle = droneInfo.getPlaneAngle();
+        pathPlanBean.height = droneInfo.getHeight();
+        pathPlanBean.speed = 5;
+        List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            int currentRotation = -180 + i *  45;
+            RoutePlanBean.subActionBean subActionBean1 = new RoutePlanBean.subActionBean(EnumPointAction.Rotation, "" + currentRotation);
+            RoutePlanBean.subActionBean subActionBean11 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+            subActionBeans.add(subActionBean1);
+            subActionBeans.add(subActionBean11);
+        }
+        pathPlanBean.actions = subActionBeans;
+        data.add(pathPlanBean);
+    return data;
+//    routePlanManager.updateSeniorPlanning2Drone(data, 0);
+//    routePlanManager.setOnRoutePlanListener(new OnRoutePlanListener() {
+//        @Override
+//        public void beginCreateRoutePlan() {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToast("beginCreateRoutePlan----");
+//            });
+//        }
+//
+//        @Override
+//        public void createRoutePlanSuccess(boolean b, String s) {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToastUI(CameraActivity.this, "createRoutePlanSuccess----b=" + b + "--s=" + s);
+//            });
+//        }
+//
+//        @Override
+//        public void beginSendRoutePlan2Drone() {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToastUI(CameraActivity.this, "beginSendRoutePlan2Drone----");
+//            });
+//        }
+//
+//        @Override
+//        public void progressOfSendRoutePlanning2Drone(float v) {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToastUI(CameraActivity.this, "progressOfSendRoutePlanning2Drone----");
+//            });
+//        }
+//
+//        @Override
+//        public void sendRoutePlane2DroneSuccess(boolean b) {
+//            //上传成功  去开启任务进行拍摄
+//            runOnUiThread(() -> routePlanManager.sendTaskStartCmd(EnumRoutePlanningOrder.TASK_BEGIN, new OnRouteCmdListener() {
+//                @Override
+//                public void setSuccess(boolean isSuccess, Object object) {
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            LogUtil.e("VR8拍摄", isSuccess);
+////                                    handler.obtainMessage(0,"开启任务:"+ isSuccess + ","+ object.toString() ).sendToTarget();
+//                            ToastUtils.showToastUI(CameraActivity.this, "sendTaskStartCmd----" + isSuccess);
+//                            routePlanManager.takeOffAndStartTask(new OnRouteCmdListener() {
+//                                @Override
+//                                public void setSuccess(boolean b1, Object o) {
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            LogUtil.e("开始执行任务" + b1, new Gson().toJson(o));
+//                                            ToastUtils.showToastUI(CameraActivity.this, "takeOffAndStartTask+开始执行任务----" + b1);
+//                                        }
+//                                    });
+//
+//                                }
+//                            });
+//                        }
+//                    });
+//
+//                }
+//            }));
+//
+//
+//        }
+//
+//        @Override
+//        public void OnRoutePlanningExit(EnumRoutePlanningErrStatus enumRoutePlanningErrStatus) {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToastUI(CameraActivity.this, "OnRoutePlanningExit----");
+//            });
+//        }
+//
+//        @Override
+//        public void onRoutePlanningRunningStatus(EnumRoutePlanningRunningStatus enumRoutePlanningRunningStatus, short i, EnumRoutePlanningTaskStatus enumRoutePlanningTaskStatus) {
+//            runOnUiThread(() -> {
+//                ToastUtils.showToastUI(CameraActivity.this, "onRoutePlanningRunningStatus----");
+//            });
+//        }
+//
+//        @Override
+//        public void onMsgLog(String s) {
+//            runOnUiThread(() -> {
+//
+//                ToastUtils.showToastUI(CameraActivity.this, "onMsgLog----");
+//            });
+//        }
+//    });
+}
 
     private List<RoutePlanPoint> createPlanPoints()
     {
@@ -299,5 +417,119 @@ public class SeniorPlanningUtils
 //        pathPlanBean9.longitude = 114.4187241d;
 //        data.add(pathPlanBean9);
         return data;
+    }
+
+    private void setR8Action2() {
+        routePlanManager.setOnRoutePlanListener(new OnRoutePlanListener() {
+            @Override
+            public void beginCreateRoutePlan() {
+                System.out.println("test beginCreateRoutePlan ");
+//                runOnUiThread(() -> {
+//                    ToastUtils.showToast("beginCreateRoutePlan----");
+//                    mBinding.tvLog.append("beginCreateRoutePlan----"+"\r\n");
+//                });
+            }
+
+            @Override
+            public void createRoutePlanSuccess(boolean b, String s) {
+                System.out.println("test beginCreateRoutePlan " + b + "  " + s);
+//                runOnUiThread(() -> {
+//                    ToastUtils.showToastUI(CameraActivity.this, "createRoutePlanSuccess----b=" + b + "--s=" + s);
+//                    mBinding.tvLog.append("createRoutePlanSuccess----b=\" + b + \"--s=\" + s"+"\r\n");
+//                });
+            }
+
+            @Override
+            public void beginSendRoutePlan2Drone() {
+                System.out.println("test beginSendRoutePlan2Drone ");
+//                runOnUiThread(() -> {
+//                    ToastUtils.showToastUI(CameraActivity.this, "beginSendRoutePlan2Drone----");
+//                    mBinding.tvLog.append("beginSendRoutePlan2Drone----"+"\r\n");
+//                });
+            }
+
+            @Override
+            public void progressOfSendRoutePlanning2Drone(float v) {
+                System.out.println("test beginSprogressOfSendRoutePlanning2Drone " + v);
+//                runOnUiThread(() -> {
+//                    ToastUtils.showToastUI(CameraActivity.this, "progressOfSendRoutePlanning2Drone----");
+//                    mBinding.tvLog.append("progressOfSendRoutePlanning2Drone----"+"\r\n");
+//                });
+            }
+
+            @Override
+            public void sendRoutePlane2DroneSuccess(boolean b) {
+                //上传成功  去开启任务进行拍摄
+                System.out.println("test beginSsendRoutePlane2DroneSuccesse " + b);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        routePlanManager.sendTaskStartCmd(EnumRoutePlanningOrder.TASK_BEGIN, new OnRouteCmdListener() {
+                            @Override
+                            public void setSuccess(boolean isSuccess, Object object) {
+                                handler.obtainMessage(0,"开启任务:"+ isSuccess + ","+ object.toString() ).sendToTarget();
+                            }
+                        });
+                    }
+                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtils.showToastUI(CameraActivity.this, "sendRoutePlane2DroneSuccess----" + b);
+//                        mBinding.tvLog.append("sendRoutePlane2DroneSuccess----"+"\r\n");
+//
+//                    }
+//                });
+
+            }
+
+            @Override
+            public void OnRoutePlanningExit(EnumRoutePlanningErrStatus enumRoutePlanningErrStatus) {
+                System.out.println("test beginOnRoutePlanningExit " + enumRoutePlanningErrStatus);
+//                runOnUiThread(() -> {
+//                    mBinding.tvLog.append("OnRoutePlanningExit----"+ enumRoutePlanningErrStatus + "\r\n");
+//                    ToastUtils.showToastUI(CameraActivity.this, "OnRoutePlanningExit----" +  enumRoutePlanningErrStatus);
+//                });
+            }
+
+            @Override
+            public void onRoutePlanningRunningStatus(EnumRoutePlanningRunningStatus enumRoutePlanningRunningStatus, short i, EnumRoutePlanningTaskStatus enumRoutePlanningTaskStatus) {
+                System.out.println("test beginOonRoutePlanningRunningStatus " + enumRoutePlanningRunningStatus + " " + i);
+                //                runOnUiThread(() -> {
+//                    ToastUtils.showToastUI(CameraActivity.this, "onRoutePlanningRunningStatus----");
+//                    mBinding.tvLog.append("onRoutePlanningRunningStatus----"+"\r\n");
+//                });
+            }
+
+            @Override
+            public void onMsgLog(String s) {
+//                runOnUiThread(() -> {
+//                    mBinding.tvLog.append("onMsgLog----"+"\r\n");
+//                    ToastUtils.showToastUI(CameraActivity.this, "onMsgLog----");
+//                });
+            }
+        });
+        droneInfo = mGduInfoManager.getDroneInfo();
+        List<RoutePlanPoint> data = new ArrayList<>();
+        for (int i = 0; i < 8; i++) {
+            RoutePlanPoint pathPlanBean = new RoutePlanPoint();
+            pathPlanBean.latitude = droneInfo.getLatitude();
+            pathPlanBean.longitude = droneInfo.getLongitude();
+            pathPlanBean.droneHeadAngle = droneInfo.getPlaneAngle();
+            pathPlanBean.height = droneInfo.getHeight();
+            pathPlanBean.speed = 5;
+            List<RoutePlanBean.subActionBean> subActionBeans = new ArrayList<>();
+            int currentRount = -180 + 45 * i;
+            RoutePlanBean.subActionBean subActionBean1 = new RoutePlanBean.subActionBean(EnumPointAction.Rotation, currentRount + "");
+            RoutePlanBean.subActionBean subActionBean11 = new RoutePlanBean.subActionBean(EnumPointAction.TakePhoto, "");
+            subActionBeans.add(subActionBean1);
+            subActionBeans.add(subActionBean11);
+            pathPlanBean.actions = subActionBeans;
+            data.add(pathPlanBean);
+
+        }
+        routePlanManager.updateSeniorPlanning2Drone(data, 0);
+
+
     }
 }
