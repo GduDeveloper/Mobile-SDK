@@ -30,19 +30,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:screenOrientation="landscape"
-            android:name=".CSActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".ControlActivity" />
-        <activity android:name=".CalibrateActivity" />
-        <activity android:name=".SeniorPlanningActivity" />
-        <activity android:name=".GimbalSetting4kActivity" />
-        <activity android:name=".GimbalSettingZoom10Activity" />
-        <activity android:name=".GimbalSettingZoom30Activity" />
-        <activity android:name=".AIActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".UpgradeActivity" />
+        <activity android:name=".DemoListActivity" />
+        <activity android:name=".FlightControllerActivity" />
+        <activity android:name=".CameraGimbalActivity" />
+        <activity android:name=".RemoteControllerActivity" />
+        <activity android:name=".BatteryActivity" />
+        <activity android:name=".AirLinkActivity" />
+        <activity android:name=".DiagnosticsInformationActivity" />
+        <activity android:name=".WaypointMissionOperatorActivity" />
     </application>
 
 </manifest>

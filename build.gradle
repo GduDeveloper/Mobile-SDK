@@ -2,8 +2,7 @@
 
 buildscript {
     repositories {
-        jcenter()
-        maven { url 'https://dl.bintray.com/thelasterstar/maven/' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven {url 'https://dl.google.com/dl/android/maven2/'}
         maven {url 'https://www.jitpack.io'}
         mavenLocal()
@@ -19,8 +18,7 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        maven { url 'https://dl.bintray.com/thelasterstar/maven/' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven {url 'https://dl.google.com/dl/android/maven2/'}
         maven {url 'https://www.jitpack.io'}
         mavenLocal()
