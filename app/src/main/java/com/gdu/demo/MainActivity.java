@@ -21,6 +21,9 @@ import com.gdu.sdk.manager.GDUSDKInitEvent;
 import com.gdu.sdk.manager.GDUSDKManager;
 import com.gdu.util.logs.RonLog;
 
+/**
+ *
+ */
 public class MainActivity extends Activity {
 
     public static final String TAG = MainActivity.class.getName();

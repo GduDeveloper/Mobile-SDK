@@ -46,6 +46,9 @@ import com.gdu.sdk.util.CommonCallbacks;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 航点任务测试
+ */
 public class WaypointMissionOperatorActivity extends Activity implements LocationSource , View.OnClickListener {
 
     private static final double HORIZONTAL_DISTANCE = 30;

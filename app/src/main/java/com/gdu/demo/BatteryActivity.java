@@ -13,7 +13,7 @@ import com.gdu.sdk.battery.GDUBattery;
 import com.gdu.sdk.util.CommonCallbacks;
 
 /**
- * 电池组件
+ * 电池组件测试
  */
 public class BatteryActivity extends Activity implements View.OnClickListener {
 

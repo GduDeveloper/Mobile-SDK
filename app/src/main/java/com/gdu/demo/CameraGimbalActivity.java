@@ -25,8 +25,8 @@ import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 
 /**
- * Created by zhangzhilai on 2018/5/31.
- * 2. 图传测试界面
+ *
+ * 云台和相机测试
  */
 
 public class CameraGimbalActivity extends Activity implements TextureView.SurfaceTextureListener {

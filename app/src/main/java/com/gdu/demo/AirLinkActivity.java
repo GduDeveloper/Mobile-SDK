@@ -12,6 +12,9 @@ import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.airlink.SignalQualityCallback;
 import com.gdu.sdk.util.CommonCallbacks;
 
+/**
+ * 图传测试
+ */
 public class AirLinkActivity extends Activity implements View.OnClickListener {
 
     private GDUAirLink mGDUAirLink;

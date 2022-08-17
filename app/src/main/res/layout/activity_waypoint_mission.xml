@@ -66,20 +66,7 @@
                          android:id="@+id/stop_waypoint_button"
                          android:onClick="onClick"
                          android:layout_height="wrap_content" />
-                  <TextView
-                      android:text="等时"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
-                  <Switch
-                      android:id="@+id/time_distance_switch"
-                      android:textOn="等时"
-                      android:textOff="等距"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
-                  <TextView
-                      android:text="等距"
-                      android:layout_width="wrap_content"
-                      android:layout_height="wrap_content" />
+
               </LinearLayout>
 
               <TextView
