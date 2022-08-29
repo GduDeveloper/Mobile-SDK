@@ -414,6 +414,10 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 Intent intent = new Intent(mContext, RTKActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.assistant_button:
+                Intent intentFlightAssistant = new Intent(mContext, FlightAssistantActivity.class);
+                startActivity(intentFlightAssistant);
+                break;
         }
     }
 
