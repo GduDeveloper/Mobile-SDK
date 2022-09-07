@@ -418,6 +418,14 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 Intent intentFlightAssistant = new Intent(mContext, FlightAssistantActivity.class);
                 startActivity(intentFlightAssistant);
                 break;
+            case R.id.compass_button:
+                Intent intentCompass = new Intent(mContext, CompassActivity.class);
+                startActivity(intentCompass);
+                break;
+            case R.id.virtual_stick_button:
+                Intent intentVirtualStick = new Intent(mContext, VirtualStickActivity.class);
+                startActivity(intentVirtualStick);
+                break;
         }
     }
 

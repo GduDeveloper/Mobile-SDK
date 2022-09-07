@@ -10,6 +10,7 @@
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_airlink.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_battery.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_camera_gimbal.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_compass.xml" value="0.2078125" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_demo_list.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_diagnostics_info.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_flight_assistant.xml" value="0.2234375" />
@@ -17,6 +18,7 @@
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_main.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_remote_controller.xml" value="0.2105978260869565" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_rtk.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_virtual_stick.xml" value="0.2078125" />
         <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_waypoint_mission.xml" value="0.2105978260869565" />
       </map>
     </option>

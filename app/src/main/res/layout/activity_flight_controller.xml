@@ -211,6 +211,20 @@
                 android:text="FlightAssistant"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/compass_button"
+                android:onClick="onClick"
+                android:text="Compass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/virtual_stick_button"
+                android:onClick="onClick"
+                android:text="VirtualStick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
         </LinearLayout>
     </ScrollView>
 
