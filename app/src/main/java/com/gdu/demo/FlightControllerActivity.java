@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.gdu.common.error.GDUError;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
@@ -339,6 +340,114 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
+    private void startPrecisionGoHome() {
+        mGDUFlightController.startPrecisionGoHome(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("开始精准返航成功");
+                } else {
+                    toastText("开始精准返航失败");
+                }
+            }
+        });
+    }
+
+
+    private void cancelPrecisionGoHome() {
+        mGDUFlightController.cancelPrecisionGoHome(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("取消精准返航成功");
+                } else {
+                    toastText("取消精准返航失败");
+                }
+            }
+        });
+    }
+
+    private void setConnectionFailSafeBehavior(){
+        mGDUFlightController.setConnectionFailSafeBehavior(ConnectionFailSafeBehavior.GO_HOME, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("设置失联行为成功");
+                } else {
+                    toastText("设置失联行为失败");
+                }
+            }
+        });
+    }
+
+    private void getConnectionFailSafeBehavior(){
+        mGDUFlightController.getConnectionFailSafeBehavior(new CommonCallbacks.CompletionCallbackWith<ConnectionFailSafeBehavior>() {
+            @Override
+            public void onSuccess(ConnectionFailSafeBehavior var1) {
+                toastText("获取失联行为成功 " + var1);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取失联行为失败 " + var1);
+            }
+        });
+    }
+
+    private void setLowBatteryWarningThreshold() {
+        mGDUFlightController.setLowBatteryWarningThreshold(35, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("设置低电量阈值成功 ");
+                } else {
+                    toastText("设置低电量阈值失败 ");
+                }
+            }
+        });
+    }
+
+    private void getLowBatteryWarningThreshold() {
+        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+            @Override
+            public void onSuccess(Integer var1) {
+                toastText("获取低电量阈值成功 " + var1);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取低电量阈值失败 ");
+            }
+        });
+    }
+
+    private void setSeriousLowBatteryWarningThreshold() {
+        mGDUFlightController.setSeriousLowBatteryWarningThreshold(20, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("设置严重低电量阈值成功 ");
+                } else {
+                    toastText("设置严重低电量阈值失败 ");
+                }
+            }
+        });
+    }
+
+    private void getSeriousLowBatteryWarningThreshold() {
+        mGDUFlightController.getSeriousLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+            @Override
+            public void onSuccess(Integer var1) {
+                toastText("获取严重低电量阈值成功 " + var1);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取严重低电量阈值失败 ");
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -409,6 +518,30 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 break;
             case R.id.cancel_go_home_button:
                 cancelGoHome();
+                break;
+            case R.id.start_precision_go_home_button:
+                startPrecisionGoHome();
+                break;
+            case R.id.cancel_precision_go_home_button:
+                cancelPrecisionGoHome();
+                break;
+            case R.id.get_connection_fail_safe_behavior_button:
+                getConnectionFailSafeBehavior();
+                break;
+            case R.id.set_connection_fail_safe_behavior_button:
+                setConnectionFailSafeBehavior();
+                break;
+            case R.id.set_low_battery_warning_threshold_button:
+                setLowBatteryWarningThreshold();
+                break;
+            case R.id.get_low_battery_warning_threshold_button:
+                getLowBatteryWarningThreshold();
+                break;
+            case R.id.set_serious_low_battery_warning_threshold_button:
+                setSeriousLowBatteryWarningThreshold();
+                break;
+            case R.id.get_serious_low_battery_warning_threshold_button:
+                getSeriousLowBatteryWarningThreshold();
                 break;
             case R.id.rtk_button:
                 Intent intent = new Intent(mContext, RTKActivity.class);

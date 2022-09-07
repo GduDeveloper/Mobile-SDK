@@ -39,6 +39,8 @@
         <activity android:name=".DiagnosticsInformationActivity" />
         <activity android:name=".WaypointMissionOperatorActivity" />
         <activity android:name=".FlightAssistantActivity" />
+        <activity android:name=".CompassActivity" />
+        <activity android:name=".VirtualStickActivity" />
     </application>
 
 </manifest>

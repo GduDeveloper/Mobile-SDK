@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.gdu.camera.StorageState;
 import com.gdu.common.error.GDUError;
+import com.gdu.config.GduConfig;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
@@ -31,7 +32,7 @@ import com.gdu.sdk.util.CommonCallbacks;
 
 public class CameraGimbalActivity extends Activity implements TextureView.SurfaceTextureListener {
 
-
+    private final String OUTPATH = GduConfig.BaseDirectory + "/local/";//本地副本的保存路径
     private VideoFeeder.VideoDataListener videoDataListener = null;
     private GDUCodecManager codecManager = null;
 
@@ -295,6 +296,16 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                         }
                     }
                 });
+                break;
+            case R.id.btn_record_video_to_local:
+                if (codecManager != null) {
+                    codecManager.startStoreMp4ToLocal(OUTPATH, "test.mp4");
+                }
+                break;
+            case R.id.btn_stop_record_video_to_local:
+                if (codecManager != null) {
+                    codecManager.stopStoreMp4ToLocal();
+                }
                 break;
         }
     }
