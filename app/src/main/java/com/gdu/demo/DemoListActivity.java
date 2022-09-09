@@ -36,6 +36,10 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.mission_operator_button:
+                Intent missionIntent = new Intent(mContext, MissionOperatorActivity.class);
+                startActivity(missionIntent);
+                break;
             case R.id.waypoint_mission_operator_button:
                 Intent waypointIntent = new Intent(mContext, WaypointMissionOperatorActivity.class);
                 startActivity(waypointIntent);

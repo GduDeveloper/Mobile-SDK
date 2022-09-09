@@ -41,6 +41,7 @@
         <activity android:name=".FlightAssistantActivity" />
         <activity android:name=".CompassActivity" />
         <activity android:name=".VirtualStickActivity" />
+        <activity android:name=".MissionOperatorActivity" />
     </application>
 
 </manifest>

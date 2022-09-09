@@ -22,6 +22,14 @@
                 android:text="航点任务" />
 
             <Button
+                android:id="@+id/mission_operator_button"
+                android:onClick="onClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="任务" />
+
+            <Button
                 android:id="@+id/flight_controller_button"
                 android:onClick="onClick"
                 android:layout_width="match_parent"
