@@ -114,6 +114,24 @@
             android:onClick="onClick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_enabled_yuv_data"
+            android:text="enabledYuvData"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_get_yuv_data"
+            android:text="getYuvData"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_get_rgba_data"
+            android:text="getRGBAData"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <LinearLayout
@@ -156,4 +174,10 @@
             android:textSize="10sp" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/yuv_imageview"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="384dp"
+        android:layout_height="216dp"/>
 </RelativeLayout>

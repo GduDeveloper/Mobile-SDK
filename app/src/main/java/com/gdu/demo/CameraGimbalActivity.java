@@ -3,10 +3,13 @@ package com.gdu.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,7 @@ import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
+import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -48,6 +52,8 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     private GDUGimbal mGDUGimbal;
 
+    private ImageProcessingManager mImageProcessingManager;
+    private ImageView mYUVImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +73,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         }
         initCamera();
         initGimbal();
+        mImageProcessingManager = new ImageProcessingManager(mContext);
     }
 
     private void initGimbal() {
@@ -139,7 +146,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         mStorageInfoTextView = (TextView) findViewById(R.id.camera_storage_info_textview);
         mVersionTextView = (TextView) findViewById(R.id.version_textview);
 
-
+        mYUVImageView = findViewById(R.id.yuv_imageview);
         mGimbalStateTextView = (TextView) findViewById(R.id.gimbal_info_textview);
 
         if (mGduPlayView != null) {
@@ -305,6 +312,27 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_stop_record_video_to_local:
                 if (codecManager != null) {
                     codecManager.stopStoreMp4ToLocal();
+                }
+                break;
+            case R.id.btn_enabled_yuv_data:
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    codecManager.enabledYuvData(true);
+                }
+                break;
+
+            case R.id.btn_get_yuv_data:
+                byte[] yuvData =  codecManager.getYuvData();
+                Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, 1920, 1080);
+//                Bitmap bitmap = mFastYUVtoRGB.test(yuvData, 1920, 1080);
+                if (bitmap != null) {
+                    mYUVImageView.setImageBitmap(bitmap);
+                }
+                break;
+            case R.id.btn_get_rgba_data:
+                byte[] rgbData = codecManager.getRgbaData();
+                Bitmap bitmap1 = ImageProcessingManager.rgb2Bitmap(rgbData, 1920, 1080);
+                if (bitmap1 != null) {
+                    mYUVImageView.setImageBitmap(bitmap1);
                 }
                 break;
         }
