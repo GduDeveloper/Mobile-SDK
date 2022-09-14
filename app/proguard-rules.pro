@@ -19,3 +19,25 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes Exceptions,InnerClasses,*Annotation*,Signature,EnclosingMethod
+
+-dontshrink
+-dontoptimize
+
+-dontwarn com.amap.api.**
+
+-keepclassmembers enum * {
+    public static <methods>;
+}
+
+-keep class com.gdu.** { *; }
+-keep class com.lib.** { *; }
+#不混淆 使用反射机制的类
+-keepattributes Signature
+
+-keepnames class * implements java.io.Serializable
+
+-keep   class com.amap.api.maps.**{*;}
+-keep   class com.autonavi.**{*;}
+-keep   class com.amap.api.trace.**{*;}
