@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">GduSDKDemo</string>
+    <string name="sdk_version">GDU SDK Version: %1$s</string>
+</resources>

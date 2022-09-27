@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ASMSmaliIdeaPluginConfiguration">
+    <asm skipDebug="true" skipFrames="true" skipCode="false" expandFrames="false" />
+    <groovy codeStyle="LEGACY" />
+  </component>
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_airlink.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_battery.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_camera_gimbal.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_compass.xml" value="0.2078125" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_demo_list.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_diagnostics_info.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_flight_assistant.xml" value="0.2234375" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_flight_controller.xml" value="0.6812121212121212" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_main.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_mission.xml" value="0.2421875" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_remote_controller.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_rtk.xml" value="0.2105978260869565" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_virtual_stick.xml" value="0.2078125" />
+        <entry key="..\:/GDU/Workspace/Sdk/GduSDKDemo/app/src/main/res/layout/activity_waypoint_mission.xml" value="0.2105978260869565" />
+      </map>
+    </option>
+  </component>
+  <component name="FindBugsConfigurable">
+    <option name="make" value="true" />
+    <option name="effort" value="default" />
+    <option name="priority" value="Medium" />
+    <option name="excludeFilter" value="" />
+  </component>
+  <component name="JavadocGenerationManager">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../GduSocketSDK/doc_intro" />
+    <option name="OTHER_OPTIONS" value="-encoding utf-8 -charset utf-8" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="SuppressionsComponent">
+    <option name="suppComments" value="[]" />
+  </component>
+</project>

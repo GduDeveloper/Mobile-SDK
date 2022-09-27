@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.amap.api.maps.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+       <LinearLayout
+           android:orientation="vertical"
+           android:background="@color/colorPrimary"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+           <Button
+               android:id="@+id/simulator_button"
+               android:text="模拟飞行"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+
+           <Button
+               android:id="@+id/set_home_point_button"
+               android:text="设置home点"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+           <Button
+               android:id="@+id/start_hotpoint_button"
+               android:text="开始环绕"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+           <Button
+               android:id="@+id/stop_hotpoint_button"
+               android:text="结束环绕"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+           <Button
+               android:id="@+id/start_tapfly_button"
+               android:text="开始指点飞行"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+           <Button
+               android:id="@+id/stop_tapfly_button"
+               android:text="结束指点飞行"
+               android:onClick="onClick"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+
+              <TextView
+                  android:id="@+id/fly_info_textview"
+                  android:textColor="#ff0000"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content" />
+
+           <TextView
+               android:id="@+id/mission_info_textview"
+               android:textColor="#ff0000"
+               android:text="1235324513"
+               android:textSize="10sp"
+               android:layout_alignParentBottom="true"
+               android:layout_alignParentRight="true"
+               android:layout_width="200dp"
+               android:layout_height="wrap_content" />
+       </LinearLayout>
+</RelativeLayout>

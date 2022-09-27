@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/fc_state_info_textview"
+        android:textColor="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/simulator_button"
+                    android:text="模拟飞行"
+                    android:onClick="onClick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/simulator_status_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Switch
+                    android:text="限距开关"
+                    android:id="@+id/set_max_flight_radius_limitation_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/set_max_flight_radius_button"
+                    android:onClick="onClick"
+                    android:text="设置限距"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_max_flight_radius_button"
+                    android:onClick="onClick"
+                    android:text="获取限距"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/max_flight_radius_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_max_flight_height_button"
+                    android:onClick="onClick"
+                    android:text="设置限高"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_max_flight_height_button"
+                    android:onClick="onClick"
+                    android:text="获取限高"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/max_flight_height_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_go_home_height_button"
+                    android:onClick="onClick"
+                    android:text="设置返航高度"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_go_home_height_button"
+                    android:onClick="onClick"
+                    android:text="获取返航高度"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/go_home_height_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="开始起飞"
+                    android:onClick="onClick"
+                    android:id="@+id/start_take_off_button"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="开始降落"
+                    android:onClick="onClick"
+                    android:id="@+id/start_landing_button"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="取消降落"
+                    android:onClick="onClick"
+                    android:id="@+id/cancel_landing_button"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="一键返航"
+                    android:onClick="onClick"
+                    android:id="@+id/start_go_home_button"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="取消返航"
+                    android:onClick="onClick"
+                    android:id="@+id/cancel_go_home_button"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="开始精准返航"
+                    android:onClick="onClick"
+                    android:id="@+id/start_precision_go_home_button"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="取消精准返航"
+                    android:onClick="onClick"
+                    android:id="@+id/cancel_precision_go_home_button"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="低电量立即返航"
+                    android:onClick="onClick"
+                    android:id="@+id/immediatelyLowPowerBack"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="取消低电量返航"
+                    android:onClick="onClick"
+                    android:id="@+id/cancelLowPowerBack"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:onClick="setElevationType1"
+                    android:text="设置海拔高程"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:onClick="setElevationType2"
+                    android:text="设置椭球高程"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:onClick="getElevationType"
+                    android:text="获取高程类型"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/elevation_type_textview"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_connection_fail_safe_behavior_button"
+                    android:onClick="onClick"
+                    android:text="设置失联行为"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/get_connection_fail_safe_behavior_button"
+                    android:onClick="onClick"
+                    android:text="获取失联行为"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/connection_fail_safe_behavior_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_low_battery_warning_threshold_button"
+                    android:onClick="onClick"
+                    android:text="设置低电量阈值"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/get_low_battery_warning_threshold_button"
+                    android:onClick="onClick"
+                    android:text="获取低电量阈值"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/set_serious_low_battery_warning_threshold_button"
+                    android:onClick="onClick"
+                    android:text="设置严重低电量阈值"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/get_serious_low_battery_warning_threshold_button"
+                    android:onClick="onClick"
+                    android:text="获取严重低电量阈值"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/get_version_button"
+                    android:onClick="onClick"
+                    android:text="获取版本号"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/fc_version_textview"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <Button
+                android:id="@+id/rtk_button"
+                android:onClick="onClick"
+                android:text="RTK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/assistant_button"
+                android:onClick="onClick"
+                android:text="FlightAssistant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/compass_button"
+                android:onClick="onClick"
+                android:text="Compass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <Button
+                android:id="@+id/virtual_stick_button"
+                android:onClick="onClick"
+                android:text="VirtualStick"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

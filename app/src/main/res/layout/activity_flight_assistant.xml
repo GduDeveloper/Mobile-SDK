@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/fc_state_info_textview"
+        android:textColor="@color/colorAccent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/downward_fill_light_button"
+        android:onClick="onClick"
+        android:text="下视补光灯"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/landing_protection_button"
+        android:onClick="onClick"
+        android:text="降落保护"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/rth_button"
+        android:onClick="onClick"
+        android:text="返航避障"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/vision_sensing_button"
+        android:onClick="onClick"
+        android:text="视觉感知"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/obstacle_avoidance_strategy_button"
+        android:onClick="onClick"
+        android:text="避障策略"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Switch
+        android:id="@+id/horizontal_vision_obstacle_avoidance_button"
+        android:onClick="onClick"
+        android:text="水平避障"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/horizontal_visual_obstacles_avoidance_distance_button"
+        android:onClick="onClick"
+        android:text="水平避障距离"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <Switch
+        android:id="@+id/upward_vision_obstacle_avoidance_button"
+        android:onClick="onClick"
+        android:text="上视避障"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/upward_visual_obstacles_avoidance_distance_button"
+        android:onClick="onClick"
+        android:text="上视避障距离"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</LinearLayout>
