@@ -2,6 +2,8 @@ package com.gdu.demo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,11 +17,16 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.CoordinateConverter;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
 import com.gdu.common.error.GDUError;
+import com.gdu.common.mission.followme.FollowMeHeading;
+import com.gdu.common.mission.followme.FollowMeMission;
+import com.gdu.common.mission.followme.FollowMeMissionEvent;
+import com.gdu.common.mission.hotpoint.HotpointHeading;
 import com.gdu.common.mission.hotpoint.HotpointMission;
 import com.gdu.common.mission.hotpoint.HotpointMissionEvent;
 import com.gdu.common.mission.hotpoint.HotpointStartPoint;
@@ -35,11 +42,14 @@ import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.mission.MissionControl;
+import com.gdu.sdk.mission.followme.FollowMeMissionOperator;
+import com.gdu.sdk.mission.followme.FollowMeMissionOperatorListener;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperator;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperatorListener;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.logs.RonLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,10 +60,16 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
     private static final double VERTICAL_DISTANCE = 30;
     private static final double ONE_METER_OFFSET = 0.00000899322;
 
+    private double latitude = 0;
+    private double longitude = 0;
+
+    private boolean isStartFollow;
+
     private TextView flyInfoView;
     private MapView mMapView;
     private AMap aMap;
     private Marker mPlaneMarker;
+    private Marker mGPSTargetMarker;
     private MarkerOptions mPlaneMarkerOptions;
     private CoordinateConverter coordinateConverter;
     private Context mContext;
@@ -65,12 +81,14 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 
     private HotpointMissionOperator mHotpointMissionOperator;
 
+    private FollowMeMissionOperator mFollowMeMissionOperator;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_mission);
-        flyInfoView  = (TextView) findViewById(R.id.fly_info_textview);
+        flyInfoView  =(TextView) findViewById(R.id.fly_info_textview);
         mMapView = findViewById(R.id.map);
         mMissionInfoTextView = findViewById(R.id.mission_info_textview);
         initMap(savedInstanceState);
@@ -95,10 +113,16 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                             if (mPlaneMarker != null) {
                                 coordinateConverter.coord(latLng);
                                 mPlaneMarker.setPosition(coordinateConverter.convert());
+                                mPlaneMarker.setRotateAngle(-(float) flightControllerState.getAttitude().yaw);
                             } else {
                                 mPlaneMarkerOptions = new MarkerOptions();
                                 mPlaneMarkerOptions.position(latLng);
+                                Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                                        R.mipmap.icon_plane).copy(Bitmap.Config.ARGB_8888, true);
+                                mPlaneMarkerOptions.anchor(0.5f, 0.5f);
+                                mPlaneMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
                                 mPlaneMarker = aMap.addMarker(mPlaneMarkerOptions);
+                                mPlaneMarker.setRotateAngle(-(float) flightControllerState.getAttitude().yaw);
                             }
                             flyInfoView.setText(flightControllerState.getString());
                         }
@@ -107,6 +131,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             });
 
             mHotpointMissionOperator = getHotpointMissionOperator();
+
+            mFollowMeMissionOperator = getFollowMeMissionOperator();
             setUpListener();
 
             mGDUCamera = (GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera();
@@ -131,6 +157,23 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 toast("环绕状态 结束 " + error);
             }
         });
+
+        mFollowMeMissionOperator.addListener(new FollowMeMissionOperatorListener() {
+            @Override
+            public void onExecutionUpdate(FollowMeMissionEvent followMeMissionEvent) {
+                toast("跟随状态 " + followMeMissionEvent);
+            }
+
+            @Override
+            public void onExecutionStart() {
+                toast("跟随状态 开始");
+            }
+
+            @Override
+            public void onExecutionFinish(GDUError gduError) {
+                toast("跟随状态 结束" + gduError);
+            }
+        });
     }
 
 
@@ -141,6 +184,15 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             }
         }
         return mHotpointMissionOperator;
+    }
+
+    private FollowMeMissionOperator getFollowMeMissionOperator() {
+        if (null == mFollowMeMissionOperator) {
+            if (null != MissionControl.getInstance()) {
+                return MissionControl.getInstance().getFollowMeMissionOperator();
+            }
+        }
+        return mFollowMeMissionOperator;
     }
 
     private void initListener() {
@@ -175,34 +227,6 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         }
     }
 
-    int index = 0;
-    private void addPolyline(WaypointMission waypointMission){
-        if(index == 0){
-            index++;
-            addPolyline(waypointMission.getWaypointList(), Color.argb(255, 1, 1, 1), 10);
-        } else {
-            addPolyline(waypointMission.getWaypointList(), Color.argb(255, 255, 1, 1), 10);
-        }
-
-    }
-
-    private void addPolyline(List<Waypoint> planPoints, int color, int width){
-        List<LatLng> latLngs = new ArrayList<>();
-        if (planPoints == null) {
-            return;
-        }
-        for (Waypoint waypoint : planPoints) {
-            LocationCoordinate2D locationCoordinate2D = waypoint.getCoordinate();
-            LatLng latLng = new LatLng(locationCoordinate2D.getLatitude(), locationCoordinate2D.getLongitude());
-            coordinateConverter.coord(latLng);
-            latLngs.add(coordinateConverter.convert());
-        }
-        aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16));
-        mPlaneMarkerOptions = new MarkerOptions();
-        mPlaneMarkerOptions.position(latLngs.get(0));
-        mPlaneMarker = aMap.addMarker(mPlaneMarkerOptions);
-        aMap.addPolyline(new PolylineOptions().addAll(latLngs).width(width).color(color));
-    }
 
     private Marker addMarker(LatLng latLng){
         MarkerOptions markerOptions = new MarkerOptions();
@@ -230,6 +254,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                     }
                 }
             });
+            mGDUFlightController.switchSmartBattery();
         }
     }
 
@@ -268,7 +293,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 hotpointMission.setClockwise(true);
                 hotpointMission.setAngularVelocity(30);
                 hotpointMission.setRadius(30);
-                hotpointMission.setStartPoint(HotpointStartPoint.NEAREST);
+                hotpointMission.setHeading(HotpointHeading.AWAY_FROM_HOT_POINT);
+                hotpointMission.setStartPoint(HotpointStartPoint.NORTH);
                 mHotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(GDUError error) {
@@ -325,19 +351,88 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                     }
                 });
                 break;
-            case R.id.stop_waypoint_button:
-//                waypointMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(GDUError error) {
-//                        if (error == null) {
-//                            toast("停止航迹成功");
-//                        } else {
-//                            toast("停止航迹失败");
-//                        }
-//                    }
-//                });
+            case R.id.start_follow_button:
+                startFollow();
                 break;
+            case R.id.stop_follow_button:
+                mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        isStartFollow = false;
+                        if (error == null) {
+                            toast("停止跟随发送成功");
+                        } else {
+                            toast("停止跟随发送失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.stop_waypoint_button:
+                break;
+
         }
+    }
+
+    private void startFollow(){
+        latitude = 30.471033;
+        longitude = 114.4280014;
+        mFollowMeMissionOperator.startMission(new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION,
+                latitude + 5 * ONE_METER_OFFSET, longitude + 5 * ONE_METER_OFFSET, 30f
+        ), new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toast("开始跟随发送成功");
+                } else {
+                    toast("开始跟随发送失败");
+                }
+                if (error == null) {
+                    isStartFollow = true;
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            int cnt = 0;
+                            while(cnt < 100 && isStartFollow) {
+                                latitude = latitude + 5 * ONE_METER_OFFSET;
+                                longitude = longitude + 5 * ONE_METER_OFFSET;
+                                LocationCoordinate2D newLocation = new LocationCoordinate2D(latitude, longitude);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        LatLng latLng = new LatLng(latitude, longitude);
+                                        if (mGPSTargetMarker != null) {
+                                            coordinateConverter.coord(latLng);
+                                            mGPSTargetMarker.setPosition(coordinateConverter.convert());
+                                        } else {
+                                            MarkerOptions markerOptions = new MarkerOptions();
+                                            markerOptions.position(latLng);
+                                            mGPSTargetMarker = aMap.addMarker(markerOptions);
+                                        }
+                                    }
+                                });
+                                RonLog.LogD("test FollowingTarget " + newLocation.toString());
+                                mFollowMeMissionOperator.updateFollowingTarget(newLocation, new CommonCallbacks.CompletionCallback() {
+                                    @Override
+                                    public void onResult(GDUError error) {
+                                        if (error == null) {
+                                            toast("跟随目标点发送成功");
+                                        } else {
+                                            toast("跟随目标点发送失败");
+                                        }
+                                    }
+                                });
+                                try {
+                                    Thread.sleep(1500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                cnt++;
+                            }
+                        }
+                    }).start();
+                }
+            }
+        });
     }
 
 
