@@ -1,14 +1,14 @@
 # GDU SDK for Android
 
 ## SDK简介
-GDU无人机Android SDK目前开放了无人机控制，挂载云台（4K,
-10倍，30倍，红外）控制；实现实时图传显示，飞行信息反馈，航迹飞行等功能接口。便于开发者完成基于自身场景的更深层、更个性化飞行器开发需求。
+GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
+双光云台，1红外双光云台，四光云台）控制；实现实时图传显示，飞行信息反馈，航迹飞行等功能接口。便于开发者完成基于自身场景的更深层、更个性化飞行器开发需求。
 
 ## SDK集成
 ### 添加依赖文件
 ~~~xml
-1.导入SDK开发包GduLibrary-*.*.*.jar和xstream-1.4.11-java7.jar到libs目录； 
-  导入libCRtp.so和libresrtmp.so到libs下的arm64-v8a目录
+1.导入SDK开发包GduLibrary-*.*.*.jar到libs目录；
+  导入libCRtp.so和librtmp.so到libs下的arm64-v8a和armeabi-v7a目录
 2.添加jar包
  implementation fileTree(dir: 'libs', include: ['*.jar'])
 3.添加so库
@@ -19,20 +19,28 @@ sourceSets {
     }
 ~~~
 ## 提供开发接口
-### 1.飞行参数配置
-    (1).GduDroneApi: SDK接口初始化，提供飞行器连接，关闭；飞行器信息监听；飞行器校磁；
+### 1.
+    (1).GDUSDKManager: SDK提供注册，飞行器连接，关闭
     云台相机参数设置和获取等接口
-    (2).GduSettingManager: 遥控器控制手切换，限高限距设置；
-    (3).Gimbal:云台设置，设置/获取分辨率等,云台角度控制。
-### 2.飞行控制交互接口 
-    (1).GduControlManager: 飞机基本控制,起飞，降落，返航
-    (2).GduMapManager:提供电子围栏点上传，及围栏清除等功能
-    (3).RoutePlanManager:航迹功能
-### 3.飞机实时图像
-    (1).GduPlayView:主要功能是实时显示飞机端图传画面，提供开始，暂停预览, 飞行器拍照，录像等等功能
-    (2).CustomRTMPSender：云端推流  
+    (2).GDUAircraft: 获取无人机系统各组件；
+    (3).GDUFlightController:提供飞控相关接口。
+    (4).GDUCamera:提供相机相关接口
+    (5).GDUGimbal:提供云台相关接口
+    (6).GDUBattery:提供电池相关接口
+    (7).GDURemoteController:提供遥控器相关接口
+    (8).GDURadar:提供雷达相关接口
+    (9).GDUAirlink:提供图传链路相关接口
+    (10).Mission:提供任务相关接口；包含如下功能：
+        A.WaypointMission:航点任务
+        B.FollowMeMission:GPS跟随
+        C.HotpointMission:GPS环绕
+    (11).GDUCodecManager:解码相关接口
+    (12).GDUDiagnostics:异常提示相关接口
     
 ## 支持
-   有问题可以联系dev@gdu.com 
+   有问题可以联系dev@gdu-tech.com
+
+## 招聘
+GDU 招软件工程师啦，based在武汉，如果你想和我们一起把GDU产品做得更好，请发送简历到dengxin@gdu-tech.com
    
    
