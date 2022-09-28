@@ -27,33 +27,60 @@
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"/>
 
-           <Button
-               android:id="@+id/start_hotpoint_button"
-               android:text="开始环绕"
-               android:onClick="onClick"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <Button
+                   android:id="@+id/start_hotpoint_button"
+                   android:text="开始环绕"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
 
-           <Button
-               android:id="@+id/stop_hotpoint_button"
-               android:text="结束环绕"
-               android:onClick="onClick"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"/>
+               <Button
+                   android:id="@+id/stop_hotpoint_button"
+                   android:text="结束环绕"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
 
-           <Button
-               android:id="@+id/start_tapfly_button"
-               android:text="开始指点飞行"
-               android:onClick="onClick"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"/>
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <Button
+                   android:id="@+id/start_tapfly_button"
+                   android:text="开始指点飞行"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
 
-           <Button
-               android:id="@+id/stop_tapfly_button"
-               android:text="结束指点飞行"
-               android:onClick="onClick"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"/>
+               <Button
+                   android:id="@+id/stop_tapfly_button"
+                   android:text="结束指点飞行"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <Button
+                   android:id="@+id/start_follow_button"
+                   android:text="开始跟随"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+
+               <Button
+                   android:id="@+id/stop_follow_button"
+                   android:text="结束跟随"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
 
               <TextView
                   android:id="@+id/fly_info_textview"
