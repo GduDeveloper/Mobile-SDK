@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gdu.camera.Capabilities;
+import com.gdu.camera.SettingsDefinitions;
 import com.gdu.camera.StorageState;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GduConfig;
@@ -334,6 +336,91 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 if (bitmap1 != null) {
                     mYUVImageView.setImageBitmap(bitmap1);
                 }
+                break;
+            case R.id.btn_store_picture_to_local:
+                if (codecManager != null) {
+                    codecManager.storageCurrentStreamToPicture(OUTPATH, "test.png", new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError error) {
+                            if (error == null) {
+                                toast("存储成功");
+                            } else {
+                                toast("存储失败");
+                            }
+                        }
+                    });
+                }
+                break;
+            case R.id.btn_get_capabilities:
+                Capabilities capabilities = mGDUCamera.getCapabilities();
+                SettingsDefinitions.ExposureCompensation[] exposureCompensations = capabilities.exposureCompensationRange();
+                String evS = new String();
+                if (exposureCompensations != null) {
+                    for (SettingsDefinitions.ExposureCompensation exposureCompensation : exposureCompensations) {
+                        evS += exposureCompensation;
+                        evS += " ";
+                    }
+                    System.out.println("test ev " + evS);
+                }
+                SettingsDefinitions.ISO[] isos = capabilities.ISORange();
+                if (isos != null) {
+                    String isoS = new String();
+                    for (SettingsDefinitions.ISO iso : isos) {
+                        isoS += iso;
+                        isoS += " ";
+                    }
+                    System.out.println("test iso " + isoS);
+                }
+                break;
+            case R.id.btn_set_ev:
+                mGDUCamera.setExposureCompensation(SettingsDefinitions.ExposureCompensation.N_1_0, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置成功");
+                        } else {
+                            toast("设置失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_ev:
+                mGDUCamera.getExposureCompensation(new CommonCallbacks.CompletionCallbackWith<SettingsDefinitions.ExposureCompensation>() {
+                    @Override
+                    public void onSuccess(SettingsDefinitions.ExposureCompensation exposureCompensation) {
+                        toast("获取成功： " + exposureCompensation);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("获取失败： ");
+                    }
+                });
+                break;
+            case R.id.btn_set_hd_liveview_enabled:
+                mGDUCamera.setHDLiveViewEnabled(false, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置成功");
+                        } else {
+                            toast("设置失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_hd_liveview_enabled:
+                mGDUCamera.getHDLiveViewEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean aBoolean) {
+                        toast("获取成功： " + aBoolean);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("获取失败： ");
+                    }
+                });
                 break;
         }
     }
