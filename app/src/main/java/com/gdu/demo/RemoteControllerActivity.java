@@ -11,8 +11,12 @@ import androidx.annotation.Nullable;
 
 import com.gdu.common.error.GDUError;
 import com.gdu.remotecontroller.AircraftMappingStyle;
+import com.gdu.remotecontroller.MultiControlInfo;
+import com.gdu.remotecontroller.MultiControlMode;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
+
+import java.util.List;
 
 /**
  * 遥控器测试
@@ -65,6 +69,36 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_rc_version_button:
                 getRCVersion();
                 break;
+            case R.id.get_multi_control_mode_button:
+                getMultiControlMode();
+                break;
+            case R.id.set_multi_control_mode_button:
+                setMultiControlMode();
+                break;
+            case R.id.get_drone_list_button:
+                getDroneList();
+                break;
+            case R.id.get_rc_list_button:
+                getRCList();
+                break;
+            case R.id.set_drone_control_enable_button:
+                setDroneControlEnable();
+                break;
+            case R.id.get_drone_control_enable_button:
+                getDroneControlEnable();
+                break;
+            case R.id.set_drone_living_enable_button:
+                setDroneLivingEnable();
+                break;
+            case R.id.get_drone_living_enable_button:
+                getDroneLivingEnable();
+                break;
+            case R.id.set_continue_send_rc_control_mid_value_enable_button:
+                setContinueSendRCControlMidValueEnable();
+                break;
+            case R.id.get_continue_send_rc_control_mid_value_enable_button:
+                getContinueSendRCControlMidValueEnable();
+                break;
         }
     }
 
@@ -93,6 +127,142 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
                 }
             });
         }
+    }
+
+    private void setContinueSendRCControlMidValueEnable(){
+        mGDURemoteController.setContinueSendRCControlMidValueEnable(true, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置持续发送中值成功：");
+                } else {
+                    toastText("设置持续发送中值失败：");
+                }
+            }
+        });
+    }
+
+    private void getContinueSendRCControlMidValueEnable(){
+        mGDURemoteController.getContinueSendRCControlMidValueEnable(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+            @Override
+            public void onSuccess(Boolean aBoolean) {
+                toastText("获取持续发送中值成功：" + aBoolean);
+            }
+
+            @Override
+            public void onFailure(GDUError gduError) {
+                toastText("获取持续发送中值失败：");
+            }
+        });
+    }
+
+    private void getMultiControlMode(){
+        mGDURemoteController.getMultiControlMode(new CommonCallbacks.CompletionCallbackWith<MultiControlMode>() {
+            @Override
+            public void onSuccess(MultiControlMode controlMode) {
+                toastText("获取多控模式成功：" + controlMode);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取多控模式失败：");
+            }
+        });
+    }
+
+    private void setMultiControlMode(){
+        mGDURemoteController.setMultiControlMode(MultiControlMode.TWO_C_ONE, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置多控模式成功：");
+                } else {
+                    toastText("设置多控模式失败：");
+                }
+            }
+        });
+    }
+
+    private void getDroneList(){
+        mGDURemoteController.getDroneList(new CommonCallbacks.CompletionCallbackWith<List<MultiControlInfo>>() {
+            @Override
+            public void onSuccess(List<MultiControlInfo> controlInfos) {
+                toastText("获取多控飞机列表成功：" + controlInfos.size());
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取多控飞机列表失败：");
+            }
+        });
+    }
+
+    private void getRCList(){
+        mGDURemoteController.getRCList(new CommonCallbacks.CompletionCallbackWith<List<MultiControlInfo>>() {
+            @Override
+            public void onSuccess(List<MultiControlInfo> controlInfos) {
+                toastText("获取多控遥控器列表成功：" + controlInfos.size());
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取多控遥控器列表失败：");
+            }
+        });
+    }
+
+    private void setDroneControlEnable(){
+        mGDURemoteController.setDroneControlEnable(0, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置飞机控制权开关成功：");
+                } else {
+                    toastText("设置飞机控制权开关失败：");
+                }
+            }
+        });
+    }
+
+    private void getDroneControlEnable(){
+        mGDURemoteController.getDroneControlEnable(0, new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+            @Override
+            public void onSuccess(Boolean var1) {
+                toastText("获取飞机控制权开关成功：" + var1);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取飞机控制权开关失败：" + var1);
+            }
+        });
+    }
+
+    private void setDroneLivingEnable(){
+        mGDURemoteController.setDroneLivingEnable(0, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置飞机视频流开关成功：");
+                } else {
+                    toastText("设置飞机视频流开关失败：");
+                }
+            }
+        });
+    }
+
+    private void getDroneLivingEnable(){
+        mGDURemoteController.getDroneLivingEnable(0, new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+            @Override
+            public void onSuccess(Boolean var1) {
+                toastText("获取飞机视频流开关成功：" + var1);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取飞机视频流开关失败：" + var1);
+            }
+        });
     }
 
     private void getControlHand() {
