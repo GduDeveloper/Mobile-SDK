@@ -55,7 +55,86 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/get_multi_control_mode_button"
+                    android:onClick="onClick"
+                    android:text="获取多控模式"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/set_multi_control_mode_button"
+                    android:onClick="onClick"
+                    android:text="设置多控模式"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/get_drone_list_button"
+                    android:onClick="onClick"
+                    android:text="获取多控飞机列表"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_rc_list_button"
+                    android:onClick="onClick"
+                    android:text="获取多控遥控器列表"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_drone_control_enable_button"
+                    android:onClick="onClick"
+                    android:text="设置多控飞机控制权开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_drone_control_enable_button"
+                    android:onClick="onClick"
+                    android:text="获取多控飞机控制权开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_drone_living_enable_button"
+                    android:onClick="onClick"
+                    android:text="设置多控飞机视频流开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_drone_living_enable_button"
+                    android:onClick="onClick"
+                    android:text="获取多控飞机视频流开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_continue_send_rc_control_mid_value_enable_button"
+                    android:onClick="onClick"
+                    android:text="设置发送摇杆中值开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_continue_send_rc_control_mid_value_enable_button"
+                    android:onClick="onClick"
+                    android:text="获取发送摇杆中值开关"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
