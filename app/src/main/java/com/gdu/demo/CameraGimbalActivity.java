@@ -80,6 +80,10 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     private void initGimbal() {
         mGDUGimbal = (GDUGimbal) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getGimbal();
+        if (mGDUGimbal == null) {
+            toast("云台未识别，相关功能可能出现异常");
+            return;
+        }
         mGDUGimbal.setStateCallback(new GimbalState.Callback() {
             @Override
             public void onUpdate(GimbalState state) {
