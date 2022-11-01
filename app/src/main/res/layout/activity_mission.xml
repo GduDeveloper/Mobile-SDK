@@ -82,6 +82,24 @@
                    android:layout_height="wrap_content"/>
            </LinearLayout>
 
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content">
+               <Button
+                   android:id="@+id/start_high_precision_follow_button"
+                   android:text="开始高精度跟随"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+
+               <Button
+                   android:id="@+id/stop_high_precision_follow_button"
+                   android:text="结束高精度跟随"
+                   android:onClick="onClick"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
+
               <TextView
                   android:id="@+id/fly_info_textview"
                   android:textColor="#ff0000"

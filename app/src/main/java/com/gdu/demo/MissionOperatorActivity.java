@@ -367,10 +367,44 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                     }
                 });
                 break;
-            case R.id.stop_waypoint_button:
+            case R.id.start_high_precision_follow_button:
+                startHighPrecisionFollow();
+                break;
+
+            case R.id.stop_high_precision_follow_button:
+                mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        isStartFollow = false;
+                        if (error == null) {
+                            toast("停止跟随发送成功");
+                        } else {
+                            toast("停止跟随发送失败");
+                        }
+                    }
+                });
                 break;
 
         }
+    }
+
+    /**
+     * 开启高精度GPS跟随，需地面端安装RTK定位模块
+     */
+    private void startHighPrecisionFollow(){
+        FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, 30f, true, 10, 0);
+        mFollowMeMissionOperator.startMission(followMeMission, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    if (error == null) {
+                        toast("开始跟随发送成功");
+                    } else {
+                        toast("开始跟随发送失败");
+                    }
+                }
+            }
+        });
     }
 
     private void startFollow(){

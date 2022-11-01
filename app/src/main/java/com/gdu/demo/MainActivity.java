@@ -15,10 +15,13 @@ import androidx.core.content.ContextCompat;
 
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GlobalConfig;
+import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.manager.GDUSDKInitEvent;
 import com.gdu.sdk.manager.GDUSDKManager;
+import com.gdu.sdk.remotecontroller.GDURemoteController;
+import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
 
 /**
@@ -31,6 +34,7 @@ public class MainActivity extends Activity {
     private Activity mContext;
     private Button mRegisterAppButton;
     private Button mOpenButton;
+    private Button mPairingButton;
     private BaseProduct mProduct;
 
 
@@ -48,6 +52,7 @@ public class MainActivity extends Activity {
     private void initView(){
         mRegisterAppButton = findViewById(R.id.register_app_button);
         mOpenButton = findViewById(R.id.open_button);
+        mPairingButton = findViewById(R.id.pairing_button);
         ((TextView) findViewById(R.id.version_textview)).setText(getResources().getString(R.string.sdk_version,
                 GDUSDKManager.getInstance().getSDKVersion(mContext)
                         + " Debug:"
@@ -68,6 +73,20 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DemoListActivity.class);
                 startActivity(intent);
+            }
+        });
+        mPairingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GDURemoteController gduRemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
+                if (gduRemoteController != null) {
+                    gduRemoteController.startPairing(new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError var1) {
+                            Log.d(TAG, "test startPairing: " + var1);
+                        }
+                    });
+                }
             }
         });
     }
@@ -114,6 +133,7 @@ public class MainActivity extends Activity {
                 if (newComponent != null) {
                     Log.d(TAG, "onComponentChange : " + newComponent.toString());
                     newComponent.setComponentListener(mGDUComponentListener);
+                    refreshComponent(newComponent);
                 }
             }
 
@@ -146,9 +166,21 @@ public class MainActivity extends Activity {
                 public void run() {
                     if (mProduct.isConnected()) {
                         mOpenButton.setEnabled(true);
+                        mPairingButton.setEnabled(false);
                     } else {
                         mOpenButton.setEnabled(false);
                     }
+                }
+            });
+        }
+    }
+
+    private void refreshComponent(BaseComponent component){
+        if (component instanceof GDURemoteController || component instanceof GDUAirLink) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mPairingButton.setEnabled(true);
                 }
             });
         }
