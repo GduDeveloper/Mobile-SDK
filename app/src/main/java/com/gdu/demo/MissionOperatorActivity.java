@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
+import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
 import com.gdu.common.mission.followme.FollowMeHeading;
 import com.gdu.common.mission.followme.FollowMeMission;
@@ -74,6 +76,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
     private CoordinateConverter coordinateConverter;
     private Context mContext;
     private TextView mMissionInfoTextView;
+    private CheckBox mSetDistanceAndHeightEnableCheckBox;
 
     private GDUFlightController mGDUFlightController;
 
@@ -91,6 +94,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         flyInfoView  =(TextView) findViewById(R.id.fly_info_textview);
         mMapView = findViewById(R.id.map);
         mMissionInfoTextView = findViewById(R.id.mission_info_textview);
+        mSetDistanceAndHeightEnableCheckBox = findViewById(R.id.set_height_distance_enable_checkbox);
         initMap(savedInstanceState);
         initData();
         initListener();
@@ -392,7 +396,15 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
      * 开启高精度GPS跟随，需地面端安装RTK定位模块
      */
     private void startHighPrecisionFollow(){
-        FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, 30f, true, 10, 0);
+        boolean isSetDistanceAndHeightEnable;
+        if (mSetDistanceAndHeightEnableCheckBox.isChecked()) {
+            isSetDistanceAndHeightEnable = true;
+        } else {
+            isSetDistanceAndHeightEnable = false;
+        }
+        latitude = GlobalVariable.latitude;
+        longitude = GlobalVariable.longitude;
+        FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, true, isSetDistanceAndHeightEnable, 15f,  isSetDistanceAndHeightEnable, 3, 0);
         mFollowMeMissionOperator.startMission(followMeMission, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError error) {

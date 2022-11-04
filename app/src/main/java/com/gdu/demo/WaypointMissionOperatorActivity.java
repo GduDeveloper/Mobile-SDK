@@ -27,6 +27,7 @@ import com.gdu.common.mission.waypoint.WaypointMission;
 import com.gdu.common.mission.waypoint.WaypointMissionExecutionEvent;
 import com.gdu.common.mission.waypoint.WaypointMissionFinishedAction;
 import com.gdu.common.mission.waypoint.WaypointMissionHeadingMode;
+import com.gdu.common.mission.waypoint.WaypointMissionState;
 import com.gdu.common.mission.waypoint.WaypointMissionUploadEvent;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
@@ -270,16 +271,18 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 });
                 break;
             case R.id.start_waypoint_button:
-                waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(GDUError error) {
-                        if (error == null) {
-                            toast("开始航迹成功");
-                        } else {
-                            toast("开始航迹失败");
+                if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
+                    waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError error) {
+                            if (error == null) {
+                                toast("开始航迹成功");
+                            } else {
+                                toast("开始航迹失败");
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 break;
             case R.id.resume_waypoint_button:
                 waypointMissionOperator.resumeMission(new CommonCallbacks.CompletionCallback() {
