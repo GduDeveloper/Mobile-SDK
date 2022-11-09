@@ -37,6 +37,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private TextView mGoHomeHeightTextview;
     private TextView mFCVersionTextview;
     private Switch mSetMaxFlightRadiusLimitationSwitch;
+    private TextView mConnectStatusTextview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
 
     private void initView() {
         mSimulatorStatusTextview = findViewById(R.id.simulator_status_textview);
+        mConnectStatusTextview = findViewById(R.id.connect_status_textview);
         mFCStateInfoTextView = findViewById(R.id.fc_state_info_textview);
         mMaxFlightRadiusTextView = findViewById(R.id.max_flight_radius_textview);
         mMaxFlightHeightTextView = findViewById(R.id.max_flight_height_textview);
@@ -64,6 +66,12 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setMaxFlightRadiusLimitationEnable(isChecked);
+            }
+        });
+        mConnectStatusTextview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mConnectStatusTextview.setText("连接" +  mGDUFlightController.isConnected());
             }
         });
     }
