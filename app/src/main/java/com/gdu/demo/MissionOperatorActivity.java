@@ -269,7 +269,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 startSimulator();
                 break;
             case R.id.set_home_point_button:
-                LocationCoordinate2D coordinate2D = new LocationCoordinate2D(30.471038, 114.4280024);
+                LocationCoordinate2D coordinate2D = new LocationCoordinate2D(30.471033, 114.4280014);
                 coordinateConverter.coord(new LatLng(coordinate2D.getLatitude(), coordinate2D.getLongitude()));
                 LatLng latLng = coordinateConverter.convert();
                 addMarker(latLng);
@@ -296,8 +296,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 hotpointMission.setAltitude(50);
                 hotpointMission.setClockwise(true);
                 hotpointMission.setAngularVelocity(0.10019f);
-                hotpointMission.setRadius(30);
-                hotpointMission.setHeading(HotpointHeading.AWAY_FROM_HOT_POINT);
+                hotpointMission.setRadius(80);
+                hotpointMission.setHeading(HotpointHeading.TOWARDS_HOT_POINT);
                 hotpointMission.setStartPoint(HotpointStartPoint.NORTH);
                 mHotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
                     @Override
