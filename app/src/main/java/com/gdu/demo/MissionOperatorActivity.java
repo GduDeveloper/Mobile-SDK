@@ -295,7 +295,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 hotpointMission.setHotpoint(hotpoint);
                 hotpointMission.setAltitude(50);
                 hotpointMission.setClockwise(true);
-                hotpointMission.setAngularVelocity(30);
+                hotpointMission.setAngularVelocity(0.10019f);
                 hotpointMission.setRadius(30);
                 hotpointMission.setHeading(HotpointHeading.AWAY_FROM_HOT_POINT);
                 hotpointMission.setStartPoint(HotpointStartPoint.NORTH);
