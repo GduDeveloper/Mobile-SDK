@@ -531,16 +531,25 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     @Override
     protected void onResume() {
         super.onResume();
+        if (codecManager != null) {
+            codecManager.onResume();
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        if (codecManager != null) {
+            codecManager.onPause();
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (codecManager != null) {
+            codecManager.onDestroy();
+        }
     }
 
 
