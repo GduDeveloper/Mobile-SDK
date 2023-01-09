@@ -29,6 +29,7 @@ import com.gdu.common.mission.followme.FollowMeGimbalPitch;
 import com.gdu.common.mission.followme.FollowMeHeading;
 import com.gdu.common.mission.followme.FollowMeMission;
 import com.gdu.common.mission.followme.FollowMeMissionEvent;
+import com.gdu.common.mission.hotpoint.HotpointGimbalPitch;
 import com.gdu.common.mission.hotpoint.HotpointHeading;
 import com.gdu.common.mission.hotpoint.HotpointMission;
 import com.gdu.common.mission.hotpoint.HotpointMissionEvent;
@@ -324,6 +325,31 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                     }
                 });
                 break;
+            case R.id.set_hotpoint_heading_button:
+                mHotpointMissionOperator.setHotPointHeading(HotpointHeading.AWAY_FROM_HOT_POINT, 0, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置机头角度发送成功");
+                        } else {
+                            toast("设置机头角度发送失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.set_hotpoint_gimbal_pitch_button:
+                mHotpointMissionOperator.setHotpointGimbalPitch(HotpointGimbalPitch.SET_GIMBAL_PITCH, 60, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置云台角度发送成功");
+                        } else {
+                            toast("设置云台角度发送失败");
+                        }
+                    }
+                });
+                break;
+
             case R.id.start_tapfly_button:
 
 //                LocationCoordinate2D target2D = new LocationCoordinate2D(30.471038, 114.4280024);
