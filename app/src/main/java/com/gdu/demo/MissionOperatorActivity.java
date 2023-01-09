@@ -25,6 +25,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
 import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
+import com.gdu.common.mission.followme.FollowMeGimbalPitch;
 import com.gdu.common.mission.followme.FollowMeHeading;
 import com.gdu.common.mission.followme.FollowMeMission;
 import com.gdu.common.mission.followme.FollowMeMissionEvent;
@@ -290,6 +291,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 //                waypointMissionOperator.loadMission(mission);
                 break;
             case R.id.start_hotpoint_button:
+                RonLog.LogD("test status " + MissionControl.getInstance().getHotpointMissionOperator().getCurrentState().getName());
                 HotpointMission hotpointMission = new HotpointMission();
                 LocationCoordinate2D hotpoint = new LocationCoordinate2D(30.471033, 114.4280014);
                 hotpointMission.setHotpoint(hotpoint);
@@ -388,7 +390,54 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                     }
                 });
                 break;
-
+            case R.id.set_follow_me_heading_button:
+                mFollowMeMissionOperator.setFollowMeHeading(FollowMeHeading.SET_HEADING_ANGLE, 50, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置跟随机头发送成功");
+                        } else {
+                            toast("设置跟随机头发送失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.set_follow_me_gimbal_pitch_button:
+                mFollowMeMissionOperator.setFollowMeGimbalPitch(FollowMeGimbalPitch.SET_GIMBAL_PITCH, 80, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置跟随云台发送成功");
+                        } else {
+                            toast("设置跟随云台发送失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.start_fly_button:
+                mGDUFlightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("开始起飞发送成功");
+                        } else {
+                            toast("开始起飞发送失败");
+                        }
+                    }
+                });
+                break;
+            case R.id.start_land_button:
+                mGDUFlightController.startLanding(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("开始降落发送成功");
+                        } else {
+                            toast("开始降落发送失败");
+                        }
+                    }
+                });
+                break;
         }
     }
 

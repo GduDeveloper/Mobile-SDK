@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.gdu.camera.Capabilities;
 import com.gdu.camera.SettingsDefinitions;
 import com.gdu.camera.StorageState;
@@ -30,6 +32,7 @@ import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.logs.RonLog;
 
 /**
  *
@@ -415,7 +418,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
             case R.id.btn_get_yuv_data:
                 byte[] yuvData =  codecManager.getYuvData();
-                Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, 1920, 1080);
+                Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
 //                Bitmap bitmap = mFastYUVtoRGB.test(yuvData, 1920, 1080);
                 if (bitmap != null) {
                     mYUVImageView.setImageBitmap(bitmap);
@@ -423,7 +426,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 break;
             case R.id.btn_get_rgba_data:
                 byte[] rgbData = codecManager.getRgbaData();
-                Bitmap bitmap1 = ImageProcessingManager.rgb2Bitmap(rgbData, 1920, 1080);
+                Bitmap bitmap1 = ImageProcessingManager.rgb2Bitmap(rgbData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
                 if (bitmap1 != null) {
                     mYUVImageView.setImageBitmap(bitmap1);
                 }
@@ -570,8 +573,14 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         return false;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
+//        if (codecManager != null) {
+//            codecManager.enabledYuvData(true);
+//            byte[] data = codecManager.getRgbaData();
+//            RonLog.LogD("test onSurfaceTextureUpdated " + (data != null ? data.length : 0));
+//        }
     }
 }

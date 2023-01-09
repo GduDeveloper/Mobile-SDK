@@ -144,7 +144,7 @@
 
     <LinearLayout
         android:id="@+id/gimbal_layout"
-        android:layout_below="@+id/camera_layout"
+        android:layout_below="@+id/camera1_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
