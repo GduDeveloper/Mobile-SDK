@@ -32,7 +32,8 @@
         </activity>
         <activity android:name=".DemoListActivity" />
         <activity android:name=".FlightControllerActivity" />
-        <activity android:name=".CameraGimbalActivity" />
+        <activity android:name=".CameraGimbalActivity"
+            android:screenOrientation="landscape"/>
         <activity android:name=".RemoteControllerActivity" />
         <activity android:name=".BatteryActivity" />
         <activity android:name=".AirLinkActivity" />
