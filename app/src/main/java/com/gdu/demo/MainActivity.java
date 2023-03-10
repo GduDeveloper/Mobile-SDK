@@ -71,6 +71,7 @@ public class MainActivity extends Activity {
         mOpenButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(mContext, DemoListActivity.class);
                 startActivity(intent);
             }
