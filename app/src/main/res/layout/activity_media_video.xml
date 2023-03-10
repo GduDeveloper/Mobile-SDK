@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tv_path"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="20dp"
+        android:textSize="13sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"/>
+
+    <LinearLayout
+        android:id="@+id/ll_video"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_path">
+
+        <TextView
+            android:id="@+id/tv_video_play"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="开始视频回放"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_video_play_pause"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="暂停视频回放"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_video_play_resume"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="继续播放"
+            android:textSize="13sp" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_video_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_video">
+        <TextView
+            android:id="@+id/tv_video_play_stop"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="停止视频"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_get_video"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="下载视频"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_download_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/ll_video"
+        app:layout_constraintLeft_toRightOf="@id/video_container_layout"
+        android:layout_marginLeft="50dp"
+        android:textColor="#FF5722"
+        android:textSize="14sp"
+        android:text=""
+        android:layout_marginTop="@dimen/dp_40"/>
+
+
+    <FrameLayout
+        android:id="@+id/video_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        app:layout_constraintTop_toBottomOf="@id/ll_video_2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_10">
+        <TextureView
+            android:id="@+id/video_texture_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tv_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        app:layout_constraintTop_toBottomOf="@id/video_container_layout"
+        app:layout_constraintLeft_toLeftOf="@id/video_container_layout"
+        app:layout_constraintRight_toRightOf="@id/video_container_layout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="#FF5722"
+        android:text="" />
+
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:maxHeight="4dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:thumb="@drawable/seek_bar_botton"
+        android:progressDrawable="@drawable/planset_seekbar_progress_activity"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:progress="0"
+        app:layout_constraintTop_toBottomOf="@id/video_container_layout"/>
+
+
+    <TextView
+        android:id="@+id/tv_position_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/seek_bar"
+        app:layout_constraintLeft_toLeftOf="@id/seek_bar"
+        app:layout_constraintRight_toRightOf="@id/seek_bar"
+        android:layout_marginTop="10dp"
+        android:textSize="15sp"
+        android:textColor="#e40000"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -43,6 +43,10 @@
         <activity android:name=".CompassActivity" />
         <activity android:name=".VirtualStickActivity" />
         <activity android:name=".MissionOperatorActivity" />
+
+        <activity android:name=".mediatest.MediaTestActivity" />
+        <activity android:name=".mediatest.MediaDetailActivity" />
+        <activity android:name=".mediatest.MediaVideoPlayActivity" />
     </application>
 
 </manifest>
