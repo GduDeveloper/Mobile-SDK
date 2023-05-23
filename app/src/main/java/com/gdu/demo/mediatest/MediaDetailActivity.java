@@ -3,8 +3,6 @@ package com.gdu.demo.mediatest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -20,8 +18,6 @@ import com.gdu.demo.databinding.ActivityMediaDetailBinding;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.GDUMediaManager;
 import com.gdu.sdk.products.GDUAircraft;
-import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.FIleLogUitl;
 import com.gdu.sdk.util.FileDownCallback;
 
 import java.text.DecimalFormat;
@@ -97,33 +93,29 @@ public class MediaDetailActivity extends Activity {
             toastText("云台未连接");
             return;
         }
-        manager.getRawImage(path, new FileDownCallback.OnMediaFileCallBack() {
+        manager.getRawImage(path,"", new FileDownCallback.OnFileDownCallBack<String>() {
             @Override
-            public void onProgress(long total, long current) {
-                if (handler != null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String progress = format.format((current / (total * 1.0)) * 100);
-                            viewBinding.tvRawProgress.setText(progress + "%");
-                        }
-                    });
-                }
+            public void onStart() {
+
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] data, long position) {
-                FIleLogUitl.getSingle().saveData(data);
-            }
-
-            @Override
-            public void onSuccess() {
+            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
 
             }
 
+            @Override
+            public void onProgress(long l, long l1) {
+
+            }
 
             @Override
-            public void onFail(GDUError error) {
+            public void onSuccess(String s) {
+
+            }
+
+            @Override
+            public void onFail(GDUError gduError) {
 
             }
         });
@@ -138,7 +130,17 @@ public class MediaDetailActivity extends Activity {
             toastText("云台未连接");
             return;
         }
-        manager.getPreview(path, new FileDownCallback.OnMediaImageCallBack() {
+        manager.getPreview(path, new FileDownCallback.OnFileDownCallBack<Bitmap>() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
+
+            }
+
             @Override
             public void onProgress(long total, long current) {
                 if (handler != null) {
@@ -180,7 +182,17 @@ public class MediaDetailActivity extends Activity {
             toastText("云台未连接");
             return;
         }
-        manager.getThumbnail(path, new FileDownCallback.OnMediaImageCallBack() {
+        manager.getThumbnail(path, new FileDownCallback.OnFileDownCallBack<Bitmap>() {
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
+
+            }
 
             @Override
             public void onProgress(long total, long current) {
