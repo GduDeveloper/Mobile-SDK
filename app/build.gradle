@@ -43,7 +43,7 @@ dependencies {
     api 'androidx.recyclerview:recyclerview:1.2.1'
     api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 
-    api  files('libs/GduLibrary-1.0.28.jar')
+    api  files('libs/GduLibrary-2.0.45.jar')
 
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.yolanda.nohttp:nohttp:1.0.3'
