@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.gdu.common.error.GDUError;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -27,8 +28,13 @@ public class MediaDetailActivity extends Activity {
     private ActivityMediaDetailBinding viewBinding;
     private Handler handler;
     private String path = "";
+    private String raw = "";
+    private String thum= "";
+    private String preview = "";
 
-    DecimalFormat format = new DecimalFormat("#.00");
+
+    DecimalFormat format = new DecimalFormat("#0.00");
+
     GDUMediaManager manager;
 
     @Override
@@ -47,13 +53,22 @@ public class MediaDetailActivity extends Activity {
         Intent intent = getIntent();
         if (intent != null) {
             path = intent.getStringExtra("path");
+            raw = intent.getStringExtra("raw");
+            thum = intent.getStringExtra("thum");
+            preview = intent.getStringExtra("preview");
         }
-        Log.d("MediaDetailActivity", "path = " + path);
+
+        Log.d("MediaDetail", "path = " + path);
 
         viewBinding.tvGetThumb.setOnClickListener(listener);
         viewBinding.tvGetPreview.setOnClickListener(listener);
         viewBinding.tvGetRaw.setOnClickListener(listener);
         viewBinding.tvGetVideo.setOnClickListener(listener);
+//
+//        viewBinding.tvVideoPlay.setOnClickListener(listener);
+//        viewBinding.tvVideoPlayPause.setOnClickListener(listener);
+//        viewBinding.tvVideoPlaySeek.setOnClickListener(listener);
+//        viewBinding.tvVideoPlayStop.setOnClickListener(listener);
     }
 
     private void initData() {
@@ -62,6 +77,7 @@ public class MediaDetailActivity extends Activity {
             manager = camera.getMediaManager();
         }
         viewBinding.tvPath.setText(path);
+        getImagePreview();
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
@@ -76,11 +92,14 @@ public class MediaDetailActivity extends Activity {
                 case R.id.tv_get_preview:
                     getImagePreview();
                     break;
-
                 case R.id.tv_get_raw:
                     getImageRaw();
                     break;
+
+                default:
+                    break;
             }
+
         }
     };
 
@@ -90,34 +109,52 @@ public class MediaDetailActivity extends Activity {
      */
     private void getImageRaw() {
         if (manager == null) {
-            toastText("云台未连接");
+            toastText("飞行器未连接");
             return;
         }
-        manager.getRawImage(path,"", new FileDownCallback.OnFileDownCallBack<String>() {
+        manager.getRawImage(raw, "ddd", new FileDownCallback.OnMediaFileCallBack() {
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
+            public void onRealtimeDataUpdate(byte[] bytes, long position, boolean isLastPack) {
 
             }
 
             @Override
-            public void onProgress(long l, long l1) {
+            public void onProgress(long total, long current) {
 
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String progress = format.format((current / (total * 1.0)) * 100);
+                            viewBinding.tvRawProgress.setText(progress + "%");
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onSuccess(String s) {
-
+            public void onSuccess(String result) {
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("ImagePath ", "path = " + result);
+                            Glide.with(MediaDetailActivity.this).load(result).into(viewBinding.ivRaw);
+                        }
+                    });
+                }
             }
 
             @Override
-            public void onFail(GDUError gduError) {
+            public void onFail(GDUError error) {
 
             }
+
         });
     }
 
@@ -127,34 +164,17 @@ public class MediaDetailActivity extends Activity {
      */
     private void getImagePreview() {
         if (manager == null) {
-            toastText("云台未连接");
+            toastText("飞行器未连接");
             return;
         }
-        manager.getPreview(path, new FileDownCallback.OnFileDownCallBack<Bitmap>() {
+        manager.getPreview(preview, new FileDownCallback.OnMediaImageCallBack() {
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
-
-            }
-
-            @Override
-            public void onProgress(long total, long current) {
-                if (handler != null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewBinding.tvPreviewProgress.setText((current / total * 1.0) * 100 + "");
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onSuccess(Bitmap bitmap) {
+            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
 
                 if (handler != null) {
                     handler.post(new Runnable() {
@@ -167,22 +187,32 @@ public class MediaDetailActivity extends Activity {
 
             }
 
+
+            @Override
+            public void onProgress(long l, long l1) {
+
+            }
+
+
             @Override
             public void onFail(GDUError error) {
 
             }
+
         });
     }
+
 
     /**
      * 缩略图
      */
     private void getImageThumb() {
         if (manager == null) {
-            toastText("云台未连接");
+            toastText("飞行器未连接");
             return;
         }
-        manager.getThumbnail(path, new FileDownCallback.OnFileDownCallBack<Bitmap>() {
+        manager.getThumbnail(thum, new FileDownCallback.OnMediaImageCallBack() {
+
 
             @Override
             public void onStart() {
@@ -190,17 +220,7 @@ public class MediaDetailActivity extends Activity {
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
-
-            }
-
-            @Override
-            public void onProgress(long total, long current) {
-
-            }
-
-            @Override
-            public void onSuccess(Bitmap bitmap) {
+            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -212,10 +232,20 @@ public class MediaDetailActivity extends Activity {
 
             }
 
+
+
+            @Override
+            public void onProgress(long total, long current) {
+
+            }
+
+
             @Override
             public void onFail(GDUError error) {
 
             }
+
+
         });
     }
 

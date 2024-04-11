@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:keepScreenOn="true">
 
 
     <TextView
         android:id="@+id/tv_path"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:textSize="13sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,15 +26,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_path"
         android:layout_marginTop="10dp">
 
-        <TextView
-            android:id="@+id/tv_get_thumb"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="获取缩略图"
-            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_get_preview"
@@ -45,16 +37,15 @@
             android:text="获取预览图"
             android:textSize="13sp" />
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:id="@+id/ll_layout_2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/ll_layout">
-
+        <TextView
+            android:id="@+id/tv_get_thumb"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="获取缩略图"
+            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_get_raw"
@@ -79,35 +70,13 @@
 
     </LinearLayout>
 
-
-
-    <ImageView
-        android:id="@+id/iv_thumb"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginTop="40dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ll_layout_2"/>
-
-    <TextView
-        android:id="@+id/tv_thumb_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/iv_thumb"
-        app:layout_constraintLeft_toLeftOf="@id/iv_thumb"
-        app:layout_constraintRight_toRightOf="@id/iv_thumb"
-        android:textSize="12sp"
-        android:text=""
-        android:textColor="#c40000"/>
-
-
     <ImageView
         android:id="@+id/iv_preview"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintLeft_toRightOf="@id/iv_thumb"
-        app:layout_constraintTop_toBottomOf="@id/ll_layout_2"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ll_layout"/>
 
     <TextView
         android:id="@+id/tv_preview_progress"
@@ -120,13 +89,24 @@
         android:text=""
         android:textColor="#c40000"/>
 
+
     <ImageView
-        android:id="@+id/iv_raw"
+        android:id="@+id/iv_thumb"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_preview" />
+        app:layout_constraintLeft_toRightOf="@id/iv_preview"
+        app:layout_constraintTop_toBottomOf="@id/ll_layout"/>
+
+
+
+    <ImageView
+        android:id="@+id/iv_raw"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="40dp"
+        app:layout_constraintLeft_toRightOf="@id/iv_thumb"
+        app:layout_constraintTop_toBottomOf="@id/ll_layout" />
 
 
     <TextView
