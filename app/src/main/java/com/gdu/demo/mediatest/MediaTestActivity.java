@@ -193,6 +193,10 @@ public class MediaTestActivity extends Activity {
         }
 
         manager.getMediaFileList(new FileDownCallback.OnMediaListCallBack() {
+            @Override
+            public void onStart() {
+
+            }
 
             @Override
             public void onGetMediaList(List<MediaFile> list) {
@@ -205,6 +209,7 @@ public class MediaTestActivity extends Activity {
                         }
                     });
                 }
+
             }
 
             @Override
@@ -220,13 +225,13 @@ public class MediaTestActivity extends Activity {
                         }
                     });
                 }
+
             }
 
             @Override
-            public void onFail(GDUError error) {
+            public void onFail(GDUError gduError) {
 
             }
-
         });
     }
 
