@@ -8,11 +8,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -20,34 +23,48 @@ import com.gdu.demo.databinding.ActivityMediaVideoBinding;
 import com.gdu.gdusocket.GduCommunication3;
 import com.gdu.gdusocket.GduSocketManager;
 import com.gdu.gdusocket.SocketCallBack3;
+import com.gdu.media.VideoBackPlayState;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.GDUMediaManager;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.sdk.util.FileDownCallback;
 import com.gdu.socketmodel.GduFrame3;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.logs.RonLog;
 
+import java.text.DecimalFormat;
+
 public class MediaVideoPlayActivity extends Activity implements TextureView.SurfaceTextureListener {
 
 
-    private ActivityMediaVideoBinding viewBinding;
+
+    ActivityMediaVideoBinding viewBinding;
+
     private VideoFeeder.VideoDataListener videoDataListener = null;
     private GDUCodecManager codecManager = null;
 
     private Handler handler;
 
-    private String path;
+    private String path = "";
+    private int type = 1;
+    private String duration;
 
-    int length = 100;
+    int length;
+    VideoBackPlayState state;
 
-    int current;
+
+    int currentPosition;
+
+    DecimalFormat format = new DecimalFormat("#0.00");
 
 
     GDUMediaManager manager;
+
+    private String saveVideoPath;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,13 +78,18 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     }
 
     private void initView() {
+
+
         handler = new Handler();
         Intent intent = getIntent();
         if (intent != null) {
             path = intent.getStringExtra("path");
+            type = intent.getIntExtra("type", 1);
+            duration = intent.getStringExtra("duration");
         }
-        Log.d("MediaDetail", "path = " + path);
+        Log.d("MediaDetail", "path = " + path + ", type = " + type);
         viewBinding.tvPath.setText(path);
+        viewBinding.tvDuration.setText(duration + "s");
 
         viewBinding.tvVideoPlay.setOnClickListener(listener);
         viewBinding.tvVideoPlayPause.setOnClickListener(listener);
@@ -75,9 +97,16 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         viewBinding.tvVideoPlayStop.setOnClickListener(listener);
         viewBinding.tvVideoPlayResume.setOnClickListener(listener);
 
+
         viewBinding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            public void onProgressChanged(SeekBar seekBar, int i, boolean fromUser) {
+
+                if (fromUser) {
+                    int progress = seekBar.getProgress();
+                    int seekPosition = (int) ((progress / 100.0) * length);
+                    viewBinding.tvPositionTime.setText("跳转到：" + seekPosition);
+                }
 
             }
 
@@ -92,8 +121,9 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
                 int progress = seekBar.getProgress();
 
                 int seekPosition = (int) ((progress / 100.0) * length);
+
                 videoPlaySeek(seekPosition);
-                viewBinding.tvPositionTime.setText("跳转到：" + seekPosition/1000);
+                viewBinding.tvPositionTime.setText("跳转到：" + seekPosition );
 
             }
         });
@@ -103,17 +133,29 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     private void initData() {
 
         GDUCamera camera = ((GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera());
-        if (camera != null) {
-            manager = camera.getMediaManager();
+
+        if (camera == null) {
+            return;
         }
+        manager = camera.getMediaManager();
+        if (manager == null) {
+            return;
+        }
+
+        manager.startSendState();
 
         viewBinding.videoTextureView.setSurfaceTextureListener(this);
         videoDataListener = new VideoFeeder.VideoDataListener() {
             @Override
             public void onReceive(byte[] bytes, int size) {
-                if (null != codecManager) {
-                    codecManager.sendDataToDecoder(bytes, size);
-                    Log.d("VideoFeeder", "length = " + size);
+                Log.d("VideoFeeder", "codecManager =" + (codecManager == null) + ",state = " + state);
+
+                if (state == VideoBackPlayState.VIDEO_PLAYING) {
+                    if (null != codecManager) {
+                        codecManager.sendDataToDecoder(bytes, size);
+                        Log.d("VideoFeeder", "length = " + size + ", " + GlobalVariable.sCodingFormat);
+//                    printData("VideoFeeder", bytes, size);
+                    }
                 }
             }
         };
@@ -124,10 +166,47 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 
         }
 
+        manager.setVideoPlaybackListener(new FileDownCallback.VideoPlaybackStateListener() {
+            @Override
+            public void onUpdate(VideoBackPlayState playState, int progress, int videoLength, int current) {
+
+                length = videoLength;
+                state = playState;
+
+                Log.d("onUpdate", "onUpdate = " + state);
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            currentPosition = current;
+                            updateProgress(playState, progress, videoLength, current);
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
-    private void updateProgress(int state, int progress, int length, int current) {
-        viewBinding.tvState.setText("状态:" + state + ", progress = " + progress + ",length = " + (length / 1000) + ", current = " +( current / 1000));
+    private void printData(String type, byte[] datas, int length) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            sb.append(Integer.toHexString(datas[i] & 0xff)).append(",");
+        }
+        Log.d("GduCESocket3 ", "type =" + type + "   " + sb);
+//        RonLog2File.getSingle().saveData(sb.toString());
+    }
+
+    private void updateProgress(VideoBackPlayState state, int progress, int length, int current) {
+        String stateStr = "";
+        if (state == VideoBackPlayState.VIDEO_PLAYING) {
+            stateStr = "播放中";
+        } else if (state == VideoBackPlayState.VIDEO_PAUSE) {
+            stateStr = "暂停";
+        } else if (state == VideoBackPlayState.VIDEO_STOP) {
+            stateStr = "停止";
+        }
+        viewBinding.tvState.setText(stateStr + ", progress = " + progress + ",length = " + (length) + ", current = " + (current ));
         viewBinding.seekBar.setProgress(progress);
     }
 
@@ -146,7 +225,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
                     videoPlayResume();
                     break;
                 case R.id.tv_get_video:
-
+                    getVideo();
                     break;
                 case R.id.tv_video_play_stop:
                     videoPlayStop();
@@ -155,6 +234,69 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         }
     };
 
+
+    private void videoPlayStart() {
+        if (manager == null) {
+            toastText("云台未连接");
+            return;
+        }
+        manager.playVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError var1) {
+                if (var1 == null) {
+                    toastText("开始播放成功");
+                } else {
+                    toastText("开始播放失败");
+                }
+            }
+        });
+    }
+
+    private void getVideo() {
+
+        if (manager == null) {
+            toastText("云台未连接");
+            return;
+        }
+
+        manager.getVideoFile(path,"sssss", new FileDownCallback.OnMediaFileCallBack() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onRealtimeDataUpdate(byte[] bytes, long position, boolean isLastPack) {
+
+            }
+
+            @Override
+            public void onProgress(long total, long current) {
+
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String progress = format.format((current / (total * 1.0)) * 100);
+                            viewBinding.tvDownloadProgress.setText(progress + "%");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onSuccess(String result) {
+
+            }
+
+
+            @Override
+            public void onFail(GDUError error) {
+
+            }
+        });
+    }
+
     private void videoPlayResume() {
 
         if (manager == null) {
@@ -162,19 +304,18 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             return;
         }
 
-        videoPlaySeek(current);
+        videoPlaySeek(currentPosition);
 
-        Log.d("MediaVideoPlay", "currentTime = " + current);
+        Log.d("MediaVideoPlay", "currentTime = " + currentPosition);
 
     }
-
 
     private void videoPlayPause() {
         if (manager == null) {
             toastText("云台未连接");
             return;
         }
-        manager.pauseVideo(path, new CommonCallbacks.CompletionCallback() {
+        manager.pauseVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError var1) {
 
@@ -182,43 +323,43 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         });
 
     }
+
     private void videoPlaySeek(int positionTime) {
         if (manager == null) {
             toastText("云台未连接");
             return;
         }
-        Log.d("MediaVideoPlay", "videoPlaySeek  currentTime = " + current);
+        Log.d("MediaVideoPlay", "videoPlaySeek  currentTime = " + positionTime);
 
-        manager.seekVideo(path, positionTime, new CommonCallbacks.CompletionCallback() {
+        manager.seekVideo(path, (byte) type, positionTime, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError var1) {
-
+                if (var1 == null) {
+                    toastText("发送跳转成功");
+                } else {
+                    toastText("发送跳转失败");
+                }
             }
         });
 
     }
 
-    private void videoPlayStart() {
-        if (manager == null) {
-            toastText("云台未连接");
-            return;
-        }
-        manager.playVideo(path, new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(GDUError var1) {
 
-            }
-        });
-    }
 
     private void videoPlayStop() {
         if (manager == null) {
             toastText("云台未连接");
             return;
         }
-        manager.stopVideo(path, new CommonCallbacks.CompletionCallback() {
+        manager.stopVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError var1) {
+
+                if (var1 == null) {
+                    toastText("停止播放成功");
+                } else {
+                    toastText("停止播放失败");
+                }
 
             }
         });
@@ -249,6 +390,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         if (codecManager != null) {
             codecManager.onPause();
         }
+//        mGduPlayView.setVisibility(View.GONE);
         RonLog.LogD("test decoder onPause");
     }
 
@@ -258,19 +400,36 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         if (codecManager != null) {
             codecManager.onDestroy();
         }
+
+        if (videoDataListener != null) {
+            VideoFeeder.getInstance().getPrimaryVideoFeed().removeVideoDataListener(videoDataListener);
+        }
+
+        if (manager != null) {
+            manager.stopSendState();
+        }
         RonLog.LogD("test decoder onStop");
     }
 
+    @Override
+    public void finish() {
+        super.finish();
+
+        if (manager != null) {
+            manager.stopVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(GDUError var1) {
+
+                }
+            });
+        }
+    }
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
         if (codecManager == null) {
             codecManager = new GDUCodecManager(this, viewBinding.videoTextureView, width, height);
-            codecManager.setYuvDataCallback(new GDUCodecManager.YuvDataCallback() {
-                @Override
-                public void onYuvDataReceived(byte[] byteBuffer, int len, int width, int height) {
-                }
-            });
+            Log.d("SurfaceTextureListener", "onSurfaceTextureAvailable with = " + width + ", height = " + height);
         }
     }
 
@@ -281,6 +440,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+        Log.d("SurfaceTextureListener", "onSurfaceTextureDestroyed ");
         return false;
     }
 
@@ -288,4 +448,5 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
     }
+
 }

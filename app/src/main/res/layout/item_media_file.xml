@@ -17,7 +17,7 @@
         android:background="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/tv_path"
+        android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/iv_cove"
@@ -32,12 +32,35 @@
         android:id="@+id/tv_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/tv_path"
+        app:layout_constraintTop_toBottomOf="@id/tv_name"
         app:layout_constraintLeft_toLeftOf="parent"
         android:textSize="12sp"
         android:layout_marginLeft="3dp"
         android:textColor="#222021"
         android:text=""/>
+
+    <TextView
+        android:id="@+id/tv_path"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_time"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="12sp"
+        android:layout_marginLeft="3dp"
+        android:textColor="#222021"
+        android:text=""/>
+
+    <TextView
+        android:id="@+id/tv_length"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_path"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="12sp"
+        android:layout_marginLeft="3dp"
+        android:textColor="#222021"
+        android:text=""
+        />
 
 
 

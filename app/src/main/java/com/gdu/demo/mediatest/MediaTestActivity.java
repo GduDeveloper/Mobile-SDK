@@ -6,6 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +22,8 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.adapter.MediaListAdapter;
 import com.gdu.demo.databinding.ActivityMediaTestBinding;
-import com.gdu.media.MediaFile;
+import com.gdu.media.MediaFileBean;
+import com.gdu.media.MediaListBean;
 import com.gdu.media.MediaType;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.GDUMediaManager;
@@ -33,6 +36,7 @@ import java.util.List;
 public class MediaTestActivity extends Activity {
 
 
+
     private ActivityMediaTestBinding viewBinding;
 
     private GDUMediaManager manager;
@@ -41,10 +45,12 @@ public class MediaTestActivity extends Activity {
 
     private MediaListAdapter adapter;
 
-    private List<MediaFile> mediaFiles;
+    private MediaListBean mediaListBean;
+
+    private int showVideoType = 1;
 
 
-    private String imgPath = "/home/zc/project/payload_SDK/samples/sample_c/module_sample/camera_emu/media_file/PSDK_0003_ORG.jpg";
+    private String path = "/home/zc/project/payload_SDK/samples/sample_c/module_sample/camera_emu/media_file/PSDK_0003_ORG.jpg";
 
     private String videoPath = "/home/zc/project/payload_SDK/samples/sample_c/module_sample/camera_emu/media_file/PSDK_0004_ORG.mp4";
 
@@ -61,10 +67,24 @@ public class MediaTestActivity extends Activity {
     }
 
     private void initView() {
+
+
         viewBinding.tvEnterDownModel.setOnClickListener(listener);
         viewBinding.tvRefresh.setOnClickListener(listener);
         viewBinding.tvGetList.setOnClickListener(listener);
+        viewBinding.tvGetSmall.setOnClickListener(listener);
+        viewBinding.tvGetIcon.setOnClickListener(listener);
+        viewBinding.tvGetRaw.setOnClickListener(listener);
+        viewBinding.tvVideoPlay.setOnClickListener(listener);
         viewBinding.tvTestFile.setOnClickListener(listener);
+        viewBinding.tvVisibleVideoFile.setOnClickListener(listener);
+        viewBinding.tvIrVideoFile.setOnClickListener(listener);
+        viewBinding.tvVisibleImageFile.setOnClickListener(listener);
+        viewBinding.tvIrImageFile.setOnClickListener(listener);
+
+        viewBinding.tvVideoPlayPause.setOnClickListener(listener);
+        viewBinding.tvVideoPlayStop.setOnClickListener(listener);
+        viewBinding.tvVideoPlaySeek.setOnClickListener(listener);
 
         adapter = new MediaListAdapter();
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
@@ -74,18 +94,24 @@ public class MediaTestActivity extends Activity {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {
-                MediaFile bean = (MediaFile) adapter.getItem(position);
+                MediaFileBean bean = (MediaFileBean) adapter.getItem(position);
 
                 if (bean == null) {
                     return;
                 }
                 Intent intent;
-                if (bean.getMediaType() == MediaType.MEDIA_VIDEO) {
+                if (bean.getName().toLowerCase().endsWith(".mp4") || bean.getName().toLowerCase().endsWith(".h264")) {
                     intent = new Intent(MediaTestActivity.this, MediaVideoPlayActivity.class);
+                    intent.putExtra("path", bean.getName());
+                    intent.putExtra("type", showVideoType);
+                    intent.putExtra("duration", bean.getDuration());
                 } else {
                     intent = new Intent(MediaTestActivity.this, MediaDetailActivity.class);
+                    intent.putExtra("path", bean.getName());
+                    intent.putExtra("raw", bean.getRaw().getPath());
+                    intent.putExtra("thum", bean.getThum().getPath());
+                    intent.putExtra("preview", bean.getPreview().getPath());
                 }
-                intent.putExtra("path", bean.getPath());
                 startActivity(intent);
             }
         });
@@ -110,14 +136,58 @@ public class MediaTestActivity extends Activity {
                     break;
                 case R.id.tv_refresh:
                     refreshList();
+
                     break;
                 case R.id.tv_get_list:
                     getListFile();
                     break;
                 case R.id.tv_test_file:
-                    Intent intent = new Intent(MediaTestActivity.this, MediaDetailActivity.class);
-                    intent.putExtra("path", imgPath);
+                    Intent intent = new Intent(MediaTestActivity.this, MediaVideoPlayActivity.class);
+                    intent.putExtra("path", videoPath);
                     startActivity(intent);
+                    break;
+                case R.id.tv_visible_video_file:
+                    if (showVideoType != 1) {
+                        if (mediaListBean != null) {
+                            List<MediaFileBean> showList = mediaListBean.getVIS_VIDEO();
+                            adapter.setNewInstance(showList);
+                            getThum(showList, 0);
+                            showVideoType = 1;
+                        }
+                    }
+                    break;
+
+                case R.id.tv_ir_video_file:
+                    if (showVideoType !=0) {
+                        if (mediaListBean != null) {
+                            List<MediaFileBean> showList = mediaListBean.getIR_VIDEO();
+                            adapter.setNewInstance(showList);
+                            getThum(showList, 0);
+                            showVideoType = 0;
+                        }
+                    }
+                    break;
+
+                case R.id.tv_visible_image_file:
+                    if (showVideoType != 2) {
+                        if (mediaListBean != null) {
+                            List<MediaFileBean> showList = mediaListBean.getVIS_PHOTO();
+                            adapter.setNewInstance(showList);
+                            getThum(showList, 0);
+                            showVideoType = 2;
+                        }
+                    }
+                    break;
+
+                case R.id.tv_ir_image_file:
+                    if (showVideoType != 3) {
+                        if (mediaListBean != null) {
+                            List<MediaFileBean> showList = mediaListBean.getIR_PHOTO();
+                            adapter.setNewInstance(showList);
+                            getThum(showList, 0);
+                            showVideoType = 3;
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -125,7 +195,6 @@ public class MediaTestActivity extends Activity {
 
         }
     };
-
 
 
     private void enterDownModel() {
@@ -146,25 +215,6 @@ public class MediaTestActivity extends Activity {
         });
     }
 
-
-    private void exitDownModel() {
-        if (manager == null) {
-            return;
-        }
-        manager.disable(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(GDUError var1) {
-            }
-        });
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        exitDownModel();
-    }
-
     private void refreshList() {
         if (manager == null) {
             toastText("云台未连接");
@@ -183,9 +233,6 @@ public class MediaTestActivity extends Activity {
         });
     }
 
-    /**
-     *  获取文件列表
-     */
     private void getListFile() {
         if (manager == null) {
             toastText("云台未连接");
@@ -193,44 +240,88 @@ public class MediaTestActivity extends Activity {
         }
 
         manager.getMediaFileList(new FileDownCallback.OnMediaListCallBack() {
+
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onGetMediaList(List<MediaFile> list) {
-                mediaFiles = list;
+            public void onGetMediaList(MediaListBean list) {
+                mediaListBean = list;
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            adapter.setNewInstance(mediaFiles);
+
+                            if (list == null) {
+                                return;
+                            }
+                            List<MediaFileBean> showList = list.getVIS_VIDEO();
+                            adapter.setNewInstance(showList);
+                            getThum(showList, 0);
+                            showVideoType = 1;
                         }
                     });
                 }
+            }
+
+
+            @Override
+            public void onFail(GDUError error) {
+
+            }
+
+        });
+
+    }
+
+
+
+    private void getThum(List<MediaFileBean> mediaFiles, final int index) {
+
+        if (mediaFiles == null || mediaFiles.size() == 0 || index >= mediaFiles.size()) {
+            return;
+        }
+
+        if (mediaFiles.get(index) == null || mediaFiles.get(index).getThum() == null) {
+            return;
+        }
+        String path = mediaFiles.get(index).getThum().getPath();
+        manager.getThumbnail(path, new FileDownCallback.OnMediaImageCallBack() {
+            @Override
+            public void onStart() {
 
             }
 
             @Override
-            public void onUpdateMediaFileThum(Bitmap bitmap, int current, int total) {
+            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            if (mediaFiles != null && mediaFiles.size() > current) {
-                                mediaFiles.get(current).setThumbnail(bitmap);
-                                adapter.notifyItemChanged(current);
+                            mediaFiles.get(index).setThum_bitmap(bitmap);
+                            adapter.notifyItemChanged(index);
+                            if (index < 20 - 1 || index < mediaFiles.size()) {
+                                int nextIndex = index + 1;
+                                getThum(mediaFiles, nextIndex);
                             }
                         }
                     });
                 }
-
             }
 
             @Override
+            public void onProgress(long l, long l1) {
+
+            }
+            @Override
             public void onFail(GDUError gduError) {
 
+                if (index < 20 - 1 || index < mediaFiles.size()) {
+                    int nextIndex = index + 1;
+                    getThum(mediaFiles, nextIndex);
+                }
             }
         });
     }
@@ -244,5 +335,17 @@ public class MediaTestActivity extends Activity {
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (manager != null) {
+            manager.disable(new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(GDUError gduError) {
+
+                }
+            });
+        }
+    }
 
 }
