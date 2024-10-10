@@ -20,9 +20,6 @@ import com.gdu.common.error.GDUError;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaVideoBinding;
-import com.gdu.gdusocket.GduCommunication3;
-import com.gdu.gdusocket.GduSocketManager;
-import com.gdu.gdusocket.SocketCallBack3;
 import com.gdu.media.VideoBackPlayState;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.GDUMediaManager;
@@ -31,15 +28,11 @@ import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileDownCallback;
-import com.gdu.socketmodel.GduFrame3;
-import com.gdu.socketmodel.GduSocketConfig3;
-import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.logs.RonLog;
 
 import java.text.DecimalFormat;
 
 public class MediaVideoPlayActivity extends Activity implements TextureView.SurfaceTextureListener {
-
 
 
     ActivityMediaVideoBinding viewBinding;
@@ -78,7 +71,14 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     }
 
     private void initView() {
-
+        ImageView imageView = findViewById(R.id.iv_back);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        TextView textView = findViewById(R.id.tv_title);
 
         handler = new Handler();
         Intent intent = getIntent();
@@ -142,7 +142,6 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             return;
         }
 
-        manager.startSendState();
 
         viewBinding.videoTextureView.setSurfaceTextureListener(this);
         videoDataListener = new VideoFeeder.VideoDataListener() {
@@ -259,42 +258,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             return;
         }
 
-        manager.getVideoFile(path,"sssss", new FileDownCallback.OnMediaFileCallBack() {
-            @Override
-            public void onStart() {
 
-            }
-
-            @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long position, boolean isLastPack) {
-
-            }
-
-            @Override
-            public void onProgress(long total, long current) {
-
-                if (handler != null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            String progress = format.format((current / (total * 1.0)) * 100);
-                            viewBinding.tvDownloadProgress.setText(progress + "%");
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onSuccess(String result) {
-
-            }
-
-
-            @Override
-            public void onFail(GDUError error) {
-
-            }
-        });
     }
 
     private void videoPlayResume() {
@@ -405,9 +369,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             VideoFeeder.getInstance().getPrimaryVideoFeed().removeVideoDataListener(videoDataListener);
         }
 
-        if (manager != null) {
-            manager.stopSendState();
-        }
+
         RonLog.LogD("test decoder onStop");
     }
 
@@ -448,5 +410,6 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
 
     }
+
 
 }

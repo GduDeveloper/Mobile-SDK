@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/title_layout" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -51,44 +55,6 @@
             android:text="测试路径"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/tv_visible_video_file"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="可见光视频"
-            android:textSize="13sp" />
-        <TextView
-            android:id="@+id/tv_ir_video_file"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="红外视频"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_visible_image_file"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="可见光图片"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_ir_image_file"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="红外图片"
-            android:textSize="13sp" />
 
     </LinearLayout>
 

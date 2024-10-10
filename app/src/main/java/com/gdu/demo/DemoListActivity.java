@@ -8,7 +8,6 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.demo.mediatest.MediaTestActivity;
 
 /**
  * 测试组件列表
@@ -72,7 +71,7 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
                 break;
             case R.id.media_button:
 
-                Intent mediaIntent = new Intent(mContext, MediaTestActivity.class);
+                Intent mediaIntent = new Intent(mContext, com.gdu.gdusocketdemo.main.MediaTestActivity.class);
                 startActivity(mediaIntent);
                 break;
 

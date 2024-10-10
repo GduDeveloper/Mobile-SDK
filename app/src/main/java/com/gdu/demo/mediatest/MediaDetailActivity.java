@@ -25,6 +25,7 @@ import java.text.DecimalFormat;
 
 public class MediaDetailActivity extends Activity {
 
+
     private ActivityMediaDetailBinding viewBinding;
     private Handler handler;
     private String path = "";
@@ -167,7 +168,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getPreview(preview, new FileDownCallback.OnMediaImageCallBack() {
+        manager.getPreview(preview, "", new FileDownCallback.OnMediaImageCallBack() {
             @Override
             public void onStart() {
 
@@ -211,7 +212,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getThumbnail(thum, new FileDownCallback.OnMediaImageCallBack() {
+        manager.getThumbnail(thum, "",new FileDownCallback.OnMediaImageCallBack() {
 
 
             @Override
@@ -259,4 +260,3 @@ public class MediaDetailActivity extends Activity {
     }
 
 }
-
