@@ -288,6 +288,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/get_aircraft_sn_button"
+                    android:onClick="onClick"
+                    android:text="获取飞机SN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/aircraft_sn_textview"
+                    android:textColor="#ff0000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
             <Button
                 android:id="@+id/rtk_button"
                 android:onClick="onClick"

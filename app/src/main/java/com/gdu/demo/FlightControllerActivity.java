@@ -42,6 +42,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
 
     private TextView mAircraftModelTextview;
 
+    private TextView mAircraftSNTextview;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +65,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         mFCVersionTextview = findViewById(R.id.fc_version_textview);
         mAircraftModelTextview = findViewById(R.id.aircraft_model_textview);
         mSetMaxFlightRadiusLimitationSwitch = findViewById(R.id.set_max_flight_radius_limitation_switch);
+        mAircraftSNTextview = findViewById(R.id.aircraft_sn_textview);
     }
 
     private void initListener() {
@@ -574,6 +577,19 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_aircraft_button:
                 BaseProduct.Model model = SdkDemoApplication.getAircraftInstance().getModel();
                 mAircraftModelTextview.setText(model.name());
+                break;
+            case R.id.get_aircraft_sn_button:
+                SdkDemoApplication.getAircraftInstance().getProductSN(new CommonCallbacks.CompletionCallbackWith<String>() {
+                    @Override
+                    public void onSuccess(String sn) {
+                        showText(mAircraftSNTextview, sn);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError var1) {
+                        showText(mAircraftSNTextview, var1.getDescription());
+                    }
+                });
                 break;
         }
     }

@@ -59,6 +59,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/get_rc_sn_button"
+                    android:onClick="onClick"
+                    android:text="获取遥控器SN"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
                     android:id="@+id/get_multi_control_mode_button"
                     android:onClick="onClick"
                     android:text="获取多控模式"

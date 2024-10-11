@@ -69,6 +69,9 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_rc_version_button:
                 getRCVersion();
                 break;
+            case R.id.get_rc_sn_button:
+                getRCSN();
+                break;
             case R.id.get_multi_control_mode_button:
                 getMultiControlMode();
                 break;
@@ -320,6 +323,14 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
                 textView.setText(content);
             }
         });
+    }
+
+
+    private void getRCSN(){
+        if (mGDURemoteController != null) {
+            String sn = mGDURemoteController.getRCSN();
+            toastText("SN：" + sn);
+        }
     }
 
     private void toastText(final String content){
