@@ -16,6 +16,7 @@ import com.gdu.common.error.GDUError;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.rtk.PositioningSolution;
+import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.simulator.InitializationData;
@@ -39,6 +40,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private Switch mSetMaxFlightRadiusLimitationSwitch;
     private TextView mConnectStatusTextview;
 
+    private TextView mAircraftModelTextview;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         mMaxFlightHeightTextView = findViewById(R.id.max_flight_height_textview);
         mGoHomeHeightTextview = findViewById(R.id.go_home_height_textview);
         mFCVersionTextview = findViewById(R.id.fc_version_textview);
+        mAircraftModelTextview = findViewById(R.id.aircraft_model_textview);
         mSetMaxFlightRadiusLimitationSwitch = findViewById(R.id.set_max_flight_radius_limitation_switch);
     }
 
@@ -566,6 +570,10 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.virtual_stick_button:
                 Intent intentVirtualStick = new Intent(mContext, VirtualStickActivity.class);
                 startActivity(intentVirtualStick);
+                break;
+            case R.id.get_aircraft_button:
+                BaseProduct.Model model = SdkDemoApplication.getAircraftInstance().getModel();
+                mAircraftModelTextview.setText(model.name());
                 break;
         }
     }

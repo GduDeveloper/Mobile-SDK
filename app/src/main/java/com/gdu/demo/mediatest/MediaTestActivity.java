@@ -1,4 +1,4 @@
-package com.gdu.gdusocketdemo.main;
+package com.gdu.demo.mediatest;
 
 import android.app.Activity;
 import android.content.Intent;

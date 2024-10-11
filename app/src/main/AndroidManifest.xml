@@ -47,6 +47,7 @@
         <activity android:name=".mediatest.MediaTestActivity" />
         <activity android:name=".mediatest.MediaDetailActivity" />
         <activity android:name=".mediatest.MediaVideoPlayActivity" />
+        <activity android:name=".RTKActivity" />
     </application>
 
 </manifest>
