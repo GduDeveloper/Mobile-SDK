@@ -106,14 +106,10 @@ public class MediaTestActivity extends Activity {
                 if (bean.getPath().toLowerCase().endsWith(".mp4") || bean.getPath().toLowerCase().endsWith(".h264")) {
                     intent = new Intent(MediaTestActivity.this, MediaVideoPlayActivity.class);
                     intent.putExtra("path", bean.getPath());
-                    intent.putExtra("type", showVideoType);
                     intent.putExtra("duration", bean.getDuration());
                 } else {
                     intent = new Intent(MediaTestActivity.this, MediaDetailActivity.class);
                     intent.putExtra("path", bean.getPath());
-                    intent.putExtra("raw", bean.getPath());
-                    intent.putExtra("thum", bean.getPath());
-                    intent.putExtra("preview", bean.getPath());
                 }
                 startActivity(intent);
             }

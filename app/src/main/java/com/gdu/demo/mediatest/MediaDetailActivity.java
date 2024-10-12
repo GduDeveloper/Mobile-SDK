@@ -29,9 +29,7 @@ public class MediaDetailActivity extends Activity {
     private ActivityMediaDetailBinding viewBinding;
     private Handler handler;
     private String path = "";
-    private String raw = "";
-    private String thum= "";
-    private String preview = "";
+
 
 
     DecimalFormat format = new DecimalFormat("#0.00");
@@ -54,9 +52,6 @@ public class MediaDetailActivity extends Activity {
         Intent intent = getIntent();
         if (intent != null) {
             path = intent.getStringExtra("path");
-            raw = intent.getStringExtra("raw");
-            thum = intent.getStringExtra("thum");
-            preview = intent.getStringExtra("preview");
         }
 
         Log.d("MediaDetail", "path = " + path);
@@ -113,7 +108,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getRawImage(raw, "ddd", new FileDownCallback.OnMediaFileCallBack() {
+        manager.getRawImage(path, "ddd", new FileDownCallback.OnMediaFileCallBack() {
             @Override
             public void onStart() {
 
@@ -168,7 +163,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getPreview(preview, "", new FileDownCallback.OnMediaImageCallBack() {
+        manager.getPreview(path, "", new FileDownCallback.OnMediaImageCallBack() {
             @Override
             public void onStart() {
 
@@ -212,7 +207,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getThumbnail(thum, "",new FileDownCallback.OnMediaImageCallBack() {
+        manager.getThumbnail(path, "",new FileDownCallback.OnMediaImageCallBack() {
 
 
             @Override
