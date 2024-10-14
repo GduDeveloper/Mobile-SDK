@@ -7,7 +7,7 @@ GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
 
 ## SDK版本更新记录
 
-   [完整更新记录](https://github.com/GduDeveloper/Mobile-SDK/blob/main/document/UPDATE_VERSION.md)
+   [完整更新记录](https://github.com/GduDeveloper/Mobile-SDK/blob/master/document/UPDATE_VERSION.md)
 
 ### V1.0.23 (2023/01/10)
 
