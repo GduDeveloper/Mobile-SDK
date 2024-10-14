@@ -52,7 +52,3 @@ sourceSets {
 ## 支持
    有问题可以联系dev@gdu-tech.com
 
-## 招聘
-GDU 招软件工程师啦，based在武汉，如果你想和我们一起把GDU产品做得更好，请发送简历到dengxin@gdu-tech.com
-   
-   
