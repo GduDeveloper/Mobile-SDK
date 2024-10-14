@@ -9,13 +9,6 @@ GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
 
    [完整更新记录](https://github.com/GduDeveloper/Mobile-SDK/blob/master/document/UPDATE_VERSION.md)
 
-### V1.0.23 (2023/01/10)
-
-*   添加环绕和跟随云台角度设置
-*   解决小双光云台分屏失败问题
-*   修改环绕跟随中的问题
-
-
 ## SDK集成
 ### 添加依赖文件
 ~~~xml
