@@ -25,9 +25,12 @@ import java.text.DecimalFormat;
 
 public class MediaDetailActivity extends Activity {
 
+
     private ActivityMediaDetailBinding viewBinding;
     private Handler handler;
     private String path = "";
+
+
 
     DecimalFormat format = new DecimalFormat("#0.00");
 
@@ -57,6 +60,11 @@ public class MediaDetailActivity extends Activity {
         viewBinding.tvGetPreview.setOnClickListener(listener);
         viewBinding.tvGetRaw.setOnClickListener(listener);
         viewBinding.tvGetVideo.setOnClickListener(listener);
+//
+//        viewBinding.tvVideoPlay.setOnClickListener(listener);
+//        viewBinding.tvVideoPlayPause.setOnClickListener(listener);
+//        viewBinding.tvVideoPlaySeek.setOnClickListener(listener);
+//        viewBinding.tvVideoPlayStop.setOnClickListener(listener);
     }
 
     private void initData() {
@@ -73,6 +81,7 @@ public class MediaDetailActivity extends Activity {
         public void onClick(View view) {
 
             switch (view.getId()) {
+
                 case R.id.tv_get_thumb:
                     getImageThumb();
                     break;
@@ -99,7 +108,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getRawImage(path, "", new FileDownCallback.OnMediaFileCallBack() {
+        manager.getRawImage(path, "ddd", new FileDownCallback.OnMediaFileCallBack() {
             @Override
             public void onStart() {
 
@@ -125,19 +134,17 @@ public class MediaDetailActivity extends Activity {
             }
 
             @Override
-            public void onSuccess(Bitmap result, String path) {
+            public void onSuccess(String result) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d("ImagePath ", "path = " + path);
-                            String localPath = "file://" + path;
-                            Glide.with(MediaDetailActivity.this).load(localPath).into(viewBinding.ivRaw);
+                            Log.d("ImagePath ", "path = " + result);
+                            Glide.with(MediaDetailActivity.this).load(result).into(viewBinding.ivRaw);
                         }
                     });
                 }
             }
-
 
             @Override
             public void onFail(GDUError error) {
@@ -156,19 +163,14 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getPreview(path, "", new FileDownCallback.OnMediaFileCallBack() {
+        manager.getPreview(path, "", new FileDownCallback.OnMediaImageCallBack() {
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
-
-            }
-
-            @Override
-            public void onSuccess(Bitmap bitmap, String path) {
+            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
 
                 if (handler != null) {
                     handler.post(new Runnable() {
@@ -205,7 +207,7 @@ public class MediaDetailActivity extends Activity {
             toastText("飞行器未连接");
             return;
         }
-        manager.getThumbnail(path, "",new FileDownCallback.OnMediaFileCallBack() {
+        manager.getThumbnail(path, "",new FileDownCallback.OnMediaImageCallBack() {
 
 
             @Override
@@ -214,19 +216,7 @@ public class MediaDetailActivity extends Activity {
             }
 
             @Override
-            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
-
-            }
-
-
-
-            @Override
-            public void onProgress(long total, long current) {
-
-            }
-
-            @Override
-            public void onSuccess(Bitmap bitmap, String s) {
+            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -235,6 +225,14 @@ public class MediaDetailActivity extends Activity {
                         }
                     });
                 }
+
+            }
+
+
+
+            @Override
+            public void onProgress(long total, long current) {
+
             }
 
 
