@@ -23,8 +23,6 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.adapter.MediaListAdapter;
 import com.gdu.demo.databinding.ActivityMediaTestBinding;
-import com.gdu.demo.mediatest.MediaDetailActivity;
-import com.gdu.demo.mediatest.MediaVideoPlayActivity;
 import com.gdu.media.MediaFile;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.GDUMediaManager;
@@ -44,13 +42,6 @@ public class MediaTestActivity extends Activity {
     private Handler handler;
 
     private MediaListAdapter adapter;
-
-    private int showVideoType = 1;
-
-
-    private String path = "/home/zc/project/payload_SDK/samples/sample_c/module_sample/camera_emu/media_file/PSDK_0003_ORG.jpg";
-
-    private String videoPath = "/home/zc/project/payload_SDK/samples/sample_c/module_sample/camera_emu/media_file/PSDK_0004_ORG.mp4";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,15 +70,6 @@ public class MediaTestActivity extends Activity {
         viewBinding.tvEnterDownModel.setOnClickListener(listener);
         viewBinding.tvRefresh.setOnClickListener(listener);
         viewBinding.tvGetList.setOnClickListener(listener);
-        viewBinding.tvGetSmall.setOnClickListener(listener);
-        viewBinding.tvGetIcon.setOnClickListener(listener);
-        viewBinding.tvGetRaw.setOnClickListener(listener);
-        viewBinding.tvVideoPlay.setOnClickListener(listener);
-        viewBinding.tvTestFile.setOnClickListener(listener);
-
-        viewBinding.tvVideoPlayPause.setOnClickListener(listener);
-        viewBinding.tvVideoPlayStop.setOnClickListener(listener);
-        viewBinding.tvVideoPlaySeek.setOnClickListener(listener);
 
         adapter = new MediaListAdapter();
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
@@ -106,14 +88,10 @@ public class MediaTestActivity extends Activity {
                 if (bean.getPath().toLowerCase().endsWith(".mp4") || bean.getPath().toLowerCase().endsWith(".h264")) {
                     intent = new Intent(MediaTestActivity.this, MediaVideoPlayActivity.class);
                     intent.putExtra("path", bean.getPath());
-                    intent.putExtra("type", showVideoType);
                     intent.putExtra("duration", bean.getDuration());
                 } else {
                     intent = new Intent(MediaTestActivity.this, MediaDetailActivity.class);
                     intent.putExtra("path", bean.getPath());
-                    intent.putExtra("raw", bean.getPath());
-                    intent.putExtra("thum", bean.getPath());
-                    intent.putExtra("preview", bean.getPath());
                 }
                 startActivity(intent);
             }
@@ -132,22 +110,15 @@ public class MediaTestActivity extends Activity {
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-
             switch (view.getId()) {
                 case R.id.tv_enter_down_model:
                     enterDownModel();
                     break;
                 case R.id.tv_refresh:
                     refreshList();
-
                     break;
                 case R.id.tv_get_list:
                     getListFile();
-                    break;
-                case R.id.tv_test_file:
-                    Intent intent = new Intent(MediaTestActivity.this, MediaVideoPlayActivity.class);
-                    intent.putExtra("path", videoPath);
-                    startActivity(intent);
                     break;
                 default:
                     break;
@@ -220,7 +191,6 @@ public class MediaTestActivity extends Activity {
                             }
                             adapter.setNewInstance(list);
                             getThum(list, 0);
-                            showVideoType = 1;
                         }
                     });
                 }
@@ -248,14 +218,24 @@ public class MediaTestActivity extends Activity {
             return;
         }
         String path = mediaFiles.get(index).getPath();
-        manager.getThumbnail(path,"", new FileDownCallback.OnMediaImageCallBack() {
+        manager.getThumbnail(path,"", new FileDownCallback.OnMediaFileCallBack() {
             @Override
             public void onStart() {
 
             }
 
             @Override
-            public void onGetMediaImage(Bitmap bitmap, byte[] bytes) {
+            public void onRealtimeDataUpdate(byte[] bytes, long l, boolean b) {
+
+            }
+
+            @Override
+            public void onProgress(long l, long l1) {
+
+            }
+
+            @Override
+            public void onSuccess(Bitmap bitmap, String path) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -271,10 +251,6 @@ public class MediaTestActivity extends Activity {
                 }
             }
 
-            @Override
-            public void onProgress(long l, long l1) {
-
-            }
             @Override
             public void onFail(GDUError gduError) {
 
