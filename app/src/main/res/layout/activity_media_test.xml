@@ -25,15 +25,6 @@
             android:text="进入下载模式"
             android:textSize="13sp" />
 
-        <TextView
-            android:id="@+id/tv_refresh"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="刷新数据"
-            android:textSize="13sp" />
 
         <TextView
             android:id="@+id/tv_get_list"
@@ -43,107 +34,6 @@
             android:background="@color/colorAccent"
             android:gravity="center"
             android:text="获取文件列表"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_test_file"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="测试路径"
-            android:textSize="13sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:id="@+id/tv_get_small"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="获取缩略图"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_get_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="获取预览图"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_get_raw"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="获取原图"
-            android:textSize="13sp" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginLeft="20dp"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/tv_video_play"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="开始视频回放"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_video_play_pause"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="暂停视频回放"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_video_play_stop"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="停止视频"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/tv_video_play_seek"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorAccent"
-            android:gravity="center"
-            android:text="跳转进度"
             android:textSize="13sp" />
 
     </LinearLayout>

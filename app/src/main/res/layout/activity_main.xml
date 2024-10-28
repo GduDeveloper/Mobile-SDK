@@ -5,29 +5,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <TextView android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="GDU Api Demo" />
 
+    <TextView
+        android:id="@+id/tv_connect_state"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="飞行器未连接"
+        android:textSize="20sp"
+        android:textColor="@color/color_000000"/>
+
+
     <Button
         android:id="@+id/register_app_button"
-        android:text="Register APP"
+        android:text="注册连接"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="80dp"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"/>
 
     <Button
         android:id="@+id/open_button"
-        android:text="Open"
+        android:text="demo测试"
         android:enabled="false"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:textSize="16sp"
+        android:layout_height="80dp"/>
 
     <Button
         android:id="@+id/pairing_button"
-        android:text="pairing"
+        android:text="对频"
         android:enabled="false"
+        android:textSize="16sp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_height="80dp"/>
 
     <TextView
         android:id="@+id/version_textview"

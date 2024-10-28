@@ -68,7 +68,6 @@ public class MediaTestActivity extends Activity {
         textView.setText("媒体文件测试");
 
         viewBinding.tvEnterDownModel.setOnClickListener(listener);
-        viewBinding.tvRefresh.setOnClickListener(listener);
         viewBinding.tvGetList.setOnClickListener(listener);
 
         adapter = new MediaListAdapter();
@@ -107,24 +106,18 @@ public class MediaTestActivity extends Activity {
     }
 
 
-    private View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.tv_enter_down_model:
-                    enterDownModel();
-                    break;
-                case R.id.tv_refresh:
-                    refreshList();
-                    break;
-                case R.id.tv_get_list:
-                    getListFile();
-                    break;
-                default:
-                    break;
-            }
-
+    private View.OnClickListener listener = view -> {
+        switch (view.getId()) {
+            case R.id.tv_enter_down_model:
+                enterDownModel();
+                break;
+            case R.id.tv_get_list:
+                getListFile();
+                break;
+            default:
+                break;
         }
+
     };
 
 
@@ -134,14 +127,11 @@ public class MediaTestActivity extends Activity {
             toastText("云台未连接");
             return;
         }
-        manager.enable(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(GDUError var1) {
-                if (var1 == null) {
-                    toastText("开启成功");
-                } else {
-                    toastText("开启失败");
-                }
+        manager.enable(var1 -> {
+            if (var1 == null) {
+                toastText("开启成功");
+            } else {
+                toastText("开启失败");
             }
         });
     }
@@ -152,14 +142,11 @@ public class MediaTestActivity extends Activity {
             return;
         }
 
-        manager.refreshMediaList(new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(GDUError var1) {
-                if (var1 == null) {
-                    toastText("刷新成功");
-                } else {
-                    toastText("刷新失败");
-                }
+        manager.refreshMediaList(var1 -> {
+            if (var1 == null) {
+                toastText("刷新成功");
+            } else {
+                toastText("刷新失败");
             }
         });
     }
@@ -275,11 +262,8 @@ public class MediaTestActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if (manager != null) {
-            manager.disable(new CommonCallbacks.CompletionCallback() {
-                @Override
-                public void onResult(GDUError gduError) {
+            manager.disable(gduError -> {
 
-                }
             });
         }
     }

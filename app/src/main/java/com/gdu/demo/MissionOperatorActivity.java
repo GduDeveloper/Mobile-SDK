@@ -129,6 +129,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                                 mPlaneMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
                                 mPlaneMarker = aMap.addMarker(mPlaneMarkerOptions);
                                 mPlaneMarker.setRotateAngle(-(float) flightControllerState.getAttitude().yaw);
+                                aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 16));
                             }
                             flyInfoView.setText(flightControllerState.getString());
                         }
@@ -150,7 +151,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         mHotpointMissionOperator.addListener(new HotpointMissionOperatorListener() {
             @Override
             public void onExecutionUpdate(HotpointMissionEvent paramHotpointMissionEvent) {
-                toast("环绕状态 " + paramHotpointMissionEvent);
+                toast("环绕状态 " + paramHotpointMissionEvent.getCurrentState().getName());
             }
 
             @Override
@@ -160,14 +161,14 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 
             @Override
             public void onExecutionFinish(GDUError error) {
-                toast("环绕状态 结束 " + error);
+                toast("环绕状态 结束 " + error.getDescription());
             }
         });
 
         mFollowMeMissionOperator.addListener(new FollowMeMissionOperatorListener() {
             @Override
             public void onExecutionUpdate(FollowMeMissionEvent followMeMissionEvent) {
-                toast("跟随状态 " + followMeMissionEvent);
+                toast("跟随状态 " + followMeMissionEvent.getCurrentState());
             }
 
             @Override
@@ -310,6 +311,28 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                         } else {
                             toast("开始环绕发送失败");
                         }
+                    }
+                });
+                break;
+
+            case R.id.pause_hotpoint_button:
+                mHotpointMissionOperator.pause(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("暂停环绕发送成功");
+                        } else {
+                            toast("暂停环绕发送失败");
+                        }
+                    }
+                });
+                break;
+
+            case R.id.continue_hotpoint_button:
+                mHotpointMissionOperator.resume(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError gduError) {
+
                     }
                 });
                 break;

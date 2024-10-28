@@ -14,7 +14,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gdu.common.error.GDUError;
-import com.gdu.config.GlobalConfig;
 import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
@@ -35,6 +34,7 @@ public class MainActivity extends Activity {
     private Button mRegisterAppButton;
     private Button mOpenButton;
     private Button mPairingButton;
+    private TextView tvConnectState;
     private BaseProduct mProduct;
 
 
@@ -53,10 +53,9 @@ public class MainActivity extends Activity {
         mRegisterAppButton = findViewById(R.id.register_app_button);
         mOpenButton = findViewById(R.id.open_button);
         mPairingButton = findViewById(R.id.pairing_button);
+        tvConnectState = findViewById(R.id.tv_connect_state);
         ((TextView) findViewById(R.id.version_textview)).setText(getResources().getString(R.string.sdk_version,
-                GDUSDKManager.getInstance().getSDKVersion(mContext)
-                        + " Debug:"
-                        + GlobalConfig.DEBUG));
+                GDUSDKManager.getInstance().getSDKVersion(mContext)));
     }
 
     private void initListener() {
@@ -166,9 +165,11 @@ public class MainActivity extends Activity {
                 @Override
                 public void run() {
                     if (mProduct.isConnected()) {
+                        tvConnectState.setText("飞行器已连接");
                         mOpenButton.setEnabled(true);
                         mPairingButton.setEnabled(false);
                     } else {
+                        tvConnectState.setText("飞行器未连接");
                         mOpenButton.setEnabled(false);
                     }
                 }

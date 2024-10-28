@@ -2,6 +2,8 @@ package com.gdu.demo;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.CoordinateConverter;
 import com.amap.api.maps.LocationSource;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
@@ -220,6 +223,11 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16));
         mPlaneMarkerOptions = new MarkerOptions();
         mPlaneMarkerOptions.position(latLngs.get(0));
+
+        Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(),
+                R.mipmap.icon_plane).copy(Bitmap.Config.ARGB_8888, true);
+        mPlaneMarkerOptions.anchor(0.5f, 0.5f);
+        mPlaneMarkerOptions.icon(BitmapDescriptorFactory.fromBitmap(bitmap));
         mPlaneMarker = aMap.addMarker(mPlaneMarkerOptions);
         aMap.addPolyline(new PolylineOptions().addAll(latLngs).width(width).color(color));
     }
