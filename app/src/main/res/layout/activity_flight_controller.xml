@@ -177,7 +177,40 @@
                     android:onClick="onClick"
                     android:id="@+id/cancelLowPowerBack"
                     android:layout_height="wrap_content" />
+
+
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="设置水平速度飞行"
+                    android:onClick="onClick"
+                    android:id="@+id/set_horizontal_speed"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="停止水平速度飞行"
+                    android:onClick="onClick"
+                    android:id="@+id/cancel_horizontal_speed"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="设置机头角度"
+                    android:onClick="onClick"
+                    android:id="@+id/set_drone_angle"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:orientation="horizontal"

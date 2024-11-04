@@ -47,7 +47,7 @@ dependencies {
     api "io.reactivex.rxjava3:rxandroid:3.0.2"
     api "com.github.liujingxing.rxlife:rxlife-rxjava3:2.2.1"
 
-    api  files('libs/GduLibrary-2.0.52.jar')
+    api  files('libs/GduLibrary-2.0.53.jar')
 
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.yolanda.nohttp:nohttp:1.0.3'

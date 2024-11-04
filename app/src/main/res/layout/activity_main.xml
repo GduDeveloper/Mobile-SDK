@@ -54,5 +54,24 @@
         android:layout_marginTop="15dp"
         android:text="@string/sdk_version"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="15dp" />
+        android:textSize="13sp" />
+
+
+    <TextView
+        android:id="@+id/tv_attention_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/color_c40000"
+        android:layout_marginTop="3dp"
+        android:text="注意事项："/>
+
+    <TextView
+        android:id="@+id/tv_attention"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:layout_marginLeft="5dp"
+        android:textColor="@color/color_c40000"
+        android:text="1 遥控器开机时请拔掉充电线  \n2 MSDK demo和GDU Flight App 不可同时运行使用"/>
 </LinearLayout>

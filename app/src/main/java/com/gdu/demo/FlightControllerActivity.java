@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import com.gdu.common.error.GDUError;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
+import com.gdu.gimbal.RotationMode;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
@@ -291,7 +292,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     private void startTakeoff(){
-        mGDUFlightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
+        // 1.5m
+        mGDUFlightController.startTakeoff(150, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError var1) {
                 if (var1 == null) {
@@ -522,6 +524,24 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.start_take_off_button:
                 startTakeoff();
                 break;
+
+            case R.id.set_horizontal_speed:
+                // 5m/s
+                mGDUFlightController.setHorizontalSpeed((short) 500, (short) 0);
+                break;
+            case R.id.cancel_horizontal_speed:
+                // 停止水平速度
+                mGDUFlightController.stopHorizontalSpeed();
+                break;
+            case R.id.set_drone_angle:
+                mGDUFlightController.changYawAngular(RotationMode.ABSOLUTE_ANGLE, 90, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError gduError) {
+
+                    }
+                });
+                break;
+
             case R.id.start_landing_button:
                 startLanding();
                 break;
