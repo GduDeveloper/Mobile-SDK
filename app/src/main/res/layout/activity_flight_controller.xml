@@ -203,6 +203,22 @@
 
                 <Button
                     android:layout_width="wrap_content"
+                    android:text="设置垂直速度"
+                    android:onClick="onClick"
+                    android:id="@+id/set_vertical_speed"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="停止垂直速度"
+                    android:onClick="onClick"
+                    android:id="@+id/cancel_vertical_speed"
+                    android:layout_height="wrap_content" />
+
+
+                <Button
+                    android:layout_width="wrap_content"
                     android:text="设置机头角度"
                     android:onClick="onClick"
                     android:id="@+id/set_drone_angle"

@@ -533,6 +533,14 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 // 停止水平速度
                 mGDUFlightController.stopHorizontalSpeed();
                 break;
+                // 垂直速度 1m/s
+            case R.id.set_vertical_speed:
+                mGDUFlightController.setVerticalSpeed((short) -100);
+                break;
+            case R.id.cancel_vertical_speed:
+                // 取消垂直速度
+                mGDUFlightController.stopVerticalSpeed();
+                break;
             case R.id.set_drone_angle:
                 mGDUFlightController.changYawAngular(RotationMode.ABSOLUTE_ANGLE, 90, new CommonCallbacks.CompletionCallback() {
                     @Override
