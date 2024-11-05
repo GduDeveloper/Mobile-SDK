@@ -535,7 +535,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 break;
                 // 垂直速度 1m/s
             case R.id.set_vertical_speed:
-                mGDUFlightController.setVerticalSpeed((short) -100);
+                mGDUFlightController.setVerticalSpeed((short) 100);
                 break;
             case R.id.cancel_vertical_speed:
                 // 取消垂直速度
