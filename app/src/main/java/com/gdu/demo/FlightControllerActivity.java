@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 
 import com.gdu.common.error.GDUError;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.drone.Model;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.rtk.PositioningSolution;
@@ -603,7 +604,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 startActivity(intentVirtualStick);
                 break;
             case R.id.get_aircraft_button:
-                BaseProduct.Model model = SdkDemoApplication.getAircraftInstance().getModel();
+                Model model = SdkDemoApplication.getAircraftInstance().getModel();
                 mAircraftModelTextview.setText(model.name());
                 break;
             case R.id.get_aircraft_sn_button:

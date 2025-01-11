@@ -13,10 +13,20 @@
     <TextView
         android:id="@+id/tv_connect_state"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
         android:gravity="center"
         android:text="飞行器未连接"
+        android:textSize="20sp"
+        android:textColor="@color/color_000000"/>
+
+    <TextView
+        android:id="@+id/tv_gimbal_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="云台未连接"
         android:textSize="20sp"
         android:textColor="@color/color_000000"/>
 

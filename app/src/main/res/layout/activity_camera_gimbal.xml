@@ -201,6 +201,8 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+
+
     <LinearLayout
         android:layout_below="@+id/gimbal_layout"
         android:orientation="horizontal"
@@ -238,6 +240,7 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/camera_info_layout"
         android:layout_above="@+id/gimbal_info_layout"
@@ -263,6 +266,15 @@
             android:textSize="10sp" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_support_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_above="@id/camera_info_layout"
+        android:textColor="@color/color_c40000"/>
+
+
     <LinearLayout
         android:id="@+id/gimbal_info_layout"
         android:layout_alignParentBottom="true"
@@ -284,4 +296,5 @@
         android:layout_alignParentBottom="true"
         android:layout_width="384dp"
         android:layout_height="216dp"/>
+
 </RelativeLayout>

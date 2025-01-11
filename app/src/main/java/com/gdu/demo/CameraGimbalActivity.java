@@ -34,6 +34,8 @@ import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
 
+import java.util.List;
+
 /**
  *
  * 云台和相机测试
@@ -60,6 +62,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     private ImageProcessingManager mImageProcessingManager;
     private ImageView mYUVImageView;
 
+    private TextView tv_support_mode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,23 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             toast("云台未识别，相关功能可能出现异常");
             return;
         }
+        List<SettingsDefinitions.DisplayMode> list = mGDUGimbal.getSupportDisplayMode();
+        String supportMode = "";
+        for (int i = 0; i < list.size(); i++) {
+            SettingsDefinitions.DisplayMode mode = list.get(i);
+            if (mode == SettingsDefinitions.DisplayMode.THERMAL_ONLY) {
+                supportMode += "红外;";
+            } else if (mode == SettingsDefinitions.DisplayMode.VISUAL_ONLY) {
+                supportMode += "可见光;";
+            } else if (mode == SettingsDefinitions.DisplayMode.WAL) {
+                supportMode += "广角;";
+            } else if (mode == SettingsDefinitions.DisplayMode.ZL) {
+                supportMode += "变焦;";
+            } else if (mode == SettingsDefinitions.DisplayMode.PIP) {
+                supportMode += "分屏;";
+            }
+        }
+        tv_support_mode.setText("支持光类型：" + supportMode);
         mGDUGimbal.setStateCallback(new GimbalState.Callback() {
             @Override
             public void onUpdate(GimbalState state) {
@@ -139,6 +159,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     show(mStorageInfoTextView, sb.toString());
                 }
             });
+
         }
     }
 
@@ -157,7 +178,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
         mYUVImageView = findViewById(R.id.yuv_imageview);
         mGimbalStateTextView = (TextView) findViewById(R.id.gimbal_info_textview);
-
+        tv_support_mode = findViewById(R.id.tv_support_mode);
         if (mGduPlayView != null) {
             mGduPlayView.setSurfaceTextureListener(this);
             videoDataListener = new VideoFeeder.VideoDataListener() {

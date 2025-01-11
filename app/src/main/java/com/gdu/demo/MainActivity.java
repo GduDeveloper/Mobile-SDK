@@ -13,10 +13,16 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.gdu.api.gimbal.Gimbal;
 import com.gdu.common.error.GDUError;
+import com.gdu.drone.DroneInfo;
+import com.gdu.drone.GimbalType;
+import com.gdu.drone.Model;
 import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
+import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.manager.GDUSDKInitEvent;
 import com.gdu.sdk.manager.GDUSDKManager;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
@@ -36,6 +42,7 @@ public class MainActivity extends Activity {
     private Button mPairingButton;
     private TextView tvConnectState;
     private BaseProduct mProduct;
+    private TextView tv_gimbal_type;
 
 
     @Override
@@ -54,6 +61,7 @@ public class MainActivity extends Activity {
         mOpenButton = findViewById(R.id.open_button);
         mPairingButton = findViewById(R.id.pairing_button);
         tvConnectState = findViewById(R.id.tv_connect_state);
+        tv_gimbal_type = findViewById(R.id.tv_gimbal_type);
         ((TextView) findViewById(R.id.version_textview)).setText(getResources().getString(R.string.sdk_version,
                 GDUSDKManager.getInstance().getSDKVersion(mContext)));
     }
@@ -164,10 +172,12 @@ public class MainActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    Model model = mProduct.getModel();
                     if (mProduct.isConnected()) {
-                        tvConnectState.setText("飞行器已连接");
+                        tvConnectState.setText("飞行器已连接 型号：" + model.name());
                         mOpenButton.setEnabled(true);
                         mPairingButton.setEnabled(false);
+
                     } else {
                         tvConnectState.setText("飞行器未连接");
                         mOpenButton.setEnabled(false);
@@ -185,6 +195,20 @@ public class MainActivity extends Activity {
                     mPairingButton.setEnabled(true);
                 }
             });
+        }
+
+        if (component instanceof GDUGimbal) {
+            GDUGimbal gimbal = (GDUGimbal) component;
+            GimbalType gimbalType = gimbal.getGimbalType();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tv_gimbal_type.setText("云台类型："+gimbalType.getValue());
+
+                }
+            });
+
         }
     }
 
