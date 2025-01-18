@@ -5,4 +5,8 @@
     <color name="colorAccent">#D81B60</color>
     <color name="color_000000">#000000</color>
     <color name="color_c40000" >#c40000</color>
+    <color name="color_ffffff">#ffffff</color>
+    <color name="color_33ffffff">#33ffffff</color>
+    <color name="color_ff0000">#ff0000</color>
+    <color name="color_FFC600">#FFC600</color>
 </resources>

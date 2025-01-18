@@ -50,6 +50,9 @@
         <activity android:name=".mediatest.MediaDetailActivity" />
         <activity android:name=".mediatest.MediaVideoPlayActivity" />
         <activity android:name=".RTKActivity" />
+        <activity android:name=".FlightActivity"
+            android:theme="@style/FullScreenAppTheme"
+            />
     </application>
 
 </manifest>
