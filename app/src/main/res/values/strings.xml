@@ -2,4 +2,7 @@
     <string name="app_name">GduSDKDemo</string>
     <string name="sdk_version">GDU SDK Version: %1$s</string>
     <string name="Label_N_A">N/A</string>
+    <string name="ux_battery_percent">%1$d%%</string>
+    <string name="ux_battery_percent_str">%1$s%%</string>
+    <string name="ux_battery_voltage_unit">%.2f V</string>
 </resources>

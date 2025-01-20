@@ -1,4 +1,4 @@
-package com.gdu.demo.widget;
+package com.gdu.demo.widgetlist.signal;
 
 import android.content.Context;
 import android.graphics.Canvas;

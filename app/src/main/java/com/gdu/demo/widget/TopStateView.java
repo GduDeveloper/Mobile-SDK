@@ -1,26 +1,18 @@
 package com.gdu.demo.widget;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 
 import com.gdu.common.ConnStateEnum;
 import com.gdu.common.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
-import com.gdu.util.logs.RonLog2File;
-import com.rxjava.rxlife.RxLife;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -29,8 +21,6 @@ import io.reactivex.rxjava3.disposables.Disposable;
 
 public class TopStateView  extends ConstraintLayout {
 
-
-    private Context context;
     private TopStateViewLayoutBinding binding;
     private OnClickCallBack clickCallBack;
     private Disposable disposable;
@@ -45,7 +35,6 @@ public class TopStateView  extends ConstraintLayout {
 
     public TopStateView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
         initView(context);
         initData();
     }
@@ -72,104 +61,18 @@ public class TopStateView  extends ConstraintLayout {
     private void updateState() {
         Log.d("TopStateView", "TopStateView  update");
 
-        // 更新遥控器电池
-        updateRcBattery();
-        //  更新飞机电量
-        updateAircraftBattery();
         // 更新遥控器图传信号
-        updateRcImageTransSignal();
+//        updateRcImageTransSignal();
         // 更新飞机图传信号
-        updateAircraftImageTransSignal();
+//        updateAircraftImageTransSignal();
         // 更新避障开关
         updateObstacleAvoidance();
         // 更新RTK
-        updateRtkState();
+//        updateRtkState();
         // 更新解锁状态
         updateAircraftLockState();
         // 更新飞行模式
         updateFlyMode();
-    }
-
-
-    private void updateRcBattery() {
-        if (GlobalVariable.sRCConnState == ConnStateEnum.Conn_Sucess) {
-            int battery = GlobalVariable.power_rc;
-            binding.tvElectricityControl.setText(battery + "%");
-            if (battery <= 20) {
-                binding.tvElectricityControl.setTextColor(ContextCompat.getColor(context, R.color.color_ff0000));
-                binding.ivRemoteRc.setImageResource(R.drawable.top_remot_rc_low);
-            } else {
-                binding.tvElectricityControl.setTextColor(ContextCompat.getColor(context, R.color.color_ffffff));
-                binding.ivRemoteRc.setImageResource(R.drawable.top_remot_rc);
-            }
-        } else {
-            binding.tvElectricityControl.setText(context.getString(R.string.Label_N_A));
-        }
-
-    }
-    private void updateAircraftBattery() {
-
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-            binding.ivAircraft.setImageResource(R.drawable.top_aircraft_electricity);
-            if(binding.ivAircraft.getVisibility() == View.INVISIBLE) {
-                binding.ivAircraft.setVisibility(View.VISIBLE);
-            }
-            binding.tvAircraft.setTextColor(ContextCompat.getColor(context, R.color.color_ffffff));
-            binding.tvAircraftEnergyV.setTextColor(ContextCompat.getColor(context, R.color.color_ffffff));
-            binding.tvAircraftEnergyV.setBackgroundResource(R.drawable.stroke_ffffff_radius_2_bg);
-            binding.tvAircraft.setText(context.getString(R.string.Label_N_A));
-            binding.tvAircraftEnergyV.setText(context.getString(R.string.Label_N_A));
-        } else {
-            int dronePowerPercent = GlobalVariable.power_drone;
-            int dronePowerVoltage = GlobalVariable.flight_voltage;
-            binding.tvAircraft.setText(dronePowerPercent + "%");
-            BigDecimal mBigDecimal = new BigDecimal(dronePowerVoltage / 1000f);
-            BigDecimal voltage = mBigDecimal.setScale(1, RoundingMode.HALF_UP);
-            binding.tvAircraftEnergyV.setText(voltage + "V");
-
-            switch (GlobalVariable.batteryAbnormalCode) {
-                case 1:
-                case 4:
-                    binding.ivAircraft.setImageResource(R.drawable.top_aircraft_electricity_low);
-                    binding.tvAircraft.setTextColor(ContextCompat.getColor(context, R.color.color_ff0000));
-                    binding.tvAircraftEnergyV.setTextColor(ContextCompat.getColor(context, R.color.color_ff0000));
-                    binding.tvAircraftEnergyV.setBackgroundResource(R.drawable.stroke_ef4e22_radius_2_bg);
-                    break;
-                case 2:
-                    binding.ivAircraft.setImageResource(R.drawable.top_aircraft_electricity_low_one);
-                    binding.tvAircraft.setTextColor(ContextCompat.getColor(context, R.color.color_FFC600));
-                    binding.tvAircraftEnergyV.setTextColor(ContextCompat.getColor(context, R.color.color_FFC600));
-                    binding.tvAircraftEnergyV.setBackgroundResource(R.drawable.stroke_feb431_radius_2_bg);
-                    break;
-
-                default:
-                    binding.ivAircraft.setImageResource(R.drawable.top_aircraft_electricity);
-                    if (binding.ivAircraft.getVisibility() == View.INVISIBLE) {
-                        binding.ivAircraft.setVisibility(View.VISIBLE);
-                    }
-                    binding.tvAircraft.setTextColor(ContextCompat.getColor(context, R.color.color_ffffff));
-                    binding.tvAircraftEnergyV.setTextColor(ContextCompat.getColor(context, R.color.color_ffffff));
-                    binding.tvAircraftEnergyV.setBackgroundResource(R.drawable.stroke_ffffff_radius_2_bg);
-                    break;
-            }
-        }
-    }
-
-    private void updateRcImageTransSignal() {
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-            binding.tvGtQuality.setMCSQuality(-1);
-            return;
-        }
-        binding.tvGtQuality.setMCSQuality(GlobalVariable.arlink_grdMcs);
-
-    }
-
-    private void updateAircraftImageTransSignal() {
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-            binding.tvStQuality.setMCSQuality(-1);
-            return;
-        }
-        binding.tvStQuality.setMCSQuality(GlobalVariable.arlink_skyMcs);
     }
 
     private void updateObstacleAvoidance() {
@@ -190,19 +93,6 @@ public class TopStateView  extends ConstraintLayout {
         } else {
             binding.ivVision.setSelected(false);
         }
-    }
-
-    private void updateRtkState() {
-
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-            binding.tvRtk1Satellite.setText(context.getString(R.string.Label_N_A));
-            binding.tvRtk1Status.setText(context.getString(R.string.Label_N_A));
-            return;
-        }
-        byte currentSatellite = GlobalVariable.satellite_drone;
-        String tkStatus = GlobalVariable.rtk_model.getRtk1_status();
-        binding.tvRtk1Satellite.setText(currentSatellite+"");
-        binding.tvRtk1Status.setText(tkStatus);
     }
 
     private void updateAircraftLockState() {

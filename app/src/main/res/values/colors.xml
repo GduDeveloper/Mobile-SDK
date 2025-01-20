@@ -9,4 +9,7 @@
     <color name="color_33ffffff">#33ffffff</color>
     <color name="color_ff0000">#ff0000</color>
     <color name="color_FFC600">#FFC600</color>
+
+
+    <color name="ux_color_444444">#444444</color>
 </resources>

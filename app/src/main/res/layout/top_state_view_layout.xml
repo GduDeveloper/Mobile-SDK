@@ -24,9 +24,9 @@
         android:id="@+id/iv_set_menu"
         android:layout_width="60dp"
         android:layout_height="40dp"
-        android:paddingLeft="7dp"
+        android:paddingStart="7dp"
         android:paddingTop="7dp"
-        android:paddingRight="18dp"
+        android:paddingEnd="18dp"
         android:paddingBottom="7dp"
         android:scaleType="fitCenter"
         android:src="@drawable/selector_zorro_set"
@@ -39,7 +39,7 @@
         android:id="@+id/iv_remote_rc1"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:scaleType="fitCenter"
         android:src="@drawable/top_remot_rc1"
         android:visibility="gone"
@@ -52,7 +52,7 @@
         android:id="@+id/tv_electricity_control1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
         android:text="@string/Label_N_A"
         android:textColor="#ffffff"
         android:textSize="12sp"
@@ -64,186 +64,67 @@
         android:visibility="gone"
         app:strokeWidth="1dp" />
 
-    <!--遥控器电量-->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_remote_rc"
-        android:layout_width="26dp"
+    <com.gdu.demo.widgetlist.battery.TerminalBatteryWidget
+        android:id="@+id/status_terminal_battery"
+        android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:layout_marginRight="30dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/top_remot_rc"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="2dp"
         app:layout_constraintRight_toLeftOf="@id/iv_remote_rc1"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--遥控器电量百分比-->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_electricity_control"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="1dp"
-        android:text="@string/Label_N_A"
-        android:textColor="#ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="@id/iv_remote_rc"
-        app:layout_constraintBottom_toBottomOf="@id/iv_remote_rc"
-        app:layout_constraintLeft_toRightOf="@id/iv_remote_rc"
-        app:strokeColor="#FF3C3C3C"
-        app:strokeWidth="1dp" />
-
-    <!--飞机电量-->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_aircraft"
-        android:layout_width="26dp"
-        android:layout_height="26dp"
-        android:layout_marginRight="34dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/top_aircraft_electricity"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/iv_remote_rc"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <!--飞机电量百分比-->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_aircraft"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:text="@string/Label_N_A"
-        android:textColor="#ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/tv_aircraft_energy_v"
-        app:layout_constraintLeft_toLeftOf="@id/tv_aircraft_energy_v"
-        app:layout_constraintRight_toRightOf="@id/tv_aircraft_energy_v"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        app:strokeColor="#FF3C3C3C"
-        app:strokeWidth="1dp" />
-
-    <!--飞机电量百电压-->
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_aircraft_energy_v"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <!--飞机电量-->
+    <com.gdu.demo.widgetlist.battery.BatteryWidget
+        android:id="@+id/status_flight_battery"
+        app:layout_constraintRight_toLeftOf="@id/status_terminal_battery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@drawable/stroke_ffffff_radius_2_bg"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
-        android:text="@string/Label_N_A"
-        android:textColor="#ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/iv_aircraft"
-        app:layout_constraintTop_toBottomOf="@id/tv_aircraft"
-        app:strokeColor="#FF3C3C3C"
-        app:strokeWidth="1dp" />
+        android:layout_marginEnd="6dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <!--遥控器信号-->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_gt"
-        android:layout_width="26dp"
+    <com.gdu.demo.widgetlist.signal.GroundSignalWidget
+        android:id="@+id/grand_signal"
+        android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginRight="32dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/icon_gt"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintRight_toLeftOf="@id/status_flight_battery"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/iv_aircraft"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.gdu.demo.widget.SignalQuality
-        android:id="@+id/tv_gt_quality"
-        android:layout_width="26dp"
-        android:layout_height="24dp"
-        android:layout_marginBottom="2dp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_gt"
-        app:layout_constraintLeft_toRightOf="@id/iv_gt" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
     <!--飞机信号-->
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/iv_st"
-        android:layout_width="26dp"
+    <com.gdu.demo.widgetlist.signal.SkySignalWidget
+        android:id="@+id/sky_signal"
+        android:layout_width="wrap_content"
         android:layout_height="26dp"
-        android:layout_marginRight="30dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/hd_white"
-        app:layout_constraintRight_toLeftOf="@+id/iv_gt"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="6dp"
+        app:layout_constraintRight_toLeftOf="@id/grand_signal"
         app:layout_constraintBottom_toBottomOf="parent"
-     />
-
-    <com.gdu.demo.widget.SignalQuality
-        android:id="@+id/tv_st_quality"
-        android:layout_width="26dp"
-        android:layout_height="24dp"
-        android:layout_marginLeft="3dp"
-        app:layout_constraintBottom_toBottomOf="@id/iv_st"
-        app:layout_constraintLeft_toRightOf="@+id/iv_st"
-        app:layout_constraintTop_toTopOf="@id/iv_st" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <!--避障-->
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_vision"
         android:layout_width="26dp"
         android:layout_height="26dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/selector_vision_open"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/iv_st"
+        app:layout_constraintRight_toLeftOf="@id/sky_signal"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <!--RTK-->
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.gdu.demo.widgetlist.rtk.RTKWidget
         android:id="@+id/iv_satellite"
-        android:layout_width="36dp"
-        android:layout_height="26dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/top_satellite_electricity"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:layout_constraintRight_toLeftOf="@id/iv_vision"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginRight="40dp"/>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_rtk1_satellite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="@dimen/dp_10"
-        android:paddingLeft="2dp"
-        android:text="@string/Label_N_A"
-        android:textColor="@color/color_ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/tv_rtk1_status"
-        app:layout_constraintLeft_toRightOf="@id/iv_satellite"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed"
-        android:layout_marginRight="10dp"
-        app:strokeColor="#FF3C3C3C"
-        app:strokeWidth="1dp" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tv_rtk1_status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minWidth="@dimen/dp_10"
-        android:paddingLeft="2dp"
-        android:text="@string/Label_N_A"
-        android:textColor="@color/color_ffffff"
-        android:textSize="12sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="@+id/tv_rtk1_satellite"
-        app:layout_constraintTop_toBottomOf="@+id/tv_rtk1_satellite"
-        app:layout_goneMarginRight="@dimen/dp_10"
-        app:strokeColor="#FF3C3C3C"
-        app:strokeWidth="1dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginEnd="5dp"/>
 
     <!--是否锁定-->
     <androidx.appcompat.widget.AppCompatImageView
@@ -262,7 +143,7 @@
         android:id="@+id/tv_sport_mode"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
         android:text="P"
         android:textColor="@color/color_ffffff"
         android:textSize="24sp"
