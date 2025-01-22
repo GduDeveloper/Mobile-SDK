@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Environment;
 
 import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalConfig;
 import com.gdu.util.logs.RonLog;
 
 import java.io.File;
@@ -85,11 +84,9 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			} catch (InterruptedException e) {
 			}
 			// 结束所有Activity
-			if(!GlobalConfig.DEBUG) {
 				// 退出程序
 				android.os.Process.killProcess(android.os.Process.myPid());
 				System.exit(1);
-			}
 
 		}
 		

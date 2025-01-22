@@ -15,8 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
+import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaVideoBinding;

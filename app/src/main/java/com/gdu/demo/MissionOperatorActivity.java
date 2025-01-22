@@ -23,7 +23,6 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
-import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
 import com.gdu.common.mission.followme.FollowMeGimbalPitch;
 import com.gdu.common.mission.followme.FollowMeHeading;
@@ -36,6 +35,7 @@ import com.gdu.common.mission.hotpoint.HotpointMissionEvent;
 import com.gdu.common.mission.hotpoint.HotpointStartPoint;
 import com.gdu.common.mission.waypoint.Waypoint;
 import com.gdu.common.mission.waypoint.WaypointMission;
+import com.gdu.config.GlobalVariable;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.TapFlyState;
@@ -500,8 +500,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         } else {
             isSetDistanceAndHeightEnable = false;
         }
-        latitude = GlobalVariable.latitude;
-        longitude = GlobalVariable.longitude;
+//        latitude = GlobalVariable.latitude;
+//        longitude = GlobalVariable.longitude;
         FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, true, isSetDistanceAndHeightEnable, 15f,  isSetDistanceAndHeightEnable, 3, 0);
         mFollowMeMissionOperator.startMission(followMeMission, new CommonCallbacks.CompletionCallback() {
             @Override

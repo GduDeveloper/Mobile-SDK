@@ -1,7 +1,7 @@
 package com.gdu.demo.widgetlist.core.base.widget
 
-import com.gdu.common.ConnStateEnum
-import com.gdu.common.GlobalVariable
+import com.gdu.config.ConnStateEnum
+import com.gdu.config.GlobalVariable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope

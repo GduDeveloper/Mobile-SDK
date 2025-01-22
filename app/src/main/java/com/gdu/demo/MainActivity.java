@@ -17,7 +17,6 @@ import com.gdu.api.gimbal.Gimbal;
 import com.gdu.common.error.GDUError;
 import com.gdu.drone.DroneInfo;
 import com.gdu.drone.GimbalType;
-import com.gdu.drone.Model;
 import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
@@ -52,7 +51,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
-        RonLog.showLog(true);
+//        RonLog.showLog(true);
     }
 
 
@@ -172,7 +171,7 @@ public class MainActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Model model = mProduct.getModel();
+                    BaseProduct.Model model = mProduct.getModel();
                     if (mProduct.isConnected()) {
                         tvConnectState.setText("飞行器已连接 型号：" + model.name());
                         mOpenButton.setEnabled(true);
@@ -199,12 +198,12 @@ public class MainActivity extends Activity {
 
         if (component instanceof GDUGimbal) {
             GDUGimbal gimbal = (GDUGimbal) component;
-            GimbalType gimbalType = gimbal.getGimbalType();
+//            GimbalType gimbalType = gimbal.getGimbalType();
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tv_gimbal_type.setText("云台类型："+gimbalType.getValue());
+//                    tv_gimbal_type.setText("云台类型："+gimbalType.getValue());
 
                 }
             });

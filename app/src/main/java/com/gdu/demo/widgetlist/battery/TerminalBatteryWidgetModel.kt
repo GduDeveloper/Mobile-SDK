@@ -1,6 +1,6 @@
 package com.gdu.demo.widgetlist.battery
 
-import com.gdu.common.GlobalVariable
+import com.gdu.config.GlobalVariable
 import com.gdu.demo.widgetlist.battery.bean.BatteryState
 import com.gdu.demo.widgetlist.battery.bean.BatteryStatus
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel

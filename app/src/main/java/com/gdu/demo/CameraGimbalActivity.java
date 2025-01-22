@@ -34,6 +34,7 @@ import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -90,7 +91,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             toast("云台未识别，相关功能可能出现异常");
             return;
         }
-        List<SettingsDefinitions.DisplayMode> list = mGDUGimbal.getSupportDisplayMode();
+        List<SettingsDefinitions.DisplayMode> list = new ArrayList<>();
         String supportMode = "";
         for (int i = 0; i < list.size(); i++) {
             SettingsDefinitions.DisplayMode mode = list.get(i);

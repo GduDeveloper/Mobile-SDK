@@ -1,7 +1,6 @@
 package com.gdu.demo.widgetlist.battery
 
-import com.gdu.common.ConnStateEnum
-import com.gdu.common.GlobalVariable
+import com.gdu.config.GlobalVariable
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.widgetlist.battery.bean.BatteryState
 import com.gdu.demo.widgetlist.battery.bean.BatteryStatus

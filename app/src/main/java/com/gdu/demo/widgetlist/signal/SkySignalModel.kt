@@ -1,7 +1,7 @@
 package com.gdu.demo.widgetlist.signal
 
-import com.gdu.common.ConnStateEnum
-import com.gdu.common.GlobalVariable
+import com.gdu.config.ConnStateEnum
+import com.gdu.config.GlobalVariable
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest

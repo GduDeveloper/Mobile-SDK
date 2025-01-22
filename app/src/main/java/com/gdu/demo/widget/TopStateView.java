@@ -8,8 +8,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.gdu.common.ConnStateEnum;
-import com.gdu.common.GlobalVariable;
+import com.gdu.config.ConnStateEnum;
+import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
 
