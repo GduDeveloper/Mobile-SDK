@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tv_dis_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="20dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:text="D"/>
+
+    <TextView
+        android:id="@+id/tv_dis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_dis_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_dis_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_dis_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="12sp"
+        android:text="300"/>
+
+    <TextView
+        android:id="@+id/tv_height_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/tv_dis_title"
+        app:layout_constraintTop_toTopOf="@id/tv_dis_title"
+        android:layout_marginLeft="60dp"
+        android:text="H" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_height_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_height_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_height_title"
+        android:layout_marginLeft="5dp"
+        android:textSize="12sp"
+        android:text="30.0m"/>
+
+
+    <TextView
+        android:id="@+id/tv_h_speed_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_dis_title"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="H.S"/>
+
+
+    <TextView
+        android:id="@+id/tv_h_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_speed_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="12sp"
+        android:text="0.0m/s" />
+
+
+    <TextView
+        android:id="@+id/tv_v_speed_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_speed_title"
+        android:layout_marginLeft="60dp"
+        android:text="V.S"/>
+
+    <TextView
+        android:id="@+id/tv_v_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_v_speed_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_v_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_v_speed_title"
+        android:layout_marginLeft="10dp"
+        android:text="0.0m/s"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

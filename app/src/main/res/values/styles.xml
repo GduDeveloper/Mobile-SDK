@@ -32,4 +32,9 @@
         <item name="textAllCaps">false</item>
     </style>
 
+    <style name="SettingDialogAnim"  parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_push_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_push_out</item>
+    </style>
+
 </resources>

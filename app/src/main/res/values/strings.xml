@@ -5,4 +5,14 @@
     <string name="ux_battery_percent">%1$d%%</string>
     <string name="ux_battery_percent_str">%1$s%%</string>
     <string name="ux_battery_voltage_unit">%.2f V</string>
+
+    <string name="title_control">遥控器设置</string>
+    <string name="title_fly">飞行设置</string>
+    <string name="title_imgChannel">图传设置</string>
+    <string name="title_vision">感知设置</string>
+    <string name="title_common">通用设置</string>
+    <string name="title_camera">相机设置</string>
+    <string name="title_gimbal">云台设置</string>
+    <string name="title_battery">智能电池</string>
+    <string name="title_rtk">RTK设置</string>
 </resources>

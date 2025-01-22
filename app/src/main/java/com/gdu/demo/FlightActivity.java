@@ -1,20 +1,19 @@
 package com.gdu.demo;
 
-import android.app.Activity;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.TextureView;
-import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.gdu.demo.databinding.ActivityFlightBinding;
+import com.gdu.demo.setting.SettingDialogFragment;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 
-public class FlightActivity extends Activity implements TextureView.SurfaceTextureListener {
+public class FlightActivity extends AppCompatActivity implements TextureView.SurfaceTextureListener {
 
     private ActivityFlightBinding viewBinding;
     private GDUCodecManager codecManager;
@@ -40,7 +39,7 @@ public class FlightActivity extends Activity implements TextureView.SurfaceTextu
 
             @Override
             public void onRightSettingIconCLick() {
-                Toast.makeText(FlightActivity.this, "设置页面", Toast.LENGTH_SHORT).show();
+                showSettingFragment();
             }
         });
 
@@ -56,8 +55,13 @@ public class FlightActivity extends Activity implements TextureView.SurfaceTextu
 
     }
 
+    private void showSettingFragment() {
+        SettingDialogFragment.Companion.show(getSupportFragmentManager());
+    }
+
     private void initData() {
-        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+
+//        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
     }
 
 
