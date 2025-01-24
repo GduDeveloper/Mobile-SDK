@@ -128,6 +128,7 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
             }
         };
         viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
+        viewBinding.fpvRv.setObstacleMax(40);
     }
 
     private void showSettingFragment() {

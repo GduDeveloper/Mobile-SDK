@@ -346,9 +346,9 @@ public class FPVRadarView extends View {
 
     private void drawObstaclePoint(Canvas canvas) {
         for (ObstaclePoint obstaclePoint : obstaclePointList) {
+            float distance = obstaclePoint.getDistance();
             float obstaclePointX = obstaclePoint.getX();
             float obstaclePointY = obstaclePoint.getY();
-            float distance = (float) Math.sqrt(obstaclePointX * obstaclePointX + obstaclePointY*obstaclePointY);
             PointF result;
             PointF pointF = transRealPosition2ViewPosition(obstaclePointX, obstaclePointY);
             int color;
@@ -368,7 +368,7 @@ public class FPVRadarView extends View {
             canvas.drawCircle(centerX + result.x, centerY - result.y, radiusObstaclePoint, obstaclePaint);
             if (showPointPosition) {
                 textPaint.setTextSize(12);
-                canvas.drawText("(" + obstaclePointX + "," + obstaclePointY + "," + df .format(distance) + ")", centerX + result.x, centerY - result.y - 10, textPaint);
+                canvas.drawText("(" + obstaclePointX + "," + obstaclePointY + "," + df .format(obstaclePoint.getDistance()) + ")", centerX + result.x, centerY - result.y - 10, textPaint);
             }
         }
     }
