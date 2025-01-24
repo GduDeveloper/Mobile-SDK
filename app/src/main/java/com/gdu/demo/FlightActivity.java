@@ -8,10 +8,12 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.gdu.common.GlobalVariable;
 import com.gdu.common.error.GDUError;
 import com.gdu.demo.databinding.ActivityFlightBinding;
+import com.gdu.demo.setting.SettingDialogFragment;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.drone.LocationCoordinate2D;
@@ -82,6 +84,10 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
                     Set<Integer> keySet = everyAngleDistance.keySet();
                     for (Integer angle : keySet) {
                         Float distance = everyAngleDistance.get(angle);
+                        if (distance == null) {
+                            continue;
+                        }
+                        distance /= 100.0f;
                         ObstaclePoint point = new ObstaclePoint();
                         point.setX((float) (Math.sin(angle) * distance));
                         point.setX((float) (Math.cos(angle) * distance));
@@ -95,7 +101,6 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
                 }
             });
         }
-
         GDUGimbal gimbal = (GDUGimbal) SdkDemoApplication.getAircraftInstance().getGimbal();
         if (gimbal != null){
             gimbal.setStateCallback(state -> {
@@ -128,6 +133,7 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
                 }
             }
         };
+        viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
 
     }
 
