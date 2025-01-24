@@ -21,4 +21,20 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"/>
+
+    <com.gdu.demo.widgetlist.radar.FPVRadarView
+        android:id="@+id/fpv_rv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="24dp"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        app:angle_text_size="8sp"
+        app:color_return_point_border="@color/color_ffffff"
+        app:frv_return_text_size="6sp"
+        app:radius_obstacle_point="3dp"
+        app:state_text_size="8sp"
+        app:top_text_size="12sp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
