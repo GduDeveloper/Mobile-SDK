@@ -79,21 +79,15 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
             radar.setRadarPerceptionInformationCallback(new CommonCallbacks.CompletionCallbackWith<PerceptionInformation>() {
                 @Override
                 public void onSuccess(PerceptionInformation information) {
-                    Map<Integer, Float> everyAngleDistance = information.getEveryAngleDistance();
-                    final List<ObstaclePoint> list = new ArrayList<>();
-                    Set<Integer> keySet = everyAngleDistance.keySet();
-                    for (Integer angle : keySet) {
-                        Float distance = everyAngleDistance.get(angle);
-                        if (distance == null) {
-                            continue;
+                    List<ObstaclePoint> pointList = information.getObstaclePoints();
+                    List<ObstaclePoint> showPointList = new ArrayList<>();
+                    for (ObstaclePoint point : pointList) {
+                        if (point.getDirection() <= 4) {
+                            showPointList.add(point);
                         }
-                        distance /= 100.0f;
-                        ObstaclePoint point = new ObstaclePoint();
-                        point.setX((float) (Math.sin(angle) * distance));
-                        point.setX((float) (Math.cos(angle) * distance));
-                        list.add(point);
+
                     }
-                    runOnUiThread(() -> viewBinding.fpvRv.setObstacle(list,300));
+                    runOnUiThread(() -> viewBinding.fpvRv.setObstacle(showPointList,300));
                 }
 
                 @Override
@@ -134,7 +128,6 @@ public class FlightActivity extends AppCompatActivity implements TextureView.Sur
             }
         };
         viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
-
     }
 
     private void showSettingFragment() {
