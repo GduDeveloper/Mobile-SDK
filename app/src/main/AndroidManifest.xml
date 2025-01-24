@@ -52,6 +52,7 @@
         <activity android:name=".RTKActivity" />
         <activity android:name=".FlightActivity"
             android:theme="@style/FullScreenAppTheme"
+            android:screenOrientation="landscape"
             />
     </application>
 
