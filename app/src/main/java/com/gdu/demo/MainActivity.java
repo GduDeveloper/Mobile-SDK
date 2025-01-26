@@ -198,12 +198,12 @@ public class MainActivity extends Activity {
 
         if (component instanceof GDUGimbal) {
             GDUGimbal gimbal = (GDUGimbal) component;
-//            GimbalType gimbalType = gimbal.getGimbalType();
+            GimbalType gimbalType = gimbal.getGimbalType();
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-//                    tv_gimbal_type.setText("云台类型："+gimbalType.getValue());
+                    tv_gimbal_type.setText("云台类型："+gimbalType.getValue());
 
                 }
             });
