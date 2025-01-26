@@ -25,7 +25,9 @@
         android:supportsRtl="true"
         android:name=".SdkDemoApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,6 +54,10 @@
         <activity android:name=".RTKActivity" />
         <activity android:name=".FlightActivity"
             android:theme="@style/FullScreenAppTheme"
+            />
+        <activity android:name=".flight.pre.PreFlightInspectionActivity"
+            android:theme="@style/FullScreenAppTheme"
+            android:screenOrientation="landscape"
             />
     </application>
 

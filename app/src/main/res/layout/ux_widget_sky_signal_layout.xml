@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/ux_color_444444"
+    android:background="@color/color_444444"
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
 

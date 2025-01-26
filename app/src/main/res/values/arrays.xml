@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="custom_key_menu">
+        <item>未定义</item>
+        <item>云台回中</item>
+        <item>云台下视</item>
+        <item>云台回中朝向</item>
+        <item>云台俯仰回中</item>
+        <item>切换画面显示模式</item>
+        <item>增加EV</item>
+        <item>减小EV</item>
+    </array>
+    <array name="array_out_of_control">
+        <item>@string/flight_type_return</item>
+        <item>@string/flight_type_stop</item>
+    </array>
+    <array name="array_rockerMode">
+        <item>@string/Label_AmericaHand</item>
+        <item>@string/Label_ChinaHand</item>
+        <item>@string/Label_JapanHand</item>
+    </array>
+</resources>

@@ -145,7 +145,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:text="P"
-        android:textColor="@color/color_ffffff"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"

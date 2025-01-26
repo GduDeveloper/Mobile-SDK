@@ -1,8 +1,10 @@
 package com.gdu.demo.adapter;
 
-
+import android.content.Context;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
@@ -10,7 +12,6 @@ import com.gdu.demo.R;
 import com.gdu.media.MediaFile;
 
 public class MediaListAdapter extends BaseQuickAdapter<MediaFile, BaseViewHolder> {
-
 
 
     public MediaListAdapter() {

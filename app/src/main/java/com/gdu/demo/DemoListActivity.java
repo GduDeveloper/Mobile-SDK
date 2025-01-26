@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.gdu.demo.flight.pre.PreFlightInspectionActivity;
 import com.gdu.demo.mediatest.MediaTestActivity;
 
 
@@ -41,7 +42,7 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
 
             case R.id.bt_ui_simple:
-                Intent flightIntent = new Intent(mContext, FlightActivity.class);
+                Intent flightIntent = new Intent(mContext, PreFlightInspectionActivity.class);
                 startActivity(flightIntent);
                 break;
             case R.id.mission_operator_button:

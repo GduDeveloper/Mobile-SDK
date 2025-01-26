@@ -38,22 +38,22 @@ class BatteryWidget@JvmOverloads constructor(
         BatteryStatus.OVERHEATING to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
         BatteryStatus.WARNING_LEVEL_1 to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
         BatteryStatus.WARNING_LEVEL_2 to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
-        BatteryStatus.ERROR to ColorStateList.valueOf(getColor(R.color.color_ff0000))
+        BatteryStatus.ERROR to ColorStateList.valueOf(getColor(R.color.red))
     )
     private var voltageColorStates: MutableMap<BatteryStatus, ColorStateList> = mutableMapOf(
         BatteryStatus.NORMAL to ColorStateList.valueOf(Color.WHITE),
         BatteryStatus.OVERHEATING to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
         BatteryStatus.WARNING_LEVEL_1 to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
         BatteryStatus.WARNING_LEVEL_2 to ColorStateList.valueOf(getColor(R.color.color_FFC600)),
-        BatteryStatus.ERROR to ColorStateList.valueOf(getColor(R.color.color_ff0000))
+        BatteryStatus.ERROR to ColorStateList.valueOf(getColor(R.color.red))
     )
 
     private var voltageBackgroundStates: MutableMap<BatteryStatus, Drawable?> = mutableMapOf(
-        BatteryStatus.NORMAL to getDrawable(R.drawable.stroke_ffffff_radius_2_bg),
-        BatteryStatus.OVERHEATING to getDrawable(R.drawable.stroke_feb431_radius_2_bg),
-        BatteryStatus.WARNING_LEVEL_1 to getDrawable(R.drawable.stroke_feb431_radius_2_bg),
-        BatteryStatus.WARNING_LEVEL_2 to getDrawable(R.drawable.stroke_feb431_radius_2_bg),
-        BatteryStatus.ERROR to getDrawable(R.drawable.stroke_ef4e22_radius_2_bg)
+        BatteryStatus.NORMAL to getDrawable(R.drawable.shape_stroke_white_r2),
+        BatteryStatus.OVERHEATING to getDrawable(R.drawable.shape_stroke_ffc600_r2),
+        BatteryStatus.WARNING_LEVEL_1 to getDrawable(R.drawable.shape_stroke_ffc600_r2),
+        BatteryStatus.WARNING_LEVEL_2 to getDrawable(R.drawable.shape_stroke_ffc600_r2),
+        BatteryStatus.ERROR to getDrawable(R.drawable.shape_stroke_red_r2)
     )
     private var batteryIconStates: MutableMap<BatteryStatus, Drawable> = mutableMapOf(
         BatteryStatus.NORMAL to getDrawable(R.drawable.top_aircraft_electricity),

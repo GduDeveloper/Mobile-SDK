@@ -66,10 +66,10 @@ public class SignalQuality extends View {
         for (int i = 0; i <24; i++) {
             if (i % 4 == 0) {
                 if (i/4<lines){
-                    paint.setColor(getResources().getColor(R.color.color_ffffff));
+                    paint.setColor(getResources().getColor(R.color.white));
                     mStrokePaint.setColor(mStrokeColor1);
                 }else {
-                    paint.setColor(getResources().getColor(R.color.color_33ffffff));
+                    paint.setColor(getResources().getColor(R.color.color_33_WHITE));
                     mStrokePaint.setColor(mStrokeColor2);
                 }
                 canvas.drawLine(points[i] , points[i + 1] , points[i + 2] , points[i + 3] , paint);

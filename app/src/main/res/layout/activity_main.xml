@@ -18,7 +18,7 @@
         android:gravity="center"
         android:text="飞行器未连接"
         android:textSize="20sp"
-        android:textColor="@color/color_000000"/>
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/tv_gimbal_type"
@@ -28,7 +28,7 @@
         android:gravity="center"
         android:text="云台未连接"
         android:textSize="20sp"
-        android:textColor="@color/color_000000"/>
+        android:textColor="@color/black"/>
 
 
     <Button
@@ -42,7 +42,7 @@
     <Button
         android:id="@+id/open_button"
         android:text="demo测试"
-        android:enabled="false"
+        android:enabled="true"
         android:layout_width="match_parent"
         android:textSize="16sp"
         android:layout_height="80dp"/>

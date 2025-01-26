@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:minHeight="24dp"
+    android:orientation="horizontal"
+    tools:background="@color/color_FFCC00">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/icon_flight_alarm_level1"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/dp_10"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:marqueeRepeatLimit="-1"
+        android:minWidth="@dimen/dp_310"
+        android:minHeight="@dimen/dp_65"
+        android:paddingStart="@dimen/dp_0"
+        android:paddingEnd="@dimen/dp_12"
+        android:textColor="@color/color_5C5C5C"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/iv_icon"
+        app:layout_constraintRight_toLeftOf="@+id/tv_lockDetail"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_goneMarginLeft="@dimen/dp_0"
+        tools:text="@string/preflight_engine_arm_check_hint" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_lockDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:drawableEnd="@drawable/icon_right_arrow"
+        android:gravity="center_vertical"
+        android:text="@string/view_details"
+        android:textColor="@color/color_666666"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

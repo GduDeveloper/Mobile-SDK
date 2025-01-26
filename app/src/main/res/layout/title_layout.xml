@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="15sp"
-        android:textColor="@color/color_000000"
+        android:textColor="@color/black"
         android:text="标题"/>
 
 

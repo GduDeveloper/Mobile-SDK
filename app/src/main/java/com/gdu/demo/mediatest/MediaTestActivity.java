@@ -74,7 +74,6 @@ public class MediaTestActivity extends Activity {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 4);
         viewBinding.rvMedia.setLayoutManager(layoutManager);
         viewBinding.rvMedia.setAdapter(adapter);
-
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull BaseQuickAdapter<?, ?> adapter, @NonNull View view, int position) {

@@ -35,8 +35,8 @@ class TerminalBatteryWidget @JvmOverloads constructor(
     private var batteryColorStates: MutableMap<BatteryStatus, ColorStateList> = mutableMapOf(
         BatteryStatus.DEFAULT to ColorStateList.valueOf(Color.WHITE),
         BatteryStatus.NORMAL to ColorStateList.valueOf(Color.WHITE),
-        BatteryStatus.WARNING_LEVEL_1 to ColorStateList.valueOf(getColor(R.color.color_ff0000)),
-        BatteryStatus.WARNING_LEVEL_2 to ColorStateList.valueOf(getColor(R.color.color_ff0000))
+        BatteryStatus.WARNING_LEVEL_1 to ColorStateList.valueOf(getColor(R.color.red)),
+        BatteryStatus.WARNING_LEVEL_2 to ColorStateList.valueOf(getColor(R.color.red))
     )
     private var batteryIconStates: MutableMap<BatteryStatus, Drawable> = mutableMapOf(
         BatteryStatus.DEFAULT to getDrawable(R.drawable.top_remot_rc),

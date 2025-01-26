@@ -6,4 +6,19 @@
         <attr name="strokeWidth" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="FlightStatusItemView">
+        <attr name="ifcsv_title" format="string"/>
+        <attr name="ifcsv_content" format="string"/>
+    </declare-styleable>
+    <declare-styleable name="GduSpinner">
+        <attr name="optionArray" format="reference" />
+        <attr name="viewHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="DoubleDragThumbSeekBar">
+        <attr name="ddt_oneThumb" format="reference" />
+        <attr name="ddt_twoThumb" format="reference" />
+        <attr name="ddt_basePbColor" format="color" />
+        <attr name="ddt_onePbColor" format="color" />
+        <attr name="ddt_twoPbColor" format="color" />
+    </declare-styleable>
 </resources>
