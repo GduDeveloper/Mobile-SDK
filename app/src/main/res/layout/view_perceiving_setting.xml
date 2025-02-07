@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@color/color_EDF0F1">
+
+    <!--水平避障layout-->
+    <include
+        android:id="@+id/incHorizontalObstacle"
+        layout="@layout/view_perceiving_setting_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!--上视避障layout-->
+    <include
+        android:id="@+id/incUpObstacle"
+        layout="@layout/view_perceiving_setting_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <!--下视避障layout-->
+    <include
+        android:id="@+id/incDownObstacle"
+        layout="@layout/view_perceiving_setting_sub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutDownObstacle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_120"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_tip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/dp_9"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!--降落保护开关-->
+        <RelativeLayout
+            android:id="@+id/rlLandProtectSwitch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:gravity="center_vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_tip">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/Label_LandingAssist"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLandingProtect"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/selector_hand_control" />
+        </RelativeLayout>
+
+        <!--降落保护 Hint -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvLandingProtectHint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:lineSpacingMultiplier="1.3"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_10"
+            android:visibility="visible"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rlLandProtectSwitch" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

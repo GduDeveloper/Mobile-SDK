@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:src="@drawable/app_black_back"
+            android:tint="@color/white"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/string_five_camera_setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        app:layout_constraintTop_toBottomOf="@id/title_layout">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_show_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/string_show_data"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_show_view"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_24"
+            android:src="@drawable/selector_hand_control"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@id/tv_show_view_title"
+            app:layout_constraintBottom_toBottomOf="@id/tv_show_view_title"/>
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_switch_on_off"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:text="@string/string_switch_on_off"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintTop_toBottomOf="@id/tv_show_view_title"
+            app:layout_constraintLeft_toLeftOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_switch_on_off"
+            android:layout_width="@dimen/dp_36"
+            android:layout_height="@dimen/dp_24"
+            android:src="@drawable/selector_hand_control"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dp_10"
+            app:layout_constraintTop_toTopOf="@id/tv_switch_on_off"
+            app:layout_constraintBottom_toBottomOf="@id/tv_switch_on_off"/>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

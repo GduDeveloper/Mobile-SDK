@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/seek_bar_botton" android:top="@dimen/dp_20" android:bottom="@dimen/dp_20"
+        android:width="@dimen/dp_14" android:height="@dimen/dp_14">
+    </item>
+</layer-list>

@@ -1,0 +1,659 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_EDF0F1">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_c_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/c1c2_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_c1c2"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_65"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/rc_custom_c1c2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_c_title" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="C1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_c1"
+                app:layout_constraintRight_toLeftOf="@id/tv_c1"
+                app:layout_constraintTop_toTopOf="@id/tv_c1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="C2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_c2"
+                app:layout_constraintRight_toLeftOf="@id/tv_c2"
+                app:layout_constraintTop_toTopOf="@id/tv_c2" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_c1"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_c_title" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_c2"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_13"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_c1"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <View
+                android:id="@+id/div_c1c2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintTop_toBottomOf="@id/tv_c2" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_lr_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/lr_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/div_c1c2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_lr"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_65"
+                android:layout_marginTop="@dimen/dp_15"
+                android:src="@drawable/rc_custom_lr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_lr_title" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_l1"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/div_c1c2"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_l2"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_l1"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_r1"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_l2"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_r2"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_r1"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="L1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_l1"
+                app:layout_constraintRight_toLeftOf="@id/tv_l1"
+                app:layout_constraintTop_toTopOf="@id/tv_l1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="L2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_l2"
+                app:layout_constraintRight_toLeftOf="@id/tv_l2"
+                app:layout_constraintTop_toTopOf="@id/tv_l2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="R1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_r1"
+                app:layout_constraintRight_toLeftOf="@id/tv_r1"
+                app:layout_constraintTop_toTopOf="@id/tv_r1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="R2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_r2"
+                app:layout_constraintRight_toLeftOf="@id/tv_r2"
+                app:layout_constraintTop_toTopOf="@id/tv_r2" />
+
+
+            <View
+                android:id="@+id/div_lr"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintTop_toBottomOf="@id/tv_r2" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_five_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/five_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/div_lr" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_five"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_65"
+                android:layout_marginTop="@dimen/dp_15"
+                android:src="@drawable/rc_custom_five"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_five_title" />
+
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_top"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/div_lr"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_bot"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_top"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_left"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_bot"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_right"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_left"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_center"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_right" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="@string/top_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_top"
+                app:layout_constraintRight_toLeftOf="@id/tv_top"
+                app:layout_constraintTop_toTopOf="@id/tv_top" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="@string/bot_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_bot"
+                app:layout_constraintRight_toLeftOf="@id/tv_bot"
+                app:layout_constraintTop_toTopOf="@id/tv_bot" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="@string/left_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_left"
+                app:layout_constraintRight_toLeftOf="@id/tv_left"
+                app:layout_constraintTop_toTopOf="@id/tv_left" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="@string/right_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_right"
+                app:layout_constraintRight_toLeftOf="@id/tv_right"
+                app:layout_constraintTop_toTopOf="@id/tv_right" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="@string/center_custom_key"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintBottom_toBottomOf="@id/tv_center"
+                app:layout_constraintRight_toLeftOf="@id/tv_center"
+                app:layout_constraintTop_toTopOf="@id/tv_center" />
+
+
+            <View
+                android:id="@+id/div_five"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintTop_toBottomOf="@id/tv_center" />
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_comb_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="@string/custom_key_comb"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/div_five" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_comb"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_65"
+                android:layout_marginTop="@dimen/dp_15"
+                android:src="@drawable/rc_custom_lr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_comb_title" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_comb_2"
+                android:layout_width="@dimen/dp_130"
+                android:layout_height="@dimen/dp_65"
+                android:layout_marginTop="@dimen/dp_15"
+                android:src="@drawable/rc_custom_c1c2"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/iv_comb" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_1_1"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_1_2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_1_2"
+                app:optionArray="@array/rc_custom_left_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_1_2"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_comb_title"
+                app:optionArray="@array/rc_custom_right_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_1_1"
+                app:layout_constraintLeft_toRightOf="@id/ov_comb_1_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_1_2"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_1_1" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_comb_1"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ov_comb_1_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_1_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_1_1"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_1_1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_del_one"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@drawable/rc_custom_key_del"
+                app:layout_constraintBottom_toBottomOf="@id/tv_comb_1"
+                app:layout_constraintRight_toLeftOf="@id/tv_comb_1"
+                app:layout_constraintTop_toTopOf="@id/tv_comb_1"
+                android:visibility="gone"/>
+
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_2_2"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_comb_1"
+                app:optionArray="@array/rc_custom_right_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_2_1"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_2_2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_2_2"
+                app:optionArray="@array/rc_custom_left_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_2_1"
+                app:layout_constraintLeft_toRightOf="@id/ov_comb_2_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_2_2"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_2_1" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_comb_2"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ov_comb_2_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="2"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_2_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_2_1"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_2_1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_del_two"
+                android:layout_width="@dimen/dp_22"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_10"
+                android:src="@drawable/rc_custom_key_del"
+                app:layout_constraintBottom_toBottomOf="@id/tv_comb_2"
+                app:layout_constraintRight_toLeftOf="@id/tv_comb_2"
+                app:layout_constraintTop_toTopOf="@id/tv_comb_2"
+                android:visibility="gone"/>
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_3_2"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_comb_2"
+                app:optionArray="@array/rc_custom_right_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/ov_comb_3_1"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginRight="@dimen/dp_20"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/dp_8"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_3_2"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_3_2"
+                app:optionArray="@array/rc_custom_left_key_list"
+                app:viewHeight="@dimen/dp_100" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_15"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_3_1"
+                app:layout_constraintLeft_toRightOf="@id/ov_comb_3_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_3_2"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_3_1" />
+
+            <com.gdu.demo.widget.MarqueeTextView
+                android:id="@+id/tv_comb_3"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="@dimen/dp_22"
+                android:layout_marginTop="@dimen/dp_17"
+                android:layout_marginBottom="@dimen/dp_40"
+                android:background="@drawable/spinner_bg_r2_arrow"
+                android:paddingStart="@dimen/dp_6"
+                android:paddingEnd="@dimen/dp_20"
+                android:gravity="center|start"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ov_comb_3_1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp_10"
+                android:text="3"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBottom_toBottomOf="@id/ov_comb_3_1"
+                app:layout_constraintRight_toLeftOf="@id/ov_comb_3_1"
+                app:layout_constraintTop_toTopOf="@id/ov_comb_3_1" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_80"
+                android:layout_marginTop="@dimen/dp_5"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_comb_3" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>
+
+
+
+
+

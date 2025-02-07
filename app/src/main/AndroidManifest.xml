@@ -59,6 +59,7 @@
             android:theme="@style/FullScreenAppTheme"
             android:screenOrientation="landscape"
             />
+        <service android:name="org.eclipse.paho.android.service.MqttService" />
     </application>
 
 </manifest>

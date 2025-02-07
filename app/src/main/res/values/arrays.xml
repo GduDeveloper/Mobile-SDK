@@ -20,4 +20,112 @@
         <item>@string/Label_ChinaHand</item>
         <item>@string/Label_JapanHand</item>
     </array>
+    <array name="array_fly_model">
+        <item>A/P/S</item>
+        <item>T/P/S</item>
+    </array>
+    <array name="array_return_home">
+        <item>@string/string_land_on_ome</item>
+        <item>@string/string_hover_the_home</item>
+    </array>
+    <array name="array_gnss">
+        <item>GPS+GLONASS</item>
+        <item>BDS</item>
+    </array>
+    <array name="array_aircraft_push_type">
+        <item>RTMP</item>
+        <item>WebRTC</item>
+    </array>
+    <array name="array_aircraft_play_type">
+        <item>RTSP</item>
+        <item>WebRTC</item>
+    </array>
+    <array name="out_put_stream">
+        <item>0.5M</item>
+        <item>1M</item>
+        <item>1.5M</item>
+        <item>2M</item>
+        <item>4M</item>
+        <item>8M</item>
+    </array>
+    <array name="array_channel">
+        <item>@string/Label_channel_2_4</item>
+        <item>@string/Label_channel_5_8</item>
+    </array>
+    <array name="array_channel_s200">
+        <item>@string/Auto</item>
+        <item>@string/Label_channel_2_4</item>
+        <item>@string/Label_channel_5_8</item>
+    </array>
+    <string-array name="array_cast">
+        <item>@string/Copy_Screen</item>
+        <item>@string/Flight_Scene</item>
+        <item>@string/Camera_Scene</item>
+    </string-array>
+    <array name="rtk_service_array_onboard">
+        <item>@string/string_rtk_fo_custom</item>
+        <item>@string/string_rtk_for_station</item>
+        <item>@string/string_rtk_for_onboard</item>
+    </array>
+
+    <array name="rtk_service_array_qx">
+        <item>@string/string_rtk_fo_custom</item>
+        <item>@string/string_rtk_for_station</item>
+        <item>@string/string_rtk_for_onboard</item>
+        <item>@string/string_rtk_for_qx</item>
+    </array>
+
+    <array name="PlanSet_C1C2_Parameter">
+        <item>@string/string_rc_key_no</item>
+        <item>@string/string_rc_key_gimbal_center</item>
+        <item>@string/string_drone_nose_forward</item>
+        <item>@string/string_rc_key_gimbal_down</item>
+    </array>
+
+    <array name="rc_custom_left_key_list">
+        <item>C1</item>
+        <item>L1</item>
+        <item>L2</item>
+    </array>
+
+    <array name="rc_custom_right_key_list">
+        <item>C2</item>
+        <item>R1</item>
+        <item>R2</item>
+    </array>
+    <array name="array_networking_mode">
+        <item>@string/string_one_control_one</item>
+        <item>@string/string_two_control_one</item>
+        <item>@string/string_one_control_two</item>
+    </array>
+    <array name="gimbal_mode">
+        <item>@string/Label_Gimbal_Mode_YAW</item>
+        <item>@string/Label_Gimbal_Mode_FREE</item>
+        <item>@string/Label_Gimbal_Mode_FPV</item>
+    </array>
+    <array name="gimbal_mode_S220">
+        <item>@string/Label_Gimbal_Mode_YAW</item>
+        <item>@string/Label_Gimbal_Mode_FPV</item>
+    </array>
+    <array name="array_platform_type">
+        <item>@string/Label_live_normal</item>
+        <item>@string/Label_Live_Tx_Custom</item>
+    </array>
+    <array name="map_type_array">
+        <item>@string/Auto</item>
+        <item>@string/amap_map</item>
+        <item>MapBox</item>
+    </array>
+
+    <array name="PluginDevSelectArray">
+        <item>@string/OFF</item>
+        <item>@string/navigation_light</item>
+        <item>@string/string_parchuate</item>
+        <item>@string/string_4G_module</item>
+    </array>
+    <string-array name="arr_unit" >
+        <item >@string/Unit_metric</item>
+        <item >@string/Unit_Inch</item>
+    </string-array>
+
 </resources>

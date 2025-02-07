@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:src="@drawable/app_black_back"
+                android:tint="@color/white"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_battery"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:background="@color/color_D8D8D8"
+            app:layout_constraintTop_toBottomOf="@id/title_layout"/>
+
+        <LinearLayout
+            android:id="@+id/table"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:background="@drawable/shape_common_rectangular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/line">
+
+            <TextView
+                android:id="@+id/flight_battery"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text="@string/flight_battery_tab"
+                android:gravity="center"
+                android:background="@drawable/shape_bg_ff4e00"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_11"/>
+
+            <TextView
+                android:id="@+id/rc_battery"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_20"
+                android:layout_weight="1"
+                android:text="@string/rc_battery_tab"
+                android:gravity="center"
+                android:textSize="@dimen/sp_11"/>
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/flight_battery_state"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/table">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/battery1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@string/iner_battery"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_9"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <include
+                        android:id="@+id/inc_batteryLayout1"
+                        layout="@layout/layout_z4b_battery_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_6"
+                        app:layout_constraintTop_toBottomOf="@+id/battery1"
+                        tools:layout_editor_absoluteX="0dp" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_bms"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginVertical="@dimen/dp_3"
+                        app:layout_constraintTop_toBottomOf="@id/inc_batteryLayout1">
+                        <TextView
+                            android:id="@+id/tv_bms_temp1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="BMS"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/sp_10"/>
+                        <TextView
+                            android:id="@+id/tv_bms_temp2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/string_temp"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/sp_10"/>
+                        <TextView
+                            android:id="@+id/value_bms_temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/Label_N_A"
+                            android:textColor="@color/color_999999"
+                            android:textSize="@dimen/sp_10" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/battery2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_11"
+                        android:text="@string/exter_battery"
+                        android:textColor="#ff999999"
+                        android:textSize="@dimen/sp_9"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/layout_bms" />
+
+                    <include
+                        android:id="@+id/inc_batteryLayout2"
+                        layout="@layout/layout_z4b_battery_sub"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/dp_6"
+                        app:layout_constraintTop_toBottomOf="@+id/battery2" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/lv_sn_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_37"
+                    android:layout_marginTop="@dimen/dp_3"
+                    android:background="@drawable/shape_e6e6e6_bot_radius_2">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_battery_sn_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text="@string/string_battery_sn"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_11"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_battery_sn"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_20"
+                        android:text=""
+                        android:textColor="@color/color_3E505C"
+                        android:textSize="@dimen/sp_11"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toRightOf="@id/tv_battery_sn_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:layout_marginTop="@dimen/dp_7"
+                    android:background="@color/color_D8D8D8" />
+
+                <LinearLayout
+                    android:id="@+id/setting_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_30"
+                    android:orientation="vertical">
+
+                    <com.gdu.demo.widget.GduSeekBar
+                        android:id="@+id/lowPowerWarnSb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:name="@string/low_power_warn_value"
+                        app:seekMax="50"
+                        app:seekMin="20" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:background="@color/color_D8D8D8" />
+
+                    <com.gdu.demo.widget.GduSeekBar
+                        android:id="@+id/lowestPowerWarnSb"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:name="@string/lowest_power_warn_value"
+                        app:seekMax="40"
+                        app:seekMin="10" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_0_5"
+                        android:background="@color/color_D8D8D8" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,1946 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/title_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40"
+            android:src="@drawable/app_black_back"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_common"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:layout_marginLeft="@dimen/dp_15"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="@color/color_D8D8D8"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_layout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/dp_15"
+            android:paddingRight="@dimen/dp_15">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_map_model"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center"
+                android:text="@string/string_map_type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/op_map_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxWidth="@dimen/dp_180"
+                android:maxLines="2"
+                android:minWidth="@dimen/dp_130"
+                android:minHeight="@dimen/dp_20"
+                android:paddingHorizontal="@dimen/dp_15"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@id/tv_map_model"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_map_model"
+                app:optionArray="@array/map_type_array" />
+
+            <View
+                android:id="@+id/div_map_type"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_map_model" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_map_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_map_model,op_map_model,div_map_type" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_ar_map_project_label"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/show_ar_map_projection"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_show_grid"
+                app:layout_constraintTop_toBottomOf="@id/div_map_type" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_show_ar_map_projection"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_ar_map_project_label"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_ar_map_project_label" />
+
+            <View
+                android:id="@+id/view_line_map_projection"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ar_map_project_label" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_gridLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/show_grid"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_show_grid"
+                app:layout_constraintTop_toBottomOf="@id/view_line_map_projection" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_show_grid"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_gridLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_gridLabel" />
+
+            <View
+                android:id="@+id/view_line1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_gridLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_voiceTipLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/voice_tip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_voice_tip"
+                app:layout_constraintTop_toBottomOf="@+id/view_line1" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_voice_tip"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_voiceTipLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_voiceTipLabel" />
+
+            <View
+                android:id="@+id/view_line2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_voiceTipLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_northPointerLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/north_pointer"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_northPointer"
+                app:layout_constraintTop_toBottomOf="@+id/view_line2" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_northPointer"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_northPointerLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_northPointerLabel" />
+
+            <View
+                android:id="@+id/view_line_northPointer"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_northPointerLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_poseModeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_PoseMode_Tip"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_poseModeSwitchBtn"
+                app:layout_constraintTop_toBottomOf="@+id/view_line_northPointer" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_poseModeSwitchBtn"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_poseModeLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_poseModeLabel" />
+
+            <View
+                android:id="@+id/view_line12"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_poseModeLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_ShowRouteHistoryLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_ShowRouteHistory"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_ShowRouteHistorySwitchBtn"
+                app:layout_constraintTop_toBottomOf="@+id/view_line12" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_ShowRouteHistorySwitchBtn"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_ShowRouteHistoryLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_ShowRouteHistoryLabel" />
+
+            <View
+                android:id="@+id/view_line3"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_ShowRouteHistoryLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_paramUnitLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/param_unit"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/tv_unit"
+                app:layout_constraintTop_toBottomOf="@+id/view_line3" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/tv_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_20"
+                android:minWidth="@dimen/dp_130"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_paramUnitLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_paramUnitLabel"
+                app:optionArray="@array/arr_unit" />
+
+            <View
+                android:id="@+id/view_line4"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_paramUnitLabel" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tvLiveLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_Live_Tx_VideoLive"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/open_live_imageview"
+                app:layout_constraintTop_toBottomOf="@+id/view_line4" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/open_live_imageview"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_tvLiveLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_tvLiveLabel" />
+
+            <RelativeLayout
+                android:id="@+id/live_stream_layout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:layout_marginLeft="@dimen/dp_40"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/tv_tvLiveLabel">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_server_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/server"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/et_requestCode"
+                    android:layout_width="@dimen/dp_100"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_toRightOf="@id/tv_server_label"
+                    android:background="@drawable/shape_solid_ffffff_stroke_f2f2f2"
+                    android:hint="@string/input_live_id"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/color_949494"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_ip"
+                    android:layout_width="@dimen/dp_120"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_60"
+                    android:background="@color/color_2D2D2D"
+                    android:singleLine="true"
+                    android:text="111.102.133.206"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_colon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/edit_ip"
+                    android:text="  :  "
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/edit_port"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@id/tv_colon"
+                    android:background="@color/color_2D2D2D"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/push_port"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_toRightOf="@id/edit_port"
+                    android:background="@color/color_2D2D2D"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/organization_port"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_toRightOf="@id/push_port"
+                    android:background="@color/color_2D2D2D"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_ip_confirm"
+                    android:layout_width="@dimen/dp_60"
+                    android:layout_height="@dimen/dp_25"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_25"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/shape_solid_ffffff_stroke_f2f2f2"
+                    android:gravity="center"
+                    android:text="@string/Lable_Confirm"
+                    android:textColor="@drawable/selector_common_text_color"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line5"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/live_stream_layout" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_switchADSBLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_ADSBSwitch"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_switchADSBBtn"
+                app:layout_constraintTop_toBottomOf="@+id/view_line5" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_switchADSBBtn"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_switchADSBLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_switchADSBLabel" />
+
+            <View
+                android:id="@+id/view_line8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_switchADSBLabel" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/viewADSBGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tv_switchADSBLabel,iv_switchADSBBtn,view_line8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_switch_motor_adjust"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_motor_adjust_switch"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/iv_switch_motor_adjust"
+                app:layout_constraintTop_toBottomOf="@+id/view_line8" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_switch_motor_adjust"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_switch_motor_adjust"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_switch_motor_adjust" />
+
+            <View
+                android:id="@+id/view_line9"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tv_switch_motor_adjust" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/viewMotorGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_switch_motor_adjust,iv_switch_motor_adjust,view_line9" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStealthModeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:minHeight="@dimen/dp_40"
+                android:text="@string/Label_stealthMode"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/ivStealthModeSwitch"
+                app:layout_constraintTop_toBottomOf="@+id/view_line9" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivStealthModeSwitch"
+                android:layout_width="@dimen/dp_36"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/selector_hand_control"
+                app:layout_constraintBottom_toBottomOf="@+id/tvStealthModeLabel"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvStealthModeLabel" />
+
+            <View
+                android:id="@+id/view_line10"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/tvStealthModeLabel" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/viewStealthSwitchGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tvStealthModeLabel,ivStealthModeSwitch,view_line10" />
+
+            <RelativeLayout
+                android:id="@+id/target_recognition_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintTop_toBottomOf="@+id/view_line10">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_target_recognition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/Label_Visition_Target_Detect"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_8"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/delay_arrow" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line101"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@+id/target_recognition_item" />
+
+            <RelativeLayout
+                android:id="@+id/drone_info_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintTop_toBottomOf="@+id/view_line101">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_drone_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/fly_info"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/iv_drone_info_red_point"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/tv_drone_info"
+                    android:layout_toRightOf="@+id/tv_drone_info"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/firmware_update_redpoint"
+                    android:visibility="gone" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_8"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/delay_arrow" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line6"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@id/drone_info_item" />
+
+            <RelativeLayout
+                android:id="@+id/rl_light_set"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintTop_toBottomOf="@id/view_line6">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_light_set"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="@string/light_setting"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/dp_8"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/delay_arrow" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/view_line7"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_4D999999"
+                app:layout_constraintTop_toBottomOf="@id/rl_light_set" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/viewUpMountGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="rl_light_set,view_line7" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout_current_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/view_line7"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_aircraft_mode_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/dp_40"
+                    android:text="@string/aircraft_mode"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_aircraft_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/dp_40"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:gravity="center"
+                    android:text="@string/ordinary_mode"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_aircraft_mode_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv_aircraft_mode_title" />
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/color_4D999999"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clResetDevLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/layout_current_mode"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvUnBindDevLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/dp_40"
+                    android:text="@string/Label_ResetDevActiveStatus"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tvResetActiveBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResetActiveBtn"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/selector_common_button_bg"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="0.9"
+                    android:minHeight="@dimen/dp_24"
+                    android:paddingVertical="@dimen/dp_1"
+                    android:text="@string/Label_Reset"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvUnBindDevLabel"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvUnBindDevLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clResetLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/clResetDevLayout"
+                tools:visibility="visible">
+
+                <View
+                    android:id="@+id/view_line11"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_0_5"
+                    android:background="@color/color_4D999999"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResetLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:minHeight="@dimen/dp_40"
+                    android:text="@string/Label_OnekeyFactoryReset"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tvResetBtn"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvResetBtn"
+                    android:layout_width="@dimen/dp_50"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/selector_common_button_bg"
+                    android:gravity="center"
+                    android:lineSpacingMultiplier="0.9"
+                    android:minHeight="@dimen/dp_24"
+                    android:paddingVertical="@dimen/dp_1"
+                    android:text="@string/Label_Reset"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/tvResetLabel"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tvResetLabel" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.gdu.demo.widget.TextImageItemLayout
+                android:id="@+id/tiil_clear_plane_log"
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="@dimen/dp_40"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clResetLayout"
+                app:tii_icon="@drawable/delay_arrow"
+                app:tii_icon_height="@dimen/dp_15"
+                app:tii_icon_width="@dimen/dp_8"
+                app:tii_text="@string/clear_drone_log" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/test_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintTop_toBottomOf="@+id/tiil_clear_plane_log">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/string_test_model"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/sp_19" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_subLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/bit_stream_compress"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/iv_live_compress"
+                        android:layout_width="@dimen/dp_36"
+                        android:layout_height="@dimen/dp_24"
+                        android:layout_alignParentRight="true"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/selector_hand_control" />
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clVisualSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical">
+                    <!-- 测试模式使用字段无需翻译 -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvVisualSwitchLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Label_TargetLocationSwitch"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/ivVisualSwitchLabel"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivVisualSwitchLabel"
+                        android:layout_width="@dimen/dp_36"
+                        android:layout_height="@dimen/dp_24"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/selector_hand_control"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_get_text_title"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/dp_30"
+                        android:text="@string/string_get_value"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/tv_refresh_text"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_refresh_text"
+                        android:layout_width="@dimen/dp_50"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:background="@drawable/selector_common_button_bg"
+                        android:gravity="center"
+                        android:lineSpacingMultiplier="0.9"
+                        android:minHeight="@dimen/dp_24"
+                        android:paddingVertical="@dimen/dp_1"
+                        android:text="@string/string_refresh"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_get_text_title"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_get_text_title" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_text_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_get_text_title"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_13"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_get_text_title"
+                        tools:text="文本内容" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/clImageDebugTextSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_40"
+                    android:gravity="center_vertical">
+                    <!-- 测试模式使用字段无需翻译 -->
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvImageDebugTextLabel"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Label_ImageDebugTextSwitch"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/sp_12"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/ivImageDebugTextLabel"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivImageDebugTextLabel"
+                        android:layout_width="@dimen/dp_36"
+                        android:layout_height="@dimen/dp_24"
+                        android:contentDescription="@string/app_name"
+                        android:src="@drawable/selector_hand_control"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!--飞行器信息-->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_drone_info"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_EDF0F1"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:orientation="vertical">
+            <!--飞控版本-->
+            <RelativeLayout
+                android:id="@+id/rl_Version_fly"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_flyVersion"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_fly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic"
+                    tools:text="000" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_fly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_fly"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--  飞控协处理器组件版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/fc_coprocessor_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--智能电池升级-->
+            <RelativeLayout
+                android:id="@+id/rl_Version_batter"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/batter_update"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_batter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_batter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_batter"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--  RTCM程序版本  -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/rtcmVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--  RTK版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vvRtkVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--OTA升级-->
+            <RelativeLayout
+                android:id="@+id/rl_Version_ota"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ota_update"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_ota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_ota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_ota"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+
+            <!--  图传程序版本号(升级包版本)      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/upgrade_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--  图传组件版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/it_comp_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--  图传固件版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vvPicTransFirmwareVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--飞行器SN-->
+            <RelativeLayout
+                android:id="@+id/rl_sn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sn_code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_sn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--云台版本-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/gimbal_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--副挂载版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/assistant_pod_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <!--   可见光相机版本     -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vl_camera_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--   红外光相机版本     -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/ir_camera_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <!-- 云台Arm系统版本 -->
+            <RelativeLayout
+                android:id="@+id/rl_PTZArmSystemLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmSystemLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_PTZArmSystemVersion"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmSystemVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmSystemPlaceHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_ptzArmSystemVersion"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!-- 云台Arm版本 -->
+            <RelativeLayout
+                android:id="@+id/rl_PTZArmLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_PTZArmVersion"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ptzArmPlaceHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_ptzArmVersion"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!-- AI盒子版本 -->
+            <RelativeLayout
+                android:id="@+id/rlMountAiBoxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMountAiBoxLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Label_AI_Box"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMountAiBoxVersion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvMountAiBoxPlaceHolder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tvMountAiBoxVersion"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--  AI盒子型号和SN号      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vvAiBoxTypeAndSN"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--云台SN-->
+            <RelativeLayout
+                android:id="@+id/gimbal_sn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/gimbal_sn"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_gimbal_sn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--转接环-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/adapter_ring_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--  SVN版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/svn_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+            <!--  综控版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/ac_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--  视觉版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vision_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/test_version_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+                <!--  MCU版本      -->
+                <com.gdu.demo.widget.VersionView
+                    android:id="@+id/mcu_version_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+                <!--  升级组件版本      -->
+                <com.gdu.demo.widget.VersionView
+                    android:id="@+id/upgrade_comp_version_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--  授时组件版本      -->
+                <com.gdu.demo.widget.VersionView
+                    android:id="@+id/set_time_version_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <!--  航迹管理组件版本      -->
+                <com.gdu.demo.widget.VersionView
+                    android:id="@+id/task_manager_version_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+                <!--  文件传输组件版本      -->
+                <com.gdu.demo.widget.VersionView
+                    android:id="@+id/file_transmission_version_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <!--  5G组件版本      -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/fifth_generation_version_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--禁飞区版本-->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/nfz_version"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_nfz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="N/A"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_nfz"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_nfz"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--电池SN-->
+            <RelativeLayout
+                android:id="@+id/battery_sn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/battery_sn"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_battery_sn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--RC 版本号-->
+            <RelativeLayout
+                android:id="@+id/rl_RCa"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rca_update"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_RCa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_RCa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_RCa"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!-- 地面端图传版本 -->
+            <RelativeLayout
+                android:id="@+id/rl_ap12"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/ap12_code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_ap12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_ap12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_ap12"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--遥控器的SN码-->
+            <RelativeLayout
+                android:id="@+id/rl_sn_RC"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sn_RC_code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_sn_RC"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--datalink 版本号-->
+            <RelativeLayout
+                android:id="@+id/rl_dataLink"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DataLinker"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_dataLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+            <!--计算棒版本号-->
+            <RelativeLayout
+                android:id="@+id/rl_compute_stick"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/computeStick_code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_currentVersion_compute_stick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_newVersion_compute_stick"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/tv_currentVersion_compute_stick"
+                    android:paddingRight="@dimen/dp_10"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+
+
+            <!-- 避障前双目版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obPreVision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 避障后双目版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obBackVision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 避障下单目版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obBotVision"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 避障前雷达版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obPreRadar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 避障左雷达版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obLeftRadar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 避障右雷达版本 -->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_obRightRadar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--remote id广播组件版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/remoteidVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- GNSS版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/gnssVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 飞控App版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/fcAppVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 飞控Boot版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/fcBootVersionView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!-- 机臂锁紧和电池插紧组件版本号-->
+            <com.gdu.demo.widget.VersionView
+                android:id="@+id/vv_lock_battery_mcu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <!--飞行总时间-->
+            <RelativeLayout
+                android:id="@+id/rl_total_fly_time"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/total_fly_time"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_total_fly_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:paddingLeft="@dimen/dp_3"
+                    android:paddingRight="@dimen/dp_3"
+                    android:text="@string/Label_TextView_NA"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    android:textStyle="italic" />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+    <com.gdu.demo.widget.light.LightSettingView
+        android:id="@+id/v_light_setting"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_EDF0F1"
+        android:clickable="true"
+        android:focusable="true"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_layout" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/layout_target_recognition"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/color_EDF0F1"
+        android:paddingLeft="@dimen/dp_15"
+        android:paddingRight="@dimen/dp_15"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rl_person"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Person"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_person"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/checkbox_style"
+                    android:padding="@dimen/dp_5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rl_car"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Car"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_car"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/checkbox_style"
+                    android:padding="@dimen/dp_5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/rl_ship"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/Ship"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_12"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatCheckBox
+                    android:id="@+id/cb_ship"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@drawable/checkbox_style"
+                    android:padding="@dimen/dp_5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:id="@+id/line12"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAiBox"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:text="@string/ai_box"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12" />
+
+            <View
+                android:id="@+id/line13"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_0_5"
+                android:background="@color/color_D8D8D8"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/clBoxModels"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:id="@+id/ll_loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_30"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivLoading"
+                        android:layout_width="@dimen/dp_20"
+                        android:layout_height="@dimen/dp_20"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/ai_loading" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="@string/string_data_loading_pro"
+                        android:textColor="@color/color_2D2D2D"
+                        android:textSize="@dimen/sp_10" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvModels"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

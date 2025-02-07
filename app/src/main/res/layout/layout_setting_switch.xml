@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        tools:text="switch"  />
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_switch"
+        android:layout_width="@dimen/dp_35"
+        android:layout_height="@dimen/dp_24"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/selector_hand_control" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_D8D8D8"
+        android:layout_alignParentBottom="true"/>
+
+
+</RelativeLayout>

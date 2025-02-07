@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_menu"
+    android:layout_width="@dimen/dp_230"
+    android:layout_height="@dimen/dp_200"
+    android:background="@drawable/bg_rc_custom_key_menu"
+    android:padding="@dimen/dp_2"
+    >
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_title"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_32"
+        android:layout_marginRight="@dimen/dp_36"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_menu"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_title" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_close"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:padding="@dimen/dp_10"
+        android:src="@drawable/icon_black_close"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

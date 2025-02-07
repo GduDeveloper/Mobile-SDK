@@ -27,5 +27,40 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="textAllCaps">false</item>
     </style>
-
+    <style name="SettingDialogAnim"  parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_push_in</item>
+        <item name="android:windowExitAnimation">@anim/dialog_push_out</item>
+    </style>
+    <style name="style_rb_channel_type">
+        <item name="android:layout_weight">1</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/dp_2</item>
+        <item name="android:textColor">@color/selector_text_main_white</item>
+        <item name="android:textSize">@dimen/sp_10</item>
+        <item name="android:maxLines">4</item>
+        <item name="android:layout_width">@dimen/dp_0</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+    <!--shang 飞机设置 -飞行设置 ， 样式-->
+    <style name="PlaneSet_Fly_Layout">
+        <item name="android:layout_height">@dimen/dp_40</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="gyro_calibrate_pop">
+        <item name="android:windowEnterAnimation">@anim/anim_pop_left_in</item>
+        <item name="android:windowExitAnimation">@anim/anim_pop_left_out</item>
+    </style>
+    <style name="style_text_gimbal_calibrate_btn">
+        <item name="android:textColor">@color/selector_gimbal_calibrate_text</item>
+        <item name="android:gravity">center</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:textSize">@dimen/sp_10</item>
+        <item name="android:background">@drawable/selector_gimbal_calibrate_btn</item>
+        <item name="android:layout_width">@dimen/dp_24</item>
+        <item name="android:layout_height">@dimen/dp_24</item>
+    </style>
 </resources>

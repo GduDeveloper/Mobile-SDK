@@ -1,0 +1,1 @@
+libCRtp.so是底层的socket通讯，和硬解配套使用

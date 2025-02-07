@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--云台俯仰缓启停 layout-->
+    <LinearLayout
+        android:id="@+id/llGimbalPitchStartAndStop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:layout_weight="3"
+            android:hint="@string/ptz_yaw_slow_setting"
+            android:maxWidth="@dimen/dp_150"
+            android:maxLines="3"
+            android:text="@string/pitch_slow_setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:autoSizeMaxTextSize="@dimen/sp_10"
+            app:autoSizeMinTextSize="@dimen/sp_6" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar_pitch_slow_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:focusable="true"
+            android:max="30"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:progress="15"
+            android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+            android:thumb="@drawable/icon_planset_seek_bar_thumb" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_pitch_slow_setting"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:digits="@string/Label_ETDigitLimit1"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:text="15"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/slow_setting_scope"
+            android:textColor="@color/color_A8A8A8"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewLine1"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_4D999999"
+        app:layout_constraintTop_toBottomOf="@+id/llGimbalPitchStartAndStop" />
+
+    <!--云台俯仰速度 layout-->
+    <LinearLayout
+        android:id="@+id/llGimbalPitchSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/viewLine1">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:layout_weight="3"
+            android:hint="@string/ptz_yaw_slow_setting"
+            android:maxWidth="@dimen/dp_150"
+            android:maxLines="3"
+            android:text="@string/pitch_speed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:autoSizeMaxTextSize="@dimen/sp_10"
+            app:autoSizeMinTextSize="@dimen/sp_6" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar_pitch_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:focusable="true"
+            android:max="95"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:progress="50"
+            android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+            android:thumb="@drawable/icon_planset_seek_bar_thumb" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_pitch_speed"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:digits="@string/Label_ETDigitLimit1"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:text="50"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/slow_setting_scope"
+            android:text="(5-100)"
+            android:textColor="@color/color_A8A8A8"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewLine2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_4D999999"
+        app:layout_constraintTop_toBottomOf="@+id/llGimbalPitchSpeed" />
+
+    <!--云台偏航缓启停 layout-->
+    <LinearLayout
+        android:id="@+id/llGimbalPositionStartAndStop"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/viewLine2">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_0"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:maxWidth="@dimen/dp_150"
+            android:maxLines="3"
+            android:text="@string/ptz_yaw_slow_setting"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:autoSizeMaxTextSize="@dimen/sp_10"
+            app:autoSizeMinTextSize="@dimen/sp_6" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar_yaw_slow_setting"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:focusable="true"
+            android:max="30"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:progress="15"
+            android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+            android:thumb="@drawable/icon_planset_seek_bar_thumb" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_yaw_slow_setting"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:digits="@string/Label_ETDigitLimit1"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="2"
+            android:maxLines="1"
+            android:text="15"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:hint="@string/slow_setting_scope"
+            android:text="@string/slow_setting_scope"
+            android:textColor="@color/color_A8A8A8"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewLine3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_4D999999"
+        app:layout_constraintTop_toBottomOf="@+id/llGimbalPositionStartAndStop" />
+
+    <!--云台偏航速度 layout-->
+    <LinearLayout
+        android:id="@+id/llGimbalPositionSpeed"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/viewLine3">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:ellipsize="end"
+            android:layout_weight="3"
+            android:gravity="center_vertical"
+            android:hint="@string/ptz_yaw_slow_setting"
+            android:maxWidth="@dimen/dp_150"
+            android:maxLines="3"
+            android:text="@string/ptz_yaw_speed"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12"
+            app:autoSizeMaxTextSize="@dimen/sp_10"
+            app:autoSizeMinTextSize="@dimen/sp_6" />
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/seekBar_ptz_yaw_speed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:focusable="true"
+            android:max="95"
+            android:maxHeight="@dimen/dp_3"
+            android:minHeight="@dimen/dp_3"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:progress="50"
+            android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+            android:thumb="@drawable/icon_planset_seek_bar_thumb" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_ptz_yaw_speed"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:background="@null"
+            android:digits="@string/Label_ETDigitLimit1"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:text="50"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="(5-100)"
+            android:textColor="@color/color_A8A8A8"
+            android:textSize="@dimen/sp_12" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/viewGimbalPositionGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="viewLine2,llGimbalPositionStartAndStop,
+        viewLine3,llGimbalPositionSpeed" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

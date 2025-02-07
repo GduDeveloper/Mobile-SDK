@@ -1,0 +1,694 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPPSStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minHeight="@dimen/dp_30"
+            android:text="@string/Label_ppsStatus"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPPSStatusContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center|right"
+            android:minHeight="@dimen/dp_30"
+            android:paddingRight="@dimen/dp_2"
+            android:textColor="@color/color_333333"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tvPPSStatusLabel"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/str_no_syn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_E1E2E3"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:gravity="center" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="@string/aircraft"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/station_name_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            tools:text="自定义网络rtk" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/status"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_drone_rtk_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_state_rtk_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_D8D8D8" />
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/Label_longitude"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_drone_lng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_station_lng"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/Label_latitude"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_drone_lat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_station_lat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/string_ellipsoidal_height"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_ellipsoidal_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_station_ellipsoidal_height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/string_high_altitude"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_altitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_station_altitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="--"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_D8D8D8" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="4"
+            android:gravity="center"
+            android:text="@string/string_satellites_num"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_drone_station_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_station_num"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_weight="3"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_drtk_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_bds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="BDS"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_bd_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_bd_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_gps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="GPS"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_gps_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_gps_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/layout_galileo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="Galileo"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_galileo_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_galileo_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_6"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_glonass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="GLONASS"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_glonass_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_glonass_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_qzss"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="QZSS"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_qzss_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_qzss_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <View
+            android:id="@+id/div_qzss"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_5"
+            android:background="@color/color_D8D8D8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/longitude_deviation"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_lon_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_lon_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/latitude_deviation"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_lat_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_lat_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="4"
+                android:gravity="center"
+                android:text="@string/elevation_deviation"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_height_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_station_height_deviation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:text="0"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_11" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rc_layout"
+        android:layout_width="@dimen/dp_64"
+        android:layout_height="@dimen/dp_64"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_networking_rc_online">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/rc_imageview"
+            android:layout_width="@dimen/dp_43"
+            android:layout_height="@dimen/dp_19"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/icon_networking_rc" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/current_device_imageview"
+            android:src="@drawable/icon_current_device"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/rc_name_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/rc_imageview"
+            android:textSize="@dimen/sp_7"
+            android:maxWidth="@dimen/dp_60"
+            android:text="@string/remote_control"
+            android:gravity="center"
+            android:textColor="@color/color_4F5C68" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/type_imageview"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_sta" />
+    </RelativeLayout>
+</RelativeLayout>

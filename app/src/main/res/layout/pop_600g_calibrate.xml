@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/dp_10"
+    android:background="@color/color_7F333333"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:text="@string/mount_angel_calibrate"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_close"
+        android:padding="@dimen/dp_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/icon_grey_close"
+        android:layout_width="@dimen/dp_16"
+        android:layout_height="@dimen/dp_16"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_label_megaphone"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:textSize="@dimen/sp_10"
+        android:text="@string/megaphone_angle"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_top"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintTop_toBottomOf="@id/tv_label_megaphone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/et_gimbal_angle_megaphone"
+        android:text="@string/top_custom_key"
+        android:textStyle="bold"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        style="@style/style_text_gimbal_calibrate_btn" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:inputType="numberDecimal"
+        android:gravity="center"
+        android:background="@color/white"
+        android:id="@+id/et_gimbal_angle_megaphone"
+        app:layout_constraintStart_toEndOf="@id/tv_top"
+        android:maxLength="4"
+        android:text="0"
+        android:textSize="@dimen/sp_10"
+        android:textColor="@color/color_333333"
+        app:layout_constraintTop_toTopOf="@id/tv_top"
+        app:layout_constraintEnd_toStartOf="@id/tv_bottom"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_bottom"
+        app:layout_constraintStart_toEndOf="@id/et_gimbal_angle_megaphone"
+        app:layout_constraintTop_toTopOf="@id/tv_top"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/bot_custom_key"
+        android:textStyle="bold"
+        style="@style/style_text_gimbal_calibrate_btn" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_label_azimuth"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_top"
+        android:textSize="@dimen/sp_10"
+        android:textStyle="bold"
+        android:text="@string/label_azimuth"
+        android:textColor="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_left"
+        android:layout_marginTop="@dimen/dp_5"
+        app:layout_constraintTop_toBottomOf="@id/tv_label_azimuth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/et_gimbal_angle_azimuth"
+        android:text="@string/left_custom_key"
+        android:textStyle="bold"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        style="@style/style_text_gimbal_calibrate_btn" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:inputType="numberDecimal"
+        android:gravity="center"
+        android:maxLength="4"
+        android:text="0"
+        android:background="@color/white"
+        android:id="@+id/et_gimbal_angle_azimuth"
+        app:layout_constraintStart_toEndOf="@id/tv_left"
+        android:textSize="@dimen/sp_10"
+        android:textColor="@color/color_333333"
+        app:layout_constraintTop_toTopOf="@id/tv_left"
+        app:layout_constraintEnd_toStartOf="@id/tv_right"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_24"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_right"
+        app:layout_constraintStart_toEndOf="@id/et_gimbal_angle_azimuth"
+        app:layout_constraintTop_toTopOf="@id/tv_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/right_custom_key"
+        android:textStyle="bold"
+        style="@style/style_text_gimbal_calibrate_btn" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_set"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_left"
+        app:layout_constraintEnd_toStartOf="@id/tv_save"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/Label_set"
+        android:textStyle="bold"
+        style="@style/style_text_gimbal_calibrate_btn"
+        android:background="@drawable/selector_gimbal_calibrate_btn_press"
+        android:textColor="@color/selector_gimbal_calibrate_text_press"
+        android:layout_width="@dimen/dp_65"
+        android:layout_height="@dimen/dp_24"/>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_save"
+        app:layout_constraintStart_toEndOf="@id/tv_set"
+        app:layout_constraintTop_toBottomOf="@id/tv_left"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/Label_save"
+        android:textStyle="bold"
+        style="@style/style_text_gimbal_calibrate_btn"
+        android:background="@drawable/selector_gimbal_calibrate_btn_press"
+        android:textColor="@color/selector_gimbal_calibrate_text_press"
+        android:layout_width="@dimen/dp_65"
+        android:layout_height="@dimen/dp_24"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

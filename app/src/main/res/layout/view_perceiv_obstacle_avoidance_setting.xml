@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/color_EDF0F1"
+    android:orientation="vertical"
+    android:padding="@dimen/dp_4">
+
+    <RadioGroup
+        android:id="@+id/rg_vision_type"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_vision_horizontal"
+            android:background="@drawable/selector_bg_rb_lr3_ffffff_ef4e22"
+            android:text="@string/horizontally_disposed"
+            android:checked="true"
+            style="@style/style_rb_channel_type" />
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_vision_above"
+            android:background="@drawable/selector_bg_rb_nr_ffffff_ef4e22"
+            android:text="@string/above_settings"
+            style="@style/style_rb_channel_type"/>
+
+        <androidx.appcompat.widget.AppCompatRadioButton
+            android:id="@+id/rb_vision_assisted"
+            android:background="@drawable/selector_bg_rb_rr3_ffffff_ef4e22"
+            android:text="@string/assisted_landing"
+            style="@style/style_rb_channel_type"/>
+
+    </RadioGroup>
+
+    <com.gdu.demo.widget.PerceivingSettingsView
+        android:id="@+id/perceive_setting_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_9" />
+
+    <com.gdu.demo.widget.PerceivingHighSettingsView
+        android:id="@+id/perceive_high_setting_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_9"
+        android:visibility="gone" />
+
+</LinearLayout>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        android:text="@string/string_lidar"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_version_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/string_version"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/tv_version_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_version_title"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dp_20"
+        android:text=""/>
+
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_sn_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintTop_toBottomOf="@id/tv_version_title"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:gravity="center"
+        android:text="@string/string_gimbal_sn_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_sn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/tv_sn_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_sn_title"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dp_20"
+        android:text=""/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_real_sn_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_40"
+        app:layout_constraintTop_toBottomOf="@id/tv_sn_title"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/dp_12"
+        android:gravity="center"
+        android:text="@string/string_real_sn_title"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_real_sn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toTopOf="@id/tv_real_sn_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_real_sn_title"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="@dimen/dp_20"
+        android:text=""/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

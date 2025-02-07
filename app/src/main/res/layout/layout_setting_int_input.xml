@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        tools:text="input"  />
+
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/et_input"
+        android:layout_width="@dimen/dp_70"
+        android:layout_height="@dimen/dp_20"
+        android:gravity="center"
+        android:textColor="@color/color_EF4E22"
+        android:textSize="@dimen/sp_11"
+        android:imeOptions="actionDone"
+        android:inputType="numberSigned"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:maxLength="8"
+        android:background="@drawable/selector_common_edit_bg"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:text="0"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_D8D8D8"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

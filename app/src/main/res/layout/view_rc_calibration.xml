@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1"
+    android:paddingTop="@dimen/dp_10">
+
+    <LinearLayout
+        android:id="@+id/rc_calibration_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="visible">
+        <RelativeLayout
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/left_rocker_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/left_hand"
+                android:textColor="@color/color_3E505C"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_20"
+                android:textSize="@dimen/sp_10" />
+
+            <com.gdu.demo.widget.RockerFourProgressView
+                android:id="@+id/left_rc_four_progress_vew"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_120"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_8" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/right_rocker_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/right_hand"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginStart="@dimen/dp_20"
+                android:textColor="@color/color_3E505C"
+                android:textSize="@dimen/sp_10" />
+
+
+            <com.gdu.demo.widget.RockerFourProgressView
+                android:id="@+id/right_rc_four_progress_vew"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_120"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_8" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/rc_tips_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rc_calibration_lin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="@string/string_rc_calibration_tips"
+        android:textColor="@color/color_4F5C68"
+        android:textSize="@dimen/sp_10" />
+
+    <LinearLayout
+        android:id="@+id/wave_calibration_lin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/rc_tips_tv"
+        android:layout_marginTop="@dimen/dp_20"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/left_wave_wheel_check_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/string_left_wave_wheel_calibration"
+                android:textColor="@color/color_4F5C68"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/left_wave_one"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_26"
+                android:layout_marginStart="@dimen/dp_8"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_left_wave" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/left_wave_one"
+                android:layout_toStartOf="@id/left_wave_two"
+                android:layout_marginTop="@dimen/dp_5"
+                android:layout_below="@id/left_wave_wheel_check_tv">
+
+                <ProgressBar
+                    android:id="@+id/left_left_wave_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/left_wave_middle_view"
+                    android:max="100"
+                    android:progressDrawable="@drawable/shape_vertical_progress_bar"
+                    android:rotation="180" />
+
+                <View
+                    android:id="@+id/left_wave_middle_view"
+                    android:layout_width="8.67dp"
+                    android:layout_height="8.67dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_circle_r_999_s_ff5800_solid_none" />
+
+                <ProgressBar
+                    android:id="@+id/left_right_wave_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_toEndOf="@id/left_wave_middle_view"
+                    android:max="100"
+                    android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/left_wave_two"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_26"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_right_wave"
+                android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/right_wave_wheel_check_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="@string/string_right_wave_wheel_calibration"
+                android:textColor="@color/color_4F5C68"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/right_wave_one"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_26"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_8"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_left_wave" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/right_wave_one"
+                android:layout_toStartOf="@id/right_wave_two"
+                android:layout_below="@id/right_wave_wheel_check_tv"
+                android:layout_marginTop="@dimen/dp_5">
+
+                <ProgressBar
+                    android:id="@+id/right_left_wave_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_toStartOf="@id/right_wave_middle_view"
+                    android:max="100"
+                    android:progressDrawable="@drawable/shape_vertical_progress_bar"
+                    android:rotation="180" />
+
+                <View
+                    android:id="@+id/right_wave_middle_view"
+                    android:layout_width="8.67dp"
+                    android:layout_height="8.67dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/bg_circle_r_999_s_ff5800_solid_none" />
+
+                <ProgressBar
+                    android:id="@+id/right_right_wave_progress"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+
+                    android:layout_toEndOf="@id/right_wave_middle_view"
+                    android:max="100"
+                    android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/right_wave_two"
+                android:layout_width="@dimen/dp_26"
+                android:layout_height="@dimen/dp_26"
+                android:layout_alignParentEnd="true"
+                android:scaleType="fitCenter"
+                android:layout_centerVertical="true"
+                android:src="@drawable/icon_right_wave" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wave_calibration_lin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="@string/string_wave_calibration_tips"
+        android:textColor="@color/color_4F5C68"
+        android:textSize="@dimen/sp_10" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/check_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/dp_30"
+        android:paddingEnd="@dimen/dp_30"
+        android:paddingTop="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_14"
+        android:background="@drawable/bg_rc_calibration_btn"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/sp_12"
+        android:textColor="@color/color_4F5C68"
+        android:text="@string/string_calibration_now"/>
+
+</RelativeLayout>

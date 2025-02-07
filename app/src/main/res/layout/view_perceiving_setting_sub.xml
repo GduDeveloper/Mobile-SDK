@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@color/color_EDF0F1">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/hintPerceivingTextview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/dp_9"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/viewGuideLine1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintGuide_percent="0.2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivPerceivingIcon"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_78"
+        android:layout_gravity="center"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerInside"
+        android:src="@drawable/obstacle_icon_hor"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/viewGuideLine1"
+        app:layout_constraintTop_toBottomOf="@+id/hintPerceivingTextview" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvObstacleOrientationTip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/horizontally_disposed_name"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="@+id/ivOrientationObstacleSwitch"
+        app:layout_constraintLeft_toRightOf="@+id/viewGuideLine1"
+        app:layout_constraintRight_toLeftOf="@+id/ivOrientationObstacleSwitch"
+        app:layout_constraintTop_toTopOf="@+id/ivOrientationObstacleSwitch" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivOrientationObstacleSwitch"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="@dimen/dp_24"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/selector_hand_control"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/hintPerceivingTextview" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvObstacleBrakeDistanceTip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintLeft_toRightOf="@+id/viewGuideLine1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivOrientationObstacleSwitch"/>
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/sbObstacleBrakeDistance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:focusable="true"
+        android:maxHeight="@dimen/dp_3"
+        android:minHeight="@dimen/dp_3"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:progress="0"
+        android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+        android:thumb="@drawable/icon_planset_seek_bar_thumb"
+        app:layout_constraintLeft_toLeftOf="@+id/tvObstacleBrakeDistanceTip"
+        app:layout_constraintRight_toLeftOf="@+id/tvObstacleBrakeDistanceContent"
+        app:layout_constraintTop_toBottomOf="@+id/tvObstacleBrakeDistanceTip" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvObstacleBrakeDistanceContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:minWidth="70dp"
+        android:text="N/Am"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="@+id/sbObstacleBrakeDistance"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sbObstacleBrakeDistance" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvObstacleAlarmDistanceTip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintLeft_toLeftOf="@+id/sbObstacleBrakeDistance"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sbObstacleBrakeDistance" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/sbObstacleAlarmDistance"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:focusable="true"
+        android:maxHeight="@dimen/dp_3"
+        android:minHeight="@dimen/dp_3"
+        android:paddingLeft="@dimen/dp_10"
+        android:paddingRight="@dimen/dp_10"
+        android:progress="0"
+        android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+        android:thumb="@drawable/icon_planset_seek_bar_thumb"
+        app:layout_constraintLeft_toLeftOf="@+id/tvObstacleAlarmDistanceTip"
+        app:layout_constraintRight_toLeftOf="@+id/tvObstacleAlarmDistanceContent"
+        app:layout_constraintTop_toBottomOf="@+id/tvObstacleAlarmDistanceTip" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvObstacleAlarmDistanceContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:minWidth="70dp"
+        android:text="N/Am"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="@+id/sbObstacleAlarmDistance"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/sbObstacleAlarmDistance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

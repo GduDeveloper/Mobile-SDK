@@ -21,4 +21,20 @@
         <attr name="ddt_onePbColor" format="color" />
         <attr name="ddt_twoPbColor" format="color" />
     </declare-styleable>
+    <declare-styleable name="GduSeekBar">
+        <attr name="seekMin" format="integer" />
+        <attr name="seekMax"  format="integer"/>
+        <attr name="name"  format="reference"/>
+    </declare-styleable>
+    <declare-styleable name="CommonMenuLayout">
+        <attr name="cml_label" format="string"/>
+        <attr name="cml_show_line" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="TextImageItemLayout">
+        <attr name="tii_text" format="string"/>
+        <attr name="tii_icon" format="reference"/>
+        <attr name="tii_show_line" format="boolean"/>
+        <attr name="tii_icon_width" format="dimension"/>
+        <attr name="tii_icon_height" format="dimension"/>
+    </declare-styleable>
 </resources>

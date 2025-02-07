@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:id="@+id/rl_select_platform"
+        style="@style/PlaneSet_Fly_Layout"
+        android:paddingLeft="@dimen/dp_3"
+        android:gravity="center_vertical"
+        android:layout_marginTop="@dimen/dp_20">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_40"
+            android:gravity="center_vertical"
+            android:text="@string/live_platform"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_platform_list"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/ic_spinner_withe_bg"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:text="@string/Label_live_normal"
+            android:textColor="@color/color_FF8400"
+            android:textSize="@dimen/sp_11"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_select_platform"
+        android:text="@string/Label_Live_Choose_tip"
+        android:textColor="@color/black"
+        android:paddingLeft="@dimen/dp_3"
+        android:textSize="@dimen/sp_11" />
+
+    <LinearLayout
+        android:id="@+id/ll_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip"
+        android:layout_marginLeft="@dimen/dp_3"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_weight="1">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/edit_url"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:hint="rtmp://"
+                android:inputType="text"
+                android:maxLength="100"
+                android:maxLines="1"
+                android:paddingLeft="3dp"
+                android:paddingRight="@dimen/dp_75"
+                android:singleLine="true"
+                android:textColor="@color/black" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_stick"
+                android:layout_width="@dimen/dp_75"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:text="@string/Label_stickup"
+                android:textColor="@drawable/selector_btn_font_color"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_get_push_url"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_start_live"
+                android:gravity="center"
+                android:text="@string/get_live_address"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_margin="@dimen/dp_5">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_scan_qr_code"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_start_live"
+                android:gravity="center"
+                android:text="@string/Label_live_QR_scan"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_startLive"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="@dimen/dp_30"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_weight="1"
+                android:background="@drawable/selector_btn_start_live"
+                android:gravity="center"
+                android:text="@string/Label_startLive"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12" />
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_history"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_input"
+            android:text="@string/Label_History"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_13" />
+
+        <ListView
+            android:id="@+id/btn_history"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tv_history" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/system_live_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_tip">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:text="@string/Label_live_normal"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_start_system_live"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/dp_25"
+            android:layout_weight="1"
+            android:background="@drawable/selector_btn_start_live"
+            android:gravity="center"
+            android:text="@string/Label_startLive"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/live_platform_overlying"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:visibility="gone" />
+
+    <com.gdu.demo.widget.live.CameraParamListView
+        android:id="@+id/live_platform_listview"
+        android:layout_width="@dimen/dp_130"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/dp_64"
+        android:orientation="vertical"
+        android:visibility="gone" />
+</RelativeLayout>

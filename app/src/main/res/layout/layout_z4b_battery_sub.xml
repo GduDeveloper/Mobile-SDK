@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/z4b_battery_sub"
+    android:background="@color/color_EDF0F1">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dp_37"
+        android:orientation="horizontal"
+        android:background="@drawable/shape_e6e6e6_top_radius_2"
+        android:layout_gravity="center_horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_battery_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxWidth="@dimen/dp_70"
+            android:minHeight="@dimen/dp_20"
+            android:maxHeight="@dimen/dp_45"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:background="@drawable/shape_bg_battery_state"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:paddingHorizontal="@dimen/dp_10"
+            android:text="@string/state_none"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_battery_remaining_capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/dp_6"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingVertical="@dimen/dp_2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ll_flight_duration"
+            app:layout_constraintStart_toEndOf="@id/tv_battery_state"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_battery_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxWidth="@dimen/dp_85"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="2"
+                android:text="@string/dump_energy"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_batteryPercent"
+                android:layout_width="@dimen/dp_28"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="0%"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_flight_duration"
+            android:layout_width="wrap_content"
+            android:layout_marginStart="@dimen/dp_6"
+            android:layout_marginEnd="@dimen/dp_3"
+            app:layout_goneMarginStart="@dimen/dp_10"
+            android:paddingVertical="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ll_battery_remaining_capacity"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_flight_duration_title"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_1"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:text="@string/Label_Record_Detail_flightTime"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_flight_duration"
+                android:layout_width="@dimen/dp_44"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10"
+                tools:text="00:00" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_75"
+        android:background="@color/white"
+        android:layout_gravity="center">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_cellUpContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="4"
+            android:background="@color/white"
+            tools:listitem="@layout/layout_z4b_cell_info" />
+    </FrameLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_65"
+        android:background="@color/white"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_voltage_differential"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ll_temperature"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/voltage_diff"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_voltage_differential"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_temperature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ll_voltage_differential"
+            app:layout_constraintEnd_toStartOf="@id/ll_voltage"
+            app:layout_constraintStart_toEndOf="@id/ll_voltage_differential"
+            app:layout_constraintTop_toTopOf="@id/ll_voltage_differential">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/Label_Battery_Temperature"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_tempContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_voltage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ll_voltage_differential"
+            app:layout_constraintEnd_toStartOf="@id/ll_electric_content"
+            app:layout_constraintStart_toEndOf="@id/ll_temperature"
+            app:layout_constraintTop_toTopOf="@id/ll_voltage_differential">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/Label_Voltage"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_batteryVoltage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_electric_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ll_voltage_differential"
+            app:layout_constraintEnd_toStartOf="@id/ll_capacity"
+            app:layout_constraintStart_toEndOf="@id/ll_voltage"
+            app:layout_constraintTop_toTopOf="@id/ll_voltage_differential">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/Label_Battery_CurElectric"
+                android:textColor="@color/color_999999"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_curElectricContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_capacity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ll_voltage_differential"
+            app:layout_constraintEnd_toStartOf="@id/ll_charge_num"
+            app:layout_constraintStart_toEndOf="@id/ll_electric_content"
+            app:layout_constraintTop_toTopOf="@id/ll_voltage_differential">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/Label_Remaining_Power"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_batteryCapacity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_charge_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/ll_voltage_differential"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ll_capacity"
+            app:layout_constraintTop_toTopOf="@id/ll_voltage_differential">
+
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/Label_Battery_ChargeNum"
+                android:maxWidth="@dimen/dp_40"
+                android:maxLines="2"
+                android:textColor="@color/color_999999"
+                android:textSize="@dimen/sp_10" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_chargeNumContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/dp_5"
+                android:text="--"
+                android:textColor="@color/color_333333"
+                android:textSize="@dimen/sp_10" />
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_batteryName"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="@string/Label_Battery_Upper"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_batteryPercent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/battery_up_pb" />
+
+    <!--  暂时无使用  -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/battery_up_pb"
+            android:layout_width="@dimen/dp_39"
+            android:layout_height="@dimen/dp_72"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:indeterminate="false"
+            android:indeterminateOnly="false"
+            android:progress="0"
+            android:progressDrawable="@drawable/main_progress_vertical_red" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/color_4D999999" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

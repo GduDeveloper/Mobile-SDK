@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_EDF0F1"
+    android:orientation="vertical"
+    android:paddingTop="@dimen/dp_10">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_14"
+        android:text="@string/rc_custom_key"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12" />
+    <!--自定义按键-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/tv_define_button"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginRight="@dimen/dp_5"
+            android:src="@drawable/icon_rc_c1c2" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_define_button"
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_c1"
+                android:layout_width="@dimen/dp_33"
+                android:layout_height="@dimen/dp_13"
+                android:src="@drawable/icon_rc_c1" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/c1_setting_view"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@+id/iv_c1"
+                android:gravity="center"
+                android:minHeight="@dimen/dp_26"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                android:visibility="visible"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_define_button"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_60">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/dp_33"
+                android:layout_height="@dimen/dp_13"
+                android:src="@drawable/icon_rc_c2" />
+
+            <com.gdu.demo.widget.GduSpinner
+                android:id="@+id/c2_setting_view"
+                android:layout_width="@dimen/dp_110"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:gravity="center"
+                android:minHeight="@dimen/dp_26"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_12"
+                android:visibility="visible"
+                app:optionArray="@array/PlanSet_C1C2_Parameter" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

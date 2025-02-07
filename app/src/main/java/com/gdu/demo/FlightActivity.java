@@ -8,13 +8,17 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
 
+import com.gdu.config.UavStaticVar;
 import com.gdu.demo.databinding.ActivityFlightBinding;
+import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
+import com.gdu.demo.utils.StatusBarUtils;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 
-public class FlightActivity extends Activity implements TextureView.SurfaceTextureListener {
+public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener {
 
     private ActivityFlightBinding viewBinding;
     private GDUCodecManager codecManager;
@@ -40,7 +44,10 @@ public class FlightActivity extends Activity implements TextureView.SurfaceTextu
 
             @Override
             public void onRightSettingIconCLick() {
-                Toast.makeText(FlightActivity.this, "设置页面", Toast.LENGTH_SHORT).show();
+                if (UavStaticVar.isHasNavigationBar) {
+                    StatusBarUtils.setHideVirtualKey(getWindow());
+                }
+                SettingDialogFragment.show(getSupportFragmentManager(), 1);
             }
         });
 

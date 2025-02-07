@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_17"
                     android:gravity="center_vertical"
-                    android:text="@string/route_fly_no_conn"
+                    android:text="@string/fly_no_conn"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12"
                     android:textStyle="bold"

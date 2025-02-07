@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        tools:text="list"  />
+
+
+    <com.gdu.demo.widget.GduSpinner
+        android:id="@+id/ov_out_of_control"
+        android:layout_width="@dimen/dp_130"
+        android:layout_height="@dimen/dp_25"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_20"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:optionArray="@array/array_out_of_control"
+        app:viewHeight="@dimen/dp_150"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_alignParentBottom="true"
+        android:background="@color/color_D8D8D8"/>
+
+
+
+</RelativeLayout>

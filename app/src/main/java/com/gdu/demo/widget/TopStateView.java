@@ -15,6 +15,7 @@ import com.gdu.demo.databinding.TopStateViewLayoutBinding;
 
 import java.util.concurrent.TimeUnit;
 
+import cc.taylorzhang.singleclick.SingleClickUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -43,8 +44,16 @@ public class TopStateView  extends ConstraintLayout {
 
     private void initView(Context context) {
         binding = TopStateViewLayoutBinding.bind(View.inflate(context, R.layout.top_state_view_layout, this));
-        binding.ivBack.setOnClickListener(listener);
-        binding.ivSetMenu.setOnClickListener(listener);
+        SingleClickUtil.onSingleClick(binding.ivBack, view -> {
+            if (clickCallBack != null) {
+                clickCallBack.onLeftIconClick();
+            }
+        });
+        SingleClickUtil.onSingleClick(binding.ivSetMenu, view -> {
+            if (clickCallBack != null) {
+                clickCallBack.onRightSettingIconCLick();
+            }
+        });
     }
 
     private void initData() {
@@ -131,31 +140,6 @@ public class TopStateView  extends ConstraintLayout {
             binding.tvSportMode.setText("VI");
         }
     }
-
-
-
-    public View.OnClickListener listener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            switch (v.getId()) {
-                case R.id.iv_back:
-                    if (clickCallBack != null) {
-                        clickCallBack.onLeftIconClick();
-                    }
-                    break;
-
-                case R.id.iv_set_menu:;
-                    if (clickCallBack != null) {
-                        clickCallBack.onRightSettingIconCLick();
-                    }
-                    break;
-                default:
-                    break;
-            }
-
-        }
-    };
-
 
     public void setViewClickListener(OnClickCallBack listener) {
         this.clickCallBack = listener;

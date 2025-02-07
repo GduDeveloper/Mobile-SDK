@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/color_E6000000"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/start_visual_location_switch"
+            android:text="@string/start_visual_location"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/start_visual_location_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/selector_hand_control" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:src="@drawable/icon_visual_location" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_visual_location_hint"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/visual_location_hint"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginTop="@dimen/dp_9"
+        android:layout_marginBottom="@dimen/dp_9"
+        android:background="@color/white" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_9">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/start_precise_landing_switch"
+            android:text="@string/start_precise_landing"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/start_precise_landing_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/selector_hand_control" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_4"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:src="@drawable/icon_precise_landing" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/precise_landing_hint"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_42"
+    tools:background="@color/color_EDF0F1">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/name_textview"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="0dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:text="@string/low_power_warn_value"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_sbMinValue"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:gravity="center"
+        android:maxLength="3"
+        android:maxLines="1"
+        android:textColor="@color/color_3E505C"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintLeft_toRightOf="@+id/name_textview"
+        app:layout_constraintRight_toLeftOf="@+id/sb_value"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="1000" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/sb_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:layout_marginRight="@dimen/dp_5"
+        android:focusable="true"
+        android:maxHeight="@dimen/dp_3"
+        android:progress="0"
+        android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
+        android:thumb="@drawable/icon_planset_seek_bar_thumb"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tv_sbMinValue"
+        app:layout_constraintRight_toLeftOf="@+id/tv_sbMaxValue"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_sbMaxValue"
+        android:layout_width="@dimen/dp_22"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/dp_5"
+        android:gravity="center"
+        android:maxLength="3"
+        android:maxLines="1"
+        android:textColor="@color/color_3E505C"
+        android:textSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/sb_value"
+        app:layout_constraintRight_toLeftOf="@+id/value_edit"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="100" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/value_edit"
+        android:layout_width="@dimen/dp_40"
+        android:layout_height="@dimen/dp_20"
+        android:background="@drawable/selector_common_edit_bg"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:maxLines="1"
+        android:textColor="@color/color_3E505C"
+        android:textSize="@dimen/sp_11"
+        android:imeOptions="actionDone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/unit_textview"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="Autofill,LabelFor"
+        tools:text="10" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/unit_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="@string/Label_Unit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

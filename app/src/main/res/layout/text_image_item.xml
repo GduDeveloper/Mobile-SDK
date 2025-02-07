@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_tii_des"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
+        tools:text="设置"
+        android:textSize="@dimen/sp_12"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_tii_icon"
+        app:layout_constraintTop_toTopOf="@id/tv_tii_des"
+        app:layout_constraintBottom_toBottomOf="@id/tv_tii_des"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:src="@drawable/delay_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <View
+        android:id="@+id/v_line_tii"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:background="@color/color_4D999999"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

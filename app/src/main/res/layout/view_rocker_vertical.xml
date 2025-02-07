@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/middle_view"
+        android:layout_width="8.67dp"
+        android:layout_height="8.67dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_circle_r_999_s_ff5800_solid_none" />
+
+    <com.gdu.demo.widget.VerticalProgressBar
+        android:id="@+id/top_progress_view"
+        style="@android:style/Widget.ProgressBar.Horizontal"
+        android:layout_width="@dimen/dp_4"
+        android:layout_height="match_parent"
+        android:max="100"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/middle_view"
+        android:layout_marginTop="10dp"
+        android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/top_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/top_progress_view"
+        android:layout_marginStart="5dp"
+        android:textSize="10sp"
+        android:textColor="#3E505C"
+        android:text="0%"/>
+
+    <com.gdu.demo.widget.VerticalProgressBar
+        android:id="@+id/bottom_progress_view"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="@dimen/dp_4"
+        android:layout_height="match_parent"
+        android:max="100"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/middle_view"
+        android:layout_marginBottom="10dp"
+        android:rotation="180"
+        android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/bottom_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/bottom_progress_view"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="5dp"
+        android:textSize="10sp"
+        android:textColor="#3E505C"
+        android:text="0%"/>
+    <ProgressBar
+        android:id="@+id/left_progress_view"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_4"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="10dp"
+        android:layout_toStartOf="@+id/middle_view"
+        android:max="100"
+        android:rotation="180"
+        android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/left_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/left_progress_view"
+        android:textSize="10sp"
+        android:textColor="#3E505C"
+        android:text="0%"/>
+
+    <ProgressBar
+        android:id="@+id/right_progress_view"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_4"
+        android:max="100"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/middle_view"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:progressDrawable="@drawable/shape_vertical_progress_bar"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/right_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="5dp"
+        android:layout_above="@+id/right_progress_view"
+        android:textSize="10sp"
+        android:textColor="#3E505C"
+        android:text="0%"/>
+</RelativeLayout>
