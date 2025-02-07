@@ -5,7 +5,6 @@
         <attr name="strokeColor" format="color"/>
         <attr name="strokeWidth" format="dimension"/>
     </declare-styleable>
-
     <declare-styleable name="FlightStatusItemView">
         <attr name="ifcsv_title" format="string"/>
         <attr name="ifcsv_content" format="string"/>
@@ -36,5 +35,24 @@
         <attr name="tii_show_line" format="boolean"/>
         <attr name="tii_icon_width" format="dimension"/>
         <attr name="tii_icon_height" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="FPVRadarView">
+        <attr name="color_circle_inner_center" format="color"/>
+        <attr name="color_circle_inner_end" format="color"/>
+        <attr name="color_circle_outer" format="color"/>
+        <attr name="color_circle_border" format="color"/>
+        <attr name="width_circle_border" format="dimension"/>
+        <attr name="angle_text_size" format="dimension"/>
+        <attr name="top_text_size" format="dimension"/>
+        <attr name="obstacle_start_angle" format="float"/>
+        <attr name="obstacle_sweep_angle" format="float"/>
+        <attr name="color_center_arrow" format="color"/>
+        <attr name="color_return_point_bg" format="color"/>
+        <attr name="color_return_point_border" format="color"/>
+        <attr name="color_return_point_num" format="color"/>
+        <attr name="radius_obstacle_point" format="dimension"/>
+        <attr name="state_text_size" format="dimension"/>
+        <attr name="state_text_color" format="color"/>
+        <attr name="frv_return_text_size" format="dimension"/>
     </declare-styleable>
 </resources>

@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_dis_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="60dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="D"/>
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_dis"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_dis_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_dis_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_dis_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="300"/>
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_height_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toRightOf="@id/tv_dis_title"
+        app:layout_constraintTop_toTopOf="@id/tv_dis_title"
+        android:layout_marginLeft="240dp"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="H" />
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_height_title"
+        app:layout_constraintBottom_toBottomOf="@id/tv_height_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_height_title"
+        android:layout_marginLeft="5dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="30.0m"/>
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_h_speed_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_dis_title"
+        android:layout_marginTop="5dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="H.S"/>
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_h_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_speed_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="0.0m/s" />
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_v_speed_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_speed_title"
+        android:layout_marginLeft="70dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="V.S"/>
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_v_speed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_v_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_v_speed_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="0.0m/s"/>
+
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_h_a_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_v_speed_title"
+        android:layout_marginLeft="70dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="H.A"/>
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_head_angle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_h_a_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_a_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="121.0"/>
+
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_ellipsoid_height_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_h_a_title"
+        android:layout_marginLeft="70dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="HAE"/>
+
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_ellipsoid_height"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_ellipsoid_height_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_ellipsoid_height_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="0.0"/>
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_asl_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tv_h_speed_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_ellipsoid_height_title"
+        android:layout_marginLeft="70dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="ASL"/>
+
+
+    <com.gdu.demo.widget.RouteStrokeTextView
+        android:id="@+id/tv_a_s_l"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tv_asl_title"
+        app:layout_constraintLeft_toRightOf="@id/tv_asl_title"
+        android:layout_marginLeft="10dp"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        app:strokeColor="@color/color_FF3C3C3C"
+        app:strokeWidth="1dp"
+        android:text="0.00"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

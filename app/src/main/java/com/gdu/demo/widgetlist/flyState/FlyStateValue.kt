@@ -1,0 +1,11 @@
+package com.gdu.demo.widgetlist.flyState
+
+data class FlyStateValue(
+    val dis: Int,
+    val height: Int,
+    val hs: Int,
+    val vs: Int,
+    val headAngel: Int,
+    val ellipsoid_height: Int,
+    val asl_height: Int
+)
