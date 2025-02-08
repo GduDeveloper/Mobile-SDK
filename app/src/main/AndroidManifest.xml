@@ -61,6 +61,7 @@
             android:screenOrientation="landscape"
             />
         <service android:name="org.eclipse.paho.android.service.MqttService" />
+        <activity android:name=".flight.calibration.IMUCalibrationActivity"/>
     </application>
 
 </manifest>

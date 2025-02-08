@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_great"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/great"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/v_great"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/v_great"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@color/color_BAE131"
+        app:layout_constraintBottom_toBottomOf="@id/tv_great"
+        app:layout_constraintEnd_toStartOf="@id/tv_good"
+        app:layout_constraintStart_toEndOf="@id/tv_great"
+        app:layout_constraintTop_toTopOf="@id/tv_great" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/good"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBottom_toBottomOf="@id/tv_great"
+        app:layout_constraintEnd_toStartOf="@id/v_good"
+        app:layout_constraintStart_toEndOf="@+id/v_great"
+        app:layout_constraintTop_toTopOf="@id/tv_great" />
+
+    <View
+        android:id="@+id/v_good"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginEnd="@dimen/dp_20"
+        android:background="@color/color_FFC741"
+        app:layout_constraintBottom_toBottomOf="@id/tv_great"
+        app:layout_constraintEnd_toStartOf="@id/tv_bad"
+        app:layout_constraintStart_toEndOf="@id/tv_good"
+        app:layout_constraintTop_toTopOf="@id/tv_great" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_bad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bad"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintBottom_toBottomOf="@id/tv_great"
+        app:layout_constraintEnd_toStartOf="@id/v_bad"
+        app:layout_constraintStart_toEndOf="@+id/v_good"
+        app:layout_constraintTop_toTopOf="@id/tv_great"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/v_bad"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_15"
+        android:layout_marginStart="@dimen/dp_10"
+
+        android:background="@color/color_FE3B3B"
+        app:layout_constraintBottom_toBottomOf="@id/tv_great"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_bad"
+        app:layout_constraintTop_toTopOf="@id/tv_great" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

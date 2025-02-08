@@ -20,8 +20,6 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseFlightAssistantViewModel;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.base.BaseRCViewModel;
-import com.gdu.demo.flight.base.LimitDistanceBean;
-import com.gdu.demo.flight.base.LimitHeightBean;
 import com.gdu.demo.flight.base.LowBatteryWarningBean;
 import com.gdu.demo.flight.pre.bean.BaseFlightStatusBean;
 import com.gdu.demo.flight.pre.bean.BaseSysStatusBean;
@@ -33,6 +31,8 @@ import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.errreport.ErrCodeGrade;
 import com.gdu.healthmanager.MessageBean;
 import com.gdu.remotecontroller.AircraftMappingStyle;
+import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
+import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.sdk.util.CommonUtils;
@@ -90,10 +90,10 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private final String INF = "INF";
 
     //限制高度
-    private final MutableLiveData<LimitHeightBean> limitHeightLiveData;
+    private final MutableLiveData<LimitHeightInfo> limitHeightLiveData;
 
     //限制距离
-    private final MutableLiveData<LimitDistanceBean> limitDistanceLiveData;
+    private final MutableLiveData<LimitDistanceInfo> limitDistanceLiveData;
 
 
     //摇杆模式
@@ -601,12 +601,12 @@ public class PreFlightInspectionViewModel extends ViewModel {
         return goHomeHeightLiveData;
     }
 
-    public MutableLiveData<LimitHeightBean> getLimitHeightLiveData() {
+    public MutableLiveData<LimitHeightInfo> getLimitHeightLiveData() {
         return limitHeightLiveData;
     }
 
 
-    public MutableLiveData<LimitDistanceBean> getLimitDistanceLiveData() {
+    public MutableLiveData<LimitDistanceInfo> getLimitDistanceLiveData() {
         return limitDistanceLiveData;
     }
 

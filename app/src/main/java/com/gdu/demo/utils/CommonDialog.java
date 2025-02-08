@@ -34,6 +34,7 @@ public class CommonDialog extends AppCompatDialogFragment {
 
     /** 弹窗相关参数 */
     private DialogParam param;
+    private View view;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +45,6 @@ public class CommonDialog extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
         if (param.layoutResId<=0){
             view = inflater.inflate(R.layout.dialog_common, container, false);
             TextView tvTitle = view.findViewById(R.id.dialog_title);
@@ -99,6 +99,11 @@ public class CommonDialog extends AppCompatDialogFragment {
         }
         return view;
     }
+
+    public View getRootView(){
+        return view;
+    }
+
 
     @Override
     public void onStart() {

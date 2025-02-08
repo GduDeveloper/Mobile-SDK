@@ -68,7 +68,6 @@ public class TopStateView  extends ConstraintLayout {
     }
 
     private void updateState() {
-        Log.d("TopStateView", "TopStateView  update");
 
         // 更新遥控器图传信号
 //        updateRcImageTransSignal();

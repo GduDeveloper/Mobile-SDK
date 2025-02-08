@@ -462,13 +462,13 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         //根据英寸单位换算的最大数值长度，设置输入框的最大可输入范围
         mViewBinding.preFlightLimitHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_HEIGHT_MAX)).length())});
         viewModel.getLimitHeightLiveData().observe(this, data -> {
-            if (data.getHeightLimit() == -1) {
+            if (data.getHeight() == -1) {
                 mViewBinding.preFlightLimitHeightEdit.setText("INF");
             } else {
-                String limitHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getHeightLimit()));
+                String limitHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getHeight()));
                 mViewBinding.preFlightLimitHeightEdit.setText(limitHeightStr);
             }
-            preLimitHeightValue = data.isOpen() ? data.getHeightLimit() : preLimitHeightValue;
+            preLimitHeightValue = data.isOpen() ? data.getHeight() : preLimitHeightValue;
             mViewBinding.preFlightLimitHeightSwitch.setSelected(data.isOpen());
             mViewBinding.preFlightLimitHeightEdit.setEnabled(data.isOpen());
         });
@@ -550,13 +550,13 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.preFlightLimitDistanceEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_DISTANCE_MAX)).length())});
 
         viewModel.getLimitDistanceLiveData().observe(this, data->{
-            if (data.getDistanceLimit() == -1) {
+            if (data.getDistance() == -1) {
                 mViewBinding.preFlightLimitDistanceEdit.setText("INF");
             } else {
-                String limitDistanceStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getDistanceLimit()));
+                String limitDistanceStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getDistance()));
                 mViewBinding.preFlightLimitDistanceEdit.setText(limitDistanceStr);
             }
-            preLimitDistanceValue  = data.isOpen() ? data.getDistanceLimit() : preLimitDistanceValue;
+            preLimitDistanceValue  = data.isOpen() ? data.getDistance() : preLimitDistanceValue;
             mViewBinding.preFlightLimitDistanceSwitch.setSelected(data.isOpen());
             mViewBinding.preFlightLimitDistanceEdit.setSelected(data.isOpen());
         });

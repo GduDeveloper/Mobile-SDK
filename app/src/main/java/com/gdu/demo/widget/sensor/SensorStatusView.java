@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
 import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
@@ -64,21 +66,20 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
     public SensorStatusView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.mContext = context;
-//        LayoutInflater.from(context).inflate(R.layout.view_sensor_status, this, true);
-//        initView();
-//        initListener();
+        LayoutInflater.from(context).inflate(R.layout.view_sensor_status, this, true);
+        initView();
+        initListener();
     }
 
     private void initView() {
-//        String[] titles = new String[]{
-//                mContext.getString(R.string.imu),
-//                mContext.getString(R.string.compass)
-//        };
-//        dialogUtils = new DialogUtils(mContext);
-//        mTabSensor = findViewById(R.id.tab_sensor);
-//        vIMU = findViewById(R.id.v_imu);
-//        vCompass = findViewById(R.id.v_compass);
-//        mTabSensor.setTabData(titles);
+        String[] titles = new String[]{
+                mContext.getString(R.string.imu),
+                mContext.getString(R.string.compass)
+        };
+        mTabSensor = findViewById(R.id.tab_sensor);
+        vIMU = findViewById(R.id.v_imu);
+        vCompass = findViewById(R.id.v_compass);
+        mTabSensor.setTabData(titles);
         initIMUView();
         initCompassView();
         initTimer();
@@ -103,33 +104,33 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
 
     private void initIMUView() {
         //------------------------------------展示IMU数值的TextView----------------------------------
-//        mTvImu1AccelerometerValue = vIMU.findViewById(R.id.tv_imu1_accelerometer_value);
-//        mTvImu2AccelerometerValue = vIMU.findViewById(R.id.tv_imu2_accelerometer_value);
-//        mTvImu1GyroValue = vIMU.findViewById(R.id.tv_imu1_gyro_value);
-//        mTvImu2GyroValue = vIMU.findViewById(R.id.tv_imu2_gyro_value);
-//
-//        //----------------------------------展示IMU数值的ProgressBar----------------------------------
-//        mPbImu1AccelerometerValue = vIMU.findViewById(R.id.pb_imu1_accelerometer_value);
-//        mPbImu2AccelerometerValue = vIMU.findViewById(R.id.pb_imu2_accelerometer_value);
-//        mPbImu1GyroValue = vIMU.findViewById(R.id.pb_imu1_gyro_value);
-//        mPbImu2GyroValue = vIMU.findViewById(R.id.pb_imu2_gyro_value);
-//
-//        mBtnCalibrateIMU = vIMU.findViewById(R.id.btn_calibrate_imu);
+        mTvImu1AccelerometerValue = vIMU.findViewById(R.id.tv_imu1_accelerometer_value);
+        mTvImu2AccelerometerValue = vIMU.findViewById(R.id.tv_imu2_accelerometer_value);
+        mTvImu1GyroValue = vIMU.findViewById(R.id.tv_imu1_gyro_value);
+        mTvImu2GyroValue = vIMU.findViewById(R.id.tv_imu2_gyro_value);
+
+        //----------------------------------展示IMU数值的ProgressBar----------------------------------
+        mPbImu1AccelerometerValue = vIMU.findViewById(R.id.pb_imu1_accelerometer_value);
+        mPbImu2AccelerometerValue = vIMU.findViewById(R.id.pb_imu2_accelerometer_value);
+        mPbImu1GyroValue = vIMU.findViewById(R.id.pb_imu1_gyro_value);
+        mPbImu2GyroValue = vIMU.findViewById(R.id.pb_imu2_gyro_value);
+
+        mBtnCalibrateIMU = vIMU.findViewById(R.id.btn_calibrate_imu);
 
     }
 
     private void initCompassView() {
         //------------------------------------展示指南针数值的TextView---------------------------------
-//        mTvCompass1DisturbanceValue = vCompass.findViewById(R.id.tv_compass1_disturbance_value);
-//        mTvCompass2DisturbanceValue = vCompass.findViewById(R.id.tv_compass2_disturbance_value);
-//        tv_compass1_label = vCompass.findViewById(R.id.tv_compass1_label);
-//        tv_compass2_label = vCompass.findViewById(R.id.tv_compass2_label);
-//        tv_compass1_label.setText(mContext.getString(R.string.compass) + "1");
-//        tv_compass2_label.setText(mContext.getString(R.string.compass) + "2");
-//        //---------------------------------展示指南针数值的ProgressBar---------------------------------
-//        mPbCompass1DisturbanceValue = vCompass.findViewById(R.id.pb_compass1_disturbance_value);
-//        mPbCompass2DisturbanceValue = vCompass.findViewById(R.id.pb_compass2_disturbance_value);
-//        mBtnCalibrateCompass = vCompass.findViewById(R.id.btn_calibrate_compass);
+        mTvCompass1DisturbanceValue = vCompass.findViewById(R.id.tv_compass1_disturbance_value);
+        mTvCompass2DisturbanceValue = vCompass.findViewById(R.id.tv_compass2_disturbance_value);
+        tv_compass1_label = vCompass.findViewById(R.id.tv_compass1_label);
+        tv_compass2_label = vCompass.findViewById(R.id.tv_compass2_label);
+        tv_compass1_label.setText(mContext.getString(R.string.compass) + "1");
+        tv_compass2_label.setText(mContext.getString(R.string.compass) + "2");
+        //---------------------------------展示指南针数值的ProgressBar---------------------------------
+        mPbCompass1DisturbanceValue = vCompass.findViewById(R.id.pb_compass1_disturbance_value);
+        mPbCompass2DisturbanceValue = vCompass.findViewById(R.id.pb_compass2_disturbance_value);
+        mBtnCalibrateCompass = vCompass.findViewById(R.id.btn_calibrate_compass);
     }
 
     /**
@@ -182,16 +183,16 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
             LayerDrawable progressDrawable = (LayerDrawable) progressBar.getProgressDrawable();
             Drawable drawable = progressDrawable.getDrawable(1);
 
-//            if (progressBar.getProgress() <= average) {
-//                //绿色
-//                drawable.setColorFilter(mContext.getColor(R.color.color_progress), PorterDuff.Mode.SRC_ATOP);
-//            } else if (progressBar.getProgress() <= average * 2) {
-//                //黄色
-//                drawable.setColorFilter(mContext.getColor(R.color.color_vc_border), PorterDuff.Mode.SRC_ATOP);
-//            } else {
-//                //红色
-//                drawable.setColorFilter(mContext.getColor(R.color.color_text_red), PorterDuff.Mode.SRC_ATOP);
-//            }
+            if (progressBar.getProgress() <= average) {
+                //绿色
+                drawable.setColorFilter(mContext.getColor(R.color.color_BAE131), PorterDuff.Mode.SRC_ATOP);
+            } else if (progressBar.getProgress() <= average * 2) {
+                //黄色
+                drawable.setColorFilter(mContext.getColor(R.color.color_FFC741), PorterDuff.Mode.SRC_ATOP);
+            } else {
+                //红色
+                drawable.setColorFilter(mContext.getColor(R.color.color_FE3B3B), PorterDuff.Mode.SRC_ATOP);
+            }
         }
     }
 
@@ -199,28 +200,28 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-//            case R.id.btn_calibrate_imu:
-//                if (!connStateToast()){
-//                    return;
-//                }
-//                if (!GlobalVariable.planeHadLock) {
-//                    dialogUtils.Toast(mContext.getString(R.string.canNotCheckOnUnLockFly));
-//                    return;
-//                }
-//                Intent intent1 = new Intent(mContext, IMUCalibrationActivity.class);
-//                mContext.startActivity(intent1);
-//                break;
-//
-//            case R.id.btn_calibrate_compass:
-//                if (!connStateToast()){
-//                    return;
-//                }
-//                if (!GlobalVariable.planeHadLock) {
-//                    dialogUtils.Toast(mContext.getString(R.string.canNotCheckOnUnLockFly));
-//                    return;
-//                }
+            case R.id.btn_calibrate_imu:
+                if (!connStateToast()){
+                    return;
+                }
+                if (!GlobalVariable.planeHadLock) {
+                    Toast.makeText(mContext, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent1 = new Intent(mContext, IMUCalibrationActivity.class);
+                mContext.startActivity(intent1);
+                break;
+
+            case R.id.btn_calibrate_compass:
+                if (!connStateToast()){
+                    return;
+                }
+                if (!GlobalVariable.planeHadLock) {
+                    Toast.makeText(mContext, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
+                    return;
+                }
 //                CommonUtils.jumpMagnetometerActivity(mContext);
-//                break;
+                break;
 
             default:
                 break;
@@ -235,12 +236,12 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
     private boolean connStateToast() {
         MyLogUtils.i("connStateToast()");
         switch (GlobalVariable.connStateEnum) {
-//            case Conn_None:
-//                dialogUtils.Toast(mContext.getString(R.string.fly_no_conn));
-//                return false;
-//            case Conn_MoreOne:
-//                dialogUtils.Toast(mContext.getString(R.string.Label_ConnMore));
-//                return false;
+            case Conn_None:
+                Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                return false;
+            case Conn_MoreOne:
+                Toast.makeText(mContext, R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
+                return false;
             case Conn_Sucess:
                 return true;
 

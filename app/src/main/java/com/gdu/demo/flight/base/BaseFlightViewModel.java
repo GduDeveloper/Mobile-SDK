@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.base;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,14 +9,22 @@ import androidx.lifecycle.ViewModel;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
+import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.map.SpatialReference;
 import com.gdu.demo.map.geometry.Point;
 import com.gdu.demo.map.utils.JTSUtils;
+import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
+import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
+import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.sdk.util.CommonUtils;
+import com.gdu.util.ConnectUtil;
+import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
 import com.gdu.util.logger.MyLogUtils;
@@ -27,14 +36,13 @@ import java.util.HashMap;
  * @date 2025/1/13
  * @description TODO
  */
-public class BaseFlightViewModel extends ViewModel {
+public class BaseFlightViewModel extends BaseViewModel {
 
     private GDUFlightController mGDUFlightController;
-    private final MutableLiveData<LimitHeightBean> limitHeightLiveData;
+    private final MutableLiveData<LimitHeightInfo> limitHeightLiveData;
 
-    private final MutableLiveData<LimitDistanceBean> limitDistanceLiveData;
+    private final MutableLiveData<LimitDistanceInfo> limitDistanceLiveData;
     private final MutableLiveData<GoHomeHeightBean> goHomeHeightBeanLiveData;
-    private final MutableLiveData<ErrTipBean> errTipBeanLiveData;
     private final MutableLiveData<ConnectionFailSafeBehaviorBean> connectionFailSafeBehaviorLiveData;
 
     private final MutableLiveData<LowBatteryWarningBean> lowBatteryWarningBeanLiveData;
@@ -70,7 +78,6 @@ public class BaseFlightViewModel extends ViewModel {
     public BaseFlightViewModel() {
         mGDUFlightController = SdkDemoApplication.getAircraftInstance().getFlightController();
         limitHeightLiveData = new MutableLiveData<>();
-        errTipBeanLiveData = new MutableLiveData<>();
         warnTipBeanLiveData = new MutableLiveData<>();
         goHomeHeightBeanLiveData = new MutableLiveData<>();
         limitDistanceLiveData = new MutableLiveData<>();
@@ -108,32 +115,28 @@ public class BaseFlightViewModel extends ViewModel {
         if (GlobalVariable.isNewHeightLimitStrategy) {
             int localHeightLimit = SPUtils.getCustomInt(GduAppEnv.application,
                     SPUtils.KEY_LOCAL_HEIGHT_LIMIT, MyConstants.LIMIT_HEIGHT_DEFAULT);
-            LimitHeightBean bean = new LimitHeightBean();
+            LimitHeightInfo bean = new LimitHeightInfo();
             bean.setOpen(localHeightLimit != MyConstants.LIMIT_HEIGHT_CLOSE);
-            bean.setHeightLimit(localHeightLimit);
+            bean.setHeight(localHeightLimit);
             bean.setSet(false);
             limitHeightLiveData.setValue(bean);
             return;
         }
         if (mGDUFlightController != null) {
-            mGDUFlightController.getDroneLimitHeight(new CommonCallbacks.CompletionCallbackWith<HashMap<String, Object>>() {
+            mGDUFlightController.getDroneLimitHeight(new CommonCallbacks.CompletionCallbackWith<LimitHeightInfo>() {
                 @Override
-                public void onSuccess(HashMap<String, Object> result) {
-                    boolean isOpen = (boolean) result.get("open");
-                    int heightLimit = ((int) result.get("height") & 0xFFFF);
-                    heightLimit = checkAndSaveHeightData(isOpen, heightLimit);
-                    LimitHeightBean bean = new LimitHeightBean();
-                    bean.setOpen(isOpen);
-                    bean.setHeightLimit(heightLimit);
-                    bean.setSet(false);
-                    limitHeightLiveData.setValue(bean);
+                public void onSuccess(LimitHeightInfo result) {
+                    int heightLimit = checkAndSaveHeightData(result.isOpen(), result.getHeight());
+                    result.setHeight(heightLimit);
+                    result.setSet(false);
+                    limitHeightLiveData.setValue(result);
                 }
 
                 @Override
                 public void onFailure(GDUError var1) {
-                    LimitHeightBean bean = new LimitHeightBean();
+                    LimitHeightInfo bean = new LimitHeightInfo();
                     bean.setOpen(false);
-                    bean.setHeightLimit(0);
+                    bean.setHeight(0);
                     bean.setSet(false);
                     limitHeightLiveData.setValue(bean);
                 }
@@ -249,9 +252,9 @@ public class BaseFlightViewModel extends ViewModel {
                 }
                 SPUtils.put(GduAppEnv.application, SPUtils.KEY_LOCAL_HEIGHT_LIMIT, isOpen ? limitHeight : MyConstants.LIMIT_HEIGHT_CLOSE);
                 int value = checkAndSaveHeightData(isOpen, limitHeight);
-                LimitHeightBean bean = new LimitHeightBean();
+                LimitHeightInfo bean = new LimitHeightInfo();
                 bean.setOpen(isOpen);
-                bean.setHeightLimit(value);
+                bean.setHeight(value);
                 bean.setSet(true);
                 limitHeightLiveData.setValue(bean);
                 mGDUFlightController.setMaxFlightHeight(limitHeight, var1 -> {
@@ -295,18 +298,26 @@ public class BaseFlightViewModel extends ViewModel {
 
                 mGDUFlightController.setMaxFlightHeight(limitHeight, error -> {
                     if (error == null) {
+                        if (isOpen){
+                            toastLiveData.postValue(R.string.string_set_success);
+                        }
                         int value = checkAndSaveHeightData(isOpen, limitHeight);
-                        LimitHeightBean bean = new LimitHeightBean();
+                        LimitHeightInfo bean = new LimitHeightInfo();
                         bean.setOpen(isOpen);
-                        bean.setHeightLimit(value);
+                        bean.setHeight(value);
                         bean.setSet(true);
                         limitHeightLiveData.setValue(bean);
                     } else {
-                        LimitHeightBean bean = new LimitHeightBean();
+                        if (!GlobalVariable.isActive) {
+                            toastLiveData.postValue(R.string.Err_DevUnActiveRetryTip);
+                        } else {
+                            toastLiveData.postValue(R.string.Label_SettingFail);
+                        }
+                        LimitHeightInfo bean = new LimitHeightInfo();
                         bean.setOpen(isOpen);
-                        bean.setHeightLimit(limitHeight);
+                        bean.setHeight(preLimitHeight);
                         bean.setSet(false);
-                        limitHeightLiveData.setValue(bean);
+                        limitHeightLiveData.postValue(bean);
                     }
                 });
             }
@@ -335,15 +346,14 @@ public class BaseFlightViewModel extends ViewModel {
      * 获取限距
      * */
     public void getLimitDistance(){
-        mGDUFlightController.getMaxFlightRadiusLimitationEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+        mGDUFlightController.getLimitDistance(new CommonCallbacks.CompletionCallbackWith<LimitDistanceInfo>() {
             @Override
-            public void onSuccess(Boolean isEnable) {
-                LimitDistanceBean limitDistanceBean = new LimitDistanceBean();
-//                limitDistanceBean.setDistanceLimit(mGDUFlightController);
-                limitDistanceBean.setOpen(isEnable);
-                limitDistanceBean.setSuccess(true);
-                limitDistanceBean.setSet(false);
-
+            public void onSuccess(LimitDistanceInfo result) {
+                int distance = checkAndSaveDistanceData(result.isOpen(), result.getDistance());
+                result.setDistance(distance);
+                result.setSet(false);
+                result.setSuccess(true);
+                limitDistanceLiveData.postValue(result);
             }
 
             @Override
@@ -358,10 +368,13 @@ public class BaseFlightViewModel extends ViewModel {
     }
 
     public void setLimitDistance(boolean isOpen, int distance) {
-//            if (!connStateToast()) {
-//                mViewCallback.showErrTip(2,1);
-//                return;
-//            }
+            if (!ConnectUtil.isConnect()) {
+                ErrTipBean tipBean = new ErrTipBean();
+                tipBean.setSetType(2);
+                tipBean.setType(1);
+                errTipBeanLiveData.postValue(tipBean);
+                return;
+            }
 
         if (GlobalVariable.isTetherModel) {
             ErrTipBean tipBean = new ErrTipBean();
@@ -381,7 +394,6 @@ public class BaseFlightViewModel extends ViewModel {
             }
 
             if (GlobalVariable.flyDistance > MyConstants.LIMIT_DISTANCE_MIN && distance < GlobalVariable.flyDistance) {
-//                    mViewCallback.setDistanceBelowCurValueErr();
                 ErrTipBean tipBean = new ErrTipBean();
                 tipBean.setSetType(2);
                 tipBean.setType(6);
@@ -389,10 +401,8 @@ public class BaseFlightViewModel extends ViewModel {
                 return;
             }
             if (GlobalVariable.droneFlyState != 1) {
-                Point returnPoint = new Point(GlobalVariable.backHomeLan,
-                        GlobalVariable.backHomeLon, SpatialReference.WGS84);
-                Point drone = new Point(GlobalVariable.GPS_Lat,
-                        GlobalVariable.GPS_Lon, SpatialReference.WGS84);
+                Point returnPoint = new Point(GlobalVariable.backHomeLan, GlobalVariable.backHomeLon, SpatialReference.WGS84);
+                Point drone = new Point(GlobalVariable.GPS_Lat, GlobalVariable.GPS_Lon, SpatialReference.WGS84);
                 final double distanceValue = JTSUtils.INSTANCE.calPointsDistance(returnPoint, drone);
                 if (distanceValue > distance) {
                     ErrTipBean tipBean = new ErrTipBean();
@@ -402,48 +412,34 @@ public class BaseFlightViewModel extends ViewModel {
                     return;
                 }
             }
-            mGDUFlightController.setMaxFlightRadius((short) distance, new CommonCallbacks.CompletionCallback() {
-                @Override
-                public void onResult(GDUError error) {
-                    LimitDistanceBean limitDistanceBean = new LimitDistanceBean();
-                    if (error == null) {
-                        int value = distance;
-                        value = checkAndSaveDistanceData(isOpen, value);
-                        limitDistanceBean.setSet(true);
-                        limitDistanceBean.setDistanceLimit(value);
-                        limitDistanceBean.setOpen(true);
-                        limitDistanceBean.setSuccess(true);
-                    } else {
-                        limitDistanceBean.setSet(true);
-                        limitDistanceBean.setDistanceLimit(distance);
-                        limitDistanceBean.setOpen(true);
-                        limitDistanceBean.setSuccess(false);
-                    }
-                    limitDistanceLiveData.postValue(limitDistanceBean);
-                }
-            });
-        } else {
-            mGDUFlightController.setMaxFlightRadiusLimitationEnabled(false, new CommonCallbacks.CompletionCallback() {
-                @Override
-                public void onResult(GDUError error) {
-                    LimitDistanceBean limitDistanceBean = new LimitDistanceBean();
-                    if (error == null) {
-                        int value = distance;
-                        value = checkAndSaveDistanceData(isOpen, value);
-                        limitDistanceBean.setSet(true);
-                        limitDistanceBean.setDistanceLimit(value);
-                        limitDistanceBean.setOpen(false);
-                        limitDistanceBean.setSuccess(true);
-                    } else {
-                        limitDistanceBean.setSet(true);
-                        limitDistanceBean.setDistanceLimit(distance);
-                        limitDistanceBean.setOpen(false);
-                        limitDistanceBean.setSuccess(false);
-                    }
-                    limitDistanceLiveData.postValue(limitDistanceBean);
-                }
-            });
+
         }
+        mGDUFlightController.setLimitDistance(isOpen, (short) distance, error -> {
+            LimitDistanceInfo limitDistanceBean = new LimitDistanceInfo();
+            if (error == null) {
+                if (isOpen) {
+                    toastLiveData.postValue(R.string.string_set_success);
+                }
+                int value = distance;
+                value = checkAndSaveDistanceData(isOpen, value);
+                limitDistanceBean.setSet(true);
+                limitDistanceBean.setDistance(value);
+                limitDistanceBean.setOpen(isOpen);
+                limitDistanceBean.setSuccess(true);
+                preDistanceLimit = value;
+            } else {
+                if (!GlobalVariable.isActive) {
+                    toastLiveData.postValue(R.string.Err_DevUnActiveRetryTip);
+                } else {
+                    toastLiveData.postValue(R.string.Label_SettingFail);
+                }
+                limitDistanceBean.setSet(true);
+                limitDistanceBean.setDistance(preDistanceLimit);
+                limitDistanceBean.setOpen(isOpen);
+                limitDistanceBean.setSuccess(false);
+            }
+            limitDistanceLiveData.postValue(limitDistanceBean);
+        });
     }
 
     private int checkAndSaveDistanceData(boolean isOpen, int distance) {
@@ -459,7 +455,6 @@ public class BaseFlightViewModel extends ViewModel {
         SPUtils.put(GduAppEnv.application, SPUtils.LAST_LIMIT_DISTANCE, distance);
         return distance;
     }
-
 
     private int checkAndSaveGoHomeHeightData(int value) {
         if (value < MyConstants.GO_HOME_HEIGHT_MIN) {
@@ -484,16 +479,12 @@ public class BaseFlightViewModel extends ViewModel {
         return value;
     }
 
-    public MutableLiveData<LimitHeightBean> getLimitHeightLiveData() {
+    public MutableLiveData<LimitHeightInfo> getLimitHeightLiveData() {
         return limitHeightLiveData;
     }
 
     public MutableLiveData<GoHomeHeightBean> getGoHomeHeightBeanLiveData() {
         return goHomeHeightBeanLiveData;
-    }
-
-    public MutableLiveData<ErrTipBean> getErrTipBeanLiveData() {
-        return errTipBeanLiveData;
     }
 
     public MutableLiveData<WarnTipBean> getWarnTipBeanLiveData() {
@@ -504,7 +495,7 @@ public class BaseFlightViewModel extends ViewModel {
         return homeLocationBeanLiveData;
     }
 
-    public MutableLiveData<LimitDistanceBean> getLimitDistanceLiveData() {
+    public MutableLiveData<LimitDistanceInfo> getLimitDistanceLiveData() {
         return limitDistanceLiveData;
     }
 
