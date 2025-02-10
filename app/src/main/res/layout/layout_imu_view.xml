@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/dp_10"
+    android:paddingRight="@dimen/dp_10"
+    android:paddingTop="@dimen/dp_30"
+    tools:background="@color/color_EDF0F1">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_accelerometer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/accelerometer"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="@id/view_space1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_gyro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/gyroscope"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintLeft_toLeftOf="@id/view_space1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_accelerometer" />
+
+    <androidx.legacy.widget.Space
+        android:id="@+id/view_space1"
+        android:layout_width="1dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_imu1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imu_1"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/tv_accelerometer"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/dp_10"
+        android:textSize="@dimen/sp_11" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_bg_imu1_accelerometer_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toRightOf="@id/tv_imu1"
+        app:layout_constraintRight_toRightOf="@id/view_space1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_accelerometer">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_imu1_accelerometer_value"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            tools:text="00.0000" />
+
+        <ProgressBar
+            android:id="@+id/pb_imu1_accelerometer_value"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_5"
+            android:progressDrawable="@drawable/layer_sensor_status_progress_bar" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_bg_imu1_gyro_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="@+id/view_space1"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_gyro">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_imu1_gyro_value"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            tools:text="00.000" />
+
+        <ProgressBar
+            android:id="@+id/pb_imu1_gyro_value"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_5"
+            android:progressDrawable="@drawable/layer_sensor_status_progress_bar" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_imu2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/imu_2"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintTop_toBottomOf="@id/tv_imu1"
+        android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_imu2_accelerometer_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/ll_bg_imu1_accelerometer_value"
+        app:layout_constraintTop_toBottomOf="@id/ll_bg_imu1_accelerometer_value">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_imu2_accelerometer_value"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            tools:text="0.000" />
+
+        <ProgressBar
+            android:id="@+id/pb_imu2_accelerometer_value"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_5"
+            android:progressDrawable="@drawable/layer_sensor_status_progress_bar" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/ll_imu2_gyro_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="@id/ll_bg_imu1_gyro_value"
+        app:layout_constraintTop_toBottomOf="@id/ll_bg_imu1_gyro_value">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_imu2_gyro_value"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11"
+            tools:text="00.000" />
+
+        <ProgressBar
+            android:id="@+id/pb_imu2_gyro_value"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="@dimen/dp_65"
+            android:layout_height="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_5"
+            android:progressDrawable="@drawable/layer_sensor_status_progress_bar" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+    <include
+        android:id="@+id/v_value_legend"
+        layout="@layout/layout_value_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_imu2" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_calibrate_imu"
+        android:layout_width="@dimen/dp_200"
+        android:layout_height="@dimen/dp_24"
+        android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/selector_common_button_bg"
+        android:text="@string/state_check_IMU"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/v_value_legend" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

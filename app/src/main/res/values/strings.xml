@@ -734,4 +734,45 @@
     <string name="Label_right_5v_device_mount">Right 5v device mount</string>
     <string name="silent_mode">silent mode</string>
     <string name="left_12v_power">Left 12v power</string>
+    <string name="accelerometer">Accelerometer</string>
+    <string name="imu">IMU</string>
+    <string name="imu_1">IMU 1</string>
+    <string name="imu_2">IMU 2</string>
+    <string name="great">Great</string>
+    <string name="good">Good</string>
+    <string name="bad">Bad</string>
+    <string name="state_check_IMU">IMU Calibrate</string>
+    <string name="compass">Compass</string>
+    <string name="compass_1">Compass 1</string>
+    <string name="compass_2">Compass 2</string>
+    <string name="disturbance_variable">Compass Disturbance Variable</string>
+    <string name="Label_compassCheck">Magnetometer</string>
+    <string name="canNotCheckOnUnLockFly">Lock the aircraft first</string>
+    <string name="gnss_exit_rtk">Please exit the RTK</string>
+    <string name="gnss_switch_hint">After switching the satellite positioning system, please confirm that the aircraft has completed the star search and positioning, and meets the flying conditions to take off</string>
+    <string name="string_change_to_tfa">The flight gear is switched to T/P/S</string>
+    <string name="string_change_to_pfa">The flight gear is switched to A/P/S</string>
+    <string name="Label_pfa_hint">The T mode (tripod) of the flight gear is replaced with the A mode (positioning)</string>
+    <string name="Label_tfa_hint">A mode (positioning) of flight gear is replaced by T mode (tripod)</string>
+    <string name="string_returning_cannot_set_back_speed">UAV is returning, please do not modify the return parameters.</string>
+    <string name="Err_DevUnActiveRetryTip">The device is not activated, please activate the device before trying it up</string>
+    <string name="Label_set_invalid_distance">Invalid setting, Set value less than Current distance</string>
+    <string name="return_more_than_limit">The return distance is greater than the limit distance and cannot be set</string>
+    <string name="string_a_model_title">1.A model (Attitude)</string>
+    <string name="string_a_model_content">The obstacle avoidance perception system and the satellite positioning system have stopped working. The position of the aircraft in the hovering state will drift and needs to be controlled in real time through the joystick.</string>
+    <string name="string_a_model_content_bds">The obstacle avoidance perception system and the satellite positioning system have stopped working. The position of the aircraft in the hovering state will drift and needs to be controlled in real time through the joystick.</string>
+    <string name="string_p_model_title">2.P model (Standard）</string>
+    <string name="string_p_mode_content">When GNSS signal is good, GNSS can be used for accurate positioning; The GNSS signal is poor.
+                                         When the lighting conditions meet the requirements of the intelligent vision system,the intelligent vision system is used for positioning.
+                                         If both GNSS signal and visual assistant positioning fail, it will automatically switch to mode A and be manually controlled by a professional pilot.</string>
+    <string name="string_p_mode_content_bds">When BDS signal is good, BDS can be used for accurate positioning; The BDS signal is poor.
+                                         When the lighting conditions meet the requirements of the intelligent vision system,the intelligent vision system is used for positioning.
+                                         If both BDS signal and visual assistant positioning fail, it will automatically switch to mode A and be manually controlled by a professional pilot.</string>
+    <string name="string_s_model_title">3.S model (Sport)</string>
+    <string name="string_s_model_content">S mode is an enhanced mode under P mode. In this mode, the aircraft performance is improved, and GNSS and lower visual perception positioning work normally.
+                                          In this mode, the obstacle avoidance system is closed, and the aircraft cannot avoid obstacles by itself</string>
+    <string name="string_s_model_content_bds">S mode is an enhanced mode under P mode. In this mode, the aircraft performance is improved, and BDS and lower visual perception positioning work normally.
+                                          In this mode, the obstacle avoidance system is closed, and the aircraft cannot avoid obstacles by itself</string>
+    <string name="string_t_model_title">4.T model (Tripod）</string>
+    <string name="string_t_model_content">On the basis of P mode, the tripod mode limits the maneuverability of the aircraft and makes the aircraft more stable during the shooting process.</string>
 </resources>

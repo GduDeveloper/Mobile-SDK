@@ -243,9 +243,11 @@
                     android:progressDrawable="@drawable/icon_planset_seek_bar_progress"
                     android:thumb="@drawable/icon_planset_seek_bar_thumb"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintLeft_toRightOf="@id/tv_limit_distance_min"
                     app:layout_constraintRight_toLeftOf="@id/tv_limit_distance_max"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_limit_distance_max"
