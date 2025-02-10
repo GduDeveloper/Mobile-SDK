@@ -102,35 +102,6 @@
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="tv_map_model,op_map_model,div_map_type" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_ar_map_project_label"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/dp_40"
-                android:text="@string/show_ar_map_projection"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/iv_show_grid"
-                app:layout_constraintTop_toBottomOf="@id/div_map_type" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_show_ar_map_projection"
-                android:layout_width="@dimen/dp_36"
-                android:layout_height="@dimen/dp_24"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/selector_hand_control"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_ar_map_project_label"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_ar_map_project_label" />
-
-            <View
-                android:id="@+id/view_line_map_projection"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@+id/tv_ar_map_project_label" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_gridLabel"
@@ -143,7 +114,7 @@
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/iv_show_grid"
-                app:layout_constraintTop_toBottomOf="@id/view_line_map_projection" />
+                app:layout_constraintTop_toBottomOf="@id/div_map_type" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_show_grid"
@@ -315,154 +286,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_0_5"
                 android:background="@color/color_4D999999"
-                android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@+id/tv_paramUnitLabel" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_tvLiveLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:minHeight="@dimen/dp_40"
-                android:text="@string/Label_Live_Tx_VideoLive"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                android:visibility="gone"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/open_live_imageview"
-                app:layout_constraintTop_toBottomOf="@+id/view_line4" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/open_live_imageview"
-                android:layout_width="@dimen/dp_36"
-                android:layout_height="@dimen/dp_24"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/selector_hand_control"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_tvLiveLabel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_tvLiveLabel" />
-
-            <RelativeLayout
-                android:id="@+id/live_stream_layout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:layout_marginLeft="@dimen/dp_40"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/tv_tvLiveLabel">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_server_label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/server"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/et_requestCode"
-                    android:layout_width="@dimen/dp_100"
-                    android:layout_height="@dimen/dp_25"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_10"
-                    android:layout_toRightOf="@id/tv_server_label"
-                    android:background="@drawable/shape_solid_ffffff_stroke_f2f2f2"
-                    android:hint="@string/input_live_id"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/color_949494"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_ip"
-                    android:layout_width="@dimen/dp_120"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_60"
-                    android:background="@color/color_2D2D2D"
-                    android:singleLine="true"
-                    android:text="111.102.133.206"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_colon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/edit_ip"
-                    android:text="  :  "
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_14"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/edit_port"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@id/tv_colon"
-                    android:background="@color/color_2D2D2D"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/push_port"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_toRightOf="@id/edit_port"
-                    android:background="@color/color_2D2D2D"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:textColor="@color/white"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/organization_port"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_5"
-                    android:layout_toRightOf="@id/push_port"
-                    android:background="@color/color_2D2D2D"
-                    android:gravity="center"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="15sp"
-                    android:visibility="gone" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_ip_confirm"
-                    android:layout_width="@dimen/dp_60"
-                    android:layout_height="@dimen/dp_25"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_25"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:background="@drawable/shape_solid_ffffff_stroke_f2f2f2"
-                    android:gravity="center"
-                    android:text="@string/Lable_Confirm"
-                    android:textColor="@drawable/selector_common_text_color"
-                    android:textSize="@dimen/sp_12" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/view_line5"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@+id/live_stream_layout" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_switchADSBLabel"
@@ -476,7 +301,7 @@
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/iv_switchADSBBtn"
-                app:layout_constraintTop_toBottomOf="@+id/view_line5" />
+                app:layout_constraintTop_toBottomOf="@+id/view_line4" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_switchADSBBtn"
@@ -502,118 +327,12 @@
                 android:layout_height="wrap_content"
                 app:constraint_referenced_ids="tv_switchADSBLabel,iv_switchADSBBtn,view_line8" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_switch_motor_adjust"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:minHeight="@dimen/dp_40"
-                android:text="@string/Label_motor_adjust_switch"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/iv_switch_motor_adjust"
-                app:layout_constraintTop_toBottomOf="@+id/view_line8" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/iv_switch_motor_adjust"
-                android:layout_width="@dimen/dp_36"
-                android:layout_height="@dimen/dp_24"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/selector_hand_control"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_switch_motor_adjust"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_switch_motor_adjust" />
-
-            <View
-                android:id="@+id/view_line9"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@+id/tv_switch_motor_adjust" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/viewMotorGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:constraint_referenced_ids="tv_switch_motor_adjust,iv_switch_motor_adjust,view_line9" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvStealthModeLabel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:minHeight="@dimen/dp_40"
-                android:text="@string/Label_stealthMode"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/ivStealthModeSwitch"
-                app:layout_constraintTop_toBottomOf="@+id/view_line9" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivStealthModeSwitch"
-                android:layout_width="@dimen/dp_36"
-                android:layout_height="@dimen/dp_24"
-                android:layout_alignParentRight="true"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/selector_hand_control"
-                app:layout_constraintBottom_toBottomOf="@+id/tvStealthModeLabel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tvStealthModeLabel" />
-
-            <View
-                android:id="@+id/view_line10"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@+id/tvStealthModeLabel" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/viewStealthSwitchGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="tvStealthModeLabel,ivStealthModeSwitch,view_line10" />
-
-            <RelativeLayout
-                android:id="@+id/target_recognition_item"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                app:layout_constraintTop_toBottomOf="@+id/view_line10">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_target_recognition"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/Label_Visition_Target_Detect"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/dp_8"
-                    android:layout_height="@dimen/dp_15"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/delay_arrow" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/view_line101"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@+id/target_recognition_item" />
 
             <RelativeLayout
                 android:id="@+id/drone_info_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                app:layout_constraintTop_toBottomOf="@+id/view_line101">
+                app:layout_constraintTop_toBottomOf="@+id/view_line8">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_drone_info"
@@ -649,47 +368,13 @@
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@id/drone_info_item" />
 
-            <RelativeLayout
-                android:id="@+id/rl_light_set"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                app:layout_constraintTop_toBottomOf="@id/view_line6">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_light_set"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="@string/light_setting"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/dp_8"
-                    android:layout_height="@dimen/dp_15"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/delay_arrow" />
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/view_line7"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_4D999999"
-                app:layout_constraintTop_toBottomOf="@id/rl_light_set" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/viewUpMountGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="rl_light_set,view_line7" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_current_mode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/view_line7"
+                app:layout_constraintTop_toBottomOf="@id/view_line6"
                 tools:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -724,118 +409,16 @@
                     android:layout_height="@dimen/dp_0_5"
                     android:background="@color/color_4D999999"
                     app:layout_constraintBottom_toBottomOf="parent" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clResetDevLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/layout_current_mode"
-                tools:visibility="visible">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvUnBindDevLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/dp_40"
-                    android:text="@string/Label_ResetDevActiveStatus"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/tvResetActiveBtn"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvResetActiveBtn"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:background="@drawable/selector_common_button_bg"
-                    android:gravity="center"
-                    android:lineSpacingMultiplier="0.9"
-                    android:minHeight="@dimen/dp_24"
-                    android:paddingVertical="@dimen/dp_1"
-                    android:text="@string/Label_Reset"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvUnBindDevLabel"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvUnBindDevLabel" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clResetLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/clResetDevLayout"
-                tools:visibility="visible">
-
-                <View
-                    android:id="@+id/view_line11"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_0_5"
-                    android:background="@color/color_4D999999"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvResetLabel"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:minHeight="@dimen/dp_40"
-                    android:text="@string/Label_OnekeyFactoryReset"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@+id/tvResetBtn"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvResetBtn"
-                    android:layout_width="@dimen/dp_50"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:background="@drawable/selector_common_button_bg"
-                    android:gravity="center"
-                    android:lineSpacingMultiplier="0.9"
-                    android:minHeight="@dimen/dp_24"
-                    android:paddingVertical="@dimen/dp_1"
-                    android:text="@string/Label_Reset"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvResetLabel"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvResetLabel" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.gdu.demo.widget.TextImageItemLayout
-                android:id="@+id/tiil_clear_plane_log"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_40"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/clResetLayout"
-                app:tii_icon="@drawable/delay_arrow"
-                app:tii_icon_height="@dimen/dp_15"
-                app:tii_icon_width="@dimen/dp_8"
-                app:tii_text="@string/clear_drone_log" />
 
             <androidx.appcompat.widget.LinearLayoutCompat
                 android:id="@+id/test_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/tiil_clear_plane_log">
+                app:layout_constraintTop_toBottomOf="@+id/layout_current_mode">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -865,114 +448,6 @@
                         android:contentDescription="@string/app_name"
                         android:src="@drawable/selector_hand_control" />
                 </RelativeLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clVisualSwitch"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_40"
-                    android:gravity="center_vertical">
-                    <!-- 测试模式使用字段无需翻译 -->
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvVisualSwitchLabel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Label_TargetLocationSwitch"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/ivVisualSwitchLabel"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivVisualSwitchLabel"
-                        android:layout_width="@dimen/dp_36"
-                        android:layout_height="@dimen/dp_24"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/selector_hand_control"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_get_text_title"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:minHeight="@dimen/dp_30"
-                        android:text="@string/string_get_value"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/tv_refresh_text"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_refresh_text"
-                        android:layout_width="@dimen/dp_50"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/dp_10"
-                        android:background="@drawable/selector_common_button_bg"
-                        android:gravity="center"
-                        android:lineSpacingMultiplier="0.9"
-                        android:minHeight="@dimen/dp_24"
-                        android:paddingVertical="@dimen/dp_1"
-                        android:text="@string/string_refresh"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_get_text_title"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/tv_get_text_title" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tv_text_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tv_get_text_title"
-                        android:layout_marginLeft="@dimen/dp_10"
-                        android:layout_marginTop="@dimen/dp_5"
-                        android:layout_marginRight="@dimen/dp_10"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_13"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_get_text_title"
-                        tools:text="文本内容" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clImageDebugTextSwitch"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_40"
-                    android:gravity="center_vertical">
-                    <!-- 测试模式使用字段无需翻译 -->
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:id="@+id/tvImageDebugTextLabel"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Label_ImageDebugTextSwitch"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toLeftOf="@+id/ivImageDebugTextLabel"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivImageDebugTextLabel"
-                        android:layout_width="@dimen/dp_36"
-                        android:layout_height="@dimen/dp_24"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/selector_hand_control"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
