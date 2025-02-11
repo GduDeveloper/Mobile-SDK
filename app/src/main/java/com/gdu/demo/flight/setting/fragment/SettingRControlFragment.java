@@ -3,6 +3,8 @@ package com.gdu.demo.flight.setting.fragment;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +14,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.gdu.common.error.GDUError;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentRcControlBinding;
+import com.gdu.demo.utils.AnimationUtils;
+import com.gdu.demo.utils.GeneralDialog;
+import com.gdu.demo.widget.ControlHandModeView;
 import com.gdu.drone.ControlHand;
 import com.gdu.event.EventConnState;
 import com.gdu.event.EventMessage;
 import com.gdu.event.GimbalEvent;
+import com.gdu.remotecontroller.AircraftMappingStyle;
+import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
+import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.SocketCallBack3;
 import com.gdu.socket.UICallBack;
@@ -56,14 +66,11 @@ public class SettingRControlFragment extends Fragment {
      */
     private int currentSecondLevelType = 0;
 
-    private ControlHand selectHand = GlobalVariable.controlHand;
-
     /** 是否发送飞机对频指令成功 */
     private boolean isClickConnect = false;
-    private boolean isRCControlCamera = true; //1:控制云台    2：控制相机
-//
-//    private RcCalibrationHelper mRcCalibrationHelper;
-//    private FlightRecordService mFlightRecordService;
+
+    private Handler handler;
+    private GDURemoteController mGDURemoteController;
 
     @Nullable
     @Override
@@ -76,6 +83,8 @@ public class SettingRControlFragment extends Fragment {
 
 
     public void initViews() {
+        handler = new  Handler();
+        mGDURemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
         mViewBinding.tvNetworkingModel.setText(NetworkingHelper.getCurrentNetworkingName(getContext()));
         mViewBinding.ivBack.setOnClickListener(listener);
         mViewBinding.tvRcModel.setOnClickListener(listener);
@@ -94,39 +103,33 @@ public class SettingRControlFragment extends Fragment {
         }
 
         mViewBinding.controlHandView.setOnControlHandModeListener(this::setControlHand);
-
         mViewBinding.advancedNetworkingView.setOnANListener(name -> mViewBinding.tvNetworkingModel.setText(name));
     }
 
+    private void setControlHand(int value, ControlHand controlHand) {
+        AircraftMappingStyle style = AircraftMappingStyle.STYLE_1;
+        if (controlHand == ControlHand.HAND_JAPAN) {
+            style = AircraftMappingStyle.STYLE_1;
+        } else if (controlHand == ControlHand.HAND_CHINA) {
+            style = AircraftMappingStyle.STYLE_3;
+        } else if (controlHand == ControlHand.HAND_AMERICA) {
+            style = AircraftMappingStyle.STYLE_2;
+        }
+        mGDURemoteController.setAircraftMappingStyle(style, error -> {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if (error == null) {
+                        GlobalVariable.controlHand = controlHand;
+                        mViewBinding.controlHandView.setControlHandPic();
+                    } else {
+                    }
+                }
+            });
 
-    private void setControlHand(int type, ControlHand controlHand) {
-        selectHand = controlHand;
-//        if (type == 01) {
-//            GduApplication.getSingleApp().controlServer.setControlHand(controlHand,sHandCallback);
-//        } else if (type == 02) {
-//            GduApplication.getSingleApp().controlServer.setControlHand(controlHand,sHandCallback);
-//        } else {
-//            GduApplication.getSingleApp().controlServer.setControlHand(controlHand,sHandCallback);
-//        }
+        });
     }
 
-    private final UICallBack sHandCallback = new UICallBack() {
-        @Override
-        public void cb(int code, Object obj) {
-            MyLogUtils.i("sHandCallback callback() code = " + code);
-//            uiThreadHandle(() -> {
-//                if (code == GduConfig.OK) {
-//                    GlobalVariable.controlHand = selectHand;
-//                    mDialogUtils.Toast(R.string.Label_SettingSuccess);
-//                    mViewBinding.controlHandView.setControlHandPic();
-//                    GduApplication.getSingleApp().wifiConnServer.playSound(WifiConnServer.CONTROL_HAND_HAS_SWITCHED, 0, false);
-//                    ToolManager.VibratoSet(getActivity()); //marker Amap
-//                } else {
-//                    mDialogUtils.Toast(R.string.Label_SettingFail);
-//                }
-//            });
-        }
-    };
 
     public void initData() {
         GlobalEventBus.getBus().register(this);
@@ -148,66 +151,6 @@ public class SettingRControlFragment extends Fragment {
 //        });
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void commonEventMsgHandle(EventMessage msg) {
-        MyLogUtils.i("commonEventMsgHandle() msgType = " + msg.getMsgType());
-        boolean isUpload = msg.getMsgType() == MyConstants.GET_DEV_SN_SUC && isClickConnect
-                && GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess;
-        if (isUpload) {
-            isClickConnect = false;
-            uploadNetworkingInfo(requireContext());
-        } else if (msg.getMsgType() == MyConstants.GET_DEV_SN_FAIL && isClickConnect) {
-            isClickConnect = false;
-        }
-    }
-
-    /**
-     * 上报组网(配对)信息
-     * @param context
-     */
-    public void uploadNetworkingInfo(Context context) {
-        MyLogUtils.i("uploadNetworkingInfo()");
-        boolean isNotUpload = !NetWorkUtils.checkNetwork(context)
-                || GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess
-                || StringUtils.isEmptyString(GlobalVariable.SN);
-        MyLogUtils.i("uploadNetworkingInfo() connStateEnum = " + GlobalVariable.connStateEnum + "; GlobalVariableSN = " + GlobalVariable.SN
-                + "; isNotUpload = " + isNotUpload);
-        if (isNotUpload) {
-            return;
-        }
-//        if (mFlightRecordService == null) {
-//            mFlightRecordService = RetrofitClient.getApiPLM(FlightRecordService.class);
-//        }
-        long curTime = System.currentTimeMillis();
-        long curTimeSecond = curTime / 1000;
-
-        HashMap<String, Object> mParams = new HashMap<>();
-
-        // 遥控器SN
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            mParams.put("nestSn", Build.getSerial());
-//        }
-//        mParams.put("uavSn", GlobalVariable.SN);
-//        mParams.put("composeTime", curTime);
-//        mParams.put("longitude", String.valueOf(GlobalVariable.GPS_Lon));
-//        mParams.put("latitude", String.valueOf(GlobalVariable.GPS_Lat));
-//        mParams.put("time", curTime);
-//        String upBeanJsonStr = new Gson().toJson(mParams);
-//        RequestBody contentBody = FormBody.create(upBeanJsonStr, MediaType.parse("application/json; charset=utf-8"));
-//        String contentStr = MyConstants.S220_API_REQUEST_KEY + "#" + curTimeSecond + "#" + upBeanJsonStr + "#";
-//        String signMd5 = MD5Util.stringToMD5(contentStr);
-//        String url = WebUrlConfig.S220_UPLOAD_URL_AND_PORT + WebUrlConfig.SEND_NEST_COMPOSE;
-//        MyLogUtils.i("uploadNetworkingInfo() url = " + url);
-//        mFlightRecordService.sendCustomUrlAndBody(signMd5, String.valueOf(curTimeSecond), url, contentBody)
-//                .subscribeOn(Schedulers.newThread())
-//                .to(RxLife.toMain(this))
-//                .subscribe(data -> {
-//                    final boolean isUnEmptyData = data != null && (data.getCode() == 0 || data.getCode() == 200);
-//                    MyLogUtils.i("uploadNetworkingInfo() isUnEmptyData = " + isUnEmptyData);
-//                }, throwable -> {
-//                    MyLogUtils.e("上报组网信息出错", throwable);
-//                });
-    }
 
     public View.OnClickListener listener = new View.OnClickListener() {
         @Override
@@ -298,14 +241,13 @@ public class SettingRControlFragment extends Fragment {
             setSecondLevelView(mViewBinding.rcCustomKeyNewView, false, "");
         } else if (currentSecondLevelType == 5){
             setSecondLevelView(mViewBinding.rcCalibrationLayout, false, "");
-//            mRcCalibrationHelper.endCalibration();
         }
         currentSecondLevelType = 0;
     }
 
     private void setSecondLevelView(View view, boolean show, String title) {
 
-//        MyAnimationUtils.animatorRightInOut(view, show);
+        AnimationUtils.animatorRightInOut(view, show);
         if (show) {
             mViewBinding.ivBack.setVisibility(View.VISIBLE);
             mViewBinding.tvTitle.setText(title);
@@ -326,45 +268,39 @@ public class SettingRControlFragment extends Fragment {
             return;
         }
 
-//        GeneralDialog dialog = new GeneralDialog(getContext(), R.style.NormalDialog) {
-//            @Override
-//            public void positiveOnClick() {
-//                confirmMatch();
-//                dismiss();
-//            }
-//
-//            @Override
-//            public void negativeOnClick() {
-//                this.dismiss();
-//            }
-//        };
-//        String content = getString(R.string.match_content);
-//        dialog.setTitleText(getString(R.string.match_title));
-//        dialog.setContentText(content);
-//        dialog.show();
+        GeneralDialog dialog = new GeneralDialog(getContext(), R.style.NormalDialog) {
+            @Override
+            public void positiveOnClick() {
+                confirmMatch();
+                dismiss();
+            }
+
+            @Override
+            public void negativeOnClick() {
+                this.dismiss();
+            }
+        };
+        String content = getString(R.string.match_content);
+        dialog.setTitleText(getString(R.string.match_title));
+        dialog.setContentText(content);
+        dialog.show();
     }
 
     private void confirmMatch() {
-//        GduApplication.getSingleApp().gduCommunication.setNetworking((byte) 0x08, (byte) 0x01, (code, bean) -> {
-//            uiThreadHandle(() -> {
-//                if (code == GduConfig.OK) {
-//                    isClickConnect = true;
-//                    Toaster.show(R.string.match_commond_success);
-//                } else {
-//                    Toaster.show(R.string.match_commond_faile);
-//                }
-//            });
-//        });
+        GDURemoteController gduRemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
+        if (gduRemoteController != null) {
+            gduRemoteController.startPairing(error -> {
+                if (error == null) {
+                    Toast.makeText(getActivity(), "发送对频成功", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         GlobalEventBus.getBus().unregister(this);
-//        if(mRcCalibrationHelper != null){
-//            mRcCalibrationHelper.removeCallback();
-//            mRcCalibrationHelper = null;
-//        }
     }
 
     public static SettingRControlFragment newInstance() {

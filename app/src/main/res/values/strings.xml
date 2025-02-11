@@ -775,4 +775,6 @@
                                           In this mode, the obstacle avoidance system is closed, and the aircraft cannot avoid obstacles by itself</string>
     <string name="string_t_model_title">4.T model (Tripod）</string>
     <string name="string_t_model_content">On the basis of P mode, the tripod mode limits the maneuverability of the aircraft and makes the aircraft more stable during the shooting process.</string>
+    <string name="match_content">对频前，请连续按飞机上的“开机键”5次，飞机将进入等待对频状态。然后点击"确定"按钮开始对频。</string>
+    <string name="match_title">确定要进行遥控器对频吗</string>
 </resources>

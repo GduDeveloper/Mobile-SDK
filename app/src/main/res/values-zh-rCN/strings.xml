@@ -759,4 +759,6 @@
     <string name="string_s_model_content_bds">S模式是P模式下的加强模式，该模式下飞行器性能提高，BDS和下视觉感知定位正常工作。飞行器的感度值提示，飞行响应快，请谨慎飞行。该模式下避障系统关闭，飞行器无法自行避障。</string>
     <string name="string_t_model_title">4.T模式 (三脚架）</string>
     <string name="string_t_model_content">三脚架模式在P模式的基础上限制了飞行器机动性能，使飞行器在拍摄过程中更平稳。</string>
+    <string name="match_content">对频前，请连续按飞机上的“开机键”5次，飞机将进入等待对频状态。然后点击"确定"按钮开始对频。</string>
+    <string name="match_title">确定要进行遥控器对频吗</string>
 </resources>
