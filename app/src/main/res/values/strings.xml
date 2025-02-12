@@ -775,6 +775,7 @@
                                           In this mode, the obstacle avoidance system is closed, and the aircraft cannot avoid obstacles by itself</string>
     <string name="string_t_model_title">4.T model (Tripod）</string>
     <string name="string_t_model_content">On the basis of P mode, the tripod mode limits the maneuverability of the aircraft and makes the aircraft more stable during the shooting process.</string>
+
     <string name="string_5g_info_not_obtained">Aircraft 5G information not obtained</string>
     <string name="string_config_not_changed">The configuration has not changed</string>
 
@@ -818,4 +819,6 @@
     <string name="string_vertical_check_fail">Vertical calibration failed</string>
     <string name="WarmPrompt">Tips</string>
     <string name="Label_CheckNotOver_IsExit">Unfinished Calibration may affect your flight safety, sure to exit?</string>
+    <string name="match_content">对频前，请连续按飞机上的“开机键”5次，飞机将进入等待对频状态。然后点击"确定"按钮开始对频。</string>
+    <string name="match_title">确定要进行遥控器对频吗</string>
 </resources>

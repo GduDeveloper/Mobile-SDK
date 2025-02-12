@@ -127,7 +127,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 if (UavStaticVar.isHasNavigationBar) {
                     StatusBarUtils.setHideVirtualKey(getWindow());
                 }
-                SettingDialogFragment.show(getSupportFragmentManager(), 1);
+                SettingDialogFragment.show(getSupportFragmentManager());
             }
         });
 

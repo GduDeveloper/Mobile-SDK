@@ -51,8 +51,6 @@ public class SettingDialogFragment extends DialogFragment {
 
     private Fragment[] fragments;
 
-    private int importType = -1;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -85,19 +83,8 @@ public class SettingDialogFragment extends DialogFragment {
         menuList.add(new SettingMenuItem(4, R.drawable.selector_set_control, requireActivity().getString(R.string.title_control)));
         menuList.add(new SettingMenuItem(5, R.drawable.selector_set_vision, requireActivity().getString(R.string.title_vision)));
         menuList.add(new SettingMenuItem(6, R.drawable.selector_set_gimbal, requireActivity().getString(R.string.title_gimbal)));
-        if (GlobalVariable.gimbalType == GimbalType.FIVE_LENS_PTZ) {
-            menuList.add(new SettingMenuItem(8, R.drawable.selector_set_thrid_gimbal, requireActivity().getString(R.string.string_five_camera_setting)));
-            // 激光雷达
-        } else if (GlobalVariable.sAssistantPodCompId == GduSocketConfig3.LIDAR) {
-            menuList.add(new SettingMenuItem(8, R.drawable.selector_set_thrid_gimbal, requireActivity().getString(R.string.string_lidar)));
-        } else if (GlobalVariable.sPSDKCompId != 0) {
-            menuList.add(new SettingMenuItem(8, R.drawable.selector_set_thrid_gimbal, requireActivity().getString(R.string.psdk_setting)));
-        }
         menuList.add(new SettingMenuItem(7, R.drawable.selector_set_common, requireActivity().getString(R.string.title_common)));
         fragments = new Fragment[menuList.size()];
-        if (getArguments() != null) {
-            importType = getArguments().getInt(MyConstants.IMPORT_TYPE_KEY, -1);
-        }
     }
 
     private void hideNavigationBar() {
@@ -186,47 +173,16 @@ public class SettingDialogFragment extends DialogFragment {
                 break;
             case 6:
                 if (fragments[6] == null) {
-                    if (GlobalVariable.gimbalType != GimbalType.ByrdT_None_Zoom) {
-                        SettingCameraFragment cameraFragment = SettingCameraFragment.newInstance();
-                        fragments[6] = (cameraFragment);
-                        fragmentTransaction.add(R.id.frame_layout, cameraFragment);
-                    } else if (GlobalVariable.sPSDKCompId != 0) {
-                        SettingPSdkCameraFragment pSdkCameraFragment = SettingPSdkCameraFragment.newInstance();
-                        fragments[6] = (pSdkCameraFragment);
-                        fragmentTransaction.add(R.id.frame_layout, pSdkCameraFragment);
-                    } else {
-                        SettingCameraFragment cameraFragment = SettingCameraFragment.newInstance();
-                        fragments[6] = (cameraFragment);
-                        fragmentTransaction.add(R.id.frame_layout, cameraFragment);
-                    }
+                    SettingCameraFragment cameraFragment = SettingCameraFragment.newInstance();
+                    fragments[6] = (cameraFragment);
+                    fragmentTransaction.add(R.id.frame_layout, cameraFragment);
                 }
                 break;
             case 7:
                 if (fragments[7] == null) {
-                    SettingCommonFragment commonFragment = SettingCommonFragment.newInstance(importType);
+                    SettingCommonFragment commonFragment = SettingCommonFragment.newInstance();
                     fragments[7] = (commonFragment);
                     fragmentTransaction.add(R.id.frame_layout, commonFragment);
-                }
-                break;
-            case 8:
-                if (GlobalVariable.gimbalType == GimbalType.FIVE_LENS_PTZ) {
-                    if (fragments[8] == null) {
-                        SettingThirdGimbalFragment thirdGimbalFragment = SettingThirdGimbalFragment.newInstance();
-                        fragments[8] = (thirdGimbalFragment);
-                        fragmentTransaction.add(R.id.frame_layout, thirdGimbalFragment);
-                    }
-                } else if (GlobalVariable.sAssistantPodCompId == GduSocketConfig3.LIDAR) {
-                    if (fragments[8] == null) {
-                        SettingLidarFragment lidarFragment = SettingLidarFragment.newInstance();
-                        fragments[8] = lidarFragment;
-                        fragmentTransaction.add(R.id.frame_layout, lidarFragment);
-                    }
-                } else if (GlobalVariable.sPSDKCompId != 0) {
-                    if (fragments[8] == null) {
-                        PsdkSettingFragment psdkSettingFragment = PsdkSettingFragment.newInstance();
-                        fragments[8] = psdkSettingFragment;
-                        fragmentTransaction.add(R.id.frame_layout, psdkSettingFragment);
-                    }
                 }
                 break;
             default:
@@ -292,9 +248,8 @@ public class SettingDialogFragment extends DialogFragment {
 
 
 
-    public static void show(FragmentManager manager, int importType) {
+    public static void show(FragmentManager manager) {
         Bundle args = new Bundle();
-        args.putInt(MyConstants.IMPORT_TYPE_KEY, importType);
         SettingDialogFragment fragment = new SettingDialogFragment();
         fragment.setArguments(args);
         fragment.show(manager, "SettingDialogFragment");

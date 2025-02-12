@@ -16,7 +16,6 @@ import com.gdu.rtk.RTKState;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
-import com.gdu.sdk.flightcontroller.rtk.RTKNetworkServiceProvider;
 import com.gdu.sdk.util.CommonCallbacks;
 
 
@@ -67,14 +66,6 @@ public class RTKActivity extends Activity implements View.OnClickListener {
             @Override
             public void onUpdate(FlightControllerState flightControllerState) {
                 showText(mFlightControllerStateTextView, flightControllerState.getString());
-            }
-        });
-        RTKNetworkServiceProvider.getInstance().addNetworkServiceStateCallback(new NetworkServiceState.Callback() {
-            @Override
-            public void onNetworkServiceStateUpdate(NetworkServiceState state) {
-                StringBuilder s = new StringBuilder();
-                s.append("channelState" + state.getChannelState());
-                showText(mNetworkServiceTextView, s.toString());
             }
         });
     }
@@ -162,15 +153,8 @@ public class RTKActivity extends Activity implements View.OnClickListener {
                 networkServiceSettings.setPort(8002);
                 networkServiceSettings.setServerAddress("rtk.ntrip.qxwz.com");
                 networkServiceSettings.setUserName("qxtdfk0016");
-                RTKNetworkServiceProvider.getInstance().setCustomNetworkSettings(networkServiceSettings);
                 break;
             case R.id.connect_custom_network_service_button:
-                RTKNetworkServiceProvider.getInstance().startNetworkService(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(GDUError error) {
-
-                    }
-                });
                 break;
         }
     }
