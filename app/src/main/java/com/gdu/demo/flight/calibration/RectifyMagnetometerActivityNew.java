@@ -12,6 +12,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.ToolManager;
 import com.gdu.drone.PlanType;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.logger.MyLogUtils;
@@ -108,7 +109,7 @@ public class RectifyMagnetometerActivityNew extends FragmentActivity {
     private void solveNavigationBar() {
         MyLogUtils.i("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
         if (UavStaticVar.isHasNavigationBar) {
-            StatusBarUtils.setHideVirtualKey(getWindow());
+            ToolManager.hideNavigationBar(getWindow());
         }
     }
 

@@ -588,10 +588,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (!ViewUtils.isDoubleClick()){
-                    boolean isSelected = !mViewBinding.tpsApsSwitch.isSelected();
-                    flyViewModel.setSwitchFlyModeState(isSelected);
-                }
+
+                boolean isSelected = !mViewBinding.tpsApsSwitch.isSelected();
+                flyViewModel.setSwitchFlyModeState(isSelected);
+
                 break;
             case R.id.tv_sensor_status:
                 setSecondLevelView(mViewBinding.vSensorStatus, true, getString(R.string.sensor_status));

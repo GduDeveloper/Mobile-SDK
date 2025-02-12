@@ -26,6 +26,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.SettingDialogFragmentBinding;
 import com.gdu.demo.flight.setting.adapter.SettingLeftAdapter;
+import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.rc.SettingMenuItem;
 import com.gdu.drone.GimbalType;
 import com.gdu.sdk.airlink.AirlinkUtils;
@@ -94,7 +95,7 @@ public class SettingDialogFragment extends DialogFragment {
                 window.addFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
                 getDialog().setOnShowListener(dialogInterface -> {
                     window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
-                    StatusBarUtils.hideNavigationBar(window);
+                    ToolManager.hideNavigationBar(window);
                 });
             }
         }
@@ -242,7 +243,7 @@ public class SettingDialogFragment extends DialogFragment {
         //自身透明度  1 完全不透明
         layoutParams.alpha = 1f;
         window.setAttributes(layoutParams);
-        StatusBarUtils.hideNavigationBar(window);
+        ToolManager.hideNavigationBar(window);
     }
 
 

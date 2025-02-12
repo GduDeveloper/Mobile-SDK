@@ -21,6 +21,7 @@ import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
 import com.gdu.demo.utils.GisUtil;
+import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
@@ -124,9 +125,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
             @Override
             public void onRightSettingIconCLick() {
-                if (UavStaticVar.isHasNavigationBar) {
-                    StatusBarUtils.setHideVirtualKey(getWindow());
-                }
                 SettingDialogFragment.show(getSupportFragmentManager());
             }
         });
