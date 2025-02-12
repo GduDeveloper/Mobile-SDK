@@ -258,7 +258,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                 bean.setHeight(value);
                 bean.setSet(true);
                 limitHeightLiveData.setValue(bean);
-                mGDUFlightController.setMaxFlightHeight(limitHeight, var1 -> {
+                mGDUFlightController.setFlightLimitHeight(isOpen, limitHeight, var1 -> {
 
                 });
             } else {
@@ -297,7 +297,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                     }
                 }
 
-                mGDUFlightController.setMaxFlightHeight(limitHeight, error -> {
+                mGDUFlightController.setFlightLimitHeight(isOpen,limitHeight, error -> {
                     if (error == null) {
                         if (isOpen){
                             toastLiveData.postValue(R.string.string_set_success);

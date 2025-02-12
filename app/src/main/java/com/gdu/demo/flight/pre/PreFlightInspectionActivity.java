@@ -395,7 +395,6 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             mStatusAdapter.setNewInstance(data);
         });
         viewModel.getFlyStatusData().observe(this, data -> {
-            System.out.println("=========111111======"+data.getPosition());
             mStatusAdapter.notifyItemChanged(data.getPosition());
         });
     }

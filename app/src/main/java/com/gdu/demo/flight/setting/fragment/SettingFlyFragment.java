@@ -318,6 +318,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             return false;
         });
         flyViewModel.getBackHomeHeightLiveData().observe(mActivity, data -> {
+            preBackHeight = data;
             mViewBinding.sbBackHeight.setProgress(data);
             String goHomeHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(data));
             mViewBinding.etHeight.setText(goHomeHeightStr);
@@ -510,6 +511,11 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.ivModeTip.setOnClickListener(this);
 
         flyViewModel.getToastLiveData().observe(mActivity, data -> {
+            if (data != 0) {
+                Toast.makeText(mActivity, data, Toast.LENGTH_SHORT).show();
+            }
+        });
+        baseViewModel.getToastLiveData().observe(mActivity, data -> {
             if (data != 0) {
                 Toast.makeText(mActivity, data, Toast.LENGTH_SHORT).show();
             }
