@@ -425,11 +425,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 if (codecManager != null) {
                     codecManager.startStoreMp4ToLocal(OUTPATH, "test.mp4");
                 }
+                Toast.makeText(mContext, "开始保存预览流副本", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_stop_record_video_to_local:
                 if (codecManager != null) {
                     codecManager.stopStoreMp4ToLocal();
                 }
+                Toast.makeText(mContext, "停止保存预览流副本", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_enabled_yuv_data:
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

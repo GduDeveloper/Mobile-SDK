@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="开始录像到本地" />
 
         <Button
@@ -57,7 +57,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onClick"
-            android:visibility="gone"
+            android:visibility="visible"
             android:text="停止录像到本地" />
 
         <Button
