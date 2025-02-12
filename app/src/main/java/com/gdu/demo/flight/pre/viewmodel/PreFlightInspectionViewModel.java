@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.pre.viewmodel;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.fragment.app.FragmentActivity;
@@ -75,8 +76,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
     //飞机状态数据
     private final MutableLiveData<List<BaseFlightStatusBean>> flyInitStatusData;
     private final MutableLiveData<BaseFlightStatusBean> flyStatusData;
-    //飞行模式
-    private String preFlyMode;
     //避障子方向开关和距离
     private final MutableLiveData<ObstacleStatusBean> obstacleHorLiveData;
     private final MutableLiveData<ObstacleStatusBean> obstacleTopLiveData;
@@ -257,40 +256,44 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getFlyMode(Context context) {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_MODE);
         if (null == bean) return;
-        if(!ConnectUtil.isConnect()){
-            bean.setContent("---");
-            flyStatusData.setValue(bean);
-            return;
-        }
         String modeStr;
-        if (GlobalVariable.flyMode == 0) {
-            modeStr = context.getResources().getString(R.string.Label_FlyMode_AGear);
-            judgeIsGetVisionInfo(modeStr);
-        } else if (GlobalVariable.flyMode == 4) {
-            modeStr = context.getResources().getString(R.string.Label_FlyMode_VGear);
-            judgeIsGetVisionInfo(modeStr);
-        } else if (GlobalVariable.flyMode == 5) {
-            modeStr = context.getResources().getString(R.string.Label_FlyMode_TGear);
-            judgeIsGetVisionInfo(modeStr);
-        } else if (GlobalVariable.DroneFlyMode == 0) {
-            modeStr = context.getResources().getString(R.string.Label_FlyMode_FGear);
-            judgeIsGetVisionInfo(modeStr);
-        } else {
-            modeStr = context.getResources().getString(R.string.Label_FlyMode_PGear);
-            judgeIsGetVisionInfo(modeStr);
+        if(!ConnectUtil.isConnect()){
+            modeStr = "---";
+        }else {
+            if (GlobalVariable.flyMode == 0) {
+                modeStr = context.getResources().getString(R.string.Label_FlyMode_AGear);
+                judgeIsGetVisionInfo(bean.getContent(), modeStr);
+            } else if (GlobalVariable.flyMode == 4) {
+                modeStr = context.getResources().getString(R.string.Label_FlyMode_VGear);
+                judgeIsGetVisionInfo(bean.getContent(), modeStr);
+            } else if (GlobalVariable.flyMode == 5) {
+                modeStr = context.getResources().getString(R.string.Label_FlyMode_TGear);
+                judgeIsGetVisionInfo(bean.getContent(), modeStr);
+            } else if (GlobalVariable.DroneFlyMode == 0) {
+                modeStr = context.getResources().getString(R.string.Label_FlyMode_FGear);
+                judgeIsGetVisionInfo(bean.getContent(), modeStr);
+            } else {
+                modeStr = context.getResources().getString(R.string.Label_FlyMode_PGear);
+                judgeIsGetVisionInfo(bean.getContent(), modeStr);
+            }
         }
-        preFlyMode = modeStr;
-        bean.setContent(preFlyMode);
-        flyStatusData.setValue(bean);
+        //如果挡位一致则不再更新UI
+        if (!TextUtils.equals(modeStr, bean.getContent())) {
+            bean.setContent(modeStr);
+            flyStatusData.setValue(bean);
+        }
     }
 
     private void getFlightBatteryAndTemp() {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_FLY_BATTERY);
         if (null == bean) return;
+        String batteryStr = bean.getContent();
         if (GlobalVariable.sBattery1InfoZ4C == null || !ConnectUtil.isConnect()) {
             bean.setContent("--");
             bean.setContentEnable(false);
-            flyStatusData.setValue(bean);
+            if (!TextUtils.equals(bean.getContent(), batteryStr)) {
+                flyStatusData.setValue(bean);
+            }
             return;
         }
         final int renameBattery = GlobalVariable.sBattery1InfoZ4C.getPower();
@@ -322,12 +325,13 @@ public class PreFlightInspectionViewModel extends ViewModel {
         if (renameBattery > GlobalVariable.twoLevelLowBattery) {
             bean.setContentSelect(true);
         } else if (renameBattery > GlobalVariable.oneLevelLowBattery && GlobalVariable.power_rc <= GlobalVariable.twoLevelLowBattery) {
-
             bean.setContentTextColor(R.color.color_FFCC00);
         } else {
             bean.setContentEnable(false);
         }
-        flyStatusData.setValue(bean);
+        if (!TextUtils.equals(bean.getContent(), batteryStr)) {
+            flyStatusData.setValue(bean);
+        }
     }
 
     /**
@@ -336,15 +340,18 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getRCBattery(){
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RC_BATTERY);
         if (null == bean) return;
+        String batteryStr = bean.getContent();
         bean.setContent(GlobalVariable.power_rc >= 0 ? GlobalVariable.power_rc + "%" : "--");
         if (GlobalVariable.power_rc > 20) {
             bean.setContentSelect(true);
-        } else if (GlobalVariable.power_rc > 0 && GlobalVariable.power_rc <= MyConstants.RC_ELECTRICITY_ALARM_VALUE) {
+        } else if (GlobalVariable.power_rc > 0) {
             bean.setContentTextColor(R.color.color_FFCC00);
         } else {
             bean.setContentEnable(false);
         }
-        flyStatusData.setValue(bean);
+        if (!TextUtils.equals(bean.getContent(), batteryStr)) {
+            flyStatusData.setValue(bean);
+        }
     }
 
     /**
@@ -353,8 +360,8 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getRTKStatus(){
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RTK);
         if (null == bean) return;
-        final boolean connectStatus = GduRtkManager.getInstance().getConnectStatus() != null
-                && GduRtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
+        int rtkStatus = bean.getContentStrId();
+        final boolean connectStatus = GduRtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
 
         final boolean rtkConnected = (GlobalVariable.sRTKType == 1 && connectStatus)
                 || (GlobalVariable.sRTKType == 2 && GlobalVariable.sBSRTKStatus == 1)
@@ -375,12 +382,15 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 bean.setContentEnable(false);
             }
         }
-        flyStatusData.setValue(bean);
+        if (bean.getContentStrId()!=rtkStatus) {
+            flyStatusData.setValue(bean);
+        }
     }
 
     private void getSDCardStatus(Context context) {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDCARD);
         if (null == bean) return;
+        String sdCardStatusStr = bean.getContent();
         final String lightSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_VisibleLightSDCard);
         final String irSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_IRSDCard);
         String sdCardTip = "";
@@ -456,7 +466,9 @@ public class PreFlightInspectionViewModel extends ViewModel {
         }
         bean.setContent(sdCardTip);
         bean.setContentEnable(context.getResources().getString(com.gdu.api.R.string.Label_CardInserted).equals(sdCardTip));
-        flyStatusData.setValue(bean);
+        if (!TextUtils.equals(bean.getContent(), sdCardStatusStr)) {
+            flyStatusData.setValue(bean);
+        }
     }
 
     /**
@@ -465,12 +477,15 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getCurrRC(){
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RC_CONTROL);
         if (null == bean) return;
+        int preRCId = bean.getContentStrId();
         if (NetworkingHelper.isRCHasControlPower()) {
             bean.setContentStrId(R.string.Label_MasterRemoteControl);
         } else {
             bean.setContentStrId(R.string.Label_SubRemoteControl);
         }
-        flyStatusData.setValue(bean);
+        if (bean.getContentStrId()!=preRCId) {
+            flyStatusData.setValue(bean);
+        }
     }
 
     /**
@@ -479,17 +494,20 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getSDRStatus(){
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDR);
         if (null == bean) return;
+        int preSDRId = bean.getContentStrId();
         if (GlobalVariable.isUseBackupsAirlink) {
             bean.setContentStrId(R.string.string_link_type_let);
         } else {
             bean.setContentStrId(R.string.string_link_type_image_transmission);
         }
-        flyStatusData.setValue(bean);
+        if (bean.getContentStrId()!=preSDRId) {
+            flyStatusData.setValue(bean);
+        }
     }
 
-    private void judgeIsGetVisionInfo(String curMode) {
-        if (!StringUtils.isEmptyString(preFlyMode) && !preFlyMode.equals(curMode)) {
-//            getVisionObstacleSwitch();
+    private void judgeIsGetVisionInfo(String preMode, String curMode) {
+        if (!StringUtils.isEmptyString(preMode) && !preMode.equals(curMode)) {
+            baseFlightAssistantViewModel.getVisionObstacleSwitch();
         }
     }
 

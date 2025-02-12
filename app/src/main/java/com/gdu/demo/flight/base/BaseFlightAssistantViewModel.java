@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gdu.AlgorithmMark;
+import com.gdu.api.Util.ConnectUtil;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GlobalVariable;
+import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
 import com.gdu.radar.GDUFlightAssistantObstacleSensingDirection;
@@ -16,7 +18,7 @@ import com.gdu.sdk.util.CommonCallbacks;
 
 import org.json.JSONObject;
 
-public class BaseFlightAssistantViewModel extends ViewModel {
+public class BaseFlightAssistantViewModel extends BaseViewModel {
 
     private FlightAssistant mFlightAssistant;
 
@@ -217,20 +219,19 @@ public class BaseFlightAssistantViewModel extends ViewModel {
 
             @Override
             public void onFailure(GDUError var1) {
-//                getObstacleCallback();
+                getObstacleCallback();
             }
         });
-//        getObstacleCallback();
     }
 
     /**
      * 获取避障子方向开关和距离
      */
     private void getObstacleCallback() {
-//        if (!ConnectUtil.isConnect()) {
-//            toastLiveData.setValue(R.string.DeviceNoConn);
-//            return;
-//        }
+        if (!ConnectUtil.isConnect()) {
+            toastLiveData.setValue(R.string.DeviceNoConn);
+            return;
+        }
         mFlightAssistant.getObstacleDirectionDistance(new CommonCallbacks.CompletionCallbackWith<JSONObject>() {
             @Override
             public void onSuccess(JSONObject data) {
@@ -258,16 +259,6 @@ public class BaseFlightAssistantViewModel extends ViewModel {
                 bottomBrakeDistance =  data.optInt("bottomBrakeDistance");
                 //下视避障告警距离
                 bottomWarnDistance = data.optInt("bottomWarnDistance");
-
-                Log.d("", "getObstacleDirectionDistance getObstacleCallback() horOpen = " + (isHorSwitchSelected));
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() horStop = " + horBrakeDistance);
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() horWarning = " + horWarnDistance);
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() topOpen = " + (isTopSwitchSelected ));
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() topStop = " + topBrakeDistance);
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() topWarning = " + topWarnDistance);
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() bottomStop = " + bottomBrakeDistance);
-                Log.d(""," getObstacleDirectionDistance getObstacleCallback() bottomWarning = " + bottomWarnDistance);
 
                 ObstacleStatusBean horBean = new ObstacleStatusBean();
                 horBean.setSelect(GlobalVariable.isObsHorSwitchState);
@@ -299,10 +290,6 @@ public class BaseFlightAssistantViewModel extends ViewModel {
             }
         });
     }
-
-//    public MutableLiveData<VisionSensingBean> getVisionSensingLiveData() {
-//        return visionSensingLiveData;
-//    }
 
     public MutableLiveData<Boolean> getVisionSensingLiveData() {
         return visionSensingLiveData;

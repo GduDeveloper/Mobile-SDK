@@ -164,6 +164,11 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 showToast(getResources().getString(data));
             }
         });
+        viewModel.getBaseFlightAssistantViewModel().getToastLiveData().observe(this, data -> {
+            if (data != 0){
+                showToast(getResources().getString(data));
+            }
+        });
         viewModel.getSysStatusLiveData().observe(this, data -> {
             mViewBinding.tvFlightStatus.setText(getString(data.getFlightStatusStr()));
             mViewBinding.viewStatusBg.setBackgroundResource(data.getStatusBg());
@@ -390,7 +395,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             mStatusAdapter.setNewInstance(data);
         });
         viewModel.getFlyStatusData().observe(this, data -> {
-            mStatusAdapter.notifyItemChanged(data.getPosition(), data);
+            System.out.println("=========111111======"+data.getPosition());
+            mStatusAdapter.notifyItemChanged(data.getPosition());
         });
     }
 

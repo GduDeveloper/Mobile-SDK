@@ -161,7 +161,9 @@ public class SettingSDRViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(GDUError gduError) {
-                toastLiveData.postValue(R.string.Label_SettingFail);
+                if (type!=3) { //非获取模式
+                    toastLiveData.postValue(R.string.Label_SettingFail);
+                }
             }
         });
     }
