@@ -22,6 +22,7 @@ import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.flight.calibration.CompassCalibrationHelper;
 import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
 import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
@@ -220,7 +221,8 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
                     Toast.makeText(mContext, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
                     return;
                 }
-//                CommonUtils.jumpMagnetometerActivity(mContext);
+                // 飞机解锁或不在地面上都不能进行校磁
+                CompassCalibrationHelper.jumpMagnetometerActivity(mContext);
                 break;
 
             default:

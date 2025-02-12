@@ -81,15 +81,15 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
 
     private void initData() {
         mNameTextView.setText(mContext.getResources().getString(mNameResId));
-        mMinSbValueTv.setText(mSeekBarMin + "");
-        mMaxSbValueTv.setText(mSeekBarMax + "");
+        mMinSbValueTv.setText(String.valueOf(mSeekBarMin));
+        mMaxSbValueTv.setText(String.valueOf(mSeekBarMax));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mValueSeekBar.setMin(mSeekBarMin);
             mValueSeekBar.setMax(mSeekBarMax);
-            mValueEditText.setText("" + mValueSeekBar.getProgress());
+            mValueEditText.setText(String.valueOf(mValueSeekBar.getProgress()));
         } else {
             mValueSeekBar.setMax(mSeekBarMax - mSeekBarMin);
-            mValueEditText.setText("" + mValueSeekBar.getProgress() + mSeekBarMin);
+            mValueEditText.setText(String.valueOf(mValueSeekBar.getProgress() + mSeekBarMin));
         }
     }
 
@@ -97,8 +97,6 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
         mValueSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-//                MyLogUtils.i("onProgressChanged() seekBar = " + seekBar + "; progress = " + progress
-//                        + "; fromUser = " + fromUser);
                 if (isFirstLoadData) {
                     isFirstLoadData = false;
                     return;
@@ -107,21 +105,19 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
                     progress = progress + mSeekBarMin;
                 }
                 if (fromUser) {
-                    mValueEditText.setText(progress + "");
+                    mValueEditText.setText(String.valueOf(progress));
                 }
                 mOnSeekBarChangeListener.onProgressChanged(seekBar, progress, fromUser);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-//                MyLogUtils.i("onStartTrackingTouch()");
                 isPBSet = true;
                 mOnSeekBarChangeListener.onStartTrackingTouch(seekBar);
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-//                MyLogUtils.i("onStopTrackingTouch()");
                 mOnSeekBarChangeListener.onStopTrackingTouch(seekBar);
             }
         });
@@ -182,7 +178,7 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
     }
 
     private void errorEdit() {
-        mValueEditText.setText(mValueSeekBar.getProgress() + "");
+        mValueEditText.setText(String.valueOf(mValueSeekBar.getProgress()));
         String inputStr = mValueEditText.getText().toString();
         mValueEditText.setSelection(inputStr.length());
     }
@@ -212,7 +208,7 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
         }
         isPBSet = true;
         mValueSeekBar.setProgress(curProgress);
-        mValueEditText.setText("" + progress);
+        mValueEditText.setText(String.valueOf(progress));
     }
 
     /**
@@ -221,7 +217,7 @@ public class GduSeekBar extends RelativeLayout implements View.OnClickListener {
      */
     public void setTextProgress(int progress){
         isPBSet = true;
-        mValueEditText.setText("" + progress);
+        mValueEditText.setText(String.valueOf(progress));
     }
 
     public void setMaxValue(int maxValue){

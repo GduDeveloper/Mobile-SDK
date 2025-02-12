@@ -18,7 +18,25 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <com.gdu.demo.widget.MarqueeTextView
+        android:id="@+id/status_bar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginStart="@dimen/dp_10"
+        android:elevation="@dimen/dp_2"
+        android:ellipsize="end"
+        android:layout_gravity="start|center"
+        android:gravity="center_vertical"
+        android:maxWidth="@dimen/dp_165"
+        android:minWidth="@dimen/dp_100"
+        app:layout_constraintLeft_toRightOf="@id/iv_back"
+        app:layout_constraintTop_toTopOf="@id/iv_back"
+        app:layout_constraintBottom_toBottomOf="@id/iv_back"
+        tools:text="@string/Msg_ConnectFlyTip"
+        android:paddingHorizontal="@dimen/dp_5"
+        android:singleLine="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"/>
     <!--右侧菜单-->
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_set_menu"

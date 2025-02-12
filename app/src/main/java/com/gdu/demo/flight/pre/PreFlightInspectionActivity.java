@@ -208,7 +208,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         });
 
         viewModel.getLowBatteryWarningLiveData().observe(this, data->{
-            setLowBatteryValue(data.getSeriousLowBatteryWarningValue(), data.getLowBatteryWarningValue());
+            setLowBatteryValue(data.getOneLevelWarn(), data.getTwoLevelWarn());
         });
 
         //检查飞行错误状态

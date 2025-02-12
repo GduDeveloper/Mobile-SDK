@@ -1,14 +1,12 @@
 package com.gdu.demo.flight.setting.viewmodel;
 
 import android.content.Context;
-import android.view.View;
 
 import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.common.error.GDUError;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
-import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -23,7 +21,6 @@ import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.ChannelUtils;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 /**
  * @author wuqb
@@ -205,13 +202,13 @@ public class SettingFlyViewModel extends BaseViewModel {
             public void onSuccess(Boolean aBoolean) {
                 toastLiveData.postValue(R.string.string_set_success);
                 preBackSpeed = backHomeSpeed;
-                backHomeSpeedLiveData.postValue(preBackSpeed);
+                backHomeSpeedLiveData.postValue(preBackSpeed*100);
             }
 
             @Override
             public void onFailure(GDUError gduError) {
                 toastLiveData.postValue(R.string.Label_SettingFail);
-                backHomeSpeedLiveData.postValue(preBackSpeed);
+                backHomeSpeedLiveData.postValue(preBackSpeed*100);
             }
         });
     }

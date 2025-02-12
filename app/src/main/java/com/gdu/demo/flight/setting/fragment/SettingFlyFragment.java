@@ -36,12 +36,11 @@ import com.gdu.util.ChannelUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
+import com.gdu.util.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import cc.taylorzhang.singleclick.SingleClickUtil;
 
 /**
  * @Author: lixiqiang
@@ -396,10 +395,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private void initGps() {
         if (CommonUtils.curPlanIsSmallFlight()) {
             mViewBinding.groupGnss.setVisibility(View.GONE);
-            mViewBinding.groupAdvancedSetting.setVisibility(View.GONE);
         } else {
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
-            mViewBinding.groupAdvancedSetting.setVisibility(View.VISIBLE);
         }
         // 大华需支持S200软件单北斗模式切换+GPS等GNSS功能(S400已经支持切换)
         if (ChannelUtils.isDahua(getContext()) && CommonUtils.curPlanIsSmallFlight() && !DroneUtil.isBDSOnlyDrone()) {
@@ -444,7 +441,6 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.tabFlyModel.setTabData(array);
 
         flyViewModel.getSwitchFlyModeLiveData().observe(mActivity, data -> {
-            mViewBinding.tpsApsSwitch.setEnabled(true);
             if (data != null) {
                 setSwitchFlyModeView(data);
             } else {
@@ -461,8 +457,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     new CommonDialog.Builder(getChildFragmentManager())
                             .setTitle(getResources().getString(position != 0 ? R.string.string_change_to_tfa : R.string.string_change_to_pfa))
                             .setContent(getResources().getString(position != 0 ? R.string.Label_tfa_hint : R.string.Label_pfa_hint))
-                            .setCancel(getString(R.string.Label_cancel))
-                            .setSure(getString(R.string.Label_Sure))
+                            .setCancel(getResources().getString(R.string.Label_cancel))
+                            .setSure(getResources().getString(R.string.Label_Sure))
                             .setCancelableOutside(false)
                             .setPositiveListener((dialogInterface, i) -> flyViewModel.setTripodMode(position != 0)).build().show();
 
@@ -509,7 +505,6 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.ivSwitchLimitDistance.setOnClickListener(this);
         mViewBinding.ivSwitchLimitHeight.setOnClickListener(this);
         mViewBinding.tpsApsSwitch.setOnClickListener(this);
-        mViewBinding.tvAdvancedSetting.setOnClickListener(this);
         mViewBinding.tvSensorStatus.setOnClickListener(this);
         mViewBinding.ivNoFlyBackSwitch.setOnClickListener(this);
         mViewBinding.ivModeTip.setOnClickListener(this);
@@ -593,15 +588,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                SingleClickUtil.onSingleClick(view, v -> {
+                if (!ViewUtils.isDoubleClick()){
                     boolean isSelected = !mViewBinding.tpsApsSwitch.isSelected();
-                    mViewBinding.tpsApsSwitch.setEnabled(false);
                     flyViewModel.setSwitchFlyModeState(isSelected);
-                });
-                break;
-            case R.id.tv_advanced_setting:
-                setSecondLevelView(mViewBinding.viewAdjustScenario, true, getString(R.string.advanced_settings));
-                currentSecondLevelType = 1;
+                }
                 break;
             case R.id.tv_sensor_status:
                 setSecondLevelView(mViewBinding.vSensorStatus, true, getString(R.string.sensor_status));
@@ -633,10 +623,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
     private void showLimitHeightDialog(int limit) {
         new CommonDialog.Builder(getChildFragmentManager())
-                .setTitle(getString(R.string.Toast_planset_fly_pager_limit_height_statement))
-                .setContent(getString(R.string.limit_height_statement_content))
-                .setCancel(getString(R.string.think_moment))
-                .setSure(getString(R.string.think_agree))
+                .setTitle(getResources().getString(R.string.Toast_planset_fly_pager_limit_height_statement))
+                .setContent(getResources().getString(R.string.limit_height_statement_content))
+                .setCancel(getResources().getString(R.string.think_moment))
+                .setSure(getResources().getString(R.string.think_agree))
                 .setCancelableOutside(false)
                 .setPositiveListener((dialogInterface, i) -> baseViewModel.setLimitHeight(true, limit))
                 .setNegativeListener((dialogInterface, i) -> setHeightFailHandle()).build().show();
@@ -645,10 +635,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private void switchLimitHeight() {
         if (mViewBinding.ivSwitchLimitHeight.isSelected() || preHeightLimit > MyConstants.LIMIT_HEIGHT_DEFAULT) {
             new CommonDialog.Builder(getChildFragmentManager())
-                    .setTitle(getString(R.string.Toast_planset_fly_pager_limit_height_statement))
-                    .setContent(getString(R.string.limit_height_statement_content))
-                    .setCancel(getString(R.string.think_moment))
-                    .setSure(getString(R.string.think_agree))
+                    .setTitle(getResources().getString(R.string.Toast_planset_fly_pager_limit_height_statement))
+                    .setContent(getResources().getString(R.string.limit_height_statement_content))
+                    .setCancel(getResources().getString(R.string.think_moment))
+                    .setSure(getResources().getString(R.string.think_agree))
                     .setCancelableOutside(false)
                     .setPositiveListener((dialogInterface, i) -> {
                         if (null != baseViewModel)
@@ -661,9 +651,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     private void updateBackView() {
-        if (currentSecondLevelType == 1) {
-            setSecondLevelView(mViewBinding.viewAdjustScenario, false, "");
-        } else if (currentSecondLevelType == 2) {
+        if (currentSecondLevelType == 2) {
             setSecondLevelView(mViewBinding.vSensorStatus, false, "");
         }
         currentSecondLevelType = 0;
@@ -781,10 +769,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             //设置高度限制大于120需要免责声明  余浩
             if (mViewBinding.ivSwitchLimitHeight.isSelected() && limitHeight > MyConstants.LIMIT_HEIGHT_DEFAULT && preHeightLimit <= MyConstants.LIMIT_HEIGHT_DEFAULT) {
                 new CommonDialog.Builder(getChildFragmentManager())
-                        .setTitle(getString(R.string.Toast_planset_fly_pager_limit_height_statement))
-                        .setContent(getString(R.string.limit_height_statement_content))
-                        .setCancel(getString(R.string.think_moment))
-                        .setSure(getString(R.string.think_agree))
+                        .setTitle(getResources().getString(R.string.Toast_planset_fly_pager_limit_height_statement))
+                        .setContent(getResources().getString(R.string.limit_height_statement_content))
+                        .setCancel(getResources().getString(R.string.think_moment))
+                        .setSure(getResources().getString(R.string.think_agree))
                         .setCancelableOutside(false)
                         .setPositiveListener((dialogInterface, i) -> baseViewModel.setLimitHeight(mViewBinding.ivSwitchLimitHeight.isSelected(), limitHeight))
                         .setNegativeListener((dialogInterface, i) -> mViewBinding.sbLimitHeight.setProgress(preHeightLimit)).build().show();
@@ -795,7 +783,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     };
 
     private void switchFlightModeView(boolean isTfaMode) {
-        mViewBinding.tvPfaTfaModeContent.setText(isTfaMode ? getString(R.string.Msg_tfa_mode) : getString(R.string.Msg_pfa_mode));
+        if (getContext() == null) return;
+        mViewBinding.tvPfaTfaModeContent.setText(isTfaMode ? getResources().getString(R.string.Msg_tfa_mode) : getResources().getString(R.string.Msg_pfa_mode));
         mViewBinding.ivPfaTfaImageview.setImageResource(isTfaMode ? R.drawable.icon_pfa_1 : R.drawable.icon_pfa_2);
         mViewBinding.tabFlyModel.setCurrentTab(isTfaMode ? 1 : 0);
     }
@@ -899,18 +888,19 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     private void showModeTipsDialog(){
-        CommonDialog commonDialog = new CommonDialog.Builder(getChildFragmentManager())
-                .setLayoutResId(R.layout.dialog_set_fly_model_tip).build().show();
-        View view = commonDialog.getRootView();
-        if (null == view) return;
-        TextView tv_confirm = view.findViewById(R.id.tv_confirm);
-        TextView tv_a_model_text = view.findViewById(R.id.tv_a_model_text);
-        TextView tv_p_model_text = view.findViewById(R.id.tv_p_model_text);
-        TextView tv_s_model_text = view.findViewById(R.id.tv_s_model_text);
-        tv_a_model_text.setText(getAModelContentString(getContext()));
-        tv_p_model_text.setText(getPModelContentString(getContext()));
-        tv_s_model_text.setText(getSModelContentString(getContext()));
-        tv_confirm.setOnClickListener(view1 -> commonDialog.dismiss());
+        new CommonDialog.Builder(getChildFragmentManager())
+                .setLayoutResId(R.layout.dialog_set_fly_model_tip)
+                .setWidth((int) getResources().getDimension(R.dimen.dp_370))
+                .setLayoutBindViewListener((dialogInterface, itemView) -> {
+                    TextView tv_confirm = itemView.findViewById(R.id.tv_confirm);
+                    TextView tv_a_model_text = itemView.findViewById(R.id.tv_a_model_text);
+                    TextView tv_p_model_text = itemView.findViewById(R.id.tv_p_model_text);
+                    TextView tv_s_model_text = itemView.findViewById(R.id.tv_s_model_text);
+                    tv_a_model_text.setText(getAModelContentString(getContext()));
+                    tv_p_model_text.setText(getPModelContentString(getContext()));
+                    tv_s_model_text.setText(getSModelContentString(getContext()));
+                    tv_confirm.setOnClickListener(view -> dialogInterface.dismiss());
+                }).build().show();
     }
 
     public static String getAModelContentString(Context context) {

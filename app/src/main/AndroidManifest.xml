@@ -60,8 +60,19 @@
             android:theme="@style/FullScreenAppTheme"
             android:screenOrientation="landscape"
             />
-        <service android:name="org.eclipse.paho.android.service.MqttService" />
-        <activity android:name=".flight.calibration.IMUCalibrationActivity"/>
+
+        <activity android:name=".flight.calibration.IMUCalibrationActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreenAppTheme"/>
+        <activity android:name=".flight.calibration.RectifyMagnetometerActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreenAppTheme"/>
+        <activity android:name=".flight.calibration.RectifyMagnetometerActivityNew"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="landscape"
+            android:theme="@style/FullScreenAppTheme"/>
     </application>
 
 </manifest>

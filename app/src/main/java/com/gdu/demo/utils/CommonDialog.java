@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -34,7 +35,6 @@ public class CommonDialog extends AppCompatDialogFragment {
 
     /** 弹窗相关参数 */
     private DialogParam param;
-    private View view;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,6 +45,7 @@ public class CommonDialog extends AppCompatDialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view;
         if (param.layoutResId<=0){
             view = inflater.inflate(R.layout.dialog_common, container, false);
             TextView tvTitle = view.findViewById(R.id.dialog_title);
@@ -94,13 +95,11 @@ public class CommonDialog extends AppCompatDialogFragment {
                 }
             });
         }else {
-            //todo 拓展功能，待提供相应 内容解析器回调
             view = inflater.inflate(param.layoutResId, container, false);
+            if (null != param.onBindViewListener){
+                param.onBindViewListener.onBind(getDialog(), view);
+            }
         }
-        return view;
-    }
-
-    public View getRootView(){
         return view;
     }
 
@@ -138,6 +137,11 @@ public class CommonDialog extends AppCompatDialogFragment {
         //透明度
         layoutParams.dimAmount = param.mDimAmount;
         window.setAttributes(layoutParams);
+        dialog.setOnDismissListener(dialogInterface -> {
+            if (null!=param.onDismissListener){
+                param.onDismissListener.onDismiss(dialogInterface);
+            }
+        });
     }
 
     public CommonDialog show() {
@@ -249,13 +253,34 @@ public class CommonDialog extends AppCompatDialogFragment {
             return this;
         }
 
+        /**
+         * 取消按钮监听
+         * */
         public Builder setNegativeListener(DialogInterface.OnClickListener negativeListener) {
             P.negativeListener = negativeListener;
             return this;
         }
-
+        /**
+         * 确认按钮监听
+         * */
         public Builder setPositiveListener(DialogInterface.OnClickListener positiveListener) {
             P.positiveListener = positiveListener;
+            return this;
+        }
+
+        /**
+         * 确认按钮监听
+         * */
+        public Builder setOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+            P.onDismissListener = onDismissListener;
+            return this;
+        }
+
+        /**
+         * 自定义Layout布局内容监听
+         * */
+        public Builder setLayoutBindViewListener(OnBindViewListener onBindViewListener) {
+            P.onBindViewListener = onBindViewListener;
             return this;
         }
 
@@ -298,5 +323,13 @@ public class CommonDialog extends AppCompatDialogFragment {
         private DialogInterface.OnClickListener negativeListener;
         /** 确认按钮点击事件回调 */
         private DialogInterface.OnClickListener positiveListener;
+        /** dismiss回调 */
+        private DialogInterface.OnDismissListener onDismissListener;
+        /** 自定义Layout布局回调 */
+        private OnBindViewListener onBindViewListener;
+    }
+
+    public interface OnBindViewListener{
+        void onBind(DialogInterface dialogInterface, View itemView);
     }
 }

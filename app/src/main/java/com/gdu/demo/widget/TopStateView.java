@@ -140,6 +140,18 @@ public class TopStateView  extends ConstraintLayout {
         }
     }
 
+    public void setStatusText(String title){
+        binding.statusBarTitle.setText(title);
+    }
+
+    public void setStatusTextColor(int txtColor){
+        binding.statusBarTitle.setTextColor(getResources().getColor(txtColor));
+    }
+
+    public void setStatusTextBackground(int resId){
+        binding.statusBarTitle.setBackgroundResource(resId);
+    }
+
     public void setViewClickListener(OnClickCallBack listener) {
         this.clickCallBack = listener;
     }

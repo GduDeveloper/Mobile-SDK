@@ -56,61 +56,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/airlink_type_textview"
-                android:layout_width="@dimen/dp_100"
-                android:layout_height="@dimen/dp_60"
-                android:gravity="center_vertical"
-                android:text="@string/airlink_model"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioGroup
-                android:id="@+id/rg_channel_type"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toBottomOf="@id/airlink_type_textview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/airlink_type_textview"
-                app:layout_constraintTop_toTopOf="@id/airlink_type_textview">
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_channel_auto"
-                    style="@style/style_rb_channel_type"
-                    android:background="@drawable/selector_bg_rb_lr3_ffffff_ef4e22"
-                    android:text="@string/Auto" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_channel_airlink"
-                    style="@style/style_rb_channel_type"
-                    android:background="@drawable/selector_bg_rb_nr_ffffff_ef4e22"
-                    android:text="@string/airlink" />
-
-                <androidx.appcompat.widget.AppCompatRadioButton
-                    android:id="@+id/rb_channel_link5g"
-                    style="@style/style_rb_channel_type"
-                    android:background="@drawable/selector_bg_rb_rr3_ffffff_ef4e22"
-                    android:text="@string/link5g" />
-
-            </RadioGroup>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/current_used_airlink_textview"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical|end"
-                android:paddingVertical="@dimen/dp_3"
-                android:text="@string/current_used_airlink"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_11"
-                app:layout_constraintEnd_toEndOf="@id/rg_channel_type"
-                app:layout_constraintStart_toStartOf="@+id/airlink_type_textview"
-                app:layout_constraintTop_toBottomOf="@+id/airlink_type_textview" />
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_aircraft_push_type"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
@@ -194,95 +139,6 @@
                 />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_current_address_title"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:text="@string/string_current_service_address"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                android:visibility="visible"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_line_playtype"
-                 />
-
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/et_current_address"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_20"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_0"
-                android:background="@drawable/selector_common_edit_bg"
-                android:imeOptions="actionDone"
-                android:paddingLeft="@dimen/dp_5"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="@color/color_EF4E22"
-                android:textSize="@dimen/sp_11"
-                app:layout_constraintBottom_toBottomOf="@id/tv_current_address_title"
-                app:layout_constraintLeft_toRightOf="@id/tv_current_address_title"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_current_address_title" />
-
-
-            <View
-                android:id="@+id/div_services"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintTop_toBottomOf="@id/tv_current_address_title" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_current_rtsp_title"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:text="@string/string_current_service_rtsp_address"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                android:visibility="visible"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_current_address_title"
-                app:layout_goneMarginTop="@dimen/dp_0" />
-
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/et_current_rtsp_address"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_20"
-                android:layout_marginLeft="@dimen/dp_10"
-                android:layout_marginRight="@dimen/dp_0"
-                android:background="@drawable/selector_common_edit_bg"
-                android:imeOptions="actionDone"
-                android:paddingLeft="@dimen/dp_5"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="@color/color_EF4E22"
-                android:textSize="@dimen/sp_11"
-                app:layout_constraintBottom_toBottomOf="@id/tv_current_rtsp_title"
-                app:layout_constraintLeft_toRightOf="@id/tv_current_rtsp_title"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@id/tv_current_rtsp_title" />
-
-
-            <View
-                android:id="@+id/div_rtsp_services"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintTop_toBottomOf="@id/tv_current_rtsp_title" />
-
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/layout_server_url"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:constraint_referenced_ids="tv_current_address_title,et_current_address, tv_current_rtsp_title, et_current_rtsp_address, div_rtsp_services,div_services" />
-
-
-            <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_stream_title"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
@@ -292,7 +148,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/current_used_airlink_textview" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:id="@+id/div_stream_set"
@@ -333,7 +189,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/div_rtsp_services" />
+                app:layout_constraintTop_toBottomOf="@id/view_line_playtype" />
 
 
             <androidx.appcompat.widget.AppCompatImageView
@@ -443,59 +299,6 @@
                 android:background="@color/color_D8D8D8"
                 app:layout_constraintTop_toBottomOf="@id/tv_bandWithLabel" />
 
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tv_bandWithSetLabel"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_40"
-                android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:text="@string/modulation_bandwidth_set"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/clBandWidthSetLayout"
-                app:layout_constraintTop_toBottomOf="@+id/view_line12" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clBandWidthSetLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_bandWithSetLabel"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_bandWithSetLabel">
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/tvBandWith10MButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="10MHz"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_11"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/tvBandWith20MButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="20MHz"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_11"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvBandWith10MButton"
-                    app:layout_constraintLeft_toRightOf="@+id/tvBandWith10MButton"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvBandWith10MButton" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/view_line2"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintTop_toBottomOf="@id/tv_bandWithSetLabel" />
-
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/hdmi_cast"
                 android:layout_width="wrap_content"
@@ -505,7 +308,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/view_line2" />
+                app:layout_constraintTop_toBottomOf="@id/view_line12" />
 
 
             <com.gdu.demo.widget.GduSpinner

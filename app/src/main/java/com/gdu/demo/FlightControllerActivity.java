@@ -20,6 +20,7 @@ import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -425,10 +426,10 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     private void getLowBatteryWarningThreshold() {
-        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<LowBatteryWarnInfo>() {
             @Override
-            public void onSuccess(Integer var1) {
-                toastText("获取低电量阈值成功 " + var1);
+            public void onSuccess(LowBatteryWarnInfo var1) {
+                toastText("获取低电量阈值成功 " + var1.getOneLevelWarn());
             }
 
             @Override
@@ -452,10 +453,10 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     private void getSeriousLowBatteryWarningThreshold() {
-        mGDUFlightController.getSeriousLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<LowBatteryWarnInfo>() {
             @Override
-            public void onSuccess(Integer var1) {
-                toastText("获取严重低电量阈值成功 " + var1);
+            public void onSuccess(LowBatteryWarnInfo var1) {
+                toastText("获取严重低电量阈值成功 " + var1.getOneLevelWarn());
             }
 
             @Override

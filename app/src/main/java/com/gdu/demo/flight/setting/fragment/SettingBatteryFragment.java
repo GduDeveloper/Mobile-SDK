@@ -16,6 +16,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,19 +26,15 @@ import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.FragmentSettingBatteryBinding;
+import com.gdu.demo.flight.base.BaseFlightViewModel;
+import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
 import com.gdu.drone.BatteryInfoZ4C;
 import com.gdu.drone.PlanType;
-import com.gdu.event.EventMessage;
-import com.gdu.socket.GduFrame3;
-import com.gdu.util.DataUtil;
 import com.gdu.util.FormatConfig;
-import com.gdu.util.MyConstants;
 import com.gdu.util.TimeUtil;
 import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -55,9 +53,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class SettingBatteryFragment extends Fragment {
 
     private FragmentSettingBatteryBinding mViewBinding;
+    private BaseFlightViewModel baseViewModel;
+    private SettingBatteryViewModel batteryViewModel;
+    private FragmentActivity mActivity;
 
     private BatteryInfoZ4C mBatteryNo1;
-    private BatteryInfoZ4C mBatteryNo2;
 
     private CellAdapter upCellAdapter, downCellAdapter;
     private List<Integer> upCellDatas = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
@@ -73,8 +73,6 @@ public class SettingBatteryFragment extends Fragment {
 
     private final static int SET_SUCCESS = 100;
     private final static int SET_FAILED = 101;
-    /** 设置电量报警信息 */
-    private final int SET_BATTERY_INFO_HANDLE = 107;
 
     /**
      * 是否因断联重置了电池信息
@@ -91,10 +89,13 @@ public class SettingBatteryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mActivity = getActivity();
+        if (null != mActivity) {
+            baseViewModel = new ViewModelProvider(mActivity).get(BaseFlightViewModel.class);
+            batteryViewModel = new ViewModelProvider(mActivity).get(SettingBatteryViewModel.class);
+        }
         initView();
         initData();
-
     }
 
     private void initView() {
@@ -188,11 +189,6 @@ public class SettingBatteryFragment extends Fragment {
             updateSelectTab(mViewBinding.flightBattery);
             updateFlBatteryView();
             if (GlobalVariable.sBattery1InfoZ4C != null ){
-//                if (upCellDatas.size() > 0){
-//                    upCellDatas.clear();
-//                    upCellDatas.addAll(Arrays.asList(0,0,0,0,0,0));
-//                    upCellAdapter.notifyDataSetChanged();
-//                }
                 setFlBatteryData();
             }else {
                 resetBatteryInfoOnce();
@@ -256,11 +252,6 @@ public class SettingBatteryFragment extends Fragment {
         view.setBackgroundResource(R.drawable.shape_bg_battery_state);
         view.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
     }
-    private void setNullBatteryStateView(TextView view) {
-        view.setBackground(null);
-        view.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
-    }
-
 
     private void resetBattery1(){
         mViewBinding.incBatteryLayout1.tvBatteryState.setText(getString(R.string.state_none));
@@ -283,9 +274,6 @@ public class SettingBatteryFragment extends Fragment {
 
     private void initData() {
         getBatteryWaringSet();
-
-//        setFlBatteryData();
-
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -346,7 +334,6 @@ public class SettingBatteryFragment extends Fragment {
 
     //刷新飞行器电池1界面
     private void updateFlBattery1UI() {
-        MyLogUtils.i("updateFlBattery1UI()");
         short batteryTemp;
         int upBatteryProgress = mBatteryNo1.getPower();
         mViewBinding.incBatteryLayout1.batteryUpPb.setProgress(upBatteryProgress);
@@ -402,54 +389,6 @@ public class SettingBatteryFragment extends Fragment {
         upCellAdapter.notifyDataSetChanged();
     }
 
-    //刷新飞行器电池2界面
-    private void updateFlBattery2UI() {
-        short batteryTemp;
-        mViewBinding.incBatteryLayout2.z4bBatterySub.setVisibility(View.VISIBLE);
-        int downBatteryProgress = mBatteryNo2.getPower();
-        mViewBinding.incBatteryLayout2.batteryUpPb.setProgress(downBatteryProgress);
-        if(downBatteryProgress >= 40){
-            mViewBinding.incBatteryLayout2.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(),R.drawable.main_progress_vertical_green));
-        } else if(downBatteryProgress >= 20 && downBatteryProgress < 40){
-            mViewBinding.incBatteryLayout2.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(),R.drawable.main_progress_vertical_yellow));
-        }else {
-            mViewBinding.incBatteryLayout2.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(),R.drawable.main_progress_vertical_red));
-        }
-        batteryTemp = mBatteryNo2.getTemp();
-        float realTemp = batteryTemp / 10;
-        if ((GlobalVariable.planType == PlanType.MGP12
-                || GlobalVariable.planType == PlanType.S480
-                || GlobalVariable.planType == PlanType.S450
-                || GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS)
-                && GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
-            realTemp = (batteryTemp - 2731)/10;
-        }
-        mViewBinding.incBatteryLayout2.tvTempContent.setText(realTemp + "℃");
-        mViewBinding.incBatteryLayout2.tvBatteryPercent.setText(mBatteryNo2.getPower() + "%");
-        mViewBinding.incBatteryLayout1.tvBatteryPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.color_05C336));
-        mViewBinding.incBatteryLayout2.tvBatteryVoltage.setText(df.format(mBatteryNo2.getTotalVoltage()/1000.0f) + "V");
-        mViewBinding.incBatteryLayout2.tvBatteryCapacity.setText(mBatteryNo2.getBattery_capacity_left() + "mAH");
-        mViewBinding.incBatteryLayout2.tvChargeNumContent.setText(String.valueOf(mBatteryNo2.getInflationNumber()));
-        mViewBinding.incBatteryLayout2.tvCurElectricContent.setText(Math.abs(mBatteryNo2.getCurrentElectricity()) + "mA");
-        downCellDatas.clear();
-        downCellDatas.addAll(mBatteryNo2.getBatteryCellList());
-        downCellAdapter.notifyDataSetChanged();
-    }
 
     //刷新并显示当前遥控器电池2信息界面
     private void updateRcBattery1UI() {
@@ -511,36 +450,6 @@ public class SettingBatteryFragment extends Fragment {
         downCellAdapter.notifyDataSetChanged();
     }
 
-    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            switch (msg.what) {
-                case SET_BATTERY_INFO_HANDLE:
-                    GlobalVariable.oneLevelLowBattery = msg.arg1;
-                    GlobalVariable.twoLevelLowBattery = msg.arg2;
-                    mViewBinding.lowestPowerWarnSb.setProgress(msg.arg1);
-                    mViewBinding.lowPowerWarnSb.setProgress(msg.arg2);
-                    break;
-
-                case SET_FAILED:
-                    if (getActivity() == null) {
-                        return;
-                    }
-                    Toast.makeText(getContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-                    break;
-
-                case SET_SUCCESS:
-                    if (getActivity() == null) {
-                        return;
-                    }
-                    Toast.makeText(getContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                    break;
-                default:
-                    break;
-            }
-        }
-    };
-
     int selectTable = 1; //1:飞机电池 2：遥控器电池
     /**
      * 更新飞行时间
@@ -559,85 +468,32 @@ public class SettingBatteryFragment extends Fragment {
     }
 
     private void getBatteryWaringSet() {
-        MyLogUtils.i("getBatteryWaringSet()");
-//        GduApplication.getSingleApp().gduCommunication.sendGetBatteryWaring((code, bean) -> {
-//            MyLogUtils.i("sendGetBatteryWaring callBack() code = " + code);
-//            if (code == 1 || bean == null || bean.frameContent == null || bean.frameContent.length == 0) {
-//                return;
-//            }
-//            int lowPbValue = bean.frameContent[3];
-//            int heightPbValue = bean.frameContent[2];
-//            if (lowPbValue < MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN) {
-//                lowPbValue = MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN;
-//            }
-//            if (heightPbValue < MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN) {
-//                heightPbValue = MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN;
-//            }
-//            MyLogUtils.i("sendGetBatteryWaring callBack() lowPbValue = " + lowPbValue + "; heightPbValue = " + heightPbValue);
-//            final Message msg = new Message();
-//            msg.what = SET_BATTERY_INFO_HANDLE;
-//            msg.arg1 = lowPbValue;
-//            msg.arg2 = heightPbValue;
-//            mHandler.sendMessage(msg);
-//        });
-//
-//        GduApplication.getSingleApp().gduCommunication.getBatterFactoryInfo((code, bean) -> {
-//            if (bean != null && bean.frameContent != null && bean.frameContent.length > 0) {
-//                String hexStr = DataUtil.bytes2HexAddSplit(bean.frameContent);
-//                MyLogUtils.i("getBatterFactoryInfo() hexStr = " + hexStr);
-//            }
-//            String sn = parseBatterySN(code, bean);
-//            MyLogUtils.i("getBatterFactoryInfo() sn = " + sn);
-//            if (!isAdded() || mHandler == null) {
-//                return;
-//            }
-//            mHandler.post(() -> mViewBinding.tvBatterySn.setText(sn));
-//        });
-    }
+        baseViewModel.getLowBatteryWarningLiveData().observe(mActivity, data->{
+            mViewBinding.lowestPowerWarnSb.setProgress(data.getOneLevelWarn());
+            mViewBinding.lowPowerWarnSb.setProgress(data.getTwoLevelWarn());
+        });
+        baseViewModel.getLowBatteryWarningThreshold();
+        batteryViewModel.getBatterySNLiveData().observe(mActivity, data->{
+            mViewBinding.tvBatterySn.setText(data);
+        });
+        batteryViewModel.getBatterFactoryInfo();
 
-    /**
-     * 解析电池sn
-     * @param code
-     * @param bean
-     * @return
-     */
-    private String parseBatterySN(int code, GduFrame3 bean) {
-        if (bean != null && bean.frameContent != null && bean.frameContent.length >= 20) {
-            byte[] fac = new byte[4];
-            System.arraycopy(bean.frameContent, 0, fac, 0, 4);
-            // 制造商
-//            String factory = new String(fac);
-            byte[] snArray = new byte[16];
-            System.arraycopy(bean.frameContent, 4, snArray, 0, 16);
-            // 电池SN号
-            String sn = new String(snArray);
-            return sn;
-        }
-        return "";
     }
 
 
     private void setListener() {
-
         mViewBinding.lowPowerWarnSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.i("sb_lowPowerWaringSet onProgressChanged() progress = " + progress
-                        + "; oneLevelLowBattery = " + GlobalVariable.oneLevelLowBattery
-                        + "; fromUser = " + fromUser);
                 mViewBinding.lowPowerWarnSb.setTextProgress(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                MyLogUtils.i("sb_lowPowerWaringSet onStartTrackingTouch()");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                MyLogUtils.i("sb_lowPowerWaringSet onStopTrackingTouch()" +
-                        " oneLevelLowBattery = " + GlobalVariable.oneLevelLowBattery
-                        + "; twoLevelLowBattery = " + GlobalVariable.twoLevelLowBattery);
                 GlobalVariable.twoLevelLowBattery = seekBar.getProgress();
                 mViewBinding.lowPowerWarnSb.setTextProgress(GlobalVariable.twoLevelLowBattery );
                 if (GlobalVariable.twoLevelLowBattery < GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL) {
@@ -649,9 +505,6 @@ public class SettingBatteryFragment extends Fragment {
         });
 
         mViewBinding.lowPowerWarnSb.setOnEditChangeListener(progress -> {
-            MyLogUtils.i("lowPowerWarnSb onChange() progress = " + progress
-                    + "; oneLevelLowBattery = " + GlobalVariable.oneLevelLowBattery
-                    + "; twoLevelLowBattery = " + GlobalVariable.twoLevelLowBattery);
             GlobalVariable.twoLevelLowBattery = progress;
             if (GlobalVariable.twoLevelLowBattery < GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL) {
                 GlobalVariable.oneLevelLowBattery = GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL;
@@ -663,22 +516,15 @@ public class SettingBatteryFragment extends Fragment {
         mViewBinding.lowestPowerWarnSb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.i("sb_lowestPowerWaringSet onProgressChanged() progress = " + progress
-                        + "; twoLevelLowBattery = " + GlobalVariable.twoLevelLowBattery
-                        + "; fromUser = " + fromUser);
                 mViewBinding.lowestPowerWarnSb.setTextProgress(progress);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                MyLogUtils.i("sb_lowestPowerWaringSet onStartTrackingTouch()");
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                MyLogUtils.i("sb_lowestPowerWaringSet onStopTrackingTouch()" +
-                        " oneLevelLowBattery = " + GlobalVariable.oneLevelLowBattery
-                        + "; twoLevelLowBattery = " + GlobalVariable.twoLevelLowBattery);
                 GlobalVariable.oneLevelLowBattery = seekBar.getProgress();
                 mViewBinding.lowestPowerWarnSb.setTextProgress(GlobalVariable.oneLevelLowBattery);
                 if (GlobalVariable.oneLevelLowBattery > GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL) {
@@ -690,9 +536,6 @@ public class SettingBatteryFragment extends Fragment {
         });
 
         mViewBinding.lowestPowerWarnSb.setOnEditChangeListener(progress -> {
-            MyLogUtils.i("lowestPowerWarnSb onChange() progress = " + progress
-                    + "; oneLevelLowBattery = " + GlobalVariable.oneLevelLowBattery
-                    + "; twoLevelLowBattery = " + GlobalVariable.twoLevelLowBattery);
             GlobalVariable.oneLevelLowBattery = progress;
 
             if (GlobalVariable.oneLevelLowBattery > GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL) {
@@ -704,17 +547,7 @@ public class SettingBatteryFragment extends Fragment {
     }
 
     private void sendSetBatteryWaring() {
-        MyLogUtils.i("sendSetBatteryWaring()");
-//        GduApplication.getSingleApp().gduCommunication.sendSetBatteryWaring((code, bean) -> {
-//            MyLogUtils.i("sendSetBatteryWaring() callBack() code = " + code
-//                    + ", " + GlobalVariable.twoLevelLowBattery + ", " + GlobalVariable.oneLevelLowBattery);
-//            if (mHandler != null) {
-//                mHandler.sendEmptyMessage(code == 0 ? SET_SUCCESS : SET_FAILED);
-//            }
-//            if (code == 0) {
-//                EventBus.getDefault().post(new EventMessage(MyConstants.UPDATE_BATTERY_PROGRESS));
-//            }
-//        }, (byte) GlobalVariable.twoLevelLowBattery, (byte) GlobalVariable.oneLevelLowBattery);
+        baseViewModel.setLowBatteryWarningThreshold((byte) GlobalVariable.twoLevelLowBattery, (byte) GlobalVariable.oneLevelLowBattery);
     }
 
     public class CellAdapter extends RecyclerView.Adapter<CellAdapter.VH>{
@@ -738,10 +571,6 @@ public class SettingBatteryFragment extends Fragment {
         @Override
         public void onBindViewHolder(VH holder, int position) {
             int voltage = mDatas.get(position);
-//            if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-//                voltage = 0;
-//                Log.e("TAG", "onBindViewHolder: voltage = 0");
-//            }
             if(voltage == 0){
                 holder.cellVoltage.setText("0V");
             }else if(voltage == -1){

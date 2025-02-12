@@ -2,18 +2,25 @@ package com.gdu.demo;
 
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.TextureView;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.gdu.beans.WarnBean;
 import com.gdu.common.error.GDUError;
+import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.databinding.ActivityFlightBinding;
+import com.gdu.demo.flight.msgbox.MsgBoxBean;
+import com.gdu.demo.flight.msgbox.MsgBoxManager;
+import com.gdu.demo.flight.msgbox.MsgBoxPopView;
+import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
 import com.gdu.demo.utils.GisUtil;
-import com.gdu.demo.utils.StatusBarUtils;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
@@ -25,11 +32,17 @@ import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.radar.GDURadar;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.CollectionUtils;
+import com.gdu.util.StatusBarUtils;
+import com.gdu.util.StringUtils;
+import com.gdu.util.ThreadHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener {
+public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
 
     private ActivityFlightBinding viewBinding;
     private GDUCodecManager codecManager;
@@ -129,10 +142,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         };
         viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
+        viewBinding.ivMsgBoxLabel.setOnClickListener(this);
     }
 
 
     private void initData() {
+        new MsgBoxManager(this, 1,this);
         VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
     }
 
@@ -183,5 +198,87 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
+    }
+    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private MsgBoxPopView mMsgBoxPopWin;
+
+    private void showMsgBoxPopWindow(List<MsgBoxBean> data) {
+        if (mMsgBoxPopWin == null) {
+            mMsgBoxPopWin = new MsgBoxPopView(this, viewBinding.ivMsgBoxLabel);
+        }
+        final boolean isShow = viewBinding.ivMsgBoxLabel.isSelected();
+        mMsgBoxPopWin.setOnDismissListener(() -> ThreadHelper.runOnUiThreadDelayed(()
+                -> viewBinding.ivMsgBoxLabel.setSelected(false), 500));
+        if (isShow) {
+            mMsgBoxPopWin.dismiss();
+        } else {
+            mMsgBoxPopWin.updateMsgData(data);
+            mMsgBoxPopWin.showAsDropDown(viewBinding.ivMsgBoxLabel, 0,
+                    getResources().getDimensionPixelOffset(R.dimen.dp_6),
+                    Gravity.BOTTOM);
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_msgBoxLabel) {
+            if (msgData.isEmpty() || StringUtils.isEmptyString(viewBinding.tvMsgBoxNum.getText().toString())
+                    || Integer.parseInt(viewBinding.tvMsgBoxNum.getText().toString().trim()) == 0) {
+                return;
+            }
+            showMsgBoxPopWindow(msgData);
+            viewBinding.ivMsgBoxLabel.setSelected(!viewBinding.ivMsgBoxLabel.isSelected());
+        }
+    }
+
+    @Override
+    public void updateTitleTvTxt(String title) {
+        ThreadHelper.runOnUiThread(() -> viewBinding.topStateView.setStatusText(title));
+    }
+
+    @Override
+    public void updateTitleTVColor(int txtColor) {
+        ThreadHelper.runOnUiThread(() -> viewBinding.topStateView.setStatusTextColor(txtColor));
+    }
+
+    @Override
+    public void updateHeadViewBg(int resId) {
+        ThreadHelper.runOnUiThread(() -> {
+            if (resId != 0) {
+                viewBinding.topStateView.setStatusTextBackground(resId);
+            }
+        });
+    }
+
+    @Override
+    public void updateWarnList(HashMap<Long, WarnBean> warnList) {
+        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess || warnList.isEmpty()) {
+            msgData.clear();
+            ThreadHelper.runOnUiThread(() -> {
+                viewBinding.tvMsgBoxNum.setText("0");
+                viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
+            });
+            return;
+        }
+        msgData.clear();
+        for (Map.Entry<Long, WarnBean> warnBeanEntry : warnList.entrySet()) {
+            if (!warnBeanEntry.getValue().isErr) {
+                continue;
+            }
+            final MsgBoxBean bean = new MsgBoxBean();
+            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
+            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
+            CollectionUtils.listAddAvoidNull(msgData, bean);
+        }
+        ThreadHelper.runOnUiThread(() -> {
+            if (!CollectionUtils.isEmptyList(msgData)) {
+                viewBinding.tvMsgBoxNum.setText(String.valueOf(msgData.size()));
+                viewBinding.tvMsgBoxNum.setVisibility(View.VISIBLE);
+            } else {
+                viewBinding.tvMsgBoxNum.setText("0");
+                viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
+
+            }
+        });
     }
 }

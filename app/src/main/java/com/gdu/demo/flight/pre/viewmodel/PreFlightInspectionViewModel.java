@@ -20,7 +20,6 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseFlightAssistantViewModel;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.base.BaseRCViewModel;
-import com.gdu.demo.flight.base.LowBatteryWarningBean;
 import com.gdu.demo.flight.pre.bean.BaseFlightStatusBean;
 import com.gdu.demo.flight.pre.bean.BaseSysStatusBean;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
@@ -33,6 +32,7 @@ import com.gdu.healthmanager.MessageBean;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
+import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.sdk.util.CommonUtils;
@@ -102,7 +102,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
     /**
      * 低电量告警
      */
-    private final MutableLiveData<LowBatteryWarningBean> lowBatteryWarningLiveData;
+    private final MutableLiveData<LowBatteryWarnInfo> lowBatteryWarningLiveData;
 
     private final FlightAssistant mFlightAssistant;
 
@@ -534,7 +534,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
     }
 
     private void sendCmdHandle() {
-        baseViewModel.getSeriousLowBatteryWarningThreshold();
+        baseViewModel.getLowBatteryWarningThreshold();
         //获取限高
         baseViewModel.getLimitHeight();
         //获取失联行为
@@ -615,7 +615,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         return aircraftMappingStyleLiveData;
     }
 
-    public MutableLiveData<LowBatteryWarningBean> getLowBatteryWarningLiveData() {
+    public MutableLiveData<LowBatteryWarnInfo> getLowBatteryWarningLiveData() {
         return lowBatteryWarningLiveData;
     }
 
@@ -727,9 +727,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
             }
         });
 
-        baseViewModel.getLowBatteryWarningBeanLiveData().observe(activity, data->{
-            lowBatteryWarningLiveData.setValue(data);
-        });
+        baseViewModel.getLowBatteryWarningLiveData().observe(activity, lowBatteryWarningLiveData::setValue);
 
 //        baseFlightAssistantViewModel.getVisionSensingLiveData().observe(activity, data->{
 //            if (data.isSuccess()) {

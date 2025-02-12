@@ -21,6 +21,7 @@ import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
+import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.ConnectUtil;
@@ -45,7 +46,7 @@ public class BaseFlightViewModel extends BaseViewModel {
     private final MutableLiveData<GoHomeHeightBean> goHomeHeightBeanLiveData;
     private final MutableLiveData<ConnectionFailSafeBehaviorBean> connectionFailSafeBehaviorLiveData;
 
-    private final MutableLiveData<LowBatteryWarningBean> lowBatteryWarningBeanLiveData;
+    private final MutableLiveData<LowBatteryWarnInfo> lowBatteryWarningLiveData;
 
     private final MutableLiveData<WarnTipBean> warnTipBeanLiveData;
 
@@ -83,7 +84,7 @@ public class BaseFlightViewModel extends BaseViewModel {
         limitDistanceLiveData = new MutableLiveData<>();
         connectionFailSafeBehaviorLiveData = new MutableLiveData<>();
         homeLocationBeanLiveData = new MutableLiveData<>();
-        lowBatteryWarningBeanLiveData = new MutableLiveData<>();
+        lowBatteryWarningLiveData = new MutableLiveData<>();
     }
 
 
@@ -503,8 +504,8 @@ public class BaseFlightViewModel extends BaseViewModel {
         return connectionFailSafeBehaviorLiveData;
     }
 
-    public MutableLiveData<LowBatteryWarningBean> getLowBatteryWarningBeanLiveData() {
-        return lowBatteryWarningBeanLiveData;
+    public MutableLiveData<LowBatteryWarnInfo> getLowBatteryWarningLiveData() {
+        return lowBatteryWarningLiveData;
     }
 
     public boolean isConnect() {
@@ -540,17 +541,7 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void setLowBatteryWarningThreshold(int lowBatteryWarning, int seriousLowBatteryWarning){
-        GlobalVariable.oneLevelLowBattery = seriousLowBatteryWarning;
-        mGDUFlightController.setLowBatteryWarningThreshold(lowBatteryWarning, new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(GDUError error) {
-                getLowBatteryWarningThreshold();
-            }
-        });
-    }
-
-    public void setSeriousLowBatteryWarningThreshold(int percent){
-        mGDUFlightController.setSeriousLowBatteryWarningThreshold(percent, new CommonCallbacks.CompletionCallback() {
+        mGDUFlightController.setLowBatteryWarningThreshold((byte) seriousLowBatteryWarning, (byte) lowBatteryWarning, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError error) {
                 getLowBatteryWarningThreshold();
@@ -559,47 +550,32 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void getLowBatteryWarningThreshold(){
-        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+        mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<LowBatteryWarnInfo>() {
             @Override
-            public void onSuccess(Integer lowBatteryWarning) {
-
-            }
-
-            @Override
-            public void onFailure(GDUError var1) {
-
-            }
-        });
-    }
-
-    public void getSeriousLowBatteryWarningThreshold(){
-        mGDUFlightController.getSeriousLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<Integer>() {
-            @Override
-            public void onSuccess(Integer seriousLowBatteryWarning) {
-                int twolevel = GlobalVariable.twoLevelLowBattery;
-                int onelevel = GlobalVariable.oneLevelLowBattery;
+            public void onSuccess(LowBatteryWarnInfo info) {
+                int twolevel = info.getTwoLevelWarn();
+                int onelevel = info.getOneLevelWarn();
                 if (onelevel < MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN) {
                     onelevel = MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN;
                 }
+                info.setOneLevelWarn(onelevel);
                 if (twolevel < MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN) {
                     twolevel = MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN;
                 }
+                info.setTwoLevelWarn(twolevel);
+                info.setSuccess(true);
                 GlobalVariable.twoLevelLowBattery = twolevel;
                 GlobalVariable.oneLevelLowBattery = onelevel;
-                LowBatteryWarningBean warningBean = new LowBatteryWarningBean();
-                warningBean.setSuccess(true);
-                warningBean.setLowBatteryWarningValue(twolevel);
-                warningBean.setSeriousLowBatteryWarningValue(onelevel);
-                lowBatteryWarningBeanLiveData.postValue(warningBean);
+                lowBatteryWarningLiveData.postValue(info);
             }
 
             @Override
             public void onFailure(GDUError var1) {
-                LowBatteryWarningBean warningBean = new LowBatteryWarningBean();
+                LowBatteryWarnInfo warningBean = new LowBatteryWarnInfo();
                 warningBean.setSuccess(false);
-                warningBean.setLowBatteryWarningValue(0);
-                warningBean.setLowBatteryWarningValue(0);
-                lowBatteryWarningBeanLiveData.postValue(warningBean);
+                warningBean.setOneLevelWarn(0);
+                warningBean.setTwoLevelWarn(0);
+                lowBatteryWarningLiveData.postValue(warningBean);
             }
         });
     }

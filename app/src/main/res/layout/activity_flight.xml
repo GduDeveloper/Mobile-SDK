@@ -22,8 +22,33 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"/>
-
-
+    <!-- 消息盒子 -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_msgBoxLabel"
+        android:layout_width="@dimen/dp_22"
+        android:layout_height="@dimen/dp_26"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/selector_msg_box_btn_bg"
+        android:layout_marginTop="54dp"
+        android:layout_marginStart="12dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <com.noober.background.view.BLTextView
+        android:id="@+id/tv_msgBoxNum"
+        android:layout_width="@dimen/dp_10"
+        android:layout_height="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_2"
+        android:gravity="center"
+        android:maxLength="2"
+        android:maxLines="1"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_7"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:bl_corners_radius="@dimen/dp_6"
+        app:bl_solid_color="@color/red"
+        app:layout_constraintRight_toRightOf="@id/iv_msgBoxLabel"
+        app:layout_constraintTop_toTopOf="@id/iv_msgBoxLabel"/>
     <com.gdu.demo.widgetlist.flyState.FlyStateView
         android:id="@+id/fly_state"
         android:layout_width="wrap_content"

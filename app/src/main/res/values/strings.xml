@@ -775,4 +775,47 @@
                                           In this mode, the obstacle avoidance system is closed, and the aircraft cannot avoid obstacles by itself</string>
     <string name="string_t_model_title">4.T model (Tripod）</string>
     <string name="string_t_model_content">On the basis of P mode, the tripod mode limits the maneuverability of the aircraft and makes the aircraft more stable during the shooting process.</string>
+    <string name="string_5g_info_not_obtained">Aircraft 5G information not obtained</string>
+    <string name="string_config_not_changed">The configuration has not changed</string>
+
+    <!--IMU校准-->
+    <string name="imu_calibration">Calibrate IMU</string>
+    <string name="calibration_status">Calibration states</string>
+    <string name="imu_check_text">Please calibrate according to the diagram and instructions. Do not move the aircraft except for reversing the aircraft according to the instructions. Please keep the plane stationary during the calibration.Keep the aircraft power on, do not start the motor</string>
+    <string name="imu_start">Start calibration</string>
+    <string name="imu_checking_progress">Calibration in progress(%1$ds)</string>
+    <string name="imu_step_content1">Let stand right side up</string>
+    <string name="imu_step_content2">Rest with right side up</string>
+    <string name="imu_step_content3">Stand with nose up</string>
+    <string name="imu_step_content4">Left side up to rest</string>
+    <string name="imu_step_content5">Stand with the tail up</string>
+    <string name="imu_step_content6">Let stand with bottom facing up</string>
+    <string name="imu_step_checking">Calibration in progress...</string>
+    <string name="imu_step_check_done">Calibration complete</string>
+    <string name="calibrating_states">During calibration, please place the aircraft correctly according to the picture and keep it still</string>
+    <string name="calibration_success">Calibration successful</string>
+    <string name="calibration_fail">Calibration failed</string>
+    <string name="back_mui_check_hint">After exiting, the calibration will stop, whether to exit？</string>
+    <string name="string_calibration_completed">Calibration completed, the aircraft will automatically restart. Please be patient and wait</string>
+    <string name="string_please_restart_aerocraft">Calibration is complete, please restart the aircraft</string>
+    <string name="drone_rectify">Aircraft magnetic calibration</string>
+    <string name="rectify_count_down">Magnetic Countdown</string>
+    <!--bb 校磁-->
+    <string name="Label_PlaneState_Calibration_Warning">&#160;&#160;Please make the aircraft stay far away from metal，magnetic or charged objects and keep 1.5m from the ground&#160;&#160;</string>
+    <string name="Label_PlaneState_Calibration_SETP1">Please rotate the aircraft horizontally</string>
+    <string name="Label_PlaneState_Calibration_SETP2">Please rotate the aircraft vertically</string>
+    <string name="Label_PlaneState_Calibration_horizontal_ing">Horizontal calibrating</string>
+    <string name="Label_PlaneState_Calibration_vertical_ing">Vertical calibrating</string>
+    <string name="Label_PlaneState_Calibration_again">Again Calibrate</string>
+    <string name="Label_StartChecking">Start magnetic calibration</string>
+    <string name="Label_ZChecking">z Begin Calibrate</string>
+    <string name="Label_CheckFail">Calibrate Fail</string>
+    <string name="Label_CheckSuccess">Calibrate Success</string>
+    <string name="sting_horizontal_not_right">Level condition not met</string>
+    <string name="string_vertical_not_right_case">vertical condition not met</string>
+    <string name="string_magnetic_check_overtime">Magnetization failed: Timeout</string>
+    <string name="string_horizontal_check_fail">Level calibration failed</string>
+    <string name="string_vertical_check_fail">Vertical calibration failed</string>
+    <string name="WarmPrompt">Tips</string>
+    <string name="Label_CheckNotOver_IsExit">Unfinished Calibration may affect your flight safety, sure to exit?</string>
 </resources>

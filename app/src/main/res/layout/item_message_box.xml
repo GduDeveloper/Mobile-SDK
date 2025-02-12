@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.noober.background.view.BLConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/dp_174"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:bl_corners_radius="@dimen/dp_2"
+    app:bl_solid_color="@color/white"
+    app:bl_stroke_color="@color/color_FF5800"
+    app:bl_stroke_width="@dimen/dp_0_5"
+    android:layout_marginBottom="@dimen/dp_6">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/tipIcon"
+        android:layout_width="@dimen/dp_13"
+        android:layout_height="@dimen/dp_13"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_4"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icon_tip_warn_1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/tvContent"
+        app:layout_constraintTop_toTopOf="@+id/tvContent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvContent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_5"
+        android:paddingBottom="@dimen/dp_5"
+        android:layout_marginStart="@dimen/dp_5"
+        android:layout_marginEnd="@dimen/dp_3"
+        app:layout_goneMarginEnd="@dimen/dp_12"
+        android:gravity="center_vertical|start"
+        android:minHeight="@dimen/dp_33"
+        android:textColor="@color/color_2D2D2D"
+        android:textSize="@dimen/sp_10"
+        android:textStyle="normal"
+        app:layout_constraintLeft_toRightOf="@+id/tipIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子..." />
+</com.noober.background.view.BLConstraintLayout>

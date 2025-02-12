@@ -759,4 +759,47 @@
     <string name="string_s_model_content_bds">S模式是P模式下的加强模式，该模式下飞行器性能提高，BDS和下视觉感知定位正常工作。飞行器的感度值提示，飞行响应快，请谨慎飞行。该模式下避障系统关闭，飞行器无法自行避障。</string>
     <string name="string_t_model_title">4.T模式 (三脚架）</string>
     <string name="string_t_model_content">三脚架模式在P模式的基础上限制了飞行器机动性能，使飞行器在拍摄过程中更平稳。</string>
+    <string name="string_5g_info_not_obtained">未获取飞机5G信息</string>
+    <string name="string_config_not_changed">配置未改变</string>
+
+    <!--IMU校准-->
+    <string name="imu_calibration">校准IMU</string>
+    <string name="calibration_status">校准状态</string>
+    <string name="imu_check_text">请按照图示和说明进行校准，除了按照提示反转飞机外，请勿移动飞机，每一个面校准时请保持静置。保持飞机电源开启，请勿启动电机</string>
+    <string name="imu_start">开始校准</string>
+    <string name="imu_checking_progress">校准中(%1$ds)</string>
+    <string name="imu_step_content1">正面朝上静置</string>
+    <string name="imu_step_content2">右侧朝上静置</string>
+    <string name="imu_step_content3">机头朝上静置</string>
+    <string name="imu_step_content4">左侧朝上静置</string>
+    <string name="imu_step_content5">机尾朝上静置</string>
+    <string name="imu_step_content6">底部朝上静置</string>
+    <string name="imu_step_checking">校准中...</string>
+    <string name="imu_step_check_done">校准完成</string>
+    <string name="calibrating_states">校准中,请按图片摆放飞行器并保持静止</string>
+    <string name="calibration_success">校准成功</string>
+    <string name="calibration_fail">校准失败</string>
+    <string name="back_mui_check_hint">退出后将停止校准，是否退出？</string>
+    <string name="string_calibration_completed">校准已完成，飞行器将自动重启，请耐心等待</string>
+    <string name="string_please_restart_aerocraft">校准完成,请重新启动飞行器</string>
+    <string name="drone_rectify">飞行器校磁</string>
+    <string name="rectify_count_down">校磁倒计时</string>
+    <!--bb 校磁-->
+    <string name="Label_PlaneState_Calibration_Warning">&#160;&#160;请远离金属或带磁、带电物体,并使飞行器离地1.5米左右的距离&#160;&#160;</string>
+    <string name="Label_PlaneState_Calibration_SETP1">水平旋转飞行器</string>
+    <string name="Label_PlaneState_Calibration_SETP2">垂直旋转飞行器</string>
+    <string name="Label_PlaneState_Calibration_horizontal_ing">水平校准中</string>
+    <string name="Label_PlaneState_Calibration_vertical_ing">垂直校准中</string>
+    <string name="Label_PlaneState_Calibration_again">重新校准</string>
+    <string name="Label_StartChecking">开始校磁</string>
+    <string name="Label_ZChecking">z开始校磁</string>
+    <string name="Label_CheckFail">校磁失败</string>
+    <string name="Label_CheckSuccess">校磁成功</string>
+    <string name="sting_horizontal_not_right">水平条件不满足</string>
+    <string name="string_vertical_not_right_case">垂直条件不满足</string>
+    <string name="string_magnetic_check_overtime">校磁失败：超时</string>
+    <string name="string_horizontal_check_fail">水平校准失败</string>
+    <string name="string_vertical_check_fail">垂直校准失败</string>
+    <string name="WarmPrompt">温馨提示</string>
+    <string name="Label_CheckNotOver_IsExit">校磁未完成，可能导致无法解锁，是否退出</string>
 </resources>
