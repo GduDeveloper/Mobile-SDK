@@ -16,14 +16,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gdu.AlgorithmMark;
+import com.gdu.common.error.GDUError;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingVisionBinding;
+import com.gdu.demo.flight.base.VisionSensingBean;
+import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
 import com.gdu.drone.SwitchType;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
+import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
+import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
+import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.SocketCallBack3;
 import com.gdu.util.DroneUtil;
@@ -47,6 +55,7 @@ import io.reactivex.rxjava3.functions.Action;
 public class SettingVisionFragment extends Fragment {
 
     private FragmentSettingVisionBinding mVisionBinding;
+    private FlightAssistant mFlightAssistant;
 
     private int setFlyType;
     private boolean curSwitch_vision_obstacle;
@@ -80,10 +89,6 @@ public class SettingVisionFragment extends Fragment {
     private final int SWITCH_OBSTACLE_STRATEGY_OFF = 9;
     /** 获取避障状态成功 */
     private final int GOT_OBSTACLE_SUCCEED = 10;
-    /**切换补光灯成功 */
-    private final int SWITCH_FILL_IN_LIGHT_SUCCEED = 11;
-    /**切换补光灯失败 */
-    private final int SWITCH_FILL_IN_LIGHT_FAILED = 12;
     /** 预加载视觉感知 */
     private final int PRE_LOAD_OBSTACLE = 16;
 
@@ -106,29 +111,14 @@ public class SettingVisionFragment extends Fragment {
     }
 
     private void initView() {
+
+        mFlightAssistant = SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant();
         initSwitchBtn();
         pre_switch_vision_obstacle = AlgorithmMark.getSingleton().ObStacle;
         mVisionBinding.ivFillInLight.setSelected(GlobalVariable.sFillInLightOpen == 1);
 
-        mVisionBinding.ivTopTof.setSelected(GlobalVariable.topTof == 1);
-
-        if (UavStaticVar.isOpenTextEnvironment) {
-            mVisionBinding.layoutVisualFusion.setVisibility(View.VISIBLE);
-            mVisionBinding.rlObstacleTest.setVisibility(View.VISIBLE);
-        } else {
-            mVisionBinding.layoutVisualFusion.setVisibility(View.GONE);
-            mVisionBinding.rlObstacleTest.setVisibility(View.GONE);
-        }
-        mVisionBinding.ivVisualFusionPosition.setSelected(GlobalVariable.visionHelpLocateState == 0);
-        mVisionBinding.incFrontBinocularSwitch.tvLabel.setText(getString(R.string.Label_frontBinocularSavePicSwitch));
-        mVisionBinding.incBackBinocularSwitch.tvLabel.setText(getString(R.string.Label_backBinocularSavePicSwitch));
-        mVisionBinding.incLeftBinocularSwitch.tvLabel.setText(getString(R.string.Label_leftBinocularSavePicSwitch));
-        mVisionBinding.incRightBinocularSwitch.tvLabel.setText(getString(R.string.Label_rightBinocularSavePicSwitch));
-        mVisionBinding.incUpBinocularSwitch.tvLabel.setText(getString(R.string.Label_topBinocularSavePicSwitch));
-        mVisionBinding.incDownBinocularSwitch.tvLabel.setText(getString(R.string.Label_downBinocularSavePicSwitch));
 
         mVisionBinding.tvLandProtectHeightTip.setText(getString(R.string.Msg_LandProtectHeightTip1));
-        mVisionBinding.llTestFunctionLayout.setVisibility(UavStaticVar.isOpenTextEnvironment ? View.VISIBLE : View.GONE);
         mVisionBinding.tvLandProtectTip.setText(getString(R.string.Msg_LandProtectTip1));
         mVisionBinding.sbLandProtectHeight.setMax(100);
 
@@ -229,51 +219,8 @@ public class SettingVisionFragment extends Fragment {
     private void setListener() {
         mVisionBinding.ivSwitchVisionObstacle.setOnClickListener(mOnClickListener);
         mVisionBinding.ivSwitchVisionObstacleStrategy.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivSwitchShowRocker.setOnClickListener(mOnClickListener);
         mVisionBinding.ivFillInLight.setOnClickListener(mOnClickListener);
         mVisionBinding.ivGoHomeObstacleSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivInstruction.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivInstructionRocker.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivTopTof.setOnClickListener(mOnClickListener);
-        mVisionBinding.tvOpen.setOnClickListener(mOnClickListener);
-        mVisionBinding.tvClose.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivVisualFusionPosition.setOnClickListener(mOnClickListener);
-
-        mVisionBinding.tvObstacleStop.setOnClickListener(mOnClickListener);
-        mVisionBinding.tvObstacleDetour.setOnClickListener(mOnClickListener);
-        mVisionBinding.tvObstacleClose.setOnClickListener(mOnClickListener);
-
-
-        mVisionBinding.incFrontBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incFrontBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incFrontBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
-        mVisionBinding.incBackBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incBackBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incBackBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
-        mVisionBinding.incLeftBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incLeftBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incLeftBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
-        mVisionBinding.incRightBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incRightBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incRightBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
-        mVisionBinding.incUpBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incUpBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incUpBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
-        mVisionBinding.incDownBinocularSwitch.ivSwitch.setOnClickListener(v -> {
-            mVisionBinding.incDownBinocularSwitch.ivSwitch.setSelected(
-                    !mVisionBinding.incDownBinocularSwitch.ivSwitch.isSelected());
-            setVisionBinocularSwitchStatus();
-        });
 
         mVisionBinding.sbLandProtectHeight.setOnSeekBarChangeListener(landProtectSbChangeListener);
         mVisionBinding.etLandProtectHeightInput.setOnFocusChangeListener(landProtectFocusChagneListener);
@@ -285,56 +232,18 @@ public class SettingVisionFragment extends Fragment {
             return false;
         });
         mVisionBinding.ivLandProtectSwitch.setOnClickListener(v -> {
-            changeLandProtectSwitchViewChange(!mVisionBinding.ivLandProtectSwitch.isSelected());
-            if (DroneUtil.isSmallFlight()) {
-                float heightProgress = mVisionBinding.sbLandProtectHeight.getProgress();
-                MyLogUtils.i("switchLandingProtectNew() heightProgress = " + heightProgress);
-//                GduApplication.getSingleApp().gduCommunication.switchLandingProtectNew((byte)
-//                                (mVisionBinding.ivLandProtectSwitch.isSelected() ? 1 : 2),
-//                        (short) (heightProgress + 100), (code, bean) -> {
-//                            MyLogUtils.i("switchLandingProtectNew() code = " + code);
-//                            uiThreadHandle(() -> {
-//                                if (code != 0) {
-//                                    changeLandProtectSwitchViewChange(
-//                                            !mVisionBinding.ivLandProtectSwitch.isSelected());
-//                                }
-//                                Toaster.show(code == GduConfig.OK ?
-//                                        requireContext().getString(R.string.string_set_success) :
-//                                        requireContext().getString(R.string.Label_SettingFail));
-//                            });
-//                        });
-            } else {
-//                GduApplication.getSingleApp().gduCommunication.switchLandingProtect((byte)
-//                                (mVisionBinding.ivLandProtectSwitch.isSelected() ? 1 : 2),
-//                        (code, bean) -> {
-//                            MyLogUtils.i("switchLandingProtect() code = " + code);
-//                            uiThreadHandle(() -> {
-//                                if (code != 0) {
-//                                    changeLandProtectSwitchViewChange(
-//                                            !mVisionBinding.ivLandProtectSwitch.isSelected());
-//                                }
-//                                Toaster.show(code == GduConfig.OK ? requireContext().getString(R.string.string_set_success) :
-//                                        requireContext().getString(R.string.Label_SettingFail));
-//                            });
-//                        });
-            }
+            boolean open = !mVisionBinding.ivLandProtectSwitch.isSelected();
+            mFlightAssistant.setLandingProtectionEnabled(open, error ->
+                    uiThreadHandle(() -> {
+                        if (error == null) {
+                            mVisionBinding.ivLandProtectSwitch.setSelected(open);
+                            mVisionBinding.tvLandProtectTip.setVisibility(open ? View.VISIBLE : View.GONE);
+                            Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(requireContext(), "设置失败", Toast.LENGTH_SHORT).show();
+                        }
+            }));
         });
-
-
-        mVisionBinding.ivFrontSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivAfterSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivLeftSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivRightSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivTopSwitch.setOnClickListener(mOnClickListener);
-        mVisionBinding.ivDownSwitch.setOnClickListener(mOnClickListener);
-
-
-
-    }
-
-    private void changeLandProtectSwitchViewChange(boolean isOpen) {
-        mVisionBinding.ivLandProtectSwitch.setSelected(isOpen);
-        mVisionBinding.tvLandProtectTip.setVisibility(isOpen ? View.VISIBLE : View.GONE);
     }
 
     private View.OnFocusChangeListener landProtectFocusChagneListener = (v, hasFocus) -> {
@@ -422,7 +331,7 @@ public class SettingVisionFragment extends Fragment {
                     if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
                             && !CommonUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
                         String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
-//                        mDialogUtils.createDialogWithSingleBtn(getString(R.string.string_vision_error), errStr, getString(R.string.Label_Sure));
+                        Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -436,26 +345,18 @@ public class SettingVisionFragment extends Fragment {
                     }
 
                     if (mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
-//                        mDialogUtils.createDialogWith2Btn(getString(R.string.close_vision_title),
-//                                getString(R.string.close_vision_content), getString(R.string.Label_cancel),
-//                                getString(R.string.Label_Sure), v -> {
-//                                    switch (v.getId()) {
-//                                        case R.id.dialog_btn_cancel:
-//                                            mDialogUtils.cancelDialog();
-//                                            break;
-//
-//                                        case R.id.dialog_btn_sure:
-//                                            switchVisionObstacle(false, SwitchType.OBSTACLE_TYPE_MAIN);
-//                                            curSwitch_vision_obstacle = false;
-//                                            mVisionBinding.ivSwitchVisionObstacle.setSelected(false);
-//                                            changeObserveTipVisibility(false);
-//                                            mDialogUtils.cancelDialog();
-//                                            break;
-//
-//                                        default:
-//                                            break;
-//                                    }
-//                                });
+                        new CommonDialog.Builder(getChildFragmentManager())
+                                .setTitle(getString(R.string.close_vision_title))
+                                .setContent( getString(R.string.close_vision_content))
+                                .setCancel(getString(R.string.Label_cancel))
+                                .setSure(getString(R.string.Label_Sure))
+                                .setCancelableOutside(false)
+                                .setPositiveListener((dialogInterface, i) -> {
+                                    switchVisionObstacle(false, SwitchType.OBSTACLE_TYPE_MAIN);
+                                    curSwitch_vision_obstacle = false;
+                                    mVisionBinding.ivSwitchVisionObstacle.setSelected(false);
+                                    changeObserveTipVisibility(false);
+                                }).build().show();
                     } else {
                         switchVisionObstacle(true, SwitchType.OBSTACLE_TYPE_MAIN);
                         curSwitch_vision_obstacle = true;
@@ -469,51 +370,27 @@ public class SettingVisionFragment extends Fragment {
                     }
 
                     if (mVisionBinding.ivSwitchVisionObstacleStrategy.isSelected()) {
-//                        showConfirmDialog(false);
+                        new CommonDialog.Builder(getChildFragmentManager())
+                                .setContent( getString(R.string.string_close_obstacle_strategy_tips))
+                                .setCancel(getString(R.string.Label_cancel))
+                                .setSure(getString(R.string.Label_Sure))
+                                .setCancelableOutside(false)
+                                .setPositiveListener((dialogInterface, i) -> {
+                                    switchObstacleStrategy(false);
+                                }).build().show();
                     } else {
-                        switchObstacleStrategy((byte) 0);
-                        switch_vision_obstacle_strategy = true;
-                        mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(true);
+                        switchObstacleStrategy(true);
                     }
                     break;
-
-                case R.id.iv_switch_show_rocker:
-                    if (!connStateToast()) {// 显示雷达图
-                        return;
-                    }
-                    //产品要求，如果视觉感知开关打开，不允许关闭显示雷达图
-                    if (GlobalVariable.obstacleIsOpen && mVisionBinding.ivSwitchShowRocker.isSelected()) {
-                        return;
-                    }
-                    //20230109 雷达图显示和避障无关，可单独开启
-                    switchShowRadar(!mVisionBinding.ivSwitchShowRocker.isSelected());
-                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                    break;
-
-                case R.id.iv_instruction:
-                    mVisionBinding.ivInstruction.setSelected(!mVisionBinding.ivInstruction.isSelected());
-                    break;
-
-                case R.id.iv_instruction_rocker:
-                    if ( mVisionBinding.ivInstructionRocker.isSelected()) {
-                        mVisionBinding.ivInstructionRocker.setSelected(false);
-                        mVisionBinding.tvRockerInstrution.setVisibility(View.GONE);
-                    } else {
-                        mVisionBinding.ivInstructionRocker.setSelected(true);
-                        mVisionBinding.tvRockerInstrution.setVisibility(View.VISIBLE);
-                    }
-                    break;
-
                 case R.id.iv_fill_in_light:
                     // 补光灯
                     if (!connStateToast()) {
                         return;
                     }
                     if (mVisionBinding.ivFillInLight.isSelected()) {
-                        mVisionBinding.ivFillInLight.setSelected(false);
+
                         switchFillInLight(false);
                     } else {
-                        mVisionBinding.ivFillInLight.setSelected(true);
                         switchFillInLight(true);
                     }
                     break;
@@ -525,112 +402,11 @@ public class SettingVisionFragment extends Fragment {
                     }
                     switchGoHomeObstacle(!mVisionBinding.ivGoHomeObstacleSwitch.isSelected());
                     break;
-                case R.id.iv_top_tof:
-
-                    if (!connStateToast()) {
-                        return;
-                    }
-                    changeTopTof();
-
-                    break;
-                case R.id.iv_visual_fusion_position:
-                    if (!connStateToast()) {
-                        return;
-                    }
-                    // 开状态
-                    changeVisualFusionPosition(!mVisionBinding.ivVisualFusionPosition.isSelected());
-                    break;
-                case R.id.tv_open:
-                    changeVisualFusionPosition(true);
-                    break;
-                case R.id.tv_close:
-                    changeVisualFusionPosition(false);
-                    break;
-
-                case R.id.tv_obstacle_stop:
-                    switchObstacleStrategy((byte) 0);
-                    break;
-                case R.id.tv_obstacle_detour:
-                    switchObstacleStrategy((byte) 2);
-                    break;
-                case R.id.tv_obstacle_close:
-                    switchObstacleStrategy((byte) 1);
-                    break;
-                case R.id.iv_front_switch:
-                    changObstacleLogSwitch(1, (byte) (mVisionBinding.ivFrontSwitch.isSelected() ? 0 : 1));
-                    break;
-                case R.id.iv_after_switch:
-                    changObstacleLogSwitch(2,(byte) (mVisionBinding.ivAfterSwitch.isSelected() ? 0 : 1));
-                    break;
-                case R.id.iv_left_switch:_switch:
-                    changObstacleLogSwitch(3,(byte) (mVisionBinding.ivLeftSwitch.isSelected() ? 0 : 1));
-                    break;
-                case R.id.iv_right_switch:
-                    changObstacleLogSwitch(4,(byte) (mVisionBinding.ivRightSwitch.isSelected() ? 0 : 1));
-                    break;
-                case R.id.iv_top_switch:
-                    changObstacleLogSwitch(5,(byte) (mVisionBinding.ivTopSwitch.isSelected() ? 0 : 1));
-                    break;
-                case R.id.iv_down_switch:
-                    changObstacleLogSwitch(6,(byte) (mVisionBinding.ivDownSwitch.isSelected() ? 0 : 1));
-                    break;
                 default:
                     break;
             }
         }
     };
-
-    private void changObstacleLogSwitch(int type, byte open) {
-        byte front = (byte) (mVisionBinding.ivFrontSwitch.isSelected() ? 1 : 0);
-        byte back = (byte) (mVisionBinding.ivAfterSwitch.isSelected() ? 1 : 0);
-        byte left = (byte) (mVisionBinding.ivLeftSwitch.isSelected() ? 1 : 0);
-        byte right = (byte) (mVisionBinding.ivRightSwitch.isSelected() ? 1 : 0);
-        byte top = (byte) (mVisionBinding.ivTopSwitch.isSelected() ? 1 : 0);
-        byte down = (byte) (mVisionBinding.ivDownSwitch.isSelected() ? 1 : 0);
-        if (type == 1) {
-            front = open;
-        } else if (type == 2) {
-            back = open;
-        } else if (type == 3) {
-            left = open;
-        } else if (type == 4) {
-            right = open;
-        } else if (type == 5) {
-            top = open;
-        } else if (type == 6) {
-            down = open;
-        }
-//        GduApplication.getSingleApp().gduCommunication.setVisionLogSwitch(front, back, left, right, top, down, new SocketCallBack3() {
-//            @Override
-//            public void callBack(int code, GduFrame3 bean) {
-//                if (isAdded() && mHandler != null) {
-//                    mHandler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            if (code == GduConfig.OK) {
-//                                Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-//                                if (type == 1) {
-//                                    mVisionBinding.ivFrontSwitch.setSelected(open == 1);
-//                                } else if (type == 2) {
-//                                    mVisionBinding.ivAfterSwitch.setSelected(open == 1);
-//                                } else if (type == 3) {
-//                                    mVisionBinding.ivLeftSwitch.setSelected(open == 1);
-//                                } else if (type == 4) {
-//                                    mVisionBinding.ivRightSwitch.setSelected(open == 1);
-//                                } else if (type == 5) {
-//                                    mVisionBinding.ivTopSwitch.setSelected(open == 1);
-//                                } else if (type == 6) {
-//                                    mVisionBinding.ivDownSwitch.setSelected(open == 1);
-//                                }
-//                            } else {
-//                                Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-    }
 
     private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
         StringBuilder error = new StringBuilder();
@@ -692,22 +468,7 @@ public class SettingVisionFragment extends Fragment {
 //        });
     }
 
-    private void changeTopTof() {
-        byte open = (byte) (mVisionBinding.ivTopTof.isSelected() ? 0 : 1);
-//        GduApplication.getSingleApp().gduCommunication.changeTopTof(open, (code, bean) -> {
-//            if (!isAdded() || mHandler == null) {
-//                return;
-//            }
-//            mHandler.post(() -> {
-//                if (code == GduConfig.OK) {
-//                    mVisionBinding.ivTopTof.setSelected(open == 1);
-//                } else {
-//                    Toaster.show(getString(R.string.Label_SettingFail));
-//                }
-//            });
-//        });
 
-    }
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
@@ -716,7 +477,6 @@ public class SettingVisionFragment extends Fragment {
                 case SWITCH_SUCCESS:
                     if (setFlyType == SWITCH_VISION_ON) {
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_MAIN);
-                        switchShowRadar(true);
                         changeVisibilityObstacleView();
                         changeObserveTipVisibility(true);
                     } else if (setFlyType == SWITCH_VISION_OFF) {
@@ -737,15 +497,15 @@ public class SettingVisionFragment extends Fragment {
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_BACK);
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_ON) {
                         GlobalVariable.obstacleStrategyIsOpen = true;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY, 0);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_OFF) {
                         GlobalVariable.obstacleStrategyIsOpen = false;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY,1);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_AROUND) {
                         GlobalVariable.obstacleStrategyIsOpen = true;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY,2);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     }
                     break;
@@ -771,8 +531,6 @@ public class SettingVisionFragment extends Fragment {
                     if (arg1 == 0) {
                         curSwitch_vision_obstacle = true;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_MAIN);
-                        //经和产品沟通，开启视觉感知，默认打开显示雷达图
-                        switchShowRadar(true);
                     } else {
                         curSwitch_vision_obstacle = false;
                     }
@@ -783,13 +541,13 @@ public class SettingVisionFragment extends Fragment {
                     // 避障策略开启
                     if (arg2 == 0) {
                         switch_vision_obstacle_strategy = true;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY, 0);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                     } else if (arg2 == 1) {
                         switch_vision_obstacle_strategy = false;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY, 1);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                     } else if (arg2 == 2) {
                         switch_vision_obstacle_strategy = true;
-                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY, 2);
+                        changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                     }
                     changeVisibilityObstacleView();
 
@@ -797,14 +555,7 @@ public class SettingVisionFragment extends Fragment {
                     mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(switch_vision_obstacle_strategy);
 
                     break;
-                case SWITCH_FILL_IN_LIGHT_SUCCEED:
-                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                    break;
-                case SWITCH_FILL_IN_LIGHT_FAILED:
-                    boolean isOpen = (boolean) msg.obj;
-                    mVisionBinding.ivFillInLight.setSelected(!isOpen);
-                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-                    break;
+
                 default:
                     break;
             }
@@ -863,51 +614,6 @@ public class SettingVisionFragment extends Fragment {
         }
     }
 
-    private void changeSwitchStateSuccess(SwitchType type, int param) {
-        MyLogUtils.i("changeSwitchStateSuccess() type = " + type + ",param = " + param);
-        switch (type) {
-            case OBSTACLE_TYPE_MAIN:
-                pre_switch_vision_obstacle = curSwitch_vision_obstacle;
-                mVisionBinding.ivSwitchVisionObstacle.setSelected(curSwitch_vision_obstacle);
-                changeObserveTipVisibility(curSwitch_vision_obstacle);
-                //视觉避障功能关闭后再次开启，雷达图选项默认开启; 视觉避障功能处于关闭状态时，显示雷达图选项置灰；
-                GlobalVariable.obstacleIsOpen = curSwitch_vision_obstacle;
-                break;
-            case OBSTACLE_TYPE_STRATEGY:
-                switch_vision_obstacle_strategy = param == 0 || param == 2;
-                pre_switch_vision_obstacle_strategy = switch_vision_obstacle_strategy;
-                AlgorithmMark.getSingleton().ObStacle = param == 0 || param == 2;
-                mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(switch_vision_obstacle_strategy);
-                switch (param) {
-                    // 避障策略(刹停)开启
-                    case 0:
-                        mVisionBinding.tvObstacleStop.setSelected(true);
-                        mVisionBinding.tvObstacleClose.setSelected(false);
-                        mVisionBinding.tvObstacleDetour.setSelected(false);
-                        break;
-                    // 避障策略关门
-                    case 1:
-                        mVisionBinding.tvObstacleClose.setSelected(true);
-                        mVisionBinding.tvObstacleStop.setSelected(false);
-                        mVisionBinding.tvObstacleDetour.setSelected(false);
-                        break;
-                    // 避障策略(绕障)开启
-                    case 2:
-                        mVisionBinding.tvObstacleDetour.setSelected(true);
-                        mVisionBinding.tvObstacleClose.setSelected(false);
-                        mVisionBinding.tvObstacleStop.setSelected(false);
-                        break;
-
-                    default:
-                        break;
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
-
     private void changeSwitchStateFailed(SwitchType type) {
         MyLogUtils.i("changeSwitchStateFailed() type = " + type);
         switch (type) {
@@ -935,95 +641,48 @@ public class SettingVisionFragment extends Fragment {
     /**
      * 避障策略开启关闭
      */
-    public void switchObstacleStrategy(byte type) {
-        MyLogUtils.i("switchObstacleStrategy() isOn = " + type);
-        switch (type) {
-            case 0:
-                setFlyType = SWITCH_OBSTACLE_STRATEGY_ON;
-                break;
-            case 1:
-                setFlyType = SWITCH_OBSTACLE_STRATEGY_OFF;
-                break;
-            case 2:
-                setFlyType = SWITCH_OBSTACLE_STRATEGY_AROUND;
-                break;
-            default:
-                break;
-        }
-//        GduApplication.getSingleApp().gduCommunication.switchObstacleStrategy(type, visionCallback);
+    public void switchObstacleStrategy(boolean open) {
+        mFlightAssistant.setObstacleAvoidanceStrategyEnabled(open, error ->
+                uiThreadHandle(() -> {
+                    if (error == null) {
+                        switch_vision_obstacle_strategy = open;
+                        mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(open);
+                        Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(requireContext(), "设置失败", Toast.LENGTH_SHORT).show();
+                    }
+        }));
+
     }
 
     private void switchGoHomeObstacle(boolean isOpen) {
         MyLogUtils.i("switchGoHomeObstacle() isOpen = " + isOpen);
-//        GduApplication.getSingleApp().gduCommunication.switchGoHomeObstacle(isOpen ? (byte) 0 : (byte) 1, (code, bean) -> {
-//            MyLogUtils.i("switchGoHomeObstacle() code = " + code);
-//            if (code == GduConfig.OK) {
-//                if (mHandler != null && isAdded()) {
-//                    mHandler.post(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            ToastUtil.show(R.string.Label_SettingSuccess);
-//                            GlobalVariable.obstacleReturnIsOpen = !mVisionBinding.ivGoHomeObstacleSwitch.isSelected();
-//                            mVisionBinding.ivGoHomeObstacleSwitch.setSelected(!mVisionBinding.ivGoHomeObstacleSwitch.isSelected());
-//                        }
-//                    });
-//                }
-//            }
-//        });
+
+        mFlightAssistant.setRTHObstacleAvoidanceEnabled(isOpen, error -> {
+            uiThreadHandle(() -> {
+                if (error == null) {
+                    GlobalVariable.obstacleReturnIsOpen = !mVisionBinding.ivGoHomeObstacleSwitch.isSelected();
+                    mVisionBinding.ivGoHomeObstacleSwitch.setSelected(isOpen);
+                    Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "设置失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     public void switchFillInLight(boolean open) {
-        byte isOn;
-        if (open) {
-            isOn = 1;
-        } else {
-            isOn = 0;
-        }
-//        GduApplication.getSingleApp().gduCommunication.switchFillInLight(isOn, (code, bean) -> {
-//            MyLogUtils.i("switchFillInLight() code = " + code);
-//            if (mHandler == null) {
-//                return;
-//            }
-//            if (code == GduConfig.OK) {
-//                mHandler.obtainMessage(SWITCH_FILL_IN_LIGHT_SUCCEED, open).sendToTarget();
-//            } else {
-//                mHandler.obtainMessage(SWITCH_FILL_IN_LIGHT_FAILED, open).sendToTarget();
-//            }
-//        });
+        mFlightAssistant.setDownwardFillLightMode(open ? FillLightMode.ON : FillLightMode.OFF, error -> {
+            uiThreadHandle(() ->{
+                if (error == null) {
+                    mVisionBinding.ivFillInLight.setSelected(open);
+                    Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "设置失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
-
-    /**
-     * 切换是否显示雷达图
-     * @param isShow
-     */
-    private void switchShowRadar(boolean isShow) {
-        MyLogUtils.d("switchRadar() isShow = " + isShow);
-        mVisionBinding.ivSwitchShowRocker.setSelected(isShow);
-        GlobalVariable.hadShowObstacle = isShow;
-        SPUtils.put(requireContext(), GduConfig.ISSHOWROCKER, isShow);
-    }
-
-    private final SocketCallBack3 visionCallback = (code, bean) -> {
-        MyLogUtils.i("visionCallback callBack() code = " + code);
-        if (mHandler != null) {
-            switch (code) {
-                case 0x00:
-                    mHandler.sendEmptyMessage(SWITCH_SUCCESS);
-                    break;
-                case 0x01:
-                case 0x02:
-                case 0x03:
-                case 0x04:
-                case 0x05:
-                case 0x06:
-                case 0x07:
-                case 0x08:
-                default:
-                    mHandler.sendEmptyMessage(SWITCH_FAILED);
-                    break;
-            }
-        }
-    };
 
     public void switchVisionObstacle(boolean isOn, SwitchType type) {
         MyLogUtils.i("switchVisionObstacle() isOn = " + isOn + "; type = " + type);
@@ -1043,7 +702,17 @@ public class SettingVisionFragment extends Fragment {
             default:
                 break;
         }
-//        GduApplication.getSingleApp().gduCommunication.obstacleALG(isOn, type, visionCallback);
+
+        mFlightAssistant.setVisionSensingEnabled(isOn, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    mHandler.sendEmptyMessage(SWITCH_SUCCESS);
+                } else {
+                    mHandler.sendEmptyMessage(SWITCH_FAILED);
+                }
+            }
+        });
     }
 
     private boolean connStateToast() {
@@ -1072,7 +741,6 @@ public class SettingVisionFragment extends Fragment {
         mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && GlobalVariable.DroneFlyMode != 0);
         changeObserveTipVisibility(mVisionBinding.ivSwitchVisionObstacle.isSelected());
         final boolean isShowRadar = SPUtils.getBoolean(requireContext(), GduConfig.ISSHOWROCKER);
-        mVisionBinding.ivSwitchShowRocker.setSelected(isShowRadar);
     }
 
 
@@ -1103,19 +771,6 @@ public class SettingVisionFragment extends Fragment {
 //        });
     }
 
-    private void setVisionBinocularSwitchStatus() {
-        byte front = (byte) (mVisionBinding.incFrontBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-        byte back = (byte) (mVisionBinding.incBackBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-        byte left = (byte) (mVisionBinding.incLeftBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-        byte right = (byte) (mVisionBinding.incRightBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-        byte top = (byte) (mVisionBinding.incUpBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-        byte down = (byte) (mVisionBinding.incDownBinocularSwitch.ivSwitch.isSelected() ? 1 : 0);
-//        GduApplication.getSingleApp().gduCommunication.setVisionBinocularSwitch(front, back, left,
-//                right, top, down, (code, bean) -> {
-//                    MyLogUtils.i("setVisionBinocularSwitch callback() code = " + code);
-//
-//                });
-    }
 
     public void uiThreadHandle(Action action) {
         MyLogUtils.i("uiThreadHandle() isAdded = " + isAdded());

@@ -1,6 +1,7 @@
 package com.gdu.demo.utils;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
@@ -18,9 +19,9 @@ public class ScreenUtils {
      * */
     public static int getScreenWidth(Context context){
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metric = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metric);
-        return metric.widthPixels;
+        Point outSize = new Point();
+        windowManager.getDefaultDisplay().getRealSize(outSize);
+        return outSize.x;
     }
 
     /**
@@ -30,8 +31,8 @@ public class ScreenUtils {
      * */
     public static int getScreenHeight(Context context){
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics metric = new DisplayMetrics();
-        windowManager.getDefaultDisplay().getMetrics(metric);
-        return metric.heightPixels;
+        Point outSize = new Point();
+        windowManager.getDefaultDisplay().getRealSize(outSize);
+        return outSize.y;
     }
 }

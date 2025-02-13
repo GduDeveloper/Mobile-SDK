@@ -120,35 +120,6 @@
                         android:textColor="@color/red"
                         android:textSize="@dimen/sp_16" />
 
-                    <!--视频直播-->
-                    <RelativeLayout
-                        android:id="@+id/video_live_layout"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_40">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:gravity="center_vertical"
-                            android:text="@string/Label_Live_Tx_VideoLive"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_12" />
-
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:layout_width="@dimen/dp_8"
-                            android:layout_height="@dimen/dp_15"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/delay_arrow" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/color_4D999999" />
-                    </RelativeLayout>
-
                     <!-- 云台模式 -->
                     <RelativeLayout
                         android:id="@+id/rl_gimbal_mode"

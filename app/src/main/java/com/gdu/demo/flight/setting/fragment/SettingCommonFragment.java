@@ -176,7 +176,7 @@ public class SettingCommonFragment extends Fragment {
         ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !CommonUtils.curPlanIsSmallFlight());
         ViewUtils.setViewShowOrHide(mViewBinding.adapterRingVersionView, !CommonUtils.curPlanIsSmallFlight());
         ViewUtils.setViewShowOrHide(mViewBinding.fifthGenerationVersionView, !CommonUtils.curPlanIsSmallFlight());
-        getFirmwareVersion();
+//        getFirmwareVersion();
 
         boolean isOpenArmLamp = GlobalVariable.flight_arm_lamp_status == 0;
         boolean isOpenBatteryLight = GlobalVariable.battery_silence_status == 1;
@@ -443,7 +443,7 @@ public class SettingCommonFragment extends Fragment {
 
         final boolean isCompress = SPUtils.getBoolean(requireContext(), GduConfig.Live_Compress);
         mViewBinding.ivLiveCompress.setSelected(isCompress);
-        updateFirmwareVersion(true);
+//        updateFirmwareVersion(true);
         ChannelUtils.setupSn(View.GONE, mViewBinding.rlSn, mViewBinding.rlSnRC, mViewBinding.gimbalSn, mViewBinding.batterySn);
     }
 

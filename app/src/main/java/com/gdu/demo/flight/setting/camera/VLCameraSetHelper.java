@@ -121,9 +121,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
      */
     protected int curGimbalModePosition;
 
-    protected RelativeLayout mVideoLiveLayout;
-
-    protected LiveChooseView mLiveChooseView;
     private GduSpinner mGovGimbalMode;
 
     protected PageLoadingView page_loading_view;
@@ -160,27 +157,24 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         tv_check_clound = mView.findViewById(R.id.tv_check_clound);
         rl_check_clound = mView.findViewById(R.id.rl_check_clound);
         //校漂
-        ViewUtils.setViewShowOrHide(rl_check_clound, GlobalVariable.getMainGimbalSupportFun().enableGimbalCheckDrift);
+        ViewUtils.setViewShowOrHide(rl_check_clound, true);
 
         //恢复云台默认设置
         tv_reset_gimbal = mView.findViewById(R.id.tv_reset_gimbal);
 
-        // 视频直播
-        mVideoLiveLayout = mView.findViewById(R.id.video_live_layout);
-        mLiveChooseView = mView.findViewById(R.id.live_choose_view);
         /**
          * 关联两个云台方位设置的布局
          */
-        Group mViewGimbalPositionGroup = mView.findViewById(R.id.viewGimbalPositionGroup);
-        if (DroneUtil.unSupportGimbalYaw()) {
-            ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
-        } else {
-            LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);
-            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePitchStartAndStop);
-
-            LinearLayout llGimbalPositionStartAndStop = mView.findViewById(R.id.llGimbalPositionStartAndStop);
-            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePositionStartAndStop);
-        }
+//        Group mViewGimbalPositionGroup = mView.findViewById(R.id.viewGimbalPositionGroup);
+//        if (DroneUtil.unSupportGimbalYaw()) {
+//            ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
+//        } else {
+//            LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);
+//            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePitchStartAndStop);
+//
+//            LinearLayout llGimbalPositionStartAndStop = mView.findViewById(R.id.llGimbalPositionStartAndStop);
+//            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePositionStartAndStop);
+//        }
 
         MyLogUtils.d("GimbalPositionGroup    visible =   " + !DroneUtil.unSupportGimbalYaw());
 
@@ -202,9 +196,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
             mGovGimbalMode.setData(mGimbalMode);
         }
 
-        // 武汉斗鱼嘉年华，所以目前都放开了----ron
-        ViewUtils.setViewShowOrHide(mVideoLiveLayout, true);
-
         mTestLayout = mView.findViewById(R.id.test_layout);
 
         initPagePreLoadingView(mView);
@@ -225,8 +216,8 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         if (page_loading_view != null) {
             page_loading_view.setClickRefreshListener(() -> getGimbalCurrentSetting(true));
         }
-        ViewUtils.setViewShowOrHide(page_loading_view, true);
-        ViewUtils.setViewShowOrHide(mCameraMainLayout, false);
+        ViewUtils.setViewShowOrHide(page_loading_view, false);
+        ViewUtils.setViewShowOrHide(mCameraMainLayout, true);
     }
 
     protected void initPTZSetting(View view){
@@ -562,9 +553,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
     public void initListener() {
         MyLogUtils.d("initListener()");
-        mVideoLiveLayout.setOnClickListener(this);
-        mLiveChooseView.setOnLiveChooseViewListener(onLiveChooseViewListener);
-
         if (tv_check_clound != null) {
             tv_check_clound.setOnClickListener(this);
         }
@@ -624,9 +612,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.video_live_layout) {
-            openVideoLive();
-        } else if (v.getId() == R.id.tv_check_clound) {
+        if (v.getId() == R.id.tv_check_clound) {
             if (!checkDroneConnState()) {//校磁
                 return;
             }
@@ -665,12 +651,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 //        }
     }
 
-    @Override
-    public void closeLiveChoose() {
-        MyLogUtils.d("closeLiveChoose()");
-        ViewUtils.setViewShowOrHide(mLiveChooseView, false);
-        ViewUtils.setViewShowOrHide(mCameraMainLayout, true);
-    }
 
     /**
      * <P>shang</P>
@@ -686,8 +666,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
     @Override
     public void onBackPress() {
-//        ViewUtils.setViewShowOrHide(mCameraMainLayout, true);
-        ViewUtils.setViewShowOrHide(mLiveChooseView, false);
         if (txVideoLiveListener != null) {
             txVideoLiveListener.isliveUIShow(false);
         }
@@ -733,18 +711,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         return result;
     }
 
-    /**
-     * 设置推流地址
-     *
-     * @param url
-     */
-    @Override
-    public void setRtmpUrl(String url) {
-        MyLogUtils.d("setRtmpUrl() url = " + url);
-        if (mLiveChooseView != null) {
-            mLiveChooseView.setRtmpUrl(url);
-        }
-    }
 
     /**
      * @author yuhao
@@ -896,10 +862,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         if(mGovGimbalMode != null){
             mGovGimbalMode.setOnOptionClickListener(null);
         }
-        if (mLiveChooseView != null) {
-            mLiveChooseView.setOnLiveChooseViewListener(null);
-            mLiveChooseView = null;
-        }
 
         sb_pitch_speed = null;
         et_pitch_speed = null;
@@ -917,7 +879,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         rl_check_clound = null;
         tv_reset_gimbal = null;
         mTestLayout = null;
-        mVideoLiveLayout = null;
         mGovGimbalMode = null;
         page_loading_view = null;
     }

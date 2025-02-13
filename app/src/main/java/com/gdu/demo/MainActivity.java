@@ -58,7 +58,6 @@ public class MainActivity extends Activity {
     private void initView(){
         mRegisterAppButton = findViewById(R.id.register_app_button);
         mOpenButton = findViewById(R.id.open_button);
-        mOpenButton.setEnabled(true);
         mPairingButton = findViewById(R.id.pairing_button);
         tvConnectState = findViewById(R.id.tv_connect_state);
         tv_gimbal_type = findViewById(R.id.tv_gimbal_type);

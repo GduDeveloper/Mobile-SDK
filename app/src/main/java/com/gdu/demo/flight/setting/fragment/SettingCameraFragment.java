@@ -53,29 +53,6 @@ public class SettingCameraFragment extends Fragment {
     private void initView() {
         matchUI2Camera();
         setListener();
-        mCameraSetHelper.setTxVideoLiveListener(new CameraSetHelper.TxVideoLiveListener() {
-            @Override
-            public void openTxVideoLive(LiveType liveType, String rtmpUrl) {
-//                if (requireActivity() instanceof ZorroRealControlActivity) {
-//                    if (getParentFragment() != null) {
-//                        ((SettingDialogFragment) getParentFragment()).dismiss();
-//                    }
-//                }
-            }
-
-            @Override
-            public void isliveUIShow(boolean isShow) {
-                if (isShow) {
-                    currentSecondLevelType = 1;
-                    mViewBinding.ivBack.setVisibility(View.VISIBLE);
-                    mViewBinding.tvTitle.setText(R.string.Label_Live_Tx_VideoLive);
-                }
-            }
-
-            @Override
-            public void openQRCode() {
-            }
-        });
         mCameraSetHelper.setCloseListener(() -> {
             if (getParentFragment() != null) {
                 ((SettingDialogFragment) getParentFragment()).dismiss();
