@@ -80,7 +80,7 @@ public class CommonDialog extends AppCompatDialogFragment {
 
             btnCancel.setOnClickListener(v -> {
                 if (null!=getDialog() && getDialog().getWindow() != null && getDialog().isShowing()) {
-                    getDialog().dismiss();
+                    dismiss();
                 }
                 if (null != param.negativeListener){
                     param.negativeListener.onClick(getDialog(), DialogInterface.BUTTON_NEGATIVE);
@@ -88,7 +88,7 @@ public class CommonDialog extends AppCompatDialogFragment {
             });
             btnSure.setOnClickListener(v -> {
                 if (null!=getDialog() && getDialog().getWindow() != null && getDialog().isShowing()) {
-                    getDialog().dismiss();
+                    dismiss();
                 }
                 if (null != param.positiveListener){
                     param.positiveListener.onClick(getDialog(), DialogInterface.BUTTON_POSITIVE);
