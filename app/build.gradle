@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.gdu.demo"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -30,6 +30,22 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    signingConfigs {
+        release {
+            keyAlias 'GDU_MSDK_DEMO'
+            keyPassword 'gdu_sdk'
+            storeFile file('key/GDU_Pro2.jks')
+            storePassword 'gdu_sdk'
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all{
+            def dateStr = new Date().format("yyyyMMdd-HHmm")
+            outputFileName = "Gdu_MSDK_demo_${dateStr}.apk"
         }
     }
 
