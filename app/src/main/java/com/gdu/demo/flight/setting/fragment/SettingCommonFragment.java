@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.databinding.FragmentSettingCommonBinding;
 import com.gdu.demo.flight.setting.firmware.CycleFirmwareVersionManage;
 import com.gdu.demo.flight.setting.firmware.ICycleGetFirmwareUpdate;
+import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
@@ -378,7 +380,7 @@ public class SettingCommonFragment extends Fragment {
 
 
                 case R.id.drone_info_item:
-                    setSecondLevelView(mViewBinding.layoutDroneInfo, true, GduAppEnv.application.getString(R.string.fly_info));
+                    setSecondLevelView(mViewBinding.layoutDroneInfo, true, getString(R.string.fly_info));
                     currentSecondLevelType = 1;
                     break;
 
@@ -410,7 +412,8 @@ public class SettingCommonFragment extends Fragment {
 
     private void setSecondLevelView(View view, boolean show, String title) {
 
-//        MyAnimationUtils.animatorRightInOut(view, show);
+        Log.d("setSecondLevelView","setSecondLevelView  show = " + show + ", title = " + title);
+        AnimationUtils.animatorRightInOut(view, show);
         ViewUtils.setViewShowOrHide(mViewBinding.ivBack, show);
         if (show) {
             mViewBinding.tvTitle.setText(title);

@@ -30,7 +30,7 @@ class FlyStateModel : WidgetModel() {
         val hs = GlobalVariable.xekf_VelX.toInt()
         val vs = GlobalVariable.xekf_VelD.toInt()
 
-        var headAngel = GlobalVariable.planeAngle.toInt()
+        var headAngel = GlobalVariable.planeAngle / 100.0f
         if (headAngel < 0) {
             headAngel = headAngel + 360
         }

@@ -5,7 +5,7 @@ data class FlyStateValue(
     val height: Int,
     val hs: Int,
     val vs: Int,
-    val headAngel: Int,
+    val headAngel: Float,
     val ellipsoid_height: Int,
     val asl_height: Int
 )

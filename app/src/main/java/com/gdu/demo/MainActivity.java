@@ -156,13 +156,6 @@ public class MainActivity extends Activity {
         @Override
         public void onConnectivityChange(boolean isConnected) {
             Log.d(TAG, "onComponentConnectivityChanged: " + isConnected);
-//            ((Activity)mContext).runOnUiThread(new Runnable() {
-//                @Override
-//                public void run() {
-//                    Toast.makeText(mContext, "test " + isConnected, Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//            notifyStatusChange();
         }
     };
 

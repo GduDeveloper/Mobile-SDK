@@ -124,88 +124,41 @@ public class SettingVisionFragment extends Fragment {
 
         setListener();
 
-        if (GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+        if (CommonUtils.isSmallFlight(GlobalVariable.planType)) {
             mVisionBinding.clLandProtectSwitch.setVisibility(View.VISIBLE);
         }
     }
 
     private void initData() {
         preLoadData();
-//        GduApplication.getSingleApp().gduCommunication.getObstacleSwitch((code, bean) -> {
-//            MyLogUtils.i("getObstacleSwitch callBack() code = " + code);
-//            boolean isEmptyData = code != GduConfig.OK || bean == null || bean.frameContent == null || bean.frameContent.length == 0;
-//            if (isEmptyData) {
-//                return;
-//            }
-//            String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
-//            MyLogUtils.i("getGoHomeObstacleSwitch callback() hexStr = " + hexStr);
-//            Message message = new Message();
-//            message.what = GOT_OBSTACLE_SUCCEED;
-//            message.arg1 = bean.frameContent[2];
-//            message.arg2 = bean.frameContent[3];
-//            MyLogUtils.i("getObstacleSwitch callBack() msgArg1 = " + message.arg1 + "; msgArg2 = " + message.arg2);
-//            mHandler.sendMessage(message);
-//        });
-//
-//        GduApplication.getSingleApp().gduCommunication.getGoHomeObstacleSwitch((code, bean) -> {
-//            MyLogUtils.i("getGoHomeObstacleSwitch() code = " + code);
-//            boolean isEmptyData = code != GduConfig.OK || bean == null || bean.frameContent == null || bean.frameContent.length < 3;
-//            if (isEmptyData) {
-//                return;
-//            }
-//            String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
-//            MyLogUtils.i("getGoHomeObstacleSwitch callback() hexStr = " + hexStr);
-//            if (!isAdded()) {
-//                return;
-//            }
-//            mHandler.post(() -> {
-//                final byte switchValue = bean.frameContent[2];
-//                MyLogUtils.i("getGoHomeObstacleSwitch() switchValue = " + switchValue);
-//                GlobalVariable.obstacleReturnIsOpen = switchValue == 0;
-//                mVisionBinding.ivGoHomeObstacleSwitch.setSelected(switchValue == 0);
-//            });
-//        });
-//
-//        GduApplication.getSingleApp().gduCommunication.getLandingProtectStatus((code, bean) -> {
-//            MyLogUtils.i("getLandingProtectStatus() code = " + code);
-//            if (bean == null || bean.frameContent == null || bean.frameContent.length == 0) {
-//                MyLogUtils.i("getLandingProtectStatus() empty data");
-//                return;
-//            }
-//            String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
-//            MyLogUtils.i("getLandingProtectStatus() hexStr = " + hexStr);
-//            if (code == GduConfig.OK) {
-//                // 开关状态：1 开 2 关
-//                int switchStatus = bean.frameContent[2];
-//                short heightValue = ByteUtilsLowBefore.byte2short(bean.frameContent, 3);
-//                MyLogUtils.i("getLandingProtectStatus() switchStatus = " + switchStatus + "; heightValue = " + heightValue);
-//                uiThreadHandle(() -> {
-//                    changeLandProtectSwitchViewChange(switchStatus == 1);
-//                    mVisionBinding.sbLandProtectHeight.setProgress(heightValue - 100);
-//                    if (heightValue == 0) {
-//                        mVisionBinding.etLandProtectHeightInput.setText("0");
-//                    } else {
-//                        mVisionBinding.etLandProtectHeightInput.setText(FormatConfig.format_4.format(heightValue / 100f));
-//                    }
-//                });
-//            }
-//        });
-        getVisionBinocularSwitchStatus();
+
+        mFlightAssistant.getLandingProtectionEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+            @Override
+            public void onSuccess(Boolean open) {
+                uiThreadHandle(() -> {
+                    mVisionBinding.ivLandProtectSwitch.setSelected(open);
+                });
+            }
+
+            @Override
+            public void onFailure(GDUError gduError) {
+
+            }
+        });
+
+        mFlightAssistant.getRTHObstacleAvoidanceEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
+            @Override
+            public void onSuccess(Boolean open) {
+                uiThreadHandle(() -> {
+                    mVisionBinding.ivGoHomeObstacleSwitch.setSelected(open);
+                });
+            }
+
+            @Override
+            public void onFailure(GDUError gduError) {
+
+            }
+        });
     }
 
     private void preLoadData(){
@@ -288,32 +241,7 @@ public class SettingVisionFragment extends Fragment {
                 }
                 float height = Float.parseFloat(inputStr) * 100;
                 MyLogUtils.i("switchLandingProtectNew() height = " + height);
-//                GduApplication.getSingleApp().gduCommunication.switchLandingProtectNew((byte)
-//                                (mVisionBinding.ivLandProtectSwitch.isSelected() ? 1 : 2),
-//                        (short) height, (code, bean) -> {
-//                            MyLogUtils.i("switchLandingProtectNew() code = " + code);
-//                            uiThreadHandle(() -> {
-//                                if (code != 0) {
-//                                    changeLandProtectSwitchViewChange(
-//                                            !mVisionBinding.ivLandProtectSwitch.isSelected());
-//                                }
-//                                Toaster.show(code == GduConfig.OK ? requireContext().getString(R.string.string_set_success) :
-//                                        requireContext().getString(R.string.Label_SettingFail));
-//                            });
-//                        });
             } else {
-//                GduApplication.getSingleApp().gduCommunication.switchLandingProtect((byte)
-//                                (mVisionBinding.ivLandProtectSwitch.isSelected() ? 1 : 2),
-//                        (code, bean) -> {
-//                            MyLogUtils.i("switchLandingProtect() code = " + code);
-//                            uiThreadHandle(() -> {
-//                                if (code != 0) {
-//                                    changeLandProtectSwitchViewChange(
-//                                            !mVisionBinding.ivLandProtectSwitch.isSelected());
-//                                }
-//                                Toaster.show(code == GduConfig.OK ? R.string.string_set_success : R.string.Label_SettingFail);
-//                            });
-//                        });
             }
         }
     };
@@ -420,56 +348,6 @@ public class SettingVisionFragment extends Fragment {
     }
 
 
-
-
-//    LogCancelOrBackConfirmDialog confirmDialog;
-//    private void showConfirmDialog(boolean isOn) {
-//        confirmDialog = new LogCancelOrBackConfirmDialog(requireContext());
-//        confirmDialog.setTitleText("", -1, -1);
-//        confirmDialog.setContentText(requireContext().getString(R.string.string_close_obstacle_strategy_tips), -1, -1);
-//        confirmDialog.setCancelable(false);
-//        confirmDialog.setOnBottomClickListener(new LogCancelOrBackConfirmDialog.OnBottomClickListener() {
-//            @Override
-//            public void onLeftClick() {
-//                if(confirmDialog != null){
-//                    confirmDialog.dismiss();
-//                    confirmDialog = null;
-//                }
-//            }
-//
-//            @Override
-//            public void onRightClick(String content) {
-//                if (confirmDialog != null) {
-//                    confirmDialog.dismiss();
-//                    confirmDialog = null;
-//                }
-//                switchObstacleStrategy((byte) 1);
-//                getActivity().runOnUiThread(()->{
-//                    switch_vision_obstacle_strategy = false;
-//                    mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(false);
-//                });
-//            }
-//        });
-//        confirmDialog.show();
-//    }
-
-    private void changeVisualFusionPosition(boolean isOpen) {
-//        GduApplication.getSingleApp().gduCommunication.changeVisualFusionPosition(isOpen, (code, bean) -> {
-//            if (isAdded() && mHandler != null) {
-//                mHandler.post(() -> {
-//                    if (code == GduConfig.OK) {
-//                        mVisionBinding.ivVisualFusionPosition.setSelected(isOpen);
-//                        Toaster.show(getString(R.string.Label_SettingSuccess));
-//                    } else {
-//                        Toaster.show(getString(R.string.Label_SettingFail));
-//                    }
-//                });
-//            }
-//        });
-    }
-
-
-
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -572,7 +450,6 @@ public class SettingVisionFragment extends Fragment {
      * isShowObstacleStrategy 避障策略是否打开
      */
     private void changeVisibilityObstacleView() {
-
         if (curSwitch_vision_obstacle) {
             mVisionBinding.rlObstacle.setVisibility(View.VISIBLE);
             if (switch_vision_obstacle_strategy) {
@@ -618,7 +495,6 @@ public class SettingVisionFragment extends Fragment {
         MyLogUtils.i("changeSwitchStateFailed() type = " + type);
         switch (type) {
             case OBSTACLE_TYPE_MAIN:
-//                switchShowRadar(false);
                 mVisionBinding.ivSwitchVisionObstacle.setSelected(pre_switch_vision_obstacle);
                 changeObserveTipVisibility(pre_switch_vision_obstacle);
                 if (isAdded()) {
@@ -740,7 +616,6 @@ public class SettingVisionFragment extends Fragment {
         //当视觉避障关闭时进入该界面雷达图关闭    余浩
         mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && GlobalVariable.DroneFlyMode != 0);
         changeObserveTipVisibility(mVisionBinding.ivSwitchVisionObstacle.isSelected());
-        final boolean isShowRadar = SPUtils.getBoolean(requireContext(), GduConfig.ISSHOWROCKER);
     }
 
 
@@ -751,25 +626,6 @@ public class SettingVisionFragment extends Fragment {
         return fragment;
     }
 
-    private void getVisionBinocularSwitchStatus() {
-        MyLogUtils.i("getVisionBinocularSwitchStatus()");
-//        GduApplication.getSingleApp().gduCommunication.getVisionBinocularSwitch((code, bean) -> {
-//            MyLogUtils.i("getVisionBinocularSwitch callback() code = " + code);
-//            if (bean == null || bean.frameContent == null || bean.frameContent.length == 0) {
-//                return;
-//            }
-//            String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
-//            MyLogUtils.i("getVisionBinocularSwitch callback() hexStr = " + hexStr);
-//            uiThreadHandle(() -> {
-//                mVisionBinding.incFrontBinocularSwitch.ivSwitch.setSelected(bean.frameContent[0] == 1);
-//                mVisionBinding.incBackBinocularSwitch.ivSwitch.setSelected(bean.frameContent[1] == 1);
-//                mVisionBinding.incLeftBinocularSwitch.ivSwitch.setSelected(bean.frameContent[2] == 1);
-//                mVisionBinding.incRightBinocularSwitch.ivSwitch.setSelected(bean.frameContent[3] == 1);
-//                mVisionBinding.incUpBinocularSwitch.ivSwitch.setSelected(bean.frameContent[4] == 1);
-//                mVisionBinding.incDownBinocularSwitch.ivSwitch.setSelected(bean.frameContent[5] == 1);
-//            });
-//        });
-    }
 
 
     public void uiThreadHandle(Action action) {
