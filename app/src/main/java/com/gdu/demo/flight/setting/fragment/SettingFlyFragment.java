@@ -268,6 +268,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         baseViewModel.getLimitDistanceLiveData().observe(mActivity, data -> {
             mViewBinding.ivSwitchLimitDistance.setSelected(data.isOpen());
             updateLimitDistanceView(data.isOpen());
+            mViewBinding.sbLimitDistance.setEnabled(data.isOpen());
+            mViewBinding.etDistanceLimit.setEnabled(data.isOpen());
             if (data.isOpen() || (data.getDistance() >= MyConstants.LIMIT_DISTANCE_MIN && data.getDistance() <= MyConstants.LIMIT_DISTANCE_MAX)) {
                 mViewBinding.sbLimitDistance.setProgress(data.getDistance());
                 String limitDisStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getDistance()));
@@ -536,26 +538,31 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     mViewBinding.sbLimitDistance.setEnabled(false);
                     mViewBinding.etHeightLimit.setEnabled(false);
                     mViewBinding.etDistanceLimit.setEnabled(false);
-
-                    Toast.makeText(getContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                     break;
 
                 case 2:
-                    Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
                     break;
 
                 case 3:
-                    Toast.makeText(getContext(), R.string.Msg_GoHomingUnSet, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.Msg_GoHomingUnSet, Toast.LENGTH_SHORT).show();
                     break;
 
                 case 4:
-                    Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     break;
                 case 6:
-                    Toast.makeText(getContext(), R.string.Label_set_invalid_distance, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.Label_set_invalid_distance, Toast.LENGTH_SHORT).show();
                     break;
                 case 7:
-                    Toast.makeText(getContext(), R.string.return_more_than_limit, Toast.LENGTH_SHORT).show();
+                    if (null!=getContext())
+                        Toast.makeText(getContext(), R.string.return_more_than_limit, Toast.LENGTH_SHORT).show();
                     break;
                 default:
                     break;
