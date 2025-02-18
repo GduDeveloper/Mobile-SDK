@@ -99,7 +99,6 @@ public class SettingRtkFragment extends Fragment {
 
                     @Override
                     public void onNext(@io.reactivex.rxjava3.annotations.NonNull Long aLong) {
-                        updateRtkStatus();
                         if (binding.rtkStateView.getVisibility() == View.VISIBLE) {
                             binding.rtkStateView.updateRTKInfo();
                         }
@@ -116,8 +115,6 @@ public class SettingRtkFragment extends Fragment {
                     }
                 });
     }
-
-
 
 
 
@@ -148,6 +145,35 @@ public class SettingRtkFragment extends Fragment {
                if (mHandler != null) {
                    mHandler.post(() -> {
                        if (gduError == null) {
+                           binding.rtkServiceView.setIndex(position);
+                           switch (position) {
+                               case 0:
+                                   binding.rtkServiceView.setIndex(0);
+                                   binding.rtkStateView.setStationName(mRTKServiceList[0]);
+                                   binding.rtkStateView.setVisibility(View.VISIBLE);
+                                   binding.rtkParamLayout.setVisibility(View.VISIBLE);
+                                   showNotConnectedStatus();
+                                   break;
+                               case 1:
+                                   binding.rtkServiceView.setIndex(1);
+                                   binding.rtkStateView.setStationName(mRTKServiceList[1]);
+                                   binding.rtkParamLayout.setVisibility(View.GONE);
+                                   showNotConnectedStatus();
+                                   break;
+                               case 2:
+                                   binding.rtkServiceView.setIndex(2);
+                                   binding.rtkStateView.setStationName(mRTKServiceList[2]);
+                                   binding.rtkStateView.setVisibility(View.VISIBLE);
+                                   binding.rtkParamLayout.setVisibility(View.VISIBLE);
+                                   showNotConnectedStatus();
+                                   break;
+                               default:
+                                   binding.rtkServiceView.setIndex(0);
+                                   binding.rtkStateView.setStationName(mRTKServiceList[0]);
+                                   binding.rtkParamLayout.setVisibility(View.VISIBLE);
+                                   showNotConnectedStatus();
+                                   break;
+                           }
 
                        } else {
                            Toast.makeText(getContext(), "设置失败", Toast.LENGTH_SHORT).show();
@@ -190,7 +216,7 @@ public class SettingRtkFragment extends Fragment {
                     binding.rtkServiceView.setIndex(0);
                     binding.rtkStateView.setStationName(mRTKServiceList[0]);
                     binding.rtkStateView.setVisibility(View.VISIBLE);
-                    showConnectedStatus();
+                    showNotConnectedStatus();
                     break;
                 case 2:
                     binding.rtkServiceView.setIndex(1);
@@ -206,7 +232,7 @@ public class SettingRtkFragment extends Fragment {
                 default:
                     binding.rtkServiceView.setIndex(0);
                     binding.rtkStateView.setStationName(mRTKServiceList[0]);
-                    showConnectedStatus();
+                    showNotConnectedStatus();
                     break;
             }
         }
@@ -215,25 +241,6 @@ public class SettingRtkFragment extends Fragment {
 
     }
 
-    public void updateRtkStatus() {
-
-        if (System.currentTimeMillis() - lastChangeRtkTime < 2000) {
-            return;
-        }
-        if (getContext() != null) {
-            if (GlobalVariable.sRTKType == 1) {
-                showConnectedStatus();
-            } else if (GlobalVariable.sRTKType == 2) {
-                binding.tvConnectState.setVisibility(View.GONE);
-                binding.tvConnect.setVisibility(View.GONE);
-                binding.tvBreak.setVisibility(View.GONE);
-                binding.rtkParamLayout.setVisibility(View.GONE);
-            } else if (GlobalVariable.sRTKType == 3) {
-                showOnboardRtkConnect();
-            }
-        }
-        updateBDTips();
-    }
 
 
     private void initHandler() {
@@ -243,15 +250,12 @@ public class SettingRtkFragment extends Fragment {
             public void handleMessage(@NonNull Message msg) {
                 int status = msg.what;
                 if (status == RTKNetConnectStatus.SERVER_CONNECTED.getKey()) {
-                    showConnectedStatus();
                 } else if (status == RTKNetConnectStatus.SERVER_COMMUNICATE.getKey()) {
-                    showConnectedStatus();
                 } else if (status == RTKNetConnectStatus.CONNECT_FAILED.getKey()) {
                     showNotConnectedStatus();
                 } else if (status == RTKNetConnectStatus.DISCONNECT.getKey()) {
                     showNotConnectedStatus();
                 } else if (status == RTKNetConnectStatus.CONNECTING.getKey()) {
-                    showConnectedStatus();
                 } else if (status == RTK_TYPE_SET_SUCCEED) {
                     setRTKTypeView((Byte) msg.obj);
                     Toast.makeText(getContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
@@ -267,21 +271,15 @@ public class SettingRtkFragment extends Fragment {
         };
     }
 
-    /**
-     * 显示连接的状态
-     */
-    private void showConnectedStatus() {
-//        MyLogUtils.i("showConnectedStatus()");
-//        RTKNetConnectStatus status = mGduRtkManager.getConnectStatus();
-//        if (status == RTKNetConnectStatus.SERVER_CONNECTED || status == RTKNetConnectStatus.CONNECTING) {
-//            showConnectingView();
-//        } else if (status == RTKNetConnectStatus.SERVER_COMMUNICATE) {
-//            showConnectedView();
-//        } else {
-//            showNotConnectedStatus();
-//        }
-    }
 
+    private void showNotConnectedStatus() {
+        if (getContext() == null) {
+            return;
+        }
+        binding.tvConnectState.setVisibility(View.GONE);
+        binding.tvConnect.setVisibility(View.VISIBLE);
+        binding.tvBreak.setVisibility(View.GONE);
+    }
     /**
      * 显示连接中状态
      */
@@ -318,21 +316,6 @@ public class SettingRtkFragment extends Fragment {
         binding.tvBreak.setVisibility(View.VISIBLE);
     }
 
-    /**
-     * 显示未连接的状态
-     */
-    private void showNotConnectedStatus() {
-        if (getContext() == null) {
-            return;
-        }
-        binding.tvConnectState.setVisibility(View.GONE);
-        if (GlobalVariable.sRTKType == 2) {
-            binding.tvConnect.setVisibility(View.GONE);
-        } else {
-            binding.tvConnect.setVisibility(View.VISIBLE);
-        }
-        binding.tvBreak.setVisibility(View.GONE);
-    }
 
     /**
      * 初始化登陆参数

@@ -178,6 +178,14 @@
             android:background="@color/color_4D999999"
             app:layout_constraintTop_toBottomOf="@id/v_rc_match_line" />
 
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_networking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tv_networking_label,iv_networking_model,tv_networking_model,v_networking_line"/>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_right_bolun"
             android:layout_width="@dimen/dp_0"
@@ -233,6 +241,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
             app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/line_bolun">
 
             <androidx.appcompat.widget.AppCompatTextView

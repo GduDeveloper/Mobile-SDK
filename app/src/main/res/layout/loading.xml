@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/dp_3"
+    app:cardElevation="@dimen/dp_5">
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_120"
+        android:layout_height="@dimen/dp_90"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <!--        <ProgressBar-->
+        <!--            android:layout_width="@dimen/dp_22"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:indeterminateDrawable="@drawable/progressbar" />-->
+        <!--        <com.gdu.mvp_view.dialog.GifView-->
+        <!--            android:layout_width="@dimen/dp_22"-->
+        <!--            android:layout_height="0dp"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_weight="1"-->
+        <!--            app:res_id="@drawable/loading_anim" />-->
+
+        <ImageView
+            android:id="@+id/iv_gif_loading"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
+
+        <!-- UI说不允许修改文字 文字用请稍后一行，这里设为Gone但不屏蔽防止空指针 -->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_load_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:paddingStart="@dimen/dp_5"
+            android:paddingEnd="@dimen/dp_5"
+            android:gravity="center"
+            android:text="@string/string_please_wait"
+            android:textColor="@color/color_FF5800"
+            android:textSize="@dimen/sp_11"
+            android:visibility="visible" />
+        <!-- 用下面的长久显示-->
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -17,6 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.gdu.demo.widget.CustomJiuGongGeView
+        android:id="@+id/night_grid_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
+
     <com.gdu.demo.widget.TopStateView
         android:id="@+id/top_state_view"
         android:layout_width="match_parent"
@@ -33,6 +39,7 @@
         android:layout_marginStart="12dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <com.noober.background.view.BLTextView
         android:id="@+id/tv_msgBoxNum"
         android:layout_width="@dimen/dp_10"
@@ -49,6 +56,7 @@
         app:bl_solid_color="@color/red"
         app:layout_constraintRight_toRightOf="@id/iv_msgBoxLabel"
         app:layout_constraintTop_toTopOf="@id/iv_msgBoxLabel"/>
+
     <com.gdu.demo.widgetlist.flyState.FlyStateView
         android:id="@+id/fly_state"
         android:layout_width="wrap_content"

@@ -1,12 +1,13 @@
 package com.gdu.demo.widgetlist.flyState
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.databinding.FlyStateLayoutBinding
+import com.gdu.demo.utils.SettingDao
+import com.gdu.demo.utils.UnitChnageUtils
 import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -20,10 +21,11 @@ class FlyStateView @JvmOverloads constructor(
 
     private lateinit var binding: FlyStateLayoutBinding
 
-
+    private var mUnitUtils: UnitChnageUtils? = null
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         binding = FlyStateLayoutBinding.bind(inflate(context, R.layout.fly_state_layout, this))
+        mUnitUtils = UnitChnageUtils()
 
     }
 
@@ -44,10 +46,10 @@ class FlyStateView @JvmOverloads constructor(
         when (data) {
             is FlyStateValue -> {
                 val showDis = BigDecimal((data.dis / 1.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
-                binding.tvDis.text = "$showDis m"
+                binding.tvDis.text = UnitChnageUtils.getUnitString(showDis)
 
-                val showHeight = BigDecimal((data.height/100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
-                binding.tvHeight.text = "$showHeight m"
+                val showHeight = BigDecimal((data.height / 100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
+                binding.tvHeight.text =UnitChnageUtils.getUnitString(showHeight)
 
                 val showHS = BigDecimal((data.hs/100.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
                 binding.tvHSpeed.text = "$showHS m/s"

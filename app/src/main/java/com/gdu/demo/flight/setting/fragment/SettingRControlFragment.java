@@ -94,7 +94,7 @@ public class SettingRControlFragment extends Fragment {
         mViewBinding.tvRcMatch.setOnClickListener(listener);
         mViewBinding.ivBolunSetting.setOnClickListener(listener);
         mViewBinding.tvRcControlCheck.setOnClickListener(listener);
-        mViewBinding.rcCheckLin.setVisibility(GlobalVariable.isRCSEE ? View.VISIBLE : View.GONE);
+//        mViewBinding.rcCheckLin.setVisibility(GlobalVariable.isRCSEE ? View.VISIBLE : View.GONE);
 
         if (DroneUtil.isS200Serials()) {
             mViewBinding.controlModeGroup.setVisibility(View.GONE);
@@ -136,19 +136,6 @@ public class SettingRControlFragment extends Fragment {
 
         mViewBinding.rcCustomKeyView.initC1C2Event();
         switchControlEnable();
-        getRCControlValue();
-
-//        mRcCalibrationHelper = new RcCalibrationHelper(getActivity(), mViewBinding.rcCalibrationLayout);
-    }
-
-    private void getRCControlValue(){
-//        GduApplication.getSingleApp().gduCommunication.getRCControl((code, bean) -> {
-//            if(code == GduConfig.OK && bean.frameContent != null && bean.frameContent.length > 2){
-//                int value = ByteUtilsLowBefore.byte2Int(bean.frameContent,2);
-//                isRCControlCamera = (value == 1);
-//                uiThreadHandle(() -> mViewBinding.ivBolunSetting.setSelected(isRCControlCamera));
-//            }
-//        });
     }
 
 
@@ -290,8 +277,12 @@ public class SettingRControlFragment extends Fragment {
         GDURemoteController gduRemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
         if (gduRemoteController != null) {
             gduRemoteController.startPairing(error -> {
-                if (error == null) {
-                    Toast.makeText(getActivity(), "发送对频成功", Toast.LENGTH_SHORT).show();
+                if (handler != null) {
+                    handler.post(() -> {
+                        if (error == null) {
+                            Toast.makeText(getActivity(), "发送对频成功", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }

@@ -457,6 +457,7 @@
     <string name="label_azimuth">方位角</string>
     <string name="Label_set">设置</string>
     <string name="Label_save">保存</string>
+    <string name="start_clound_check">开始校飘</string>
 
 
     <string name="string_show_data">显示实时数据</string>
@@ -806,4 +807,6 @@
 
     <string name="match_content">对频前，请连续按飞机上的“开机键”5次，飞机将进入等待对频状态。然后点击"确定"按钮开始对频。</string>
     <string name="match_title">确定要进行遥控器对频吗</string>
+    <string name="clound_checking">云台校飘中，请保证飞行器静止</string>
+    <string name="string_gimbal_reset_params_dialog_content">恢复云台默认设置</string>
 </resources>

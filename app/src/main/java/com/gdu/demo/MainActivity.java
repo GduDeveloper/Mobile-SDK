@@ -61,6 +61,7 @@ public class MainActivity extends Activity {
         mPairingButton = findViewById(R.id.pairing_button);
         tvConnectState = findViewById(R.id.tv_connect_state);
         tv_gimbal_type = findViewById(R.id.tv_gimbal_type);
+        mOpenButton.setEnabled(true);
         ((TextView) findViewById(R.id.version_textview)).setText(getResources().getString(R.string.sdk_version,
                 GDUSDKManager.getInstance().getSDKVersion(mContext)));
     }

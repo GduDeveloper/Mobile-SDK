@@ -480,6 +480,7 @@
     <string name="string_text_inputbox">TextInputBox</string>
     <string name="string_please_input_message">please input message</string>
     <string name="Label_sendOut">Send</string>
+    <string name="start_clound_check">Start</string>
 
     <!--通用设置-->
     <string name="string_map_type">Map mode</string>
@@ -821,4 +822,6 @@
     <string name="Label_CheckNotOver_IsExit">Unfinished Calibration may affect your flight safety, sure to exit?</string>
     <string name="match_content">对频前，请连续按飞机上的“开机键”5次，飞机将进入等待对频状态。然后点击"确定"按钮开始对频。</string>
     <string name="match_title">确定要进行遥控器对频吗</string>
+    <string name="clound_checking">Calibrating, please ensure that the Aircraft is stationary</string>
+    <string name="string_gimbal_reset_params_dialog_content">Restore the default settings of gimbal</string>
 </resources>

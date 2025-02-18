@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
@@ -20,23 +21,30 @@ import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
+import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.GisUtil;
+import com.gdu.demo.utils.LoadingDialogUtils;
+import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.gimbal.GimbalState;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.gimbal.GDUGimbal;
+import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.radar.GDURadar;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.CollectionUtils;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ThreadHelper;
+import com.gdu.util.logger.MyLogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -48,6 +56,8 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     private ActivityFlightBinding viewBinding;
     private GDUCodecManager codecManager;
     private VideoFeeder.VideoDataListener videoDataListener ;
+
+    private boolean showSuccess = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +151,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
         viewBinding.ivMsgBoxLabel.setOnClickListener(this);
+
+        SettingDao settingDao = SettingDao.getSingle();
+        boolean show = settingDao.getBooleanValue(settingDao.ZORRORLabel_Grid, false);
+        showNineGridShow(show);
     }
 
 
@@ -150,8 +164,43 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     }
 
 
+    public void showNineGridShow(boolean show) {
+        viewBinding.nightGridView.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 
 
+    public void beginCheckCloud() {
+        showSuccess = false;
+        GDUGimbal mGDUGimbal = (GDUGimbal) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getGimbal();
+        if (mGDUGimbal == null) {
+            return;
+        }
+        LoadingDialogUtils.createLoadDialog(this, getString(R.string.clound_checking), false);
+
+        mGDUGimbal.setStateCallback(new GimbalState.Callback() {
+            @Override
+            public void onUpdate(GimbalState gimbalState) {
+                runOnUiThread(() -> {
+                    if (gimbalState.getCalibrationState() == 2) {
+                        LoadingDialogUtils.cancelLoadingDialog();
+                        if (!showSuccess) {
+                            Toast.makeText(FlightActivity.this, "校飘完成", Toast.LENGTH_SHORT).show();
+                            showSuccess = true;
+                        }
+                    } else if (gimbalState.getCalibrationState() == 3 || gimbalState.getCalibrationState() == 4) {
+                        LoadingDialogUtils.cancelLoadingDialog();
+                        if (!showSuccess) {
+                            Toast.makeText(FlightActivity.this, "校飘失败", Toast.LENGTH_SHORT).show();
+                            showSuccess = true;
+                        }
+                    }
+                });
+            }
+        });
+        mGDUGimbal.startCalibration(error -> {
+
+        });
+    }
 
     @Override
     protected void onResume() {

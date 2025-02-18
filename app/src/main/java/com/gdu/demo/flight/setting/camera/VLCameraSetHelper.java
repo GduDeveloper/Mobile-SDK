@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.setting.camera;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -15,14 +16,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.Group;
+import androidx.fragment.app.FragmentActivity;
 
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
+import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.CameraUtil;
+import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.PageLoadingView;
 import com.gdu.demo.widget.live.Gimbal600gCalibratePop;
@@ -31,6 +35,7 @@ import com.gdu.demo.widget.menuLayout.CommonMenuLayout;
 import com.gdu.drone.GimbalType;
 import com.gdu.event.GimbalEvent;
 import com.gdu.socket.GduFrame3;
+import com.gdu.socket.GduSocketManager;
 import com.gdu.socket.SocketCallBack3;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.NumberUtils;
@@ -46,10 +51,8 @@ import cc.taylorzhang.singleclick.SingleClickUtil;
 /**
  * 可见光参数设置和获取
  */
-public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView, View.OnClickListener {
+public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickListener {
     private static final String TAG = VLCameraSetHelper.class.getSimpleName();
-    /** 云台检查 */
-    protected final byte CLOUNDCHECK = 4;
     /**  设置失败通用提示 */
     protected final int SET_FAILE = 0x11;
     /** 设置云台俯仰转动速度成功 */
@@ -72,7 +75,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
     /** 恢复云台默认设置失败 */
     protected final int RESET_GIMBAL_PARAMS_FAILED = 0x20;
 
-    protected CameraSetPresenter mCameraSetPresenter;
 
     protected SeekBar sb_pitch_speed;
     protected EditText et_pitch_speed;
@@ -83,7 +85,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
     protected EditText et_pitch_slow_setting;
     protected SeekBar sb_yaw_slow_setting;
     protected EditText et_yaw_slow_setting;
-    private CommonMenuLayout mCmlMountAngleCalibrate;
 
     public SeekBar.OnSeekBarChangeListener mSeekBarFourLightListener = null;
 
@@ -93,46 +94,18 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
     public SeekBar.OnSeekBarChangeListener mSeekBarYawSlowSettingListener = null;
 
-
-    // shang 各类 尺寸的整理**************************************************************************
-
-    /**
-     * 云台模式
-     */
-    protected String[] mGimbalMode;
-
-    // Video Size  (改为视频尺寸1，2，3..是因为 这样定义 方便以后修改，因为根据我在做变焦相机时候，那个修改尺寸大小，然后又修改尺寸名字，修改了)
-    // 至少 3次，如果定义为 t_1920_1080，那么第一个item  的意思就会被别人人为1920*1080，明显这不适合Java 对象的一个定义
-    // init   show/hide  layout
     protected LinearLayout mCameraMainLayout;
 
     protected TextView tv_check_clound;
     protected View rl_check_clound;
     private TextView tv_reset_gimbal;
 
-    protected LinearLayout mTestLayout;
-
-    /**
-     * 设置当前云台模式
-     */
-    protected String mCurGimbalMode;
-    /**
-     * 获取到的云台模式
-     */
-    protected int curGimbalModePosition;
-
-    private GduSpinner mGovGimbalMode;
-
-    protected PageLoadingView page_loading_view;
-    private CommonMenuLayout mCmlMountAngleAutoCalibrate;
-
     public VLCameraSetHelper() {
         super();
     }
 
-    public VLCameraSetHelper(View view, Activity activity) {
+    public VLCameraSetHelper(View view, FragmentActivity activity) {
         super(view, activity);
-        initConfig();
         initView();
         initCameraParams();
         initData();
@@ -143,12 +116,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
      * <P>shang</P>
      * <P>初始化一些配置</P>
      */
-    public void initConfig() {
-        MyLogUtils.d("initConfig()");
-        mGimbalMode = CameraUtil.getGimbalModes(mActivity, GlobalVariable.gimbalType);
-        // init Utils
-        mCameraSetPresenter = new CameraSetPresenter(this);
-    }
 
     public void initView() {
         MyLogUtils.d("initView()   ");
@@ -178,47 +145,12 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
         MyLogUtils.d("GimbalPositionGroup    visible =   " + !DroneUtil.unSupportGimbalYaw());
 
-        boolean isShowRlGimbalCalibrate = GlobalVariable.gimbalType == GimbalType.ByrT_IR_1K
-                || GlobalVariable.gimbalType == GimbalType.Small_Double_Light
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_TMS
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_10X
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL600
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_300C
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_450J;
-        mCmlMountAngleCalibrate = mView.findViewById(R.id.cml_mount_angel_calibrate);
-        mCmlMountAngleAutoCalibrate = mView.findViewById(R.id.cml_mount_angel_calibrate_auto);
-        ViewUtils.setViewShowOrHide(mCmlMountAngleCalibrate, isShowRlGimbalCalibrate);
-        boolean isShowAutoCalibrate = GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL600;
-        ViewUtils.setViewShowOrHide(mCmlMountAngleAutoCalibrate, isShowAutoCalibrate);
-
-        mGovGimbalMode = mView.findViewById(R.id.gov_gimbal_mode);
-        if (mGovGimbalMode != null) {
-            mGovGimbalMode.setData(mGimbalMode);
-        }
-
-        mTestLayout = mView.findViewById(R.id.test_layout);
-
-        initPagePreLoadingView(mView);
-        ViewUtils.setViewShowOrHide(mTestLayout, UavStaticVar.isOpenTextEnvironment);
-
-
     }
 
     public void initCameraParams() {
         MyLogUtils.d("initCameraParams()");
     }
 
-    public void initPagePreLoadingView(View root) {
-        if (root == null) {
-            return;
-        }
-        page_loading_view = mView.findViewById(R.id.page_loading_view);
-        if (page_loading_view != null) {
-            page_loading_view.setClickRefreshListener(() -> getGimbalCurrentSetting(true));
-        }
-        ViewUtils.setViewShowOrHide(page_loading_view, false);
-        ViewUtils.setViewShowOrHide(mCameraMainLayout, true);
-    }
 
     protected void initPTZSetting(View view){
         if (view == null) {
@@ -397,8 +329,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         sb_yaw_slow_setting.setOnSeekBarChangeListener(mSeekBarYawSlowSettingListener);
 
         getGimbalCurrentSetting(false);
-//        isShowRefreshView = false;
-//        mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_FAILED, 1500);
     }
 
     /**
@@ -420,35 +350,30 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
      * @param isRetry 是否手动刷新
      */
     protected void getGimbalCurrentSetting(boolean isRetry) {
-        AppLog.i(TAG, "getGimbalCurrentSetting() isRetry = " + isRetry);
-//        GduApplication.getSingleApp().gduCommunication.getGimbalSetting((code, bean) -> {
-//            AppLog.i(TAG, "getGimbalSetting callback() code = " + code);
-//            if (mHandler == null) {
-//                return;
-//            }
-//            boolean isHaveData = code == GduConfig.OK && bean != null && bean.frameContent != null && bean.frameContent.length > 3;
-//            MyLogUtils.d("getGimbalSetting callback() isHaveData = " + isHaveData);
-//            if (isHaveData) {
-//                GlobalVariable.thumbWheelSpeed = bean.frameContent[2];
-//                MyLogUtils.d("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
-//                if (bean.frameContent.length > 6) {
-//                    GlobalVariable.sGimbalYawMaxSpeed = bean.frameContent[3];
-//                    GlobalVariable.spitchSlowSetting = bean.frameContent[4];
-//                    GlobalVariable.yawSlowSetting = bean.frameContent[5];
-//                    MyLogUtils.d("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
-//                            + "; spitchSlowSetting = " + bean.frameContent[4] + "; yawSlowSetting = " + bean.frameContent[5]);
-//                }
-//                if (bean.frameContent.length > 6) {
-//                    curGimbalModePosition = bean.frameContent[6];
-//                }
-//                //因子类还存在异步加载，所以这里延迟500ms显示界面
-//                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
-//            } else if (isRetry) {//手动刷新，不管成功失败，都展示
-//                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
-//            } else {
-//                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_FAILED, 500);
-//            }
-//        });
+        GduSocketManager.getInstance().getGduCommunication().getGimbalSetting((code, bean) -> {
+            AppLog.i(TAG, "getGimbalSetting callback() code = " + code);
+            if (mHandler == null) {
+                return;
+            }
+            boolean isHaveData = code == GduConfig.OK && bean != null && bean.frameContent != null && bean.frameContent.length > 3;
+            MyLogUtils.d("getGimbalSetting callback() isHaveData = " + isHaveData);
+            if (isHaveData) {
+                GlobalVariable.thumbWheelSpeed = bean.frameContent[2];
+                MyLogUtils.d("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
+                if (bean.frameContent.length > 6) {
+                    GlobalVariable.sGimbalYawMaxSpeed = bean.frameContent[3];
+                    GlobalVariable.spitchSlowSetting = bean.frameContent[4];
+                    GlobalVariable.yawSlowSetting = bean.frameContent[5];
+                    MyLogUtils.d("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
+                            + "; spitchSlowSetting = " + bean.frameContent[4] + "; yawSlowSetting = " + bean.frameContent[5]);
+                }
+                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
+            } else if (isRetry) {//手动刷新，不管成功失败，都展示
+                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
+            } else {
+                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_FAILED, 500);
+            }
+        });
     }
 
     /**
@@ -510,45 +435,34 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 //                });
     }
 
-    private void setGimbalMode() {
-        MyLogUtils.d("setGimbalMode() position = " + curGimbalModePosition);
-        if (curGimbalModePosition < 0 || mGimbalMode == null || curGimbalModePosition > mGimbalMode.length) {
-            curGimbalModePosition = 0;
-        }
-        if (mGovGimbalMode == null) {
-            return;
-        }
-        mGovGimbalMode.setIndex(curGimbalModePosition);
-    }
+
 
     private void setSlowSetting(int set, GlobalVariable.SlowSettingType type) {
         MyLogUtils.d("setSlowSetting() set = " + set + "; type = " + type);
         if (type == null) {
             return;
         }
-//        GduApplication.getSingleApp().gduCommunication.setSlowSetting((byte) set, type,
-//                (code, bean) -> {
-//                    MyLogUtils.d("setSlowSetting callBack() code = " + code);
-//                    if (mHandler == null) {
-//                        return;
-//                    }
-//                    if (code == GduConfig.OK) {
-//                        if (type == GlobalVariable.SlowSettingType.PITCH) {
-//                            GlobalVariable.spitchSlowSetting = (byte) set;
-//                        } else  if (type == GlobalVariable.SlowSettingType.PTZ_YAW) {
-//                            GlobalVariable.yawSlowSetting = (byte) set;
-//                        }
-//                        //                    handler.obtainMessage(SET_OK).sendToTarget();
-//                    } else {
-//                        mHandler.sendEmptyMessage(type == GlobalVariable.SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
-//                    }
-//                });
+        GduSocketManager.getInstance().getGduCommunication().setSlowSetting((byte) set, type,
+                (code, bean) -> {
+                    MyLogUtils.d("setSlowSetting callBack() code = " + code);
+                    if (mHandler == null) {
+                        return;
+                    }
+                    if (code == GduConfig.OK) {
+                        if (type == GlobalVariable.SlowSettingType.PITCH) {
+                            GlobalVariable.spitchSlowSetting = (byte) set;
+                        } else  if (type == GlobalVariable.SlowSettingType.PTZ_YAW) {
+                            GlobalVariable.yawSlowSetting = (byte) set;
+                        }
+                    } else {
+                        mHandler.sendEmptyMessage(type == GlobalVariable.SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
+                    }
+                });
     }
 
     public void initData() {
         MyLogUtils.d("initData()");
         initPTZSetting(mView);
-        // 初始化视频直播按钮的状态
     }
 
     public void initListener() {
@@ -556,25 +470,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         if (tv_check_clound != null) {
             tv_check_clound.setOnClickListener(this);
         }
-//        mCountLoadView.setOnCountLoadListener(() -> {
-//            querySDInfo();
-//            dialogUtils.Toast(activity.getString(R.string.Label_FormatSDSuccess));
-//        });
-
-        if(mGovGimbalMode != null){
-            mGovGimbalMode.setOnOptionClickListener((parentId, view, position) -> {
-                setGimbalMode(position);
-            });
-        }
-
-        if (mCmlMountAngleCalibrate != null){
-            mCmlMountAngleCalibrate.setOnClickListener(this);
-        }
-
-        if (mCmlMountAngleAutoCalibrate != null){
-            mCmlMountAngleAutoCalibrate.setOnClickListener(this);
-        }
-
         SingleClickUtil.onSingleClick(tv_reset_gimbal, v1 -> {
             if (!checkDroneConnState()) {//恢复云台默认设置
                 return;
@@ -590,30 +485,25 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
     protected void setPitchSpeed(int speed) {
         MyLogUtils.d("setPitchSpeed() speed = " + speed);
-//        GduApplication.getSingleApp().gduCommunication.setThumbWheelSpeed((byte) speed, GlobalVariable.ThumbWheelSpeedType.PITCH,
-//                (code, bean) -> {
-//                    MyLogUtils.d("setPitchSpeed callBack() code = " + code);
-//                    if (mHandler == null) {
-//                        return;
-//                    }
-//                    if (code == GduConfig.OK) {
-//                        GlobalVariable.thumbWheelSpeed = (byte) speed;
-//                        //                    handler.obtainMessage(SET_OK).sendToTarget();
-//                    } else {
-//                        mHandler.sendEmptyMessage(SET_GIMBAL_PITCH_FAILED);
-//                    }
-//                });
+        GduSocketManager.getInstance().getGduCommunication().setThumbWheelSpeed((byte) speed, GlobalVariable.ThumbWheelSpeedType.PITCH,
+                (code, bean) -> {
+                    MyLogUtils.d("setPitchSpeed callBack() code = " + code);
+                    if (mHandler == null) {
+                        return;
+                    }
+                    if (code == GduConfig.OK) {
+                        GlobalVariable.thumbWheelSpeed = (byte) speed;
+                    } else {
+                        mHandler.sendEmptyMessage(SET_GIMBAL_PITCH_FAILED);
+                    }
+                });
     }
 
-    /**************************************
-     * 是否正在切换4k录像---------------ron
-     */
-    public boolean isSetVideoSize4k;
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.tv_check_clound) {
-            if (!checkDroneConnState()) {//校磁
+            if (!checkDroneConnState()) {
                 return;
             }
             if (GlobalVariable.gimbalType == GimbalType.ByrdT_None_Zoom) {
@@ -621,72 +511,29 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
                 return;
             }
             if (GlobalVariable.droneFlyState == 1) {
-//                mDialogUtils.createDialogWith2Btn("", mActivity.getString(R.string.dialog_clound_check_content),
-//                        mActivity.getString(R.string.Label_cancel), mActivity.getString(R.string.start_clound_check), this);
+                new CommonDialog.Builder(mActivity.getSupportFragmentManager())
+                        .setContent(mActivity.getString(R.string.dialog_clound_check_content))
+                        .setCancel(mActivity.getString(R.string.Label_cancel))
+                        .setSure(mActivity.getString(R.string.start_clound_check))
+                        .setCancelableOutside(true)
+                        .setPositiveListener((dialog, which) -> {
+                            checkGimbal();
+                        })
+                        .build().show();
             } else {
                 showToast(R.string.dialog_clound_check_content);
             }
-        }/* else if (v.getId() == R.id.dialog_btn_sure) {
-//            if (mDialogUtils != null) {
-//                mDialogUtils.cancelDialog();
-//            }
-            mHandler.sendEmptyMessageDelayed(CLOUNDCHECK, 500);
-        } else if (v.getId() == R.id.dialog_btn_cancel) {
-            if (mDialogUtils != null) {
-                mDialogUtils.cancelDialog();
-            }
-        } else if (v.getId() == R.id.cml_mount_angel_calibrate){
-            showGimbalCalibratePop();
-        } else if (v.getId() == R.id.cml_mount_angel_calibrate_auto){
-            showCalibrateMenu();
-        }*/
-    }
-
-    private void showCalibrateMenu() {
-//        if (mActivity != null && mActivity instanceof ZorroRealControlActivity) {
-//            ((ZorroRealControlActivity) mActivity).show600gAutoCalibrate();
-//            if (closeListener != null) {
-//                closeListener.onClose();
-//            }
-//        }
-    }
-
-
-    /**
-     * <P>shang</P>
-     * <P>打开视频直播</P>
-     */
-    protected void openVideoLive() {
-        MyLogUtils.d("openVideoLive()");
-//        MyAnimationUtils.animatorRightInOut(mLiveChooseView, true);
-        if (txVideoLiveListener != null) {
-            txVideoLiveListener.isliveUIShow(true);
         }
     }
 
-    @Override
-    public void onBackPress() {
-        if (txVideoLiveListener != null) {
-            txVideoLiveListener.isliveUIShow(false);
-        }
-    }
-
-    LiveChooseView.OnLiveChooseViewListener onLiveChooseViewListener = new LiveChooseView.OnLiveChooseViewListener() {
-        @Override
-        public void onLiveClick(LiveType liveType, String rtmpUrl) {
-            if (txVideoLiveListener != null) {
-                txVideoLiveListener.openTxVideoLive(liveType, rtmpUrl);
+    private void checkGimbal() {
+        if (mActivity != null && mActivity instanceof FlightActivity) {
+            ((FlightActivity) mActivity).beginCheckCloud();
+            if (closeListener != null) {
+                closeListener.onClose();
             }
         }
-
-        @Override
-        public void onOpenQRCode() {
-            if (txVideoLiveListener != null) {
-                txVideoLiveListener.openQRCode();
-            }
-        }
-    };
-
+    }
 
     /**
      * <P>shang</P>
@@ -727,16 +574,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
     public void handleSetMessage(Message msg) {
         MyLogUtils.d("mHandler handleMessage() msgWhat = " + msg.what);
         switch (msg.what) {
-            case CLOUNDCHECK: //云台校飘
-                if (GlobalVariable.droneFlyState == 1) {
-//                    if (mActivity != null && mActivity instanceof ZorroRealControlActivity) {
-//                        ((ZorroRealControlActivity) mActivity).beginCheckCloud();
-//                        if (closeListener != null) {
-//                            closeListener.onClose();
-//                        }
-//                    }
-                }
-                break;
 
             case SET_FAILE:
                 showToast(R.string.Label_SettingFail);
@@ -747,18 +584,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
                 setYawSpeed();
                 setPitchSlowSetting();
                 setYawSlowSetting();
-                setGimbalMode();
-                if (GlobalVariable.gimbalType != GimbalType.ByrdT_None_Zoom || GlobalVariable.sPSDKCompId != 0) {//有云台
-                    //获取数据失败，展示空白页
-                    if (page_loading_view != null) {
-                        page_loading_view.showLoadingTimeout(msg.what == GET_GIMBAL_CURRENT_SETTING_FAILED);
-                    }
-                    ViewUtils.setViewShowOrHide(page_loading_view, msg.what == GET_GIMBAL_CURRENT_SETTING_FAILED);
-                    ViewUtils.setViewShowOrHide(mCameraMainLayout, msg.what == GET_GIMBAL_CURRENT_SETTING_SUCCEED);
-                }else{
-                    ViewUtils.setViewShowOrHide(page_loading_view, false);
-                    ViewUtils.setViewShowOrHide(mCameraMainLayout, false);
-                }
                 break;
             case SET_GIMBAL_PITCH_FAILED:
                 showToast(R.string.Label_SettingFail);
@@ -791,14 +616,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         }
     }
 
-    private void setGimbalMode(int position) {
-        MyLogUtils.d("setGimbalMode() position = " + position);
-        mCurGimbalMode = mGimbalMode[position];
-        int value = CameraUtil.getGimbalModeValueByPosition(GlobalVariable.gimbalType, position);
-        if (mCameraSetPresenter != null) {
-            mCameraSetPresenter.setGimbalMode((byte) value);
-        }
-    }
 
     /**
      * 检查航迹是否执行,航迹执行中禁止
@@ -816,19 +633,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         return result;
     }
 
-    @Override
-    public void setGimbalModeResult(int type) {
-        if (mGovGimbalMode == null) {
-            return;
-        }
-        MyLogUtils.d("setGimbalModeResult() type = " + type);
-        if (type == 0) {
-            mGovGimbalMode.setText(mCurGimbalMode);
-            showToast(R.string.string_set_success);
-        } else {
-            showToast(R.string.Label_SettingFail);
-        }
-    }
+
 
     @Override
     public void onDestory() {
@@ -837,9 +642,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }
-        if (page_loading_view != null) {
-            page_loading_view.setClickRefreshListener(null);
-        }
+
         et_pitch_speed.setOnEditorActionListener(null);
         et_ptz_yaw_speed.setOnEditorActionListener(null);
         et_pitch_slow_setting.setOnEditorActionListener(null);
@@ -852,16 +655,11 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
 
         closeListener = null;
         txVideoLiveListener = null;
-        onLiveChooseViewListener = null;
         mSeekBarPitchSlowSettingListener = null;
         mSeekBarYawSlowSettingListener = null;
         mSeekBarFourLightListener = null;
         mSeekBarPTZYawListener = null;
 
-        mCameraSetPresenter = null;
-        if(mGovGimbalMode != null){
-            mGovGimbalMode.setOnOptionClickListener(null);
-        }
 
         sb_pitch_speed = null;
         et_pitch_speed = null;
@@ -872,21 +670,13 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         sb_yaw_slow_setting = null;
         et_yaw_slow_setting = null;
         sb_ptz_yaw_speed = null;
-        mCmlMountAngleCalibrate = null;
-        mCmlMountAngleAutoCalibrate = null;
         mCameraMainLayout = null;
         tv_check_clound = null;
         rl_check_clound = null;
         tv_reset_gimbal = null;
-        mTestLayout = null;
-        mGovGimbalMode = null;
-        page_loading_view = null;
     }
 
 
-    public void hideLiveView() {
-//        MyAnimationUtils.animatorRightInOut(mLiveChooseView, false);
-    }
 
 
     public CloseListener closeListener;
@@ -904,65 +694,40 @@ public class VLCameraSetHelper extends CameraSetHelper implements ICamreaSetView
         if (event.gimbalType != GimbalType.ByrdT_None_Zoom || GlobalVariable.sPSDKCompId != 0) {//有云台
             initPTZSetting(mView);
         }else{//无云台
-            ViewUtils.setViewShowOrHide(page_loading_view, false);
             ViewUtils.setViewShowOrHide(mCameraMainLayout, false);
         }
     }
 
-    private void showGimbalCalibratePop() {
-        if (closeListener != null){
-            closeListener.onClose();
-        }
-        Gimbal600gCalibratePop gCalibratePop = new Gimbal600gCalibratePop(mActivity,
-                (int) mActivity.getResources().getDimension(R.dimen.dp_154),
-                (int) mActivity.getResources().getDimension(R.dimen.dp_194));
-        gCalibratePop.showAtLocation(mActivity.getWindow().getDecorView(), Gravity.LEFT | Gravity.CENTER_VERTICAL, 15, 0);
-    }
 
     //恢复云台默认设置
     private void resetGimbalParams() {
-//        LoadingDialogUtils.createLoadDialog(mActivity, "");
-//        GduApplication.getSingleApp().gduCommunication.resetGimbalParams(new SocketCallBack3() {
-//            @Override
-//            public void callBack(int code, GduFrame3 bean) {
-//                if (mHandler == null) {
-//                    return;
-//                }
-//                AppLog.i(TAG, "resetGimbalParams() code:" + code);
-//                if (code == GduConfig.OK) {
-//                    mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_SUC);
-//                } else {
-//                    mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_FAILED);
-//                }
-//            }
-//        });
+        GduSocketManager.getInstance().getGduCommunication().resetGimbalParams(new SocketCallBack3() {
+            @Override
+            public void callBack(int code, GduFrame3 bean) {
+                if (mHandler == null) {
+                    return;
+                }
+                AppLog.i(TAG, "resetGimbalParams() code:" + code);
+                if (code == GduConfig.OK) {
+                    mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_SUC);
+                } else {
+                    mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_FAILED);
+                }
+            }
+        });
     }
 
     private void resetGimbalParamsConfirmDialog() {
-//        if (mDialogUtils == null) {
-//            return;
-//        }
-//        mDialogUtils.createDialogWith2Btn(GduAppEnv.application.getResources().getString(R.string.string_gimbal_reset_params_label),
-//                GduAppEnv.application.getResources().getString(R.string.string_gimbal_reset_params_dialog_content),
-//                GduAppEnv.application.getResources().getString(R.string.Label_cancel),
-//                GduAppEnv.application.getResources().getString(R.string.Label_Sure), v -> {
-//                    switch (v.getId()) {
-//                        case R.id.dialog_btn_cancel:
-//                            if (mDialogUtils != null) {
-//                                mDialogUtils.cancelDialog();
-//                            }
-//                            break;
-//
-//                        case R.id.dialog_btn_sure:
-//                            resetGimbalParams();
-//                            if (mDialogUtils != null) {
-//                                mDialogUtils.cancelDialog();
-//                            }
-//                            break;
-//
-//                        default:
-//                            break;
-//                    }
-//                });
+        new CommonDialog.Builder(mActivity.getSupportFragmentManager())
+                .setTitle(mActivity.getString(R.string.string_gimbal_reset_params_label))
+                .setContent(mActivity.getString(R.string.string_gimbal_reset_params_dialog_content))
+                .setCancel(mActivity.getString(R.string.Label_cancel))
+                .setSure(mActivity.getString(R.string.start_clound_check))
+                .setCancelableOutside(true)
+                .setPositiveListener((dialog, which) -> {
+                    resetGimbalParams();
+                })
+                .build().show();
+
     }
 }

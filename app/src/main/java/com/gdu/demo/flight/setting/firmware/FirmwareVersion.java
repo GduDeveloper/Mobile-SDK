@@ -17,6 +17,7 @@ import com.gdu.drone.ObstacleType;
 import com.gdu.drone.PlanType;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.GduFrame3;
+import com.gdu.socket.GduSocketManager;
 import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.CollectionUtils;
 import com.gdu.util.DataUtil;
@@ -209,20 +210,14 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getFlightVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
-//            GduApplication.getSingleApp().gduCommunication.getFlightVersion((code, bean) -> {
-//                printLog("getFlightVersion callBack() code = " + code);
-//                isRequestFinish();
-//                parseFlightVersion(bean);
-//            });
+            GduSocketManager.getInstance().getGduCommunication().getFlightVersion((code, bean) -> {
+                printLog("getFlightVersion callBack() code = " + code);
+                isRequestFinish();
+                parseFlightVersion(bean);
+            });
         }).subscribeOn(Schedulers.io());
     }
 
-    private void initCommunication() {
-//        if (GduApplication.getSingleApp().gduCommunication == null) {
-//            GduApplication.getSingleApp().gduCommunication = new GduCommunication3();
-//        }
-    }
 
     /**
      * 解析出系统大版本号
@@ -260,12 +255,11 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getOTAVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
-//            GduApplication.getSingleApp().gduCommunication.getOTAVersions((code, bean) -> {
-//                printLog("getOTAVersion callBack() code = " + code);
-//                isRequestFinish();
-//                parseOTAVersion(code, bean);
-//            });
+            GduSocketManager.getInstance().getGduCommunication().getOTAVersions((code, bean) -> {
+                printLog("getOTAVersion callBack() code = " + code);
+                isRequestFinish();
+                parseOTAVersion(code, bean);
+            });
         }).subscribeOn(Schedulers.io());
     }
 
@@ -276,12 +270,11 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getRTKVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
-//            GduApplication.getSingleApp().gduCommunication.getRTKVersion((code, bean) -> {
-//                printLog("getRTKVersion callBack() code = " + code);
-//                isRequestFinish();
-//                parseRTKVersion(bean);
-//            });
+            GduSocketManager.getInstance().getGduCommunication().getRTKVersion((code, bean) -> {
+                printLog("getRTKVersion callBack() code = " + code);
+                isRequestFinish();
+                parseRTKVersion(bean);
+            });
         }).subscribeOn(Schedulers.io());
     }
 
@@ -292,7 +285,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getACVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getACVersion((code, bean) -> {
 //                printLog("getACVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -308,7 +300,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getSetTimeVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getSetTimeVersion((code, bean) -> {
 //                printLog("getSetTimeVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -324,7 +315,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getUpgradeCompVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getUpgradeCompVersion((code, bean) -> {
 //                printLog("getUpgradeCompVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -340,7 +330,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getImageTransmissionVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getPicTransmissionApplicationVersion((code, bean) -> {
 //                printLog("getPicTransmissionApplicationVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -376,7 +365,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getPicTransmissionComponentsVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getPicTransmissionComponentsVersion((code, bean) -> {
 //                printLog("getPicTransmissionComponentsVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -414,7 +402,6 @@ public class FirmwareVersion implements IFirmwareVersion {
                 isRequestFinish();
                 return;
             }
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getFCCoprocessorVersion((code, bean) -> {
 //                printLog("getFCCoprocessorVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -430,7 +417,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getFileTransmissionVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getFileTransmissionVersion((code, bean) -> {
 //                printLog("getFileTransmissionVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -446,7 +432,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getImageTransmissionRelayVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getImageTransmissionRelayVersion((code, bean) -> {
 //                printLog("getImageTransmissionRelayVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -462,7 +447,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getTaskManagerVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getTaskManagerVersion((code, bean) -> {
 //                printLog("getTaskManagerVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -478,7 +462,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getRCAVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getRCAVersion((code, bean) -> {
 //                printLog("getRCAVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -494,7 +477,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getVisionVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getVisionVersion((code, bean) -> {
 //                printLog("getVisionVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -510,7 +492,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getBatteryVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getBatterInfo((code, bean) -> {
 //                printLog("getBatteryVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -531,7 +512,6 @@ public class FirmwareVersion implements IFirmwareVersion {
                 isRequestFinish();
                 return;
             }
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getGimbalSNAndVersion((code, bean) -> {
 //                printLog("getGimbalVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -547,7 +527,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getMCUVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getMCUVersion((code, bean) -> {
 //                printLog("getMCUVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -563,7 +542,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("get5GVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.get5GFirmwareVersion((code, bean) -> {
 //                printLog("get5GVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -595,7 +573,6 @@ public class FirmwareVersion implements IFirmwareVersion {
      */
     private void getObstacleFwVersion() {
         printLog("getObstacleFwVersion()");
-        initCommunication();
 //        GduApplication.getSingleApp().gduCommunication.getObstacleFwVersion((code, bean) -> {
 //            printLog("getObstacleFwVersion callBack() code = " + code);
 //            isRequestFinish();
@@ -608,7 +585,6 @@ public class FirmwareVersion implements IFirmwareVersion {
      */
     private void getObstacleFwVersionNew() {
         printLog("getObstacleFwVersionNew()");
-        initCommunication();
 //        GduApplication.getSingleApp().gduCommunication.getObstacleFwVersionNew((code, bean) -> {
 //            printLog("getObstacleFwVersionNew callBack() code = " + code);
 //            isRequestFinish();
@@ -623,7 +599,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getBatteryVendorInfo()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getBatterFactoryInfo((code, bean) -> {
 //                printLog("getBatteryVendorInfo callBack() code = " + code);
 //                isRequestFinish();
@@ -758,7 +733,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getNoFlyZoneFwVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getNoFlyZoneVersion(((code, bean) -> {
 //                printLog("getNoFlyZoneFwVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -817,7 +791,6 @@ public class FirmwareVersion implements IFirmwareVersion {
                 isRequestFinish();
                 return;
             }
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getGimbalVisionVersion(((code, bean) -> {
 //                printLog("getGimbalVisionVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -849,7 +822,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getRemoteIDVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getRemoteIDVersion((code, bean) -> {
 //                printLog("getRemoteIDVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -895,7 +867,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getNewAdapterRingVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getNewAdapterRingVersion((code, bean) -> {
 //                printLog("getNewAdapterRingVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -927,7 +898,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getSystemApplicationVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getSystemApplicationVersion((code, bean) -> {
 //                printLog("getSystemApplicationVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -965,7 +935,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getOnboardITSystemVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getOnboardITSystemVersion((code, bean) -> {
 //                printLog("getOnboardITSystemVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -999,7 +968,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getCompRelayITSystemVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getCompRelayITSystemVersion((code, bean) -> {
 //                printLog("getCompRelayITSystemVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -1033,7 +1001,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getGNSSVersions()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getGNSSVersions((code, bean) -> {
 //                printLog("getGNSSVersions callBack() code = " + code);
 //                isRequestFinish();
@@ -1074,7 +1041,6 @@ public class FirmwareVersion implements IFirmwareVersion {
                 isRequestFinish();
                 return;
             }
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getElectronicVersion((byte) num, (code, bean) -> {
 //                printLog("getElectronicVersion callBack() num = " + num + "; code = " + code);
 //                isRequestFinish();
@@ -1150,7 +1116,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getFCAppVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getFCAppVersion((code, bean) -> {
 //                printLog("getFCAppVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -1182,7 +1147,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getFCBootVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getFCBootVersion((code, bean) -> {
 //                printLog("getFCBootVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -1537,7 +1501,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getRTKVersionNew()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getRTKVersionNew((code, bean) -> {
 //                printLog("getRTKVersionNew callBack() code = " + code);
 //                isRequestFinish();
@@ -1570,7 +1533,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getAIBoxVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getAIBoxVersion((code, bean) -> {
 //                printLog("getAIBoxVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -1602,7 +1564,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getAIBoxSN()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -1647,7 +1608,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getLockBatteryMCUVersion()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getLockBatteryCheckMcuVersion((code, bean) -> {
 //                printLog("getLockBatteryMCUVersion callBack() code = " + code);
 //                isRequestFinish();
@@ -1672,7 +1632,6 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getRTKType()");
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            initCommunication();
 //            GduApplication.getSingleApp().gduCommunication.getRTKModelType((code, bean) -> {
 //                printLog("getRTKType callBack() code = " + code);
 //                isRequestFinish();

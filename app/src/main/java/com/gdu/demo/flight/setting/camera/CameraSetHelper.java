@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.gdu.event.GimbalEvent;
 import com.lib.model.LiveType;
 
@@ -14,25 +16,18 @@ import com.lib.model.LiveType;
 public class CameraSetHelper {
 
     protected View mView;
-    protected Activity mActivity;
+    protected FragmentActivity mActivity;
     protected TxVideoLiveListener txVideoLiveListener;
 
     public CameraSetHelper() {
 
     }
 
-    public CameraSetHelper(View view, Activity activity) {
+    public CameraSetHelper(View view, FragmentActivity activity) {
         mView = view;
         this.mActivity = activity;
     }
 
-    public void setTxVideoLiveListener(TxVideoLiveListener txVideoLiveListener) {
-        this.txVideoLiveListener = txVideoLiveListener;
-    }
-
-    public void closeLiveChoose() {
-
-    }
 
     public void onDestory() {
         mView = null;

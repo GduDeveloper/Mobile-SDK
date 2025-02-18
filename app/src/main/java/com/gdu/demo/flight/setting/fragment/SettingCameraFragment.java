@@ -52,7 +52,6 @@ public class SettingCameraFragment extends Fragment {
 
     private void initView() {
         matchUI2Camera();
-        setListener();
         mCameraSetHelper.setCloseListener(() -> {
             if (getParentFragment() != null) {
                 ((SettingDialogFragment) getParentFragment()).dismiss();
@@ -63,24 +62,6 @@ public class SettingCameraFragment extends Fragment {
     private void initData() {
     }
 
-    private void setListener() {
-        mViewBinding.ivBack.setOnClickListener(listener);
-    }
-
-    private final View.OnClickListener listener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            if (view.getId() == R.id.iv_back) {
-                if (currentSecondLevelType == 1) {
-                    mViewBinding.ivBack.setVisibility(View.GONE);
-                    mViewBinding.tvTitle.setText(R.string.title_gimbal);
-                    if (mCameraSetHelper != null) {
-                        mCameraSetHelper.hideLiveView();
-                    }
-                }
-            }
-        }
-    };
 
     private void matchUI2Camera() {
         mCameraSetHelper = new VLCameraSetHelper(mViewBinding.layoutCamera.getRoot(), requireActivity());

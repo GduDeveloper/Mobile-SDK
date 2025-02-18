@@ -100,6 +100,7 @@
                 android:id="@+id/group_map_model"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:constraint_referenced_ids="tv_map_model,op_map_model,div_map_type" />
 
 
@@ -163,6 +164,13 @@
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@+id/tv_voiceTipLabel" />
 
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_voice_tip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_voiceTipLabel,iv_voice_tip,view_line2"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_northPointerLabel"
                 android:layout_width="0dp"
@@ -192,6 +200,14 @@
                 android:layout_height="@dimen/dp_0_5"
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@+id/tv_northPointerLabel" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_north_pointer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_northPointerLabel,iv_northPointer,view_line_northPointer"/>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_poseModeLabel"
@@ -225,6 +241,15 @@
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@+id/tv_poseModeLabel" />
 
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_pose_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_poseModeLabel,iv_poseModeSwitchBtn,view_line12"/>
+
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_ShowRouteHistoryLabel"
                 android:layout_width="0dp"
@@ -256,6 +281,14 @@
                 android:layout_height="@dimen/dp_0_5"
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@+id/tv_ShowRouteHistoryLabel" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_show_route_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="tv_ShowRouteHistoryLabel,iv_ShowRouteHistorySwitchBtn,view_line3"/>
+
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_paramUnitLabel"
@@ -325,6 +358,7 @@
                 android:id="@+id/viewADSBGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 app:constraint_referenced_ids="tv_switchADSBLabel,iv_switchADSBBtn,view_line8" />
 
 
@@ -368,8 +402,6 @@
                 android:background="@color/color_4D999999"
                 app:layout_constraintTop_toBottomOf="@id/drone_info_item" />
 
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/layout_current_mode"
                 android:layout_width="match_parent"
@@ -410,45 +442,6 @@
                     android:background="@color/color_4D999999"
                     app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/test_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/layout_current_mode">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/string_test_model"
-                    android:textColor="@color/red"
-                    android:textSize="@dimen/sp_19" />
-
-                <RelativeLayout
-                    android:id="@+id/rl_subLayout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_40"
-                    android:gravity="center_vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/bit_stream_compress"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/sp_12" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/iv_live_compress"
-                        android:layout_width="@dimen/dp_36"
-                        android:layout_height="@dimen/dp_24"
-                        android:layout_alignParentRight="true"
-                        android:contentDescription="@string/app_name"
-                        android:src="@drawable/selector_hand_control" />
-                </RelativeLayout>
-            </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -654,12 +647,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <!--副挂载版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/assistant_pod_version_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone" />
 
             <!--   可见光相机版本     -->
             <com.gdu.demo.widget.VersionView
@@ -752,57 +739,13 @@
                     android:textStyle="italic" />
             </RelativeLayout>
 
-            <!-- AI盒子版本 -->
-            <RelativeLayout
-                android:id="@+id/rlMountAiBoxLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvMountAiBoxLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Label_AI_Box"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvMountAiBoxVersion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:paddingRight="@dimen/dp_3"
-                    android:text="@string/Label_TextView_NA"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    android:textStyle="italic" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvMountAiBoxPlaceHolder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tvMountAiBoxVersion"
-                    android:paddingRight="@dimen/dp_10"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    android:textStyle="italic" />
-            </RelativeLayout>
-
-            <!--  AI盒子型号和SN号      -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vvAiBoxTypeAndSN"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <!--云台SN-->
             <RelativeLayout
                 android:id="@+id/gimbal_sn"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical">
+                android:gravity="center_vertical"
+                android:visibility="gone">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
@@ -824,11 +767,6 @@
                     android:textStyle="italic" />
             </RelativeLayout>
 
-            <!--转接环-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/adapter_ring_version_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
 
             <!--  SVN版本      -->
             <com.gdu.demo.widget.VersionView
@@ -849,45 +787,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
-            <LinearLayout
-                android:id="@+id/test_version_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
-                <!--  MCU版本      -->
-                <com.gdu.demo.widget.VersionView
-                    android:id="@+id/mcu_version_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
-
-                <!--  升级组件版本      -->
-                <com.gdu.demo.widget.VersionView
-                    android:id="@+id/upgrade_comp_version_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <!--  授时组件版本      -->
-                <com.gdu.demo.widget.VersionView
-                    android:id="@+id/set_time_version_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <!--  航迹管理组件版本      -->
-                <com.gdu.demo.widget.VersionView
-                    android:id="@+id/task_manager_version_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-
-                <!--  文件传输组件版本      -->
-                <com.gdu.demo.widget.VersionView
-                    android:id="@+id/file_transmission_version_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
 
             <!--  5G组件版本      -->
             <com.gdu.demo.widget.VersionView
@@ -1062,139 +961,6 @@
                     android:textStyle="italic" />
             </RelativeLayout>
 
-            <!--datalink 版本号-->
-            <RelativeLayout
-                android:id="@+id/rl_dataLink"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="DataLinker"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_dataLink"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:paddingRight="@dimen/dp_3"
-                    android:text="@string/Label_TextView_NA"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    android:textStyle="italic" />
-            </RelativeLayout>
-
-            <!--计算棒版本号-->
-            <RelativeLayout
-                android:id="@+id/rl_compute_stick"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/computeStick_code"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_currentVersion_compute_stick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:paddingLeft="@dimen/dp_3"
-                    android:paddingRight="@dimen/dp_3"
-                    android:text="@string/Label_TextView_NA"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    android:textStyle="italic" />
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tv_newVersion_compute_stick"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toLeftOf="@+id/tv_currentVersion_compute_stick"
-                    android:paddingRight="@dimen/dp_10"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    android:textStyle="italic" />
-            </RelativeLayout>
-
-
-            <!-- 避障前双目版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obPreVision"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 避障后双目版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obBackVision"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 避障下单目版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obBotVision"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 避障前雷达版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obPreRadar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 避障左雷达版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obLeftRadar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 避障右雷达版本 -->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_obRightRadar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!--remote id广播组件版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/remoteidVersionView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- GNSS版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/gnssVersionView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 飞控App版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/fcAppVersionView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 飞控Boot版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/fcBootVersionView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <!-- 机臂锁紧和电池插紧组件版本号-->
-            <com.gdu.demo.widget.VersionView
-                android:id="@+id/vv_lock_battery_mcu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <!--飞行总时间-->
             <RelativeLayout
                 android:id="@+id/rl_total_fly_time"
@@ -1226,196 +992,5 @@
 
     </androidx.core.widget.NestedScrollView>
 
-
-    <com.gdu.demo.widget.light.LightSettingView
-        android:id="@+id/v_light_setting"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_EDF0F1"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingLeft="@dimen/dp_15"
-        android:paddingRight="@dimen/dp_15"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_layout" />
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/layout_target_recognition"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/color_EDF0F1"
-        android:paddingLeft="@dimen/dp_15"
-        android:paddingRight="@dimen/dp_15"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_layout">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:orientation="vertical">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rl_person"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Person"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_person"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/checkbox_style"
-                    android:padding="@dimen/dp_5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rl_car"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Car"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_car"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/checkbox_style"
-                    android:padding="@dimen/dp_5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/rl_ship"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/Ship"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_12"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/cb_ship"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:button="@drawable/checkbox_style"
-                    android:padding="@dimen/dp_5"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <View
-                android:id="@+id/line12"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvAiBox"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_40"
-                android:gravity="center_vertical"
-                android:text="@string/ai_box"
-                android:textColor="@color/black"
-                android:textSize="@dimen/sp_12" />
-
-            <View
-                android:id="@+id/line13"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_0_5"
-                android:background="@color/color_D8D8D8"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/clBoxModels"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/ll_loading"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_30"
-                    android:orientation="vertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/ivLoading"
-                        android:layout_width="@dimen/dp_20"
-                        android:layout_height="@dimen/dp_20"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/ai_loading" />
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/dp_10"
-                        android:text="@string/string_data_loading_pro"
-                        android:textColor="@color/color_2D2D2D"
-                        android:textSize="@dimen/sp_10" />
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvModels"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

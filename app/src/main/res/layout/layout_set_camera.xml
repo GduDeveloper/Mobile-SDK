@@ -105,85 +105,11 @@
                     android:layout_height="1px"
                     android:background="@color/color_4D999999" />
 
-                <LinearLayout
-                    android:id="@+id/test_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/color_4D999999"
-                    android:layout_marginTop="@dimen/dp_20"
-                    android:orientation="vertical">
-
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/string_test_model"
-                        android:textColor="@color/red"
-                        android:textSize="@dimen/sp_16" />
-
-                    <!-- 云台模式 -->
-                    <RelativeLayout
-                        android:id="@+id/rl_gimbal_mode"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_40">
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/gimbal_mode"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_12" />
-
-                        <com.gdu.demo.widget.GduSpinner
-                            android:id="@+id/gov_gimbal_mode"
-                            android:layout_width="@dimen/dp_130"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:gravity="center"
-                            android:minHeight="@dimen/dp_26"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/sp_11"
-                            android:visibility="visible"
-                            app:optionArray="@array/gimbal_mode" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="1px"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/color_4D999999" />
-                    </RelativeLayout>
-
-                    <!-- 安装角校准-->
-                    <com.gdu.demo.widget.menuLayout.CommonMenuLayout
-                        android:id="@+id/cml_mount_angel_calibrate"
-                        app:cml_label="@string/mount_angel_calibrate"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_40"/>
-
-                    <com.gdu.demo.widget.menuLayout.CommonMenuLayout
-                        android:id="@+id/cml_mount_angel_calibrate_auto"
-                        app:cml_label="@string/mount_angel_calibrate_auto"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_40"/>
-
-                </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <com.gdu.demo.widget.PageLoadingView
-        android:id="@+id/page_loading_view"
-        android:layout_width="match_parent"
-        android:visibility="gone"
-        android:layout_height="match_parent"/>
-
-    <com.gdu.demo.widget.live.LiveChooseView
-        android:id="@+id/live_choose_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
 
 </RelativeLayout>

@@ -35,4 +35,24 @@ public class ScreenUtils {
         windowManager.getDefaultDisplay().getRealSize(outSize);
         return outSize.y;
     }
+
+    public static int dp2px(Context context, float dpValue) {
+        if (context == null || compareFloat(0f, dpValue) == 0) {
+            return 0;
+        }
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+    public static int compareFloat(float a, float b) {
+        int ta = Math.round(a * 1000000);
+        int tb = Math.round(b * 1000000);
+        if (ta > tb) {
+            return 1;
+        } else if (ta < tb) {
+            return -1;
+        } else {
+            return 0;
+        }
+    }
 }

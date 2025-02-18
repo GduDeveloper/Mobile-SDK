@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,7 +46,7 @@ import java.util.List;
 
 public class CameraGimbalActivity extends Activity implements TextureView.SurfaceTextureListener {
 
-    private final String OUTPATH = GduConfig.BaseDirectory + "/local/";//本地副本的保存路径
+    private final String OUTPATH = Environment.getExternalStorageDirectory() + "/gdu/sdk/local/";//本地副本的保存路径
     private VideoFeeder.VideoDataListener videoDataListener = null;
     private GDUCodecManager codecManager = null;
 
@@ -76,6 +78,11 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     }
 
     private void initData() {
+
+        File file = new File(OUTPATH);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
         try {
             VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
         } catch (Exception ignored) {
@@ -425,11 +432,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_record_video_to_local:
                 if (codecManager != null) {
                     codecManager.startStoreMp4ToLocal(OUTPATH, "test.mp4");
+                    toast("开始保存预览流副本到本地");
                 }
                 break;
             case R.id.btn_stop_record_video_to_local:
                 if (codecManager != null) {
                     codecManager.stopStoreMp4ToLocal();
+                    toast("停止保存预览流副本到本地");
                 }
                 break;
             case R.id.btn_enabled_yuv_data:
@@ -461,7 +470,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                             if (error == null) {
                                 toast("存储成功");
                             } else {
-                                toast("存储失败");
+                                toast("存储失败  ");
                             }
                         }
                     });
