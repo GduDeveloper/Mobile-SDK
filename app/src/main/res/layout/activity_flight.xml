@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <!--九宫格-->
     <com.gdu.demo.widget.CustomJiuGongGeView
         android:id="@+id/night_grid_view"
         android:layout_width="match_parent"
@@ -98,14 +99,25 @@
         android:layout_marginLeft="@dimen/dp_10" />
 
 
+    <!--拍照录像-->
+    <com.gdu.demo.widgetlist.takephoto.TakePhotoView
+        android:id="@+id/take_photo_view"
+        android:layout_width="@dimen/dp_54"
+        android:layout_height="@dimen/dp_180"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_state_view"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    <!--云台俯仰角-->
    <com.gdu.demo.widgetlist.gimbalangle.GimbalAngleView
         android:id="@+id/gimbal_angle_view"
         android:layout_width="@dimen/dp_22"
-        android:layout_height="@dimen/dp_140"
+        android:layout_height="@dimen/dp_150"
         app:layout_constraintTop_toBottomOf="@id/top_state_view"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginRight="@dimen/dp_40"/>
+        app:layout_constraintRight_toLeftOf="@id/take_photo_view"
+        android:layout_marginRight="@dimen/dp_2"/>
 
 
     <!--变焦控件-->
