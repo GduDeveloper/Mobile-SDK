@@ -98,7 +98,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             toast("云台未识别，相关功能可能出现异常");
             return;
         }
-        List<SettingsDefinitions.DisplayMode> list = new ArrayList<>();
+        List<SettingsDefinitions.DisplayMode> list = mGDUGimbal.getSupportDisplayMode();
         String supportMode = "";
         for (int i = 0; i < list.size(); i++) {
             SettingsDefinitions.DisplayMode mode = list.get(i);
@@ -289,30 +289,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
                 });
                 break;
-            case R.id.btn_start_continuous_optical_zoom:
-                mGDUCamera.startContinuousOpticalZoom(SettingsDefinitions.ZoomDirection.ZOOM_IN, SettingsDefinitions.ZoomSpeed.SLOWEST, new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(GDUError error) {
-                        if (error == null) {
-                            toast("发送成功");
-                        } else {
-                            toast("发送失败");
-                        }
-                    }
-                });
-                break;
-            case R.id.btn_stop_continuous_optical_zoom:
-                mGDUCamera.stopContinuousOpticalZoom(new CommonCallbacks.CompletionCallback() {
-                    @Override
-                    public void onResult(GDUError error) {
-                        if (error == null) {
-                            toast("发送成功");
-                        } else {
-                            toast("发送失败");
-                        }
-                    }
-                });
-                break;
+
             case R.id.btn_set_display_mode:
                 mGDUCamera.setDisplayMode(SettingsDefinitions.DisplayMode.VISUAL_ONLY, new CommonCallbacks.CompletionCallback() {
                     @Override
@@ -339,7 +316,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_set_digital_zoom:
-                mGDUCamera.setDigitalZoomFactor(1, new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.setZoom(10, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(GDUError error) {
                         if (error == null) {
@@ -351,17 +328,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_get_digital_zoom:
-                mGDUCamera.getDigitalZoomFactor(new CommonCallbacks.CompletionCallbackWith<Float>() {
-                    @Override
-                    public void onSuccess(Float var1) {
-                        toast("发送成功 " + var1);
-                    }
-
-                    @Override
-                    public void onFailure(GDUError var1) {
-                        toast("发送失败 ");
-                    }
-                });
+               float zoom =  mGDUCamera.getCurrentZoom();
                 break;
             case R.id.btn_reset:
                 mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {

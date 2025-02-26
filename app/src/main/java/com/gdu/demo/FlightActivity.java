@@ -27,6 +27,7 @@ import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.TopStateView;
+import com.gdu.demo.widget.zoomView.S220CustomSizeFocusHelper;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.gimbal.GimbalState;
@@ -45,11 +46,19 @@ import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ThreadHelper;
 import com.gdu.util.logger.MyLogUtils;
+import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
 
@@ -58,6 +67,8 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     private VideoFeeder.VideoDataListener videoDataListener ;
 
     private boolean showSuccess = false;
+    private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,7 +149,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 SettingDialogFragment.show(getSupportFragmentManager());
             }
         });
-
         viewBinding.textureView.setSurfaceTextureListener(this);
         videoDataListener = new VideoFeeder.VideoDataListener() {
             @Override
@@ -155,6 +165,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         SettingDao settingDao = SettingDao.getSingle();
         boolean show = settingDao.getBooleanValue(settingDao.ZORRORLabel_Grid, false);
         showNineGridShow(show);
+
+        mCustomSizeFocusHelper = new S220CustomSizeFocusHelper(viewBinding.zoomSeekBar);
+
+
     }
 
 
@@ -223,6 +237,9 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         super.onDestroy();
         if (codecManager != null) {
             codecManager.onDestroy();
+        }
+        if (mCustomSizeFocusHelper != null) {
+            mCustomSizeFocusHelper.onDestroy();
         }
     }
     @Override

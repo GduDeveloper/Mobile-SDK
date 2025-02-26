@@ -24,7 +24,7 @@ class RTKStateModel : WidgetModel() {
             return;
         }
         val currentSatellite = GlobalVariable.satellite_drone
-        val tkStatus = GlobalVariable.rtk_model.rtk1_status?:""
+        val tkStatus = GlobalVariable.rtk_model.rtk1_status ?: ""
         notify(dataChangeChannel, RTKStateValue(currentSatellite, tkStatus))
     }
     override fun onDestroy() {

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_20"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tv_visible_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_11"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        android:text="可见光"
+        android:visibility="gone"
+        android:textColor="@color/color_333333"
+        android:background="@drawable/shape_bg_ffffff"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_wide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_11"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        android:text="广角"
+        android:visibility="gone"
+        android:textColor="@color/color_333333"
+        android:background="@drawable/shape_bg_ffffff"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dp_5"
+        app:layout_constraintLeft_toRightOf="@id/tv_visible_light"/>
+
+    <TextView
+        android:id="@+id/tv_zoom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_11"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        android:text="变焦"
+        android:visibility="gone"
+        android:textColor="@color/color_333333"
+        android:background="@drawable/shape_bg_ffffff"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dp_5"
+        app:layout_constraintLeft_toRightOf="@id/tv_wide"/>
+
+    <TextView
+        android:id="@+id/tv_ir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_11"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        android:text="红外"
+        android:visibility="gone"
+        android:textColor="@color/color_333333"
+        android:background="@drawable/shape_bg_ffffff"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dp_5"
+        app:layout_constraintLeft_toRightOf="@id/tv_zoom"/>
+
+    <TextView
+        android:id="@+id/tv_split"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_11"
+        android:paddingLeft="@dimen/dp_6"
+        android:paddingRight="@dimen/dp_6"
+        android:gravity="center"
+        android:text="分屏"
+        android:visibility="gone"
+        android:textColor="@color/color_333333"
+        android:background="@drawable/shape_bg_ffffff"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/dp_5"
+        app:layout_constraintLeft_toRightOf="@id/tv_ir"/>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,37 +1,24 @@
 package com.gdu.demo.flight.setting.camera;
 
-import android.app.Activity;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.view.Gravity;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.FragmentActivity;
 
 import com.gdu.config.ConnStateEnum;
-import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
-import com.gdu.demo.utils.CameraUtil;
 import com.gdu.demo.utils.CommonDialog;
-import com.gdu.demo.widget.GduSpinner;
-import com.gdu.demo.widget.PageLoadingView;
-import com.gdu.demo.widget.live.Gimbal600gCalibratePop;
-import com.gdu.demo.widget.live.LiveChooseView;
-import com.gdu.demo.widget.menuLayout.CommonMenuLayout;
 import com.gdu.drone.GimbalType;
 import com.gdu.event.GimbalEvent;
 import com.gdu.socket.GduFrame3;

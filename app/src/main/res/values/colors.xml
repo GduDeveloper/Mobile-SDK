@@ -86,4 +86,8 @@
     <color name="color_ADADAD">#ADADAD</color>
     <color name="color_AECAD8">#AECAD8</color>
     <color name="color_CCFFFFFF">#CCFFFFFF</color>
+    <color name="color_00B4FF">#00B4FF</color>
+    <color name="color_B200B4FF">#B200B4FF</color>
+    <color name="color_FFD7D7D7">#FFD7D7D7</color>
+    <color name="color_b3ffffff">#b3ffffff</color>
 </resources>
