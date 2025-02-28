@@ -107,16 +107,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
     private HashMap<Long, WarnBean> warnTable;
     private boolean hadErr;
-    private byte isHorSwitchSelected;
-    private byte isTopSwitchSelected;
-    private byte isBottomSwitchSelected;
-
-    private int horBrakeDistance;
-    private int horWarnDistance;
-    private int topBrakeDistance;
-    private int topWarnDistance;
-    private int bottomBrakeDistance;
-    private int bottomWarnDistance;
 
     
     /**
@@ -654,6 +644,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 int height = preGoHomeHeight;
                 if (data.isSetSuccess()) {
                     height = data.getGoHomeHeight();
+                    preGoHomeHeight = height;
                     toastLiveData.setValue(R.string.string_set_success);
                 } else {
                     toastLiveData.setValue(R.string.Label_SettingFail);
@@ -673,13 +664,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 } else {
                     toastLiveData.setValue(R.string.Label_SettingFail);
                 }
-            }
-        });
-
-
-        baseViewModel.getWarnTipBeanLiveData().observe(activity, data->{
-            if(data.getWarnType() == 1){
-
             }
         });
 
@@ -823,9 +807,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
     }
 
     public void setGoHomeHeight(int value){
-//        if (preGoHomeHeight <= value) {
-//            return;
-//        }
         baseViewModel.setGoHomeHeight(value);
     }
 

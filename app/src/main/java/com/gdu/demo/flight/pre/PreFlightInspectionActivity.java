@@ -184,6 +184,9 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             }
             mTextAdapter.notifyDataSetChanged();
         });
+        viewModel.getBaseFlightViewModel().getWarnTipBeanLiveData().observe(this, data->{
+            showErrTip(data.getType(), data.getWarnType());
+        });
 
         viewModel.getBaseFlightAssistantViewModel().getObstacleHorLiveData().observe(this, data -> {
             mViewBinding.ivAroundObstacleAvoidSwitch.setSelected(data.isSelect());
@@ -509,7 +512,6 @@ public class PreFlightInspectionActivity extends FragmentActivity {
      * */
     private void initLostContactBehavior(){
         viewModel.getBaseFlightViewModel().getConnectionFailSafeBehaviorLiveData().observe(this, data->{
-            System.out.println("============"+data.getPosition());
             mViewBinding.preFlightLostContactEdit.setIndex(data.getPosition());
         });
         mViewBinding.preFlightLostContactEdit.setOnOptionClickListener((parentId, view, position) ->
@@ -591,6 +593,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             viewModel.setLimitDistance(true, value);
             return false;
         });
+        viewModel.getBaseFlightViewModel().getLimitDistance();
     }
 
     /**
@@ -757,7 +760,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
     private void setGoHomeHeightFailHandle(){
-//        mViewBinding.etGoHomeHeightSet.setText(getLimitValue(preGoHomeValue));
+        mViewBinding.preFlightHomeHeightEdit.setText(getLimitValue(viewModel.getPreGoHomeHeight()));
     }
     private String getLimitValue(int val) {
         final String var = val == -1 ? "INF" : String.valueOf(UnitChnageUtils.getUnitValue(val));

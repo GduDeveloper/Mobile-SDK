@@ -193,6 +193,31 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void setGoHomeHeight(int height) {
+        if (!connStateToast()) {
+            WarnTipBean warnTipBean = new WarnTipBean();
+            warnTipBean.setType(3);
+            warnTipBean.setWarnType(1);
+            warnTipBean.setIntValue(height);
+            warnTipBeanLiveData.postValue(warnTipBean);
+            return;
+        }
+        if (GlobalVariable.droneFlyState == 3 || GlobalVariable.backState == 2) {
+            WarnTipBean warnTipBean = new WarnTipBean();
+            warnTipBean.setType(3);
+            warnTipBean.setWarnType(3);
+            warnTipBean.setIntValue(height);
+            warnTipBeanLiveData.postValue(warnTipBean);
+            return;
+        }
+
+        if (height < MyConstants.GO_HOME_HEIGHT_MIN || height > MyConstants.GO_HOME_HEIGHT_MAX) {
+            WarnTipBean warnTipBean = new WarnTipBean();
+            warnTipBean.setType(3);
+            warnTipBean.setWarnType(4);
+            warnTipBean.setIntValue(height);
+            warnTipBeanLiveData.postValue(warnTipBean);
+            return;
+        }
         mGDUFlightController.setGoHomeHeightInMeters((short) height, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError error) {
