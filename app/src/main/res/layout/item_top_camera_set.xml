@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.noober.background.view.BLTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tvItemContent"
+    android:layout_width="@dimen/dp_30"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="@dimen/dp_30"
+    android:textSize="@dimen/sp_9"
+    app:bl_selected_solid_color="@color/white"
+    app:bl_selected_textColor="@color/color_FF5800"
+    app:bl_unSelected_solid_color="@color/color_CCE1ECF4"
+    app:bl_unSelected_textColor="@color/color_333333"
+    tools:showIn="@layout/layout_camera_param_set_pop"
+    tools:text="-3" />

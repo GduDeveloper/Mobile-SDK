@@ -557,7 +557,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         if (codecManager == null) {
-            codecManager = new GDUCodecManager(mContext, surface, width, height);
+            codecManager = new GDUCodecManager(mContext, mGduPlayView, width, height);
         }
     }
 

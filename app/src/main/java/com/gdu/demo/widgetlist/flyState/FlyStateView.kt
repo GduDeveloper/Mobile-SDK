@@ -52,19 +52,19 @@ class FlyStateView @JvmOverloads constructor(
                 binding.tvHeight.text =UnitChnageUtils.getUnitString(showHeight)
 
                 val showHS = BigDecimal((data.hs/100.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
-                binding.tvHSpeed.text = "$showHS m/s"
+                binding.tvHSpeed.text = UnitChnageUtils.getDecimalFormatSpeedUnit(showHS)
 
                 val showVS = BigDecimal((data.vs/100.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
-                binding.tvVSpeed.text = "$showVS m/s"
+                binding.tvVSpeed.text = UnitChnageUtils.getDecimalFormatSpeedUnit(showVS)
 
                 val showAngle =BigDecimal((data.headAngel/1.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
                 binding.tvHeadAngle.text = "$showAngle °"
 
                 val showEllipsoid = BigDecimal((data.ellipsoid_height/100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
-                binding.tvEllipsoidHeight.text = "$showEllipsoid m"
+                binding.tvEllipsoidHeight.text =UnitChnageUtils.getUnitString(showEllipsoid)
 
                 val showAsl = BigDecimal((data.asl_height/100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
-                binding.tvASL.text ="$showAsl m"
+                binding.tvASL.text =UnitChnageUtils.getUnitString(showAsl)
 
             }
         }

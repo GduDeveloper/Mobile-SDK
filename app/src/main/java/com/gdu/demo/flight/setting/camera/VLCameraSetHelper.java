@@ -115,23 +115,16 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
         //恢复云台默认设置
         tv_reset_gimbal = mView.findViewById(R.id.tv_reset_gimbal);
+        View mViewGimbalPositionGroup = mView.findViewById(R.id.viewGimbalPositionGroup);
+        if (DroneUtil.unSupportGimbalYaw()) {
+            ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
+        } else {
+            LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);
+            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePitchStartAndStop);
 
-        /**
-         * 关联两个云台方位设置的布局
-         */
-//        Group mViewGimbalPositionGroup = mView.findViewById(R.id.viewGimbalPositionGroup);
-//        if (DroneUtil.unSupportGimbalYaw()) {
-//            ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
-//        } else {
-//            LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);
-//            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePitchStartAndStop);
-//
-//            LinearLayout llGimbalPositionStartAndStop = mView.findViewById(R.id.llGimbalPositionStartAndStop);
-//            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePositionStartAndStop);
-//        }
-
-        MyLogUtils.d("GimbalPositionGroup    visible =   " + !DroneUtil.unSupportGimbalYaw());
-
+            LinearLayout llGimbalPositionStartAndStop = mView.findViewById(R.id.llGimbalPositionStartAndStop);
+            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePositionStartAndStop);
+        }
     }
 
     public void initCameraParams() {

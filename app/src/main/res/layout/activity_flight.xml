@@ -61,6 +61,19 @@
         app:layout_constraintRight_toRightOf="@id/iv_msgBoxLabel"
         app:layout_constraintTop_toTopOf="@id/iv_msgBoxLabel"/>
 
+
+    <!--相机参数-->
+    <com.gdu.demo.widgetlist.camerapara.CameraParaView
+        android:id="@+id/camera_para_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/top_state_view"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        />
+
+
     <!--飞行信息-->
     <com.gdu.demo.widgetlist.flyState.FlyStateView
         android:id="@+id/fly_state"
@@ -147,7 +160,6 @@
         app:rsb_tick_mark_layout_gravity="bottom"
         app:rsb_tick_mark_mode="other"
         app:rsb_tick_mark_text_color="@android:color/white"
-        app:rsb_tick_mark_text_size="@dimen/sp_10"
-        />
+        app:rsb_tick_mark_text_size="@dimen/sp_10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

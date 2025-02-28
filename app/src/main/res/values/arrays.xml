@@ -128,4 +128,100 @@
         <item >@string/Unit_Inch</item>
     </string-array>
 
+    <!--可见光ISO值集合-S220-->
+    <array name="visible_light_iso_set_S220">
+        <item>0</item>
+        <item>100</item>
+        <item>200</item>
+        <item>400</item>
+        <item>800</item>
+        <item>1600</item>
+        <item>3200</item>
+        <item>6400</item>
+        <item>12800</item>
+        <item>25600</item>
+    </array>
+
+    <!--可见光ISO值显示集合-通用-->
+    <array name="visible_light_iso_set_display_normal">
+        <item>"Auto"</item>
+        <item>"200"</item>
+        <item>"400"</item>
+        <item>"800"</item>
+        <item>"1600"</item>
+        <item>"3200"</item>
+    </array>
+
+    <!--可见光ISO值集合-通用-->
+    <array name="visible_light_iso_set_normal">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+    </array>
+
+    <!--可见光ISO值集合-ByrT_IR_1K-->
+    <array name="visible_light_iso_set_ByrT_IR_1K">
+        <item>0</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </array>
+
+    <!--可见光ISO值显示集合-ByrdT_4k-->
+    <array name="visiblelight_iso_set_display_ByrdT_4k">
+        <item>"Auto"</item>
+        <item>"100</item>
+        <item>"200"</item>
+        <item>"400"</item>
+        <item>"800"</item>
+        <item>"1600"</item>
+        <item>"3200"</item>
+    </array>
+
+    <!--可见光ISO值显示集合-30X-->
+    <array name="visiblelight_iso_set_display_30x">
+        <item>"Auto"</item>
+        <item>"100"</item>
+        <item>"200"</item>
+        <item>"400"</item>
+        <item>"800"</item>
+        <item>"1600"</item>
+        <item>"3200"</item>
+        <item>"6400"</item>
+        <item>"12800"</item>
+    </array>
+
+    <!--可见光ISO值显示集合-S220-->
+    <array name="visiblelight_iso_set_display_S220">
+        <item>"0</item>
+        <item>"100</item>
+        <item>"200"</item>
+        <item>"400"</item>
+        <item>"800"</item>
+        <item>"1600"</item>
+        <item>"3200"</item>
+        <item>"6400"</item>
+        <item>"12800"</item>
+        <item>"25600"</item>
+    </array>
+
+    <!--可见光ISO值显示集合-通用-->
+    <array name="visiblelight_iso_set_display_normal">
+        <item>"Auto"</item>
+        <item>"200"</item>
+        <item>"400"</item>
+        <item>"800"</item>
+        <item>"1600"</item>
+        <item>"3200"</item>
+    </array>
+
+
 </resources>

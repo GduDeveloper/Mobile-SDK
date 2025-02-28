@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+    <com.noober.background.view.BLConstraintLayout
+        android:id="@+id/clCameraOptLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:minHeight="@dimen/dp_30"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_10"
+        app:bl_corners_radius="@dimen/dp_2"
+        app:bl_solid_color="@color/color_8C438EB9"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvIRStorageLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_30"
+            android:text="IR存储"
+            android:textSize="@dimen/sp_6"
+            android:textStyle="bold"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/tvIRStorageContent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvIRStorageContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_7"
+            android:minWidth="@dimen/dp_30"
+            android:maxWidth="@dimen/dp_40"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="0.85"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@id/tvIRStorageLabel"
+            app:layout_constraintRight_toRightOf="@id/tvIRStorageLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvIRStorageLabel"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px"
+            tools:text="CWZI" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/viewBarrier5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="tvIRStorageLabel, tvIRStorageContent" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvStorageLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_30"
+            android:text="存储"
+            android:textSize="@dimen/sp_6"
+            android:textStyle="bold"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/tvStorageContent"
+            app:layout_constraintRight_toRightOf="@id/tvStorageContent"
+            app:layout_constraintLeft_toLeftOf="@id/tvStorageContent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvStorageContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_7"
+            android:minWidth="@dimen/dp_30"
+            android:maxWidth="@dimen/dp_40"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:lineSpacingMultiplier="0.85"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintRight_toLeftOf="@id/viewBarrier5"
+            app:layout_constraintTop_toBottomOf="@id/tvStorageLabel"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px"
+            tools:text="@string/Label_NoCardInserted" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/viewBarrier1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="tvStorageLabel, tvStorageContent" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvEvSetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_30"
+            android:text="EV"
+            android:textSize="@dimen/sp_6"
+            android:textStyle="bold"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/tvEvSetContent"
+            app:layout_constraintRight_toLeftOf="@id/viewBarrier1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvEvSetContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_9"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvEvSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvEvSetLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvEvSetLabel"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px"
+            tools:text="0" />
+
+        <View
+            android:id="@+id/viewEVOver"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvEvSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvEvSetLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/viewBarrier2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="tvEvSetLabel, tvEvSetContent" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvShutterSetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_30"
+            android:text="快门"
+            android:textSize="@dimen/sp_6"
+            android:textStyle="bold"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/tvShutterSetContent"
+            app:layout_constraintRight_toLeftOf="@id/viewBarrier2"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvShutterSetContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_9"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvShutterSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvShutterSetLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvShutterSetLabel"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px"
+            tools:text="1/1000" />
+
+        <View
+            android:id="@+id/viewShutterOver"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvShutterSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvShutterSetLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/viewBarrier3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="tvShutterSetLabel, tvShutterSetContent" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvIsoSetLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:minWidth="@dimen/dp_30"
+            android:text="ISO"
+            android:textSize="@dimen/sp_6"
+            android:textStyle="bold"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toTopOf="@id/tvIsoSetContent"
+            app:layout_constraintRight_toLeftOf="@id/viewBarrier3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px" />
+
+        <com.gdu.demo.widget.RouteStrokeTextView
+            android:id="@+id/tvIsoSetContent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="@dimen/sp_9"
+            app:bl_selected_textColor="@color/color_C3C4C4"
+            app:bl_unEnabled_textColor="@color/color_C3C4C4"
+            app:bl_unSelected_textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvIsoSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvIsoSetLabel"
+            app:layout_constraintTop_toBottomOf="@id/tvIsoSetLabel"
+            app:strokeColor="@color/color_FF3C3C3C"
+            app:strokeWidth="1px"
+            tools:text="100" />
+
+        <View
+            android:id="@+id/viewISOOver"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@id/tvIsoSetLabel"
+            app:layout_constraintRight_toRightOf="@id/tvIsoSetLabel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/viewBarrier4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="tvIsoSetLabel, tvIsoSetContent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/viewIRStorageGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvIRStorageLabel,tvIRStorageContent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/viewEVGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="viewEVOver,tvEvSetLabel,tvEvSetContent" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/viewISOGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="viewISOOver,tvIsoSetContent,tvIsoSetLabel"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/viewESGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="tvShutterSetLabel,tvShutterSetContent,viewShutterOver"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/viewAutoSwitchGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="ivAutoSwitchBtn,viewLine1"/>
+
+        <View
+            android:id="@+id/viewLine1"
+            android:layout_width="@dimen/dp_0_5"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_6"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_6"
+            android:background="@color/color_3FFFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/viewBarrier4"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ivAutoSwitchBtn"
+            android:layout_width="@dimen/dp_30"
+            android:layout_height="@dimen/dp_30"
+            android:src="@drawable/selector_camera_auto_switch_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/viewLine1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </com.noober.background.view.BLConstraintLayout>
+
+    <com.noober.background.view.BLImageView
+        android:id="@+id/ivAELockBtn"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginLeft="@dimen/dp_5"
+        android:src="@drawable/selector_camera_ae_lock_bg"
+        android:visibility="visible"
+        app:bl_corners_radius="@dimen/dp_2"
+        app:bl_solid_color="@color/color_8C438EB9"
+        app:layout_constraintBottom_toBottomOf="@id/clCameraOptLayout"
+        app:layout_constraintLeft_toRightOf="@id/clCameraOptLayout"
+        app:layout_constraintTop_toTopOf="@id/clCameraOptLayout" />
+
+    <View
+        android:id="@+id/viewLineLinkSwitch"
+        android:layout_width="@dimen/dp_5"
+        android:layout_height="@dimen/dp_30"
+        android:background="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="@id/clCameraOptLayout"
+        app:layout_constraintLeft_toRightOf="@id/ivAELockBtn"
+        app:layout_constraintTop_toTopOf="@id/clCameraOptLayout" />
+
+    <com.noober.background.view.BLImageView
+        android:id="@+id/ivLinkSwitchBtn"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:src="@drawable/selector_camera_zoom_link_bg"
+        app:bl_corners_radius="@dimen/dp_2"
+        app:bl_selected_solid_color="@color/color_8C438EB9"
+        app:bl_unSelected_solid_color="@color/color_8C367497"
+        app:layout_constraintLeft_toRightOf="@id/viewLineLinkSwitch"
+        app:layout_constraintTop_toTopOf="@id/clCameraOptLayout"
+        app:layout_constraintBottom_toBottomOf="@id/clCameraOptLayout"
+        app:layout_goneMarginLeft="0dp"/>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/viewLinkSwitchGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="viewLineLinkSwitch,ivLinkSwitchBtn"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -115,11 +115,9 @@ public class UnitChnageUtils {
      * @param value 秒速值
      * @return 带有单位的秒速值
      */
-    public String getUnitSpeedString(int value) {
+    public static  String getUnitSpeedString(int value) {
         String s = null;
-        if (settingDao == null) {
-            settingDao = SettingDao.getSingle();
-        }
+        SettingDao settingDao = SettingDao.getSingle();
         int intValue = settingDao.getIntValue(settingDao.Label_Unit, 2);
 
         if (intValue == SettingDao.Unit_Inch) {
