@@ -1,12 +1,12 @@
 package com.gdu.demo.widgetlist.flyState
 
 import android.content.Context
+import android.graphics.Color
 import android.util.AttributeSet
 import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.databinding.FlyStateLayoutBinding
-import com.gdu.demo.utils.SettingDao
 import com.gdu.demo.utils.UnitChnageUtils
 import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
 import java.math.BigDecimal
@@ -48,8 +48,20 @@ class FlyStateView @JvmOverloads constructor(
                 val showDis = BigDecimal((data.dis / 1.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
                 binding.tvDis.text = UnitChnageUtils.getUnitString(showDis)
 
+                if (GlobalVariable.limitDiatsnce > 19 && GlobalVariable.limitDiatsnce - data.dis <= 5) {
+                    binding.tvDis.setTextColor(Color.RED)
+                } else {
+                    binding.tvDis.setTextColor(Color.WHITE)
+                }
+
                 val showHeight = BigDecimal((data.height / 100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
                 binding.tvHeight.text =UnitChnageUtils.getUnitString(showHeight)
+
+                if (GlobalVariable.height_drone > 5 && GlobalVariable.limitHeight > 19 && (GlobalVariable.limitHeight - data.height * 1.0 / 100) <= 5) {
+                    binding.tvHeight.setTextColor(Color.RED)
+                } else {
+                    binding.tvHeight.setTextColor(Color.WHITE)
+                }
 
                 val showHS = BigDecimal((data.hs/100.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
                 binding.tvHSpeed.text = UnitChnageUtils.getDecimalFormatSpeedUnit(showHS)

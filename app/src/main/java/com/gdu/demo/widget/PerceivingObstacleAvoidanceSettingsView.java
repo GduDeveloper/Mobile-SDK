@@ -14,11 +14,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.flight.event.ChangeUnitEvent;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.sdk.util.CommonUtils;
+import com.gdu.socket.GduFrame3;
+import com.gdu.socket.GduSocketManager;
+import com.gdu.socket.SocketCallBack3;
+import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.logger.MyLogUtils;
 
@@ -133,68 +139,68 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
     /** 获取避障子方向开关和距离*/
     private void getObstacleCallback() {
-//        GduApplication.getSingleApp().gduCommunication.getObstacleDirectionDistance((code, bean) -> {
-//            MyLogUtils.d("getObstacleCallback() code = " + code);
-//            // 这里不去判断code的状态
-//            if (bean != null && bean.frameContent != null) {
-//                isHorSwitchSelected = bean.frameContent[0];
-//                isTopSwitchSelected = bean.frameContent[5];
-//                isBottomSwitchSelected = bean.frameContent[10];
-//
-//                GlobalVariable.isObsHorSwitchState = isHorSwitchSelected == 0;
-//                GlobalVariable.isObsTopSwitchState = isTopSwitchSelected == 0;
-//                GlobalVariable.isObsBottomSwitchState = isBottomSwitchSelected == 0;
-//                mHandler.obtainMessage(GET_OBSTACLE_HORIZONTAL_OPEN,isHorSwitchSelected, 0).sendToTarget(); //水平避障开关
-//                mHandler.obtainMessage(GET_OBSTACLE_TOP_OPEN,isTopSwitchSelected, 0).sendToTarget();        //上视避障开关
-//                if (CommonUtils.curPlanIsSmallFlight()) {
-//                    mHandler.obtainMessage(GET_OBSTACLE_BOTTOM_OPEN, isBottomSwitchSelected, 0).sendToTarget();    //下视避障开关
-//                }
-//
-//                horBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 1);                       //水平避障刹停距离
-//                horWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 3);                        //水平避障告警距离
-//                topBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 6);                       //上视避障刹停距离
-//                topWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 8);                        //上视觉避告警距离
-//                if (CommonUtils.curPlanIsSmallFlight()) {
-//                    //下视避障刹停距离
-//                    bottomBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 11);
-//                    //下视避障告警距离
-//                    bottomWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 13);
-//                }
-//
-//                mHandler.obtainMessage(GET_HOR_STOP_DISTANCE, horBrakeDistance, 0).sendToTarget();
-//                mHandler.obtainMessage(GET_HOR_WARN_DISTANCE, horWarnDistance, 0).sendToTarget();
-//                mHandler.obtainMessage(GET_TOP_STOP_DISTANCE, topBrakeDistance, 0).sendToTarget();
-//                mHandler.obtainMessage(GET_TOP_WARN_DISTANCE, topWarnDistance, 0).sendToTarget();
-//                if (CommonUtils.curPlanIsSmallFlight()) {
-//                    mHandler.obtainMessage(GET_BOTTOM_STOP_DISTANCE, bottomBrakeDistance, 0).sendToTarget();
-//                    mHandler.obtainMessage(GET_BOTTOM_WARN_DISTANCE, bottomWarnDistance, 0).sendToTarget();
-//                }
-//
-//                MyLogUtils.d("getObstacleCallback() horOpen = " + (isHorSwitchSelected));
-//                MyLogUtils.d("getObstacleCallback() horStop = " + horBrakeDistance);
-//                MyLogUtils.d("getObstacleCallback() horWarning = " + horWarnDistance);
-//                MyLogUtils.d("getObstacleCallback() topOpen = " + (isTopSwitchSelected ));
-//                MyLogUtils.d("getObstacleCallback() topStop = " + topBrakeDistance);
-//                MyLogUtils.d("getObstacleCallback() topWarning = " + topWarnDistance);
-//                MyLogUtils.d("getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
-//                MyLogUtils.d("getObstacleCallback() bottomStop = " + bottomBrakeDistance);
-//                MyLogUtils.d("getObstacleCallback() bottomWarning = " + bottomWarnDistance);
-//            }
-//        });
+        GduSocketManager.getInstance().getGduCommunication().getObstacleDirectionDistance((code, bean) -> {
+            MyLogUtils.d("getObstacleCallback() code = " + code);
+            // 这里不去判断code的状态
+            if (bean != null && bean.frameContent != null) {
+                isHorSwitchSelected = bean.frameContent[0];
+                isTopSwitchSelected = bean.frameContent[5];
+                isBottomSwitchSelected = bean.frameContent[10];
+
+                GlobalVariable.isObsHorSwitchState = isHorSwitchSelected == 0;
+                GlobalVariable.isObsTopSwitchState = isTopSwitchSelected == 0;
+                GlobalVariable.isObsBottomSwitchState = isBottomSwitchSelected == 0;
+                mHandler.obtainMessage(GET_OBSTACLE_HORIZONTAL_OPEN,isHorSwitchSelected, 0).sendToTarget(); //水平避障开关
+                mHandler.obtainMessage(GET_OBSTACLE_TOP_OPEN,isTopSwitchSelected, 0).sendToTarget();        //上视避障开关
+                if (CommonUtils.curPlanIsSmallFlight()) {
+                    mHandler.obtainMessage(GET_OBSTACLE_BOTTOM_OPEN, isBottomSwitchSelected, 0).sendToTarget();    //下视避障开关
+                }
+
+                horBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 1);                       //水平避障刹停距离
+                horWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 3);                        //水平避障告警距离
+                topBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 6);                       //上视避障刹停距离
+                topWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 8);                        //上视觉避告警距离
+                if (CommonUtils.curPlanIsSmallFlight()) {
+                    //下视避障刹停距离
+                    bottomBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 11);
+                    //下视避障告警距离
+                    bottomWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 13);
+                }
+
+                mHandler.obtainMessage(GET_HOR_STOP_DISTANCE, horBrakeDistance, 0).sendToTarget();
+                mHandler.obtainMessage(GET_HOR_WARN_DISTANCE, horWarnDistance, 0).sendToTarget();
+                mHandler.obtainMessage(GET_TOP_STOP_DISTANCE, topBrakeDistance, 0).sendToTarget();
+                mHandler.obtainMessage(GET_TOP_WARN_DISTANCE, topWarnDistance, 0).sendToTarget();
+                if (CommonUtils.curPlanIsSmallFlight()) {
+                    mHandler.obtainMessage(GET_BOTTOM_STOP_DISTANCE, bottomBrakeDistance, 0).sendToTarget();
+                    mHandler.obtainMessage(GET_BOTTOM_WARN_DISTANCE, bottomWarnDistance, 0).sendToTarget();
+                }
+
+                MyLogUtils.d("getObstacleCallback() horOpen = " + (isHorSwitchSelected));
+                MyLogUtils.d("getObstacleCallback() horStop = " + horBrakeDistance);
+                MyLogUtils.d("getObstacleCallback() horWarning = " + horWarnDistance);
+                MyLogUtils.d("getObstacleCallback() topOpen = " + (isTopSwitchSelected ));
+                MyLogUtils.d("getObstacleCallback() topStop = " + topBrakeDistance);
+                MyLogUtils.d("getObstacleCallback() topWarning = " + topWarnDistance);
+                MyLogUtils.d("getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
+                MyLogUtils.d("getObstacleCallback() bottomStop = " + bottomBrakeDistance);
+                MyLogUtils.d("getObstacleCallback() bottomWarning = " + bottomWarnDistance);
+            }
+        });
     }
 
     /** 设置避障子方向开关和距离*/
     private void setObsSetting(byte horOpen, int horStop, int horWarning, byte topOpen, int topStop, int topWarning, byte bottomOpen, int bottomStop, int bottomWarning) {
-//        GduApplication.getSingleApp().gduCommunication.setObstacleDirectionDistance(new SocketCallBack3() {
-//            @Override
-//            public void callBack(int code, GduFrame3 bean) {
-//                if (code == GduConfig.OK) {
-//                    mHandler.obtainMessage(SET_OBSTACLE_SUCCESS).sendToTarget();
-//                } else {
-//                    mHandler.obtainMessage(SET_OBSTACLE_FAIL).sendToTarget();
-//                }
-//            }
-//        }, horOpen, (short) horStop, (short) horWarning, topOpen, (short) topStop, (short) topWarning, bottomOpen, (short) bottomStop, (short) bottomWarning);
+        GduSocketManager.getInstance().getGduCommunication().setObstacleDirectionDistance(new SocketCallBack3() {
+            @Override
+            public void callBack(int code, GduFrame3 bean) {
+                if (code == GduConfig.OK) {
+                    mHandler.obtainMessage(SET_OBSTACLE_SUCCESS).sendToTarget();
+                } else {
+                    mHandler.obtainMessage(SET_OBSTACLE_FAIL).sendToTarget();
+                }
+            }
+        }, horOpen, (short) horStop, (short) horWarning, topOpen, (short) topStop, (short) topWarning, bottomOpen, (short) bottomStop, (short) bottomWarning);
     }
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -480,14 +486,14 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
         }
     }
 
-//    @Subscribe
-//    public void onEventMainThread(ChangeUnitEvent event) {
-//        //动态变化参数单位需要
-//        if (mPerceivingSettingsView != null) {
-//            mPerceivingSettingsView.changeUnit();
-//        }
-//        changeUnit();
-//    }
+    @Subscribe
+    public void onEventMainThread(ChangeUnitEvent event) {
+        //动态变化参数单位需要
+        if (mPerceivingSettingsView != null) {
+            mPerceivingSettingsView.changeUnit();
+        }
+        changeUnit();
+    }
 
     private void changeUnit() {
         mPerceivingSettingsView.setBrakeDistanceHint(getResValue(1), 1);

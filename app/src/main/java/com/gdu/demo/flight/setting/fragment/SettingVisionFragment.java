@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
+import com.gdu.socket.GduSocketManager;
+import com.gdu.socket.GduUDPSocket3;
 import com.gdu.socket.SocketCallBack3;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.FormatConfig;
@@ -131,17 +134,20 @@ public class SettingVisionFragment extends Fragment {
 
     private void initData() {
         preLoadData();
-
         mFlightAssistant.getLandingProtectionEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean open) {
                 uiThreadHandle(() -> {
+                    Log.d("Vision", "getLanding   open = " + open);
                     mVisionBinding.ivLandProtectSwitch.setSelected(open);
+                    mVisionBinding.tvLandProtectTip.setVisibility(open ? View.VISIBLE : View.GONE);
                 });
             }
 
             @Override
             public void onFailure(GDUError gduError) {
+
+                Log.d("Vision", "getLanding   gduError = " + gduError.getDescription());
 
             }
         });
@@ -523,6 +529,7 @@ public class SettingVisionFragment extends Fragment {
                     if (error == null) {
                         switch_vision_obstacle_strategy = open;
                         mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(open);
+                        changeVisibilityObstacleView();
                         Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(requireContext(), "设置失败", Toast.LENGTH_SHORT).show();

@@ -86,12 +86,14 @@
             android:text="@string/rc_custom_key"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_12"
+            android:visibility="gone"
             app:layout_constraintTop_toBottomOf="@id/tv_rc_model" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="@dimen/dp_8"
             android:layout_height="@dimen/dp_15"
             android:src="@drawable/delay_arrow"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tv_rc_custom_key_view"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_rc_custom_key_view" />
@@ -99,6 +101,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_1"
+            android:visibility="gone"
             android:background="@color/color_4D999999"
             app:layout_constraintBottom_toBottomOf="@id/tv_rc_custom_key_view" />
 
