@@ -192,6 +192,7 @@
 
 
     <LinearLayout
+        android:id="@+id/camera_fun1"
         android:layout_below="@+id/gimbal_layout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -227,7 +228,39 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/camera_fun1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="预览流编码格式:"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:padding="4dp"/>
 
+        <TextView
+            android:id="@+id/preview_format"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:textColor="@color/black"
+            android:padding="4dp"/>
+        <Button
+            android:id="@+id/preview_format_264"
+            android:text="设置为264"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/preview_format_265"
+            android:text="设置为265"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/camera_info_layout"

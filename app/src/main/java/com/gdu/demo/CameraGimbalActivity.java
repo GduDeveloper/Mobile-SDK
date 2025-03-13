@@ -21,6 +21,7 @@ import com.gdu.camera.SettingsDefinitions;
 import com.gdu.camera.StorageState;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GduConfig;
+import com.gdu.config.GlobalVariable;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
@@ -33,6 +34,7 @@ import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.ThreadHelper;
 import com.gdu.util.logs.RonLog;
 
 import java.io.File;
@@ -66,6 +68,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     private ImageView mYUVImageView;
 
     private TextView tv_support_mode;
+    private TextView tvPreviewFormat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +201,8 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 }
             };
         }
-
+        tvPreviewFormat = findViewById(R.id.preview_format);
+        tvPreviewFormat.setText(GlobalVariable.sCodingFormat == 0 ? "H264" : "H265");
     }
 
     public void toast(final String toast) {
@@ -511,6 +515,34 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     @Override
                     public void onFailure(GDUError gduError) {
                         toast("获取失败： ");
+                    }
+                });
+                break;
+            case R.id.preview_format_264:
+                mGDUCamera.setVideoCodingFormat(0, new CommonCallbacks.CompletionCallbackWith<Integer>() {
+                    @Override
+                    public void onSuccess(Integer format) {
+                        toast("成功设置为H264");
+                        ThreadHelper.runOnUiThread(() -> tvPreviewFormat.setText("H264"));
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("设置失败： ");
+                    }
+                });
+                break;
+            case R.id.preview_format_265:
+                mGDUCamera.setVideoCodingFormat(1, new CommonCallbacks.CompletionCallbackWith<Integer>() {
+                    @Override
+                    public void onSuccess(Integer format) {
+                        toast("成功设置为H265");
+                        ThreadHelper.runOnUiThread(() -> tvPreviewFormat.setText("H265"));
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("设置失败： ");
                     }
                 });
                 break;
