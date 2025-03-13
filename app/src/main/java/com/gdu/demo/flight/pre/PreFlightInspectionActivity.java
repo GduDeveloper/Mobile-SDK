@@ -566,6 +566,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             preLimitDistanceValue  = data.isOpen() ? data.getDistance() : preLimitDistanceValue;
             mViewBinding.preFlightLimitDistanceSwitch.setSelected(data.isOpen());
             mViewBinding.preFlightLimitDistanceEdit.setSelected(data.isOpen());
+            mViewBinding.preFlightLimitDistanceEdit.setEnabled(data.isOpen());
         });
         SingleClickUtil.onSingleClick(mViewBinding.preFlightLimitDistanceSwitch, false, v -> {
             if (!ConnectUtil.isConnect()) {

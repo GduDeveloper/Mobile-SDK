@@ -9,27 +9,35 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 
+import com.gdu.AlgorithmMark;
 import com.gdu.beans.WarnBean;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.databinding.ActivityFlightBinding;
+import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
 import com.gdu.demo.flight.msgbox.MsgBoxBean;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
+import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.ToolManager;
+import com.gdu.demo.viewmodel.FlightViewModel;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.demo.widget.zoomView.S220CustomSizeFocusHelper;
+import com.gdu.drone.GimbalType;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.drone.ScreenContentType;
+import com.gdu.drone.TargetMode;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
@@ -42,10 +50,13 @@ import com.gdu.sdk.radar.GDURadar;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.CollectionUtils;
+import com.gdu.util.ConnectUtil;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ThreadHelper;
+import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
+import com.gdu.util.logs.AppLog;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -68,6 +79,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
+    private FlightViewModel viewModel;/**
+     * 目标检测类
+     */
+    private TargetDetectHelper mTargetDetectHelper;
 
 
     @Override
@@ -75,6 +90,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         super.onCreate(savedInstanceState);
         viewBinding = ActivityFlightBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
+        viewModel = new ViewModelProvider(this).get(FlightViewModel.class);
         initView();
         initData();
         initListener();
@@ -134,6 +150,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 runOnUiThread(() -> viewBinding.fpvRv.setGimbalAngle(yaw));
             });
         }
+
+        viewModel.getToastLiveData().observe(this, data -> {
+            if (data != 0){
+                showToast(getResources().getString(data));
+            }
+        });
     }
 
 
@@ -161,6 +183,8 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
         viewBinding.ivMsgBoxLabel.setOnClickListener(this);
+        viewBinding.aiRecognizeImageview.setOnClickListener(this);
+        ViewUtils.setViewShowOrHide(viewBinding.aiRecognizeImageview, viewModel.isShowAiBox());
 
         SettingDao settingDao = SettingDao.getSingle();
         boolean show = settingDao.getBooleanValue(settingDao.ZORRORLabel_Grid, false);
@@ -168,7 +192,56 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
         mCustomSizeFocusHelper = new S220CustomSizeFocusHelper(viewBinding.zoomSeekBar);
 
+        mTargetDetectHelper = TargetDetectHelper.getInstance();
+        mTargetDetectHelper.init(this);
+        mTargetDetectHelper.setOnTargetDetectListener(new TargetDetectHelper.OnTargetDetectListener() {
+            @Override
+            public void onTargetDetect(boolean isSuccess, List<TargetMode> targetModes) {
+                LoadingDialogUtils.cancelLoadingDialog();
+                //视频是主界面时，在视频上画框
+                if (isSuccess && targetModes != null && !targetModes.isEmpty()) {
+                    AppLog.e("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
+                    GlobalVariable.isTargetDetectMode = true;
+                    mTargetDetectHelper.startShowTarget();
+                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
+                    ThreadHelper.runOnUiThread(() -> Toast.makeText(FlightActivity.this, "识别到"+targetModes.size()+"个", Toast.LENGTH_SHORT).show());
+                } else if (targetModes == null) {
+                    AppLog.e("TargetDetect", "onTargetDetect targetModes size = 0");
+                }
+            }
 
+            @Override
+            public void onTargetDetectSend(boolean isSuccess) {
+                MyLogUtils.d("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
+                if (isSuccess) {
+                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
+                    GlobalVariable.discernIsOpen = true;
+                    GlobalVariable.isTargetDetectMode = true;
+                } else {
+                    GlobalVariable.isTargetDetectMode = false;
+                }
+            }
+
+            @Override
+            public void onTargetLocateSend(boolean isSuccess) {
+                MyLogUtils.d("mTargetDetectHelper onTargetLocateSend() isSuccess = " + isSuccess);
+                if (isSuccess) {
+//                    DialogUtils.createLoadDialog(ZorroRealControlActivity.this);
+                } else {
+                }
+            }
+
+            @Override
+            public void onTargetLocate(boolean isSuccess, TargetMode targetMode) {
+                MyLogUtils.d("mTargetDetectHelper onTargetLocate() isSuccess = " + isSuccess);
+//                DialogUtils.cancelLoadDialog();
+            }
+
+            @Override
+            public void onDetectClosed() {
+                //收到关闭目标识别成功回调后再次重置状态，防止部分极端场景本地重置状态到发送关闭中间时间段又收到周期回调，将状态还原导致无法退出的问题
+            }
+        });
     }
 
 
@@ -292,6 +365,8 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
             showMsgBoxPopWindow(msgData);
             viewBinding.ivMsgBoxLabel.setSelected(!viewBinding.ivMsgBoxLabel.isSelected());
+        }else if (v.getId() == R.id.ai_recognize_imageview){
+            viewModel.switchAIRecognize();
         }
     }
 
@@ -344,5 +419,15 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
             }
         });
+    }
+
+    public void showToast(String str) {
+        ThreadHelper.runOnUiThread(() -> Toast.makeText(this, str, Toast.LENGTH_SHORT).show());
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        viewModel.stopTarget((byte) 0x02, GlobalVariable.mCurrentLightType);
     }
 }

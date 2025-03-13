@@ -13,20 +13,16 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.gdu.api.gimbal.Gimbal;
 import com.gdu.common.error.GDUError;
-import com.gdu.drone.DroneInfo;
 import com.gdu.drone.GimbalType;
 import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
-import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.manager.GDUSDKInitEvent;
 import com.gdu.sdk.manager.GDUSDKManager;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.logs.RonLog;
 
 /**
  *

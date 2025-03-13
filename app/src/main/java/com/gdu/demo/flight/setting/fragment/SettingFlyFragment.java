@@ -32,6 +32,7 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.sdk.util.CommonUtils;
+import com.gdu.sdk.vision.GDUVision;
 import com.gdu.util.ChannelUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
@@ -914,6 +915,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     tv_s_model_text.setText(getSModelContentString(getContext()));
                     tv_confirm.setOnClickListener(view -> dialogInterface.dismiss());
                 }).build().show();
+
     }
 
     public static String getAModelContentString(Context context) {

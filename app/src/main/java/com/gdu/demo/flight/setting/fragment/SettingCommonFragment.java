@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.setting.fragment;
 
-import android.content.Context;
+import android.animation.ObjectAnimator;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -12,9 +13,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.gdu.GlobalVariableTest;
 import com.gdu.common.error.GDUError;
+import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
@@ -22,30 +25,45 @@ import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingCommonBinding;
+import com.gdu.demo.flight.setting.adapter.TargetDetectModelAdapter;
+import com.gdu.demo.flight.setting.bean.GetAiModel;
+import com.gdu.demo.flight.setting.bean.GetAiModelResponse;
+import com.gdu.demo.flight.setting.bean.TargetDetectLabel;
+import com.gdu.demo.flight.setting.bean.TargetDetectModel;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
+import com.gdu.detect.AIModelState;
 import com.gdu.drone.FirmwareType;
 import com.gdu.login.LoginType;
 import com.gdu.login.UserInfoBeanNew;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
+import com.gdu.sdk.vision.OnTargetDetectModelListener;
+import com.gdu.sdk.vision.aibox.bean.TargetLabel;
 import com.gdu.socket.GduSocketManager;
+import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.ChannelUtils;
 import com.gdu.util.ConnectUtil;
-import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
+import com.gdu.util.ResourceUtil;
 import com.gdu.util.SPUtils;
 import com.gdu.util.TextUtil;
+import com.gdu.util.ThreadHelper;
 import com.gdu.util.TimeUtil;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
+import com.gdu.util.logs.AppLog;
 import com.google.gson.Gson;
+import com.google.gson.internal.LinkedTreeMap;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 
 /**
@@ -59,6 +77,8 @@ public class SettingCommonFragment extends Fragment {
     private int currentSecondLevelType = 0;
     private SettingDao mSettingDao;
     private Handler handler;
+    private ObjectAnimator objectAnimator;
+    private TargetDetectModelAdapter modelAdapter;
 
 
     @Nullable
@@ -388,6 +408,7 @@ public class SettingCommonFragment extends Fragment {
         mViewBinding.ivPoseModeSwitchBtn.setOnClickListener(listener);
         mViewBinding.droneInfoItem.setOnClickListener(listener);
         mViewBinding.ivSwitchADSBBtn.setOnClickListener(listener);
+        mViewBinding.targetRecognitionItem.setOnClickListener(listener);
         mViewBinding.ivShowRouteHistorySwitchBtn.setOnClickListener(listener);
         mViewBinding.tvUnit.setOnOptionClickListener(new GduSpinner.OnOptionClickListener() {
             @Override
@@ -455,7 +476,11 @@ public class SettingCommonFragment extends Fragment {
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
-
+                case R.id.target_recognition_item:
+                    initTargetDetectView();
+                    setSecondLevelView(mViewBinding.layoutTargetRecognition, true, GduAppEnv.application.getString(R.string.Label_Visition_Target_Detect));
+                    currentSecondLevelType = 3;
+                    break;
                 case R.id.drone_info_item:
                     setSecondLevelView(mViewBinding.layoutDroneInfo, true, getString(R.string.fly_info));
                     currentSecondLevelType = 1;
@@ -521,9 +546,213 @@ public class SettingCommonFragment extends Fragment {
         ChannelUtils.setupSn(View.GONE, mViewBinding.rlSn, mViewBinding.rlSnRC, mViewBinding.gimbalSn, mViewBinding.batterySn);
     }
 
+    private void initTargetDetectView() {
+        initTargetDetectType();
 
+        if (GlobalVariable.otherCompId == GduSocketConfig3.AI_BOX) {
+            mViewBinding.clBoxModels.setVisibility(View.VISIBLE);
+            mViewBinding.tvAiBox.setVisibility(View.VISIBLE);
+            mViewBinding.line13.setVisibility(View.VISIBLE);
+            objectAnimator = ObjectAnimator.ofFloat(mViewBinding.ivLoading, "rotation", 0f, 360f);
+            objectAnimator.setDuration(1000);
+            objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+            objectAnimator.start();
 
+            modelAdapter = new TargetDetectModelAdapter(data -> {
+                if (data != null) {
+                    byte[] typeArray = new byte[data.getLabels().size()];
+                    boolean hasChecked = false;
+                    for (int i = 0; i < data.getLabels().size(); i++) {
+                        if (data.getLabels().get(i).isChecked()) {
+                            typeArray[i] = 0x01;
+                            hasChecked = true;
+                        } else {
+                            typeArray[i] = 0x00;
+                        }
+                    }
+                    byte detectType = 0x00;
+                    if (hasChecked) detectType = 0x01;
+                    SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(data.getId(), detectType, (short) data.getLabels().size(), typeArray,
+                            gduError -> AppLog.e("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + gduError));
+                }
+            });
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+            ShapeDrawable dividerDrawable = new ShapeDrawable();
+            dividerDrawable.getPaint().setColor(getResources().getColor(R.color.color_D8D8D8, null));
+            dividerDrawable.setIntrinsicHeight(1);
+            dividerItemDecoration.setDrawable(dividerDrawable);
+            mViewBinding.rvModels.addItemDecoration(dividerItemDecoration);
+            mViewBinding.rvModels.setAdapter(modelAdapter);
+            getTargetDetectModels();
+        } else {
+            mViewBinding.clBoxModels.setVisibility(View.GONE);
+            mViewBinding.tvAiBox.setVisibility(View.GONE);
+            mViewBinding.line13.setVisibility(View.GONE);
+        }
+    }
 
+    private void initTargetDetectType() {
+        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
+            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
+            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
+            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
+        }
+        mViewBinding.cbPerson.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
+        mViewBinding.cbCar.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
+        mViewBinding.cbShip.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
+    }
+
+    private void resetAiRecognitionSwitch() {
+        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
+            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
+            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
+            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
+        } else {
+            mViewBinding.cbPerson.setChecked(false);
+            mViewBinding.cbCar.setChecked(false);
+            mViewBinding.cbShip.setChecked(false);
+        }
+    }
+
+    private void setTargetType() {
+        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            Toast.makeText(requireContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
+            resetAiRecognitionSwitch();
+            return;
+        }
+        if (!GlobalVariable.isTargetDetectMode) {
+            Toast.makeText(requireContext(), R.string.Msg_AI_Recoginition_Warn, Toast.LENGTH_SHORT).show();
+            resetAiRecognitionSwitch();
+            return;
+        }
+        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
+            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
+                if (gduError == null){
+                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
+                if (gduError == null){
+                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private byte[] getCheckedState() {
+        byte[] checkedArray = new byte[3];
+        if (mViewBinding.cbPerson.isChecked()) {
+            checkedArray[0] = 0x01;
+        }
+        if (mViewBinding.cbCar.isChecked()) {
+            checkedArray[1] = 0x01;
+        }
+        if (mViewBinding.cbShip.isChecked()) {
+            checkedArray[2] = 0x01;
+        }
+        return checkedArray;
+    }
+
+    private void getTargetDetectModels() {
+        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            Toast.makeText(requireContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
+            cancelLoadingAnimator();
+            return;
+        }
+        SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectModelsListener(sJson -> {
+            if (TextUtil.isEmptyString(sJson)) return;
+            GetAiModelResponse response = new Gson().fromJson(sJson, GetAiModelResponse.class);
+            ThreadHelper.runOnUiThread(() -> {
+                cancelLoadingAnimator();
+                transModelData(response.getModels());
+            });
+        });
+        SdkDemoApplication.getAircraftInstance().getGduVision().getTargetDetectModels(gduError -> AppLog.e("SettingCommonFragment", "getTargetDetectModels callBack() code = " + gduError));
+    }
+
+    private void cancelLoadingAnimator() {
+        if (objectAnimator != null) {
+            objectAnimator.cancel();
+            objectAnimator = null;
+        }
+        if (mViewBinding != null) {
+            mViewBinding.llLoading.setVisibility(View.GONE);
+        }
+    }
+
+    private void transModelData(List<GetAiModel> data) {
+        if (data == null) return;
+        ArrayList<TargetDetectModel> models = new ArrayList<>();
+        for (int i = 0; i < data.size(); i++) {
+            GetAiModel aiModel = data.get(i);
+            ArrayList<TargetDetectLabel> labels = new ArrayList<>();
+            if (aiModel.getLabels() == null) continue;
+
+            for (int j = 0; j < aiModel.getLabels().size(); j++) {
+                if (aiModel.getFlag() == 1) { // 自研模型
+                    int labelId = -1;
+                    try {
+                        Object labelIdStr = aiModel.getLabels().get(j);
+                        if (labelIdStr instanceof String) {
+                            labelId = Integer.parseInt((String) labelIdStr);
+                        } else {
+                            labelId = (int) (double) labelIdStr;
+                        }
+                    } catch (Exception e) {
+                        AppLog.e("SettingCommonFragment", "transModelData " + aiModel.getLabels().get(j));
+                    }
+                    String labelName = "";
+                    TargetLabel targetLabel = TargetLabel.get(labelId);
+                    if (targetLabel != null) {
+                        labelName = ResourceUtil.getStringById(targetLabel.getValue());
+                    }
+                    AppLog.e("SettingCommonFragment", "transModelData labelId = " + labelId + ", labelName = " + labelName);
+                    labels.add(new TargetDetectLabel(j, String.valueOf(labelId), labelName, getDetectLabelState(aiModel.getId(), j)));
+                } else { // 自定义模型
+                    Object labelObject = aiModel.getLabels().get(j);
+                    if (labelObject instanceof LinkedTreeMap<?, ?>) {
+                        String type = (String) ((LinkedTreeMap<?, ?>) labelObject).get("type");
+                        String name = "";
+                        Object nameObject = ((LinkedTreeMap<?, ?>) labelObject).get("extend");
+                        if (nameObject instanceof LinkedTreeMap<?, ?>) {
+                            Locale local = Locale.getDefault();
+                            String language = local.getLanguage();
+                            if (language.equals("zh")) {
+                                name = (String) ((LinkedTreeMap<?, ?>) nameObject).get("cnName");
+                            }
+                            if (name == null || name.equals(""))
+                                name = (String) ((LinkedTreeMap<?, ?>) nameObject).get("enName");
+                        }
+                        if (name == null || name.equals("")) name = type;
+                        if (type != null) {
+                            labels.add(new TargetDetectLabel(j, type, name, getDetectLabelState(aiModel.getId(), j)));
+                        }
+                    }
+                }
+            }
+            TargetDetectModel model = new TargetDetectModel(aiModel.getId(), labels);
+            models.add(model);
+        }
+        modelAdapter.setNewInstance(models);
+    }
+
+    private boolean getDetectLabelState(int modelId, int index) {
+        if (GlobalVariable.targetDetectModelState != null && !GlobalVariable.targetDetectModelState.isEmpty()) {
+            for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
+                AIModelState model = GlobalVariable.targetDetectModelState.get(i);
+                if (model.getModelId() == modelId) {
+                    byte state = model.getLabelState()[index];
+                    return state == 0x01;
+                }
+            }
+        }
+        return false;
+    }
 
     private String showTwoPoint(String number) {
         String[] tempS = number.split("\\.");
