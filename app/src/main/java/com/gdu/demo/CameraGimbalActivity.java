@@ -34,6 +34,7 @@ import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.sdk.util.FileSaveUtil;
 import com.gdu.util.ThreadHelper;
 import com.gdu.util.logs.RonLog;
 
@@ -422,9 +423,23 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 byte[] yuvData =  codecManager.getYuvData();
                 Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
 //                Bitmap bitmap = mFastYUVtoRGB.test(yuvData, 1920, 1080);
+
                 if (bitmap != null) {
                     mYUVImageView.setImageBitmap(bitmap);
                 }
+
+                String path = OUTPATH + "test.text";
+
+                if (codecManager != null) {
+                    codecManager.enabledYuvData(true);
+                    codecManager.setYuvDataCallback(new GDUCodecManager.YuvDataCallback() {
+                        @Override
+                        public void onYuvDataReceived(byte[] bytes, int i, int i1, int i2) {
+                            FileSaveUtil.getSingle().saveData(bytes, path);
+                        }
+                    });
+                }
+
                 break;
             case R.id.btn_get_rgba_data:
                 byte[] rgbData = codecManager.getRgbaData();
