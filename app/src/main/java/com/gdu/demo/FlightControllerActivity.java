@@ -529,6 +529,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.set_horizontal_speed:
                 // 5m/s
                 mGDUFlightController.setHorizontalSpeed((short) 500, (short) 0);
+                // 持续设置间隔小于1S 停止发送后飞机停止飞行
+                mGDUFlightController.setHorizontalSpeedSdk((short) 500, (short) 0);
                 break;
             case R.id.cancel_horizontal_speed:
                 // 停止水平速度
@@ -537,6 +539,9 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 // 垂直速度 1m/s
             case R.id.set_vertical_speed:
                 mGDUFlightController.setVerticalSpeed((short) 100);
+                // 持续设置间隔小于1S 停止发送后飞机停止飞行
+                mGDUFlightController.setVerticalSpeedSdk((short) 100);
+
                 break;
             case R.id.cancel_vertical_speed:
                 // 取消垂直速度
