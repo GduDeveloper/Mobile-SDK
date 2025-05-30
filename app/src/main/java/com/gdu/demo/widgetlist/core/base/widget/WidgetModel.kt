@@ -2,14 +2,16 @@ package com.gdu.demo.widgetlist.core.base.widget
 
 import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
+import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
 
 
 /**
@@ -18,17 +20,11 @@ import kotlinx.coroutines.launch
  * @description 通用Widget Model, 将被所有的WidgetModel继承
  */
 abstract class WidgetModel: CoroutineScope by MainScope() {
+
+    protected var disposable: Disposable? = null
     //数据变更通知
-    val dataChangeChannel = Channel<Any>(Channel.CONFLATED)
-
-
-    fun intervalFlow(period: Long, initialDelay: Long = 0) = flow {
-        delay(initialDelay)
-        while (true) {
-            emit(Unit)
-            delay(period)
-        }
-    }.flowOn(Dispatchers.IO)
+    private val _dataState = MutableStateFlow<Any?>(null)
+    val dataState: StateFlow<Any?> = _dataState.asStateFlow()
 
     @Synchronized
     open fun start() {
@@ -42,13 +38,10 @@ abstract class WidgetModel: CoroutineScope by MainScope() {
 
     /**
      * 通知数据刷新
-     * @param channel 数据刷新通道
      * @param data 数据内容
      * */
-    protected fun notify(channel: Channel<Any>, data:Any){
-        launch {
-            channel.send(data)
-        }
+    protected fun notify(data:Any){
+        _dataState.value = data
     }
 
     /**
@@ -62,10 +55,14 @@ abstract class WidgetModel: CoroutineScope by MainScope() {
 
     @Synchronized
     fun destroy(){
+        if (disposable?.isDisposed == false) {
+            disposable?.dispose()
+            disposable = null
+        }
         onDestroy()
     }
 
     abstract fun onStart()
 
-    abstract fun onDestroy()
+    open fun onDestroy(){}
 }

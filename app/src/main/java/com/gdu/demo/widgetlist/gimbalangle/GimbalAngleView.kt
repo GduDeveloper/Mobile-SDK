@@ -1,13 +1,12 @@
 package com.gdu.demo.widgetlist.gimbalangle
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.RelativeLayout
 import com.gdu.demo.R
 import com.gdu.demo.databinding.GimbalAngleLayoutBinding
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 
 class GimbalAngleView @JvmOverloads constructor(
     context: Context,

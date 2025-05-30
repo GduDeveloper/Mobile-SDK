@@ -2,7 +2,6 @@ package com.gdu.demo.widgetlist.camerapara
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.Toast
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
@@ -11,8 +10,7 @@ import com.gdu.demo.utils.CameraUtil
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.sdk.camera.GDUCamera
 import com.gdu.sdk.products.GDUAircraft
-import com.gdu.util.GimbalUtil
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.ux.core.extension.getString
 import java.math.BigDecimal
 import java.math.RoundingMode

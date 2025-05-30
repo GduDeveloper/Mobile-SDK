@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import com.gdu.demo.R
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 
 class SkySignalWidget@JvmOverloads constructor(
     context: Context,

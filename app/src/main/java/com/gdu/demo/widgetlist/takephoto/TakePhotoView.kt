@@ -3,11 +3,10 @@ package com.gdu.demo.widgetlist.takephoto
 import android.content.Context
 import android.util.AttributeSet
 import com.gdu.demo.R
-import com.gdu.demo.databinding.LayoutLightSelectedBinding
 import com.gdu.demo.databinding.LayoutTakePhotoBinding
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.demo.widgetlist.flyState.FlyStateModel
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 
 class TakePhotoView@JvmOverloads constructor(
     context: Context,

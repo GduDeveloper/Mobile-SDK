@@ -1,24 +1,21 @@
 package com.gdu.demo.widgetlist.lighttype
 
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.utils.MultiTimerManager
+import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class LightTypeModel : WidgetModel() {
 
     override fun onStart() {
-        launch {
-            intervalFlow(1000).collectLatest {
-                updateState()
-            }
-        }
+        disposable = instance
+            .getTimerObservable(MultiTimerManager.NORMAL_TIMER)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { updateState() }
     }
 
     private fun updateState() {
-        notify(dataChangeChannel, LightTypeValue(GlobalVariable.sCameraLightType.toInt()))
-    }
-
-    override fun onDestroy() {
+        notify(LightTypeValue(GlobalVariable.sCameraLightType.toInt()))
     }
 }

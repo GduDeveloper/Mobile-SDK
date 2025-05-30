@@ -2,12 +2,13 @@ package com.gdu.demo.widgetlist.battery
 
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.SdkDemoApplication
+import com.gdu.demo.utils.MultiTimerManager
+import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.battery.bean.BatteryState
 import com.gdu.demo.widgetlist.battery.bean.BatteryStatus
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -20,11 +21,10 @@ import java.math.RoundingMode
 class BatteryWidgetModel: WidgetModel() {
 
     override fun onStart() {
-        launch {
-            intervalFlow(1000).collectLatest {
-                update()
-            }
-        }
+        disposable = instance
+            .getTimerObservable(MultiTimerManager.NORMAL_TIMER)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { update() }
     }
 
     private fun update(){
@@ -48,7 +48,7 @@ class BatteryWidgetModel: WidgetModel() {
                 status = BatteryStatus.ERROR
             }
             val data = BatteryState.SingleBatteryState(dronePower, voltageLevel, status)
-            notify(dataChangeChannel, data)
+            notify(data)
         }
     }
 

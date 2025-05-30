@@ -2,33 +2,28 @@ package com.gdu.demo.widgetlist.rtk
 
 import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.utils.MultiTimerManager
+import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
 class RTKStateModel : WidgetModel() {
 
     override fun onStart() {
-        launch {
-            intervalFlow(1000).collectLatest {
-                updateState()
-            }
-        }
+        disposable = instance
+            .getTimerObservable(MultiTimerManager.NORMAL_TIMER)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { updateState() }
     }
 
     private fun updateState() {
         if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
-            notify(dataChangeChannel, RTKStateValue(-1, ""))
+            notify(RTKStateValue(-1, ""))
             return;
         }
         val currentSatellite = GlobalVariable.satellite_drone
         val tkStatus = GlobalVariable.rtk_model.rtk1_status ?: ""
-        notify(dataChangeChannel, RTKStateValue(currentSatellite, tkStatus))
+        notify(RTKStateValue(currentSatellite, tkStatus))
     }
-    override fun onDestroy() {
-        cancel()
-    }
-
 }
