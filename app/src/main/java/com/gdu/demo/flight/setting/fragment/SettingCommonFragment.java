@@ -742,15 +742,15 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private boolean getDetectLabelState(int modelId, int index) {
-        if (GlobalVariable.targetDetectModelState != null && !GlobalVariable.targetDetectModelState.isEmpty()) {
-            for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
-                AIModelState model = GlobalVariable.targetDetectModelState.get(i);
-                if (model.getModelId() == modelId) {
-                    byte state = model.getLabelState()[index];
-                    return state == 0x01;
-                }
-            }
-        }
+//        if (GlobalVariable.targetDetectModelState != null && !GlobalVariable.targetDetectModelState.isEmpty()) {
+//            for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
+//                AIModelState model = GlobalVariable.targetDetectModelState.get(i);
+//                if (model.getModelId() == modelId) {
+//                    byte state = model.getLabelState()[index];
+//                    return state == 0x01;
+//                }
+//            }
+//        }
         return false;
     }
 

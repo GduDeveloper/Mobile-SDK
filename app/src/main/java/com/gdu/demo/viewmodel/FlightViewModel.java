@@ -113,15 +113,15 @@ public class FlightViewModel extends ViewModel {
      * @param detectType
      */
     public void setAIBoxTargetDetect(byte detectType) {
-        for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
-            AIModelState modelState = GlobalVariable.targetDetectModelState.get(i);
-            SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(modelState.getModelId(), detectType, (short) modelState.getCount(), modelState.getLabelState(), new CommonCallbacks.CompletionCallback() {
-                @Override
-                public void onResult(GDUError gduError) {
-                    AppLog.e("TargetDetectHelper", "setAIBoxTargetDetect modelId " + modelState.getModelId() + " detectType " + detectType + "  callBack() code = " + gduError);
-                }
-            });
-        }
+//        for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
+//            AIModelState modelState = GlobalVariable.targetDetectModelState.get(i);
+//            SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(modelState.getModelId(), detectType, (short) modelState.getCount(), modelState.getLabelState(), new CommonCallbacks.CompletionCallback() {
+//                @Override
+//                public void onResult(GDUError gduError) {
+//                    AppLog.e("TargetDetectHelper", "setAIBoxTargetDetect modelId " + modelState.getModelId() + " detectType " + detectType + "  callBack() code = " + gduError);
+//                }
+//            });
+//        }
     }
 
     public void stopTarget(byte stopType, LightType lightType) {
