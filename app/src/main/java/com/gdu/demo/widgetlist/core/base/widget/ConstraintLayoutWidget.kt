@@ -1,14 +1,16 @@
-package com.gdu.ux.core.base.widget
+package com.gdu.demo.widgetlist.core.base.widget
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import androidx.lifecycle.findViewTreeLifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.gdu.ux.core.base.notify.Observable
 import com.gdu.ux.core.base.notify.Observer
+import com.gdu.ux.core.base.widget.WidgetDataBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -80,20 +82,25 @@ abstract class ConstraintLayoutWidget<T: WidgetModel> @JvmOverloads constructor(
     }
 
     open fun initData(){
-        launch {
-            widgetModel?.dataChangeChannel?.consumeEach { data ->
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            widgetModel?.dataState?.collectLatest { data ->
                 if (!isBingInInVisible() && visibility != VISIBLE)
-                    return@launch
+                    return@collectLatest
                 if (!isRealTimeRefresh()){
-                    mCacheData[this@ConstraintLayoutWidget] = data
+                    data?.let {
+                        mCacheData[this@ConstraintLayoutWidget] = data
+                    }
                 }else {
                     if (mCacheData.containsKey(this@ConstraintLayoutWidget)){
                         mCacheData.remove(this@ConstraintLayoutWidget)
                     }
-                    bindingData(data)
+                    data?.let {
+                        bindingData(data)
+                    }
                 }
             }
         }
+
         widgetModel?.start()
     }
 

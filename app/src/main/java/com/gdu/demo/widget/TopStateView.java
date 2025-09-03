@@ -1,5 +1,8 @@
 package com.gdu.demo.widget;
 
+import static com.gdu.demo.utils.MultiTimerManager.NORMAL_TIMER;
+import static com.gdu.demo.utils.MultiTimerManager.QUICK_TIMER;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,12 +15,10 @@ import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
-
-import java.util.concurrent.TimeUnit;
+import com.gdu.demo.utils.MultiTimerManager;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.disposables.Disposable;
 
 public class TopStateView  extends ConstraintLayout {
@@ -57,14 +58,13 @@ public class TopStateView  extends ConstraintLayout {
     }
 
     private void initData() {
-        disposable = Observable.interval(0, 1, TimeUnit.SECONDS)
+        MultiTimerManager.Companion.getInstance().createTimer(NORMAL_TIMER, 1000);
+        MultiTimerManager.Companion.getInstance().createTimer(QUICK_TIMER, 200);
+        MultiTimerManager.Companion.getInstance().startAllTimers();
+        disposable = MultiTimerManager.Companion.getInstance()
+                .getTimerObservable(NORMAL_TIMER)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> {
-                    updateState();
-                }, throwable -> {
-                    Log.d("TopStateView", " TopStateView 更新出错 e =" + throwable);
-                });
-
+                .subscribe(count -> updateState());
     }
 
     private void updateState() {
@@ -171,5 +171,6 @@ public class TopStateView  extends ConstraintLayout {
             disposable = null;
             Log.d("TopStateView", "TopStateView  onDetachedFromWindow");
         }
+        MultiTimerManager.Companion.getInstance().stopAllTimers();
     }
 }

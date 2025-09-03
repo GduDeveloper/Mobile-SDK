@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.gdu.demo.R
 import com.gdu.demo.widgetlist.battery.bean.BatteryState
 import com.gdu.demo.widgetlist.battery.bean.BatteryStatus
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.ux.core.extension.getColor
 import com.gdu.ux.core.extension.getDrawable
 import com.gdu.ux.core.extension.imageDrawable

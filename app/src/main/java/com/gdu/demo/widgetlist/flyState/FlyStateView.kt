@@ -8,7 +8,7 @@ import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.databinding.FlyStateLayoutBinding
 import com.gdu.demo.utils.UnitChnageUtils
-import com.gdu.ux.core.base.widget.ConstraintLayoutWidget
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import java.math.BigDecimal
 import java.math.RoundingMode
 

@@ -2,24 +2,23 @@ package com.gdu.demo.widgetlist.camerapara
 
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.utils.CameraUtil
+import com.gdu.demo.utils.MultiTimerManager
+import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.util.GimbalUtil
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class CameraParaModel: WidgetModel() {
 
 
     override fun onStart() {
-
-        launch {
-            intervalFlow(1000).collectLatest {
-                updateState()
-            }
-        }
+        disposable = instance
+            .getTimerObservable(MultiTimerManager.NORMAL_TIMER)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { updateState() }
     }
 
-    fun updateState() {
+    private fun updateState() {
         val sdCardState = SDCardState()
         val isMultiSDCard = CameraUtil.isSupportMultiSDCardGimbal(GlobalVariable.gimbalType)
         val vlStatus = GimbalUtil.checkVLSDCardStatus()
@@ -40,8 +39,7 @@ class CameraParaModel: WidgetModel() {
             sdCardState.reMainCardSum = GlobalVariable.reMainCardSum
         }
 
-        notify(
-            dataChangeChannel, CameraParaValue(
+        notify(CameraParaValue(
                 GlobalVariable.isAutoMode,
                 GlobalVariable.lightISOValue,
                 GlobalVariable.lightESValue,
@@ -50,8 +48,5 @@ class CameraParaModel: WidgetModel() {
                 GlobalVariable.lightAELockValue
             )
         )
-    }
-
-    override fun onDestroy() {
     }
 }

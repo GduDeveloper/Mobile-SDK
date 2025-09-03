@@ -1,21 +1,19 @@
 package com.gdu.demo.widgetlist.flyState
 
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.utils.MultiTimerManager
+import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class FlyStateModel : WidgetModel() {
 
 
     override fun onStart() {
-
-        launch {
-            intervalFlow(1000).collectLatest {
-                updateState()
-            }
-        }
+        disposable = instance
+            .getTimerObservable(MultiTimerManager.NORMAL_TIMER)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { updateState() }
     }
 
     private fun updateState() {
@@ -40,10 +38,6 @@ class FlyStateModel : WidgetModel() {
         // 海拔高
         val alt = GlobalVariable.asl_drone
 
-        notify(dataChangeChannel, FlyStateValue(distance, height, hs, vs, headAngel, ellipsoid_height, alt))
-    }
-
-    override fun onDestroy() {
-        cancel()
+        notify(FlyStateValue(distance, height, hs, vs, headAngel, ellipsoid_height, alt))
     }
 }
