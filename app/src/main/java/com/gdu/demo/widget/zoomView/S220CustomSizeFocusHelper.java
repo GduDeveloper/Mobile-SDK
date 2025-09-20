@@ -125,6 +125,7 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
             @Override
             public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
                 MyLogUtils.i("onStopTrackingTouch() isLeft = " + isLeft);
+                isManualSetFocus = false;
                 if (!isLeft) {
                     return;
                 }
