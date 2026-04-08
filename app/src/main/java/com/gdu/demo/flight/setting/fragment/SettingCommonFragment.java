@@ -141,12 +141,12 @@ public class SettingCommonFragment extends Fragment {
 
         boolean isShowActiveBtn = false;
         String loginTypeStr = SPUtils.getString(requireContext(), MyConstants.SAVE_LOGIN_TYPE);
-        if (LoginType.TYPE_PHONE.getValue().equals(loginTypeStr)) {
-            final UserInfoBeanNew mLoginInfo = new Gson().fromJson(SPUtils.getString(requireContext(), MyConstants.SAVE_NEW_USER_INFO), UserInfoBeanNew.class);
-            if (mLoginInfo != null && mLoginInfo.getData() != null && mLoginInfo.getData().getAdmin() != null) {
-                isShowActiveBtn = mLoginInfo.getData().getAdmin();
-            }
-        }
+//        if (LoginType.TYPE_PHONE.getValue().equals(loginTypeStr)) {
+//            final UserInfoBeanNew mLoginInfo = new Gson().fromJson(SPUtils.getString(requireContext(), MyConstants.SAVE_NEW_USER_INFO), UserInfoBeanNew.class);
+//            if (mLoginInfo != null && mLoginInfo.getData() != null && mLoginInfo.getData().getAdmin() != null) {
+//                isShowActiveBtn = mLoginInfo.getData().getAdmin();
+//            }
+//        }
 
         MyLogUtils.i("onResume() isShowActiveBtn = " + isShowActiveBtn);
         ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !CommonUtils.curPlanIsSmallFlight());

@@ -2,7 +2,7 @@
 
 buildscript {
     repositories {
-        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
+//        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
         maven { url 'https://www.jitpack.io' }
@@ -23,7 +23,7 @@ plugins {
 
 allprojects {
     repositories {
-        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
+//        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
         maven { url 'https://repo.huaweicloud.com/repository/maven' }
         maven { url 'https://dl.google.com/dl/android/maven2/' }
         maven { url 'https://www.jitpack.io' }
