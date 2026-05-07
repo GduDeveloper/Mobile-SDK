@@ -78,11 +78,12 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
                 startActivity(diagnosticsIntent);
                 break;
             case R.id.media_button:
-
                 Intent mediaIntent = new Intent(mContext, MediaTestActivity.class);
                 startActivity(mediaIntent);
                 break;
-
+            case R.id.psdk_test_button:
+                Intent customIntent = new Intent(mContext, PsdkTestActivity.class);
+                startActivity(customIntent);
         }
     }
 }

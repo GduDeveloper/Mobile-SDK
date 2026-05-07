@@ -73,6 +73,10 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"
             android:theme="@style/FullScreenAppTheme"/>
+        <activity android:name=".PsdkTestActivity" />
+        <activity android:name=".PsdkPipelineActivity" />
+        <activity android:name=".PsdkMegaViewActivity" />
+        <activity android:name=".PsdkCustomViewActivity" />
     </application>
 
 </manifest>
