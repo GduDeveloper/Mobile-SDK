@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_30"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/black"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_add"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:gravity="center"
+        android:text="+"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_20" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/white" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_value"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_20"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="50"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12" />
+
+    <com.gdu.demo.widget.psdk.widget.VerticalSeekBar
+        android:id="@+id/vertical_seekbar"
+        android:layout_width="@dimen/dp_24"
+        android:layout_gravity="center"
+        android:layout_height="100dp"
+        android:layout_weight="1"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:background="@color/white" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_dev"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:gravity="center"
+        android:text="－"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_20" />
+
+
+</LinearLayout>

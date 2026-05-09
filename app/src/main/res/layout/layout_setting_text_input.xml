@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_name"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:text="@string/string_text_inputbox"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_12"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_20"
+        android:gravity="center"
+        android:text="@string/string_please_input_message"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_11" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_5"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/et_input"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_24"
+            android:layout_weight="1"
+            android:background="@drawable/selector_common_edit_bg"
+            android:gravity="center_vertical"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:maxLength="8"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_send"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_24"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:background="@drawable/bg_ef4e22_radius_3"
+            android:gravity="center"
+            android:text="@string/Label_sendOut"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_11" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_0_5"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/color_D8D8D8" />
+
+
+</LinearLayout>
