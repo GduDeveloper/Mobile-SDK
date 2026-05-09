@@ -345,8 +345,8 @@ public class PSDKCustomViewManager {
         rootView.addView(imageView);
     }
 
-    private void changeButtonStatus(int iconId, byte type) {
-        PSDKManager.getInstance().setPSDKWidgetState((short) iconId, type, 0, new CommonCallbacks.CompletionCallback() {
+    private void changeButtonStatus(int iconId, byte status) {
+        PSDKManager.getInstance().setPSDKWidgetState((short) iconId, (byte) 1, status,  new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(GDUError gduError) {
 
