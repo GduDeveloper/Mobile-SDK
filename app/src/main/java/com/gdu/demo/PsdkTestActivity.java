@@ -32,6 +32,11 @@ public class PsdkTestActivity extends AppCompatActivity {
             Intent msgIntent = new Intent(this, PsdkPipelineActivity.class);
             startActivity(msgIntent);
         });
+
+        findViewById(R.id.psdk_customview_button).setOnClickListener(v -> {
+            Intent msgIntent = new Intent(this, PsdkCustomViewActivity.class);
+            startActivity(msgIntent);
+        });
     }
 
     private void initData() {
