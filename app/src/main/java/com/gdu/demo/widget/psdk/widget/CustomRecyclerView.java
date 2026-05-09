@@ -31,9 +31,10 @@ public class CustomRecyclerView extends LinearLayout {
 
     private ItemAdapter itemAdapter;
 
+    private OnItemClickListener mOnItemClickListener;
+
 
     public CustomRecyclerView(Context context) {
-
         this(context, null);
     }
 
@@ -66,6 +67,7 @@ public class CustomRecyclerView extends LinearLayout {
                     if (child != null) {
                         int position = rv.getChildAdapterPosition(child);
                         itemAdapter.setSelectedPosition(position);
+                        mOnItemClickListener.onItemClick(position);
                     }
                 }
                 return false;
@@ -102,12 +104,16 @@ public class CustomRecyclerView extends LinearLayout {
     }
 
 
-//    public void setItemClickListener(OnItemClickListener listener) {
+    public void setItemClickListener(OnItemClickListener listener) {
+        mOnItemClickListener = listener;
 //        if (itemAdapter != null) {
 //            itemAdapter.setOnItemClickListener(listener);
 //        }
-//
-//    }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
 }
 
 

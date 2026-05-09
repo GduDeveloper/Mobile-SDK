@@ -59,9 +59,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     public void onBindViewHolder(@NonNull ItemViewHolder  holder, int position) {
         WidgetItemBean.ListItemBean itemBean = mData.get(position);
         if (itemBean == null) return;
-        if (itemBean == null) {
-            return;
-        }
 
         // 文字
         holder.tvName.setText(itemBean.getItem_name());
@@ -93,20 +90,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             holder.ivIcon.setImageResource(R.drawable.bg_ffffff_radius_3);
         }
 
-//        holder.setImageResource(R.id.iv_icon, R.drawable.bg_ffffff_radius_3);
-//        holder.setText(R.id.tv_name, itemBean.getItem_name());
-//        if (i == selectedPosition) {
-//            holder.setTextColor(R.id.tv_name, ContextCompat.getColor(context, R.color.color_ff4e00));
-//        } else {
-//            holder.setTextColor(R.id.tv_name, ContextCompat.getColor(context, R.color.pf_color_000000));
-//        }
-//
-//        if (PSDKCacheManager.getInstance().getIconsMap() != null && itemBean.getIcon_file_set() != null) {
-//            holder.setImageBitmap(R.id.iv_icon, PSDKCacheManager.getInstance().getIconsMap().get(
-//                    i == selectedPosition ? itemBean.getIcon_file_set().getIcon_file_name_selected() : itemBean.getIcon_file_set().getIcon_file_name_unselected()));
-//        }
-
-
     }
 
     @Override
@@ -114,15 +97,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return mData == null ? 0 : mData.size();
     }
 
-//    @NonNull
-//    @Override
-//    protected ItemViewHolder  onCreateViewHolder(@NonNull Context context, @NonNull ViewGroup viewGroup, int i) {
-//        return new QuickViewHolder(R.layout.item_custom_recycler_view, viewGroup);
-//    }
-
 
     // 原生 ViewHolder 静态内部类
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+    public  class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView ivIcon;
         TextView tvName;
 

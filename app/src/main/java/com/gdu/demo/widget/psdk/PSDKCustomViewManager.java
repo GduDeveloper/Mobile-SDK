@@ -18,6 +18,7 @@ import com.gdu.common.error.GDUError;
 import com.gdu.config.GlobalVariable;
 
 import com.gdu.demo.R;
+import com.gdu.demo.widget.psdk.adapter.ItemAdapter;
 import com.gdu.demo.widget.psdk.bean.ImageIconBean;
 import com.gdu.demo.widget.psdk.bean.PSdkCustomViewBean;
 import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
@@ -466,25 +467,22 @@ public class PSDKCustomViewManager {
         recyclerView.setLayoutParams(layoutParams);
         recyclerView.setVisibility(View.GONE);
         recyclerView.setData(itemBean.getList_item());
-//        recyclerView.setItemClickListener((adapter, view, position) -> {
-//            PSDKManager.getInstance().psdkWidgetChange((short) itemBean.getWidget_index(), (byte) 4, position, (CommonCallbacks.CompletionCallback) gduError -> {
-//                if (gduError == null) {
-//                    recyclerView.setSelectedPosition(position);
-//                } else {
-////                        Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));
-//                }
-//            });
-//            GduApplication.getSingleApp().gduCommunication.psdkWidgetChange((short) itemBean.getWidget_index(), (byte) 4, position, (code, bean) -> handler.post(new Runnable() {
-//                @Override
-//                public void run() {
-//                    if (code == GduConfig.OK) {
-//                        recyclerView.setSelectedPosition(position);
-//                    } else {
-//                        Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));
-//                    }
-//                }
-//            }));
-//        });
+        recyclerView.setItemClickListener(new CustomRecyclerView.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                AppLog.d(TAG, "addListView onItemClick index: " + itemBean.getWidget_index() + ", position: " + position);
+                PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 4, position, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError gduError) {
+                        if (gduError == null) {
+                            recyclerView.setSelectedPosition(position);
+                        } else {
+
+                        }
+                    }
+                });
+            }
+        });
 
         viewGroup.addView(recyclerView);
         ImageView imageView = new ImageView(context);
@@ -669,16 +667,12 @@ public class PSDKCustomViewManager {
         if (floatWindowView != null && floatWindowView.getVisibility() == View.VISIBLE) {
             floatWindowView.updateText(floatWindowStr);
         }
-
-//        if (floatWindowView2 != null && floatWindowView2.getVisibility() == View.VISIBLE) {
-//            floatWindowView2.updateText(floatWindowStr2);
-//        }
     }
 
 
 
 
-    public void changeFloatWindow(boolean show) {
+    public void setFloatWindowVisibility(boolean show) {
         if (floatWindowView != null) {
             if(show){
                 if(floatWindowView.getVisibility() != View.VISIBLE){
@@ -691,25 +685,6 @@ public class PSDKCustomViewManager {
             }
         }
     }
-
-    public void setIconsMap(HashMap<String, Bitmap> hashMap) {
-        this.iconsMap = hashMap;
-    }
-
-
-    public void updateIcons(HashMap<String, Bitmap> hashMap) {
-        iconsMap = hashMap;
-        for (Integer key : iconBeansMap.keySet()) {
-            ImageIconBean iconBean = iconBeansMap.get(key);
-            if (iconBean != null) {
-                String name = iconBean.isSelected() ? iconBean.getSelectedIconName() : iconBean.getUnSelectedIconName();
-                if (!TextUtils.isEmpty(name)) {
-                    iconBean.getImageView().setImageBitmap(iconsMap.get(name));
-                }
-            }
-        }
-    }
-
 
     private void updateIconBean(int viewId, boolean isSelected) {
         if (iconBeansMap != null) {
