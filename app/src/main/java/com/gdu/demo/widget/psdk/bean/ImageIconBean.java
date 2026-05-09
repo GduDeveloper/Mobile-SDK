@@ -7,7 +7,6 @@ import com.gdu.demo.widget.psdk.widget.CustomRecyclerView;
 
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/28
  */
 public class ImageIconBean {

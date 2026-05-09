@@ -2,17 +2,13 @@ package com.gdu.demo.widget.psdk.widget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.gdu.demo.R;
-
 import java.util.List;
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/25
  */
 public class SettingListLayout extends RelativeLayout {

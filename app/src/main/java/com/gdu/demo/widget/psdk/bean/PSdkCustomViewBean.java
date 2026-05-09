@@ -3,7 +3,6 @@ package com.gdu.demo.widget.psdk.bean;
 import java.util.List;
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/20
  */
 public class PSdkCustomViewBean {

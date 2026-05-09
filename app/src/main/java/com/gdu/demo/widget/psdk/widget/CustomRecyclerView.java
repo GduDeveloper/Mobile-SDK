@@ -20,7 +20,6 @@ import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
 import java.util.List;
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/22
  */
 public class CustomRecyclerView extends LinearLayout {
@@ -106,9 +105,6 @@ public class CustomRecyclerView extends LinearLayout {
 
     public void setItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
-//        if (itemAdapter != null) {
-//            itemAdapter.setOnItemClickListener(listener);
-//        }
     }
 
     public interface OnItemClickListener {

@@ -1,7 +1,6 @@
 package com.gdu.demo.widget.psdk.bean;
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/28
  */
 public class IconFileSet {

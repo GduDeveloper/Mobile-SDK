@@ -13,7 +13,6 @@ import com.gdu.demo.R;
 
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/25
  */
 public class SettingScaleLayout extends LinearLayout {

@@ -18,7 +18,6 @@ import com.gdu.common.error.GDUError;
 import com.gdu.config.GlobalVariable;
 
 import com.gdu.demo.R;
-import com.gdu.demo.widget.psdk.adapter.ItemAdapter;
 import com.gdu.demo.widget.psdk.bean.ImageIconBean;
 import com.gdu.demo.widget.psdk.bean.PSdkCustomViewBean;
 import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
@@ -72,7 +71,6 @@ public class PSDKCustomViewManager {
 
     private Map<String, Bitmap> iconsMap = new HashMap<>();
     private final HashMap<Integer, ImageIconBean> iconBeansMap = new HashMap<>();
-
 
     private long clickTime = 0;
 
@@ -140,27 +138,6 @@ public class PSDKCustomViewManager {
             }
         });
         PSDKManager.getInstance().getCustomView();
-
-//        GduApplication.getSingleApp().gduCommunication.addCycleACKCB(GduSocketConfig3.CYCLE_CUSTOM_VIEW_STATE_STATE_MSG_ID, new SocketCallBack3() {
-//            @Override
-//            public void callBack(int code, GduFrame3 bean) {
-//                if (bean != null && bean.frameContent != null && bean.frameContent.length >= 7) {
-//                    int viewId = ByteUtilsLowBefore.byte2short(bean.frameContent, 0);
-//                    int viewType = bean.frameContent[2];
-//                    int value = ByteUtilsLowBefore.byte2Int(bean.frameContent, 3);
-//
-//                    if (handler != null) {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                updateViews(viewId, viewType, value);
-//                            }
-//                        });
-//                    }
-//                }
-//            }
-//        });
-
     }
 
     public void addView(RelativeLayout viewGroup, LinearLayout rootView){
@@ -256,30 +233,6 @@ public class PSDKCustomViewManager {
 
                                 }
                             });
-//                            GduApplication.getSingleApp().gduCommunication.psdkWidgetGetState((short) iconBean.getId(), (byte) iconBean.getType(), new SocketCallBack3() {
-//                                @Override
-//                                public void callBack(int code, GduFrame3 bean) {
-//                                    if (code == GduConfig.OK) {
-//                                        int state = ByteUtilsLowBefore.byte2Int(bean.frameContent, 5);
-////                                        MyLogUtils.d("updateIconBean   id =  " + iconBean.getId() + ", type = " + iconBean.getType() + ", state = " + state);
-//                                        if (handler != null) {
-//                                            handler.post(new Runnable() {
-//                                                @Override
-//                                                public void run() {
-//                                                    if (iconBean.getType() == 2) {
-//                                                        updateIconBean(iconBean.getId(), state == 1);
-//                                                    } else if (iconBean.getType() == 3) {
-//                                                        iconBean.getProgressLayout().setProgress(state);
-//                                                    } else if (iconBean.getType() == 4) {
-//                                                        iconBean.getCustomRecyclerView().setSelectedPosition(state);
-//                                                    }
-//                                                }
-//                                            });
-//                                        }
-//                                    }
-//                                }
-//                            });
-
                         }
                     }
 
@@ -396,21 +349,6 @@ public class PSDKCustomViewManager {
                         });
                     }
                 });
-//                GduApplication.getSingleApp().gduCommunication.psdkWidgetChange((short) itemBean.getWidget_index(), (byte) 2, finalChange, new SocketCallBack3() {
-//                    @Override
-//                    public void callBack(int code, GduFrame3 bean) {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (code == GduConfig.OK) {
-//                                    updateIconBean(itemBean.getWidget_index(), finalChange == 1);
-//                                } else {
-//                                    Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
             }
         });
 
@@ -573,21 +511,6 @@ public class PSDKCustomViewManager {
                         });
                     }
                 });
-//                GduApplication.getSingleApp().gduCommunication.psdkWidgetChange((short) itemBean.getWidget_index(), (byte) 3, progress, new SocketCallBack3() {
-//                    @Override
-//                    public void callBack(int code, GduFrame3 bean) {
-//                        handler.post(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                if (code == GduConfig.OK) {
-//                                    progressLayout.setProgress(progress);
-//                                } else {
-//                                    Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));
-//                                }
-//                            }
-//                        });
-//                    }
-//                });
             }
         });
 
@@ -668,9 +591,6 @@ public class PSDKCustomViewManager {
             floatWindowView.updateText(floatWindowStr);
         }
     }
-
-
-
 
     public void setFloatWindowVisibility(boolean show) {
         if (floatWindowView != null) {
@@ -763,7 +683,6 @@ public class PSDKCustomViewManager {
         iconsMap.clear();
         disposable();
         disposableSwitch();
-//        GduApplication.getSingleApp().gduCommunication.removeCycleACKCB(GduSocketConfig3.CYCLE_ACK_GET_FLOAT_WINDOW_STATE);
     }
 
 

@@ -17,7 +17,6 @@ import com.gdu.demo.views.DragLayout;
 
 
 /**
- * @Author: lixiqiang
  * @Date: 2022/10/24
  */
 public class CustomFloatWindow extends DragLayout {
@@ -65,14 +64,6 @@ public class CustomFloatWindow extends DragLayout {
         if (!TextUtils.isEmpty(GlobalVariable.psdkName)) {
             tv_title.setText(GlobalVariable.psdkName);
         }
-
-//        String syn = "";
-//        if (GlobalVariable.psdkSynStates == 5) {
-//            syn = context.getString(R.string.str_has_syn);
-//        } else {
-//            syn = context.getString(R.string.str_no_syn);
-//        }
-//        String showStr = syn + "\r\n" + string;
         tv_text.setText(string);
     }
 }
