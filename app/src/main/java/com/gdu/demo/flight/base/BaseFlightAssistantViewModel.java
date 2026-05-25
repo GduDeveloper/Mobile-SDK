@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.gdu.AlgorithmMark;
 import com.gdu.api.Util.ConnectUtil;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -56,7 +56,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setVisionSensingEnabled(boolean visionSensingEnabled){
         mFlightAssistant.setVisionSensingEnabled(visionSensingEnabled, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error != null) {
                     VisionSensingBean visionSensingBean = new VisionSensingBean();
                     visionSensingBean.setSet(true);
@@ -82,7 +82,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
 
             }
         });
@@ -91,7 +91,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setTopVisionObstacleAvoidanceEnabled(boolean enabled){
         mFlightAssistant.setUpwardVisionObstacleAvoidanceEnabled(enabled, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
 
             }
         });
@@ -112,7 +112,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setTopVisionObstacleAvoidanceDistance(int brakeDistance, int warnDistance){
         mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
 
             }
         });
@@ -121,7 +121,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setBottomVisionObstacleAvoidanceDistance(int brakeDistance, int warnDistance){
         mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Downward, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
 
             }
         });
@@ -131,7 +131,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             Log.d("test ", " setHorVisionObstacleAvoidanceDistance Horizontal: " + brakeDistance + " warnDistance: " + warnDistance );
             mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     Log.d("test ", " setHorVisionObstacleAvoidanceDistance error: " + error);
                     if (error == null) {
                         Log.d("test ", " setHorVisionObstacleAvoidanceDistance: ");
@@ -147,7 +147,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setHorizontalVisionObstacleAvoidanceEnabled(boolean enabled){
         mFlightAssistant.setHorizontalVisionObstacleAvoidanceEnabled(enabled, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error != null) {
                     HorizontalVisionObstacleAvoidanceBean bean = new HorizontalVisionObstacleAvoidanceBean();
                     bean.setSet(true);
@@ -172,7 +172,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
 
             }
         });
@@ -185,7 +185,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     public void setObstacleAvoidanceStrategyEnabled(boolean isOn){
         mFlightAssistant.setObstacleAvoidanceStrategyEnabled(isOn, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     obstacleAvoidanceStrategyLiveData.postValue(isOn);
                 }
@@ -205,7 +205,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
             }
         });
         //获取避障策略开关
@@ -218,7 +218,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 getObstacleCallback();
             }
         });
@@ -280,7 +280,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 ObstacleStatusBean bean = new ObstacleStatusBean();
                 bean.setSelect(false);
                 bean.setObsOpen(false);
