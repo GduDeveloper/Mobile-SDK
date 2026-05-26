@@ -37,7 +37,7 @@ import com.gdu.util.ConnectUtil;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
-import com.gdu.util.ThreadHelper;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;

@@ -50,7 +50,7 @@ import com.gdu.util.MyConstants;
 import com.gdu.util.ResourceUtil;
 import com.gdu.util.SPUtils;
 import com.gdu.util.TextUtil;
-import com.gdu.util.ThreadHelper;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.TimeUtil;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;

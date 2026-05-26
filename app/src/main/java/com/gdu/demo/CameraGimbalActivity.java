@@ -24,6 +24,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
@@ -34,7 +35,6 @@ import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileSaveUtil;
-import com.gdu.util.ThreadHelper;
 
 import java.io.File;
 import java.util.ArrayList;

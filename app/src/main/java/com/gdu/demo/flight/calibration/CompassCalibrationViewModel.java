@@ -11,7 +11,7 @@ import com.gdu.drone.PlanType;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.DroneUtil;
-import com.gdu.util.ThreadHelper;
+import com.gdu.lib.util.ThreadHelper;
 
 /**
  * @author wuqb

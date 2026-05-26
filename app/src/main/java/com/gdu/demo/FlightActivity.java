@@ -52,7 +52,7 @@ import com.gdu.util.CollectionUtils;
 import com.gdu.util.ConnectUtil;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
-import com.gdu.util.ThreadHelper;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
 import com.gdu.util.logs.AppLog;
