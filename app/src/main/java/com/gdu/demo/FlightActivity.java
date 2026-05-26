@@ -46,7 +46,7 @@ import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
-import com.gdu.sdk.radar.GDURadar;
+import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.CollectionUtils;
@@ -122,7 +122,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             });
         }
 
-        GDURadar radar = (GDURadar) SdkDemoApplication.getAircraftInstance().getRadar();
+        Radar radar = (Radar) SdkDemoApplication.getAircraftInstance().getRadar();
         if (radar != null){
             radar.setRadarPerceptionInformationCallback(new CommonCallbacks.CompletionCallbackWith<PerceptionInformation>() {
                 @Override

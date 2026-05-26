@@ -1,13 +1,14 @@
 package com.gdu.demo.flight.setting.viewmodel;
 
+import android.text.TextUtils;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
-import com.gdu.sdk.battery.GDUBattery;
+import com.gdu.sdk.battery.Battery;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.TextUtil;
 
 /**
  * @author wuqb
@@ -23,11 +24,11 @@ public class SettingBatteryViewModel extends ViewModel {
     }
 
     public void getBatterFactoryInfo(){
-        GDUBattery battery =  SdkDemoApplication.getAircraftInstance().getBattery();
+        Battery battery =  SdkDemoApplication.getAircraftInstance().getBattery();
         battery.getSerialNumber(new CommonCallbacks.CompletionCallbackWith<String>() {
             @Override
             public void onSuccess(String s) {
-                if (!TextUtil.isEmptyString(s))
+                if (!TextUtils.isEmpty(s))
                     batterySNLiveData.postValue(s);
             }
 

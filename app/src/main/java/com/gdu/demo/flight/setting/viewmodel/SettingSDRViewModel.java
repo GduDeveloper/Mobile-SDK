@@ -12,7 +12,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
-import com.gdu.sdk.airlink.GDUAirLink;
+import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.SPUtils;
@@ -26,7 +26,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class SettingSDRViewModel extends BaseViewModel {
 
-    private GDUAirLink mGDUAirLink;
+    private AirLink mGDUAirLink;
     private final MutableLiveData<Integer> visibleLightStreamLiveData;  //获取可见光视频码流设置反馈
     private final MutableLiveData<Byte> steamSwitchLiveData;  //设置码流变换开关
     private final MutableLiveData<Boolean> outputStreamLiveData;  //设置可见光相机视频输出码流值
