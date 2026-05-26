@@ -6,7 +6,6 @@ import android.view.View;
 import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.sdk.camera.GDUCamera;
-import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;

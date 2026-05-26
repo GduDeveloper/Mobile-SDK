@@ -44,7 +44,7 @@ import com.gdu.radar.PerceptionInformation;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.flightcontroller.FlightController;
-import com.gdu.sdk.gimbal.GDUGimbal;
+import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -143,7 +143,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 }
             });
         }
-        GDUGimbal gimbal = (GDUGimbal) SdkDemoApplication.getAircraftInstance().getGimbal();
+        Gimbal gimbal = (Gimbal) SdkDemoApplication.getAircraftInstance().getGimbal();
         if (gimbal != null){
             gimbal.setStateCallback(state -> {
                 float yaw = (float) state.getAttitudeInDegrees().yaw;
@@ -258,7 +258,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     public void beginCheckCloud() {
         showSuccess = false;
-        GDUGimbal mGDUGimbal = (GDUGimbal) ((Aircraft) SdkDemoApplication.getProductInstance()).getGimbal();
+        Gimbal mGDUGimbal = (Gimbal) ((Aircraft) SdkDemoApplication.getProductInstance()).getGimbal();
         if (mGDUGimbal == null) {
             return;
         }

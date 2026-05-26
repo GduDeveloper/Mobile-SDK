@@ -8,7 +8,7 @@ import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutLightSelectedBinding
 import com.gdu.sdk.camera.GDUCamera
-import com.gdu.sdk.gimbal.GDUGimbal
+import com.gdu.sdk.gimbal.Gimbal
 import com.gdu.sdk.products.Aircraft
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 
@@ -20,7 +20,7 @@ class LightSelectedView @JvmOverloads constructor(
 
     private lateinit var binding: LayoutLightSelectedBinding
 
-    private var mGDUGimbal: GDUGimbal? = null
+    private var mGDUGimbal: Gimbal? = null
 
     private var currentType = -1
 
@@ -47,7 +47,7 @@ class LightSelectedView @JvmOverloads constructor(
             changeLight(SettingsDefinitions.DisplayMode.PIP)
         }
 
-        mGDUGimbal = (SdkDemoApplication.getProductInstance() as Aircraft).gimbal as? GDUGimbal
+        mGDUGimbal = (SdkDemoApplication.getProductInstance() as Aircraft).gimbal as? Gimbal
         mGDUGimbal?.let {
             val list: List<SettingsDefinitions.DisplayMode> = it.supportDisplayMode
             for (mode in list) {
@@ -89,7 +89,7 @@ class LightSelectedView @JvmOverloads constructor(
                 return
             }
             currentType = data.lightType
-            mGDUGimbal = (SdkDemoApplication.getProductInstance() as Aircraft).gimbal as? GDUGimbal
+            mGDUGimbal = (SdkDemoApplication.getProductInstance() as Aircraft).gimbal as? Gimbal
             when (data.lightType) {
                 0x00 -> {
                     mGDUGimbal?.let {
