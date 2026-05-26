@@ -616,7 +616,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
 
                     @Override
                     public void onFailure(Error var1) {
-                        showText(mAircraftSNTextview, var1.getDescription());
+                        showText(mAircraftSNTextview, var1.getMsg());
                     }
                 });
                 break;

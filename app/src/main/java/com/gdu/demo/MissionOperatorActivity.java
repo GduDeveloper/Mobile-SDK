@@ -158,7 +158,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 
             @Override
             public void onExecutionFinish(Error error) {
-                toast("环绕状态 结束 " + error.getDescription());
+                toast("环绕状态 结束 " + error.getMsg());
             }
         });
 

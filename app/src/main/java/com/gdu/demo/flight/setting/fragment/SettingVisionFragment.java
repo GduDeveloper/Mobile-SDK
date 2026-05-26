@@ -146,7 +146,7 @@ public class SettingVisionFragment extends Fragment {
             @Override
             public void onFailure(Error error) {
 
-                Log.d("Vision", "getLanding   error = " + error.getDescription());
+                Log.d("Vision", "getLanding   error = " + error.getMsg());
 
             }
         });
