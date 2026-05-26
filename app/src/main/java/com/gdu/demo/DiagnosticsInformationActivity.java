@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.sdk.base.GDUDiagnostics;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.List;
 
@@ -26,18 +26,18 @@ public class DiagnosticsInformationActivity extends Activity {
     }
 
     private void initData() {
-        SdkDemoApplication.getAircraftInstance().setDiagnosticsInformationCallback(new GDUDiagnostics.DiagnosticsInformationCallback() {
+        SdkDemoApplication.getAircraftInstance().setDiagnosticsInformationCallback(new Diagnostics.DiagnosticsInformationCallback() {
             @Override
-            public void onUpdate(List<GDUDiagnostics> diagnostics) {
+            public void onUpdate(List<Diagnostics> diagnostics) {
                 showText(mDiagnosticsInfoTextView, getDiagnostics(diagnostics));
             }
         });
     }
 
-    private String getDiagnostics(List<GDUDiagnostics> diagnostics){
+    private String getDiagnostics(List<Diagnostics> diagnostics){
         if (diagnostics != null && diagnostics.size() > 0) {
             StringBuilder sb = new StringBuilder();
-            for (GDUDiagnostics diagnostic : diagnostics) {
+            for (Diagnostics diagnostic : diagnostics) {
                 sb.append(diagnostic.getReason());
                 sb.append(";");
             }
