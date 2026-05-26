@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.gdu.AlgorithmMark;
 import com.gdu.camera.LightType;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
@@ -132,8 +132,8 @@ public class FlightViewModel extends ViewModel {
         }
         SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType.getKey(), new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError gduError) {
-                if (gduError == null){
+            public void onResult(Error error) {
+                if (error == null){
                     GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                 }
             }

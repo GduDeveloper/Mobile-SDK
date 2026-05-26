@@ -19,8 +19,7 @@ import androidx.annotation.RequiresApi;
 import com.gdu.camera.Capabilities;
 import com.gdu.camera.SettingsDefinitions;
 import com.gdu.camera.StorageState;
-import com.gdu.common.error.GDUError;
-import com.gdu.config.GduConfig;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
@@ -231,7 +230,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_record_video:
                 mGDUCamera.startRecordVideo(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError var1) {
+                    public void onResult(Error var1) {
                         toast("开始录像成功");
                     }
                 });
@@ -239,7 +238,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_stop_record_video:
                 mGDUCamera.stopRecordVideo(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError var1) {
+                    public void onResult(Error var1) {
                         toast("停止录像成功");
                     }
                 });
@@ -247,7 +246,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_single_take_picture:
                 mGDUCamera.startShootPhoto(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError var1) {
+                    public void onResult(Error var1) {
                         toast("拍照发送成功");
                     }
                 });
@@ -255,7 +254,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_model_change:
                 mGDUCamera.setMode(CameraMode.RECORD_VIDEO, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError var1) {
+                    public void onResult(Error var1) {
                         toast("模式发送成功");
                     }
                 });
@@ -263,7 +262,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_format_sd_card:
                 mGDUCamera.formatSDCard(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError var1) {
+                    public void onResult(Error var1) {
                         toast("格式化SD发送成功");
                     }
                 });
@@ -276,7 +275,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
                         show(mVersionTextView, "fail");
                     }
                 });
@@ -289,7 +288,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
                         toast("获取焦距发送失败");
                     }
                 });
@@ -298,7 +297,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_set_display_mode:
                 mGDUCamera.setDisplayMode(SettingsDefinitions.DisplayMode.VISUAL_ONLY, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("发送成功");
                         } else {
@@ -315,7 +314,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
                         toast("发送失败");
                     }
                 });
@@ -323,7 +322,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_set_digital_zoom:
                 mGDUCamera.setZoom(10, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("发送成功");
                         } else {
@@ -338,7 +337,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_reset:
                 mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("发送成功");
                         } else {
@@ -354,7 +353,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 //                rotation.set
                 mGDUGimbal.rotate(rotation, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("发送成功");
                         } else {
@@ -371,7 +370,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
 
                     }
                 });
@@ -384,7 +383,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
 
                     }
                 });
@@ -392,7 +391,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_start_calibration:
                 mGDUGimbal.startCalibration(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("发送成功");
                         } else {
@@ -452,7 +451,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 if (codecManager != null) {
                     codecManager.storageCurrentStreamToPicture(OUTPATH, "test.png", new CommonCallbacks.CompletionCallback() {
                         @Override
-                        public void onResult(GDUError error) {
+                        public void onResult(Error error) {
                             if (error == null) {
                                 toast("存储成功");
                             } else {
@@ -486,7 +485,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_set_ev:
                 mGDUCamera.setExposureCompensation(SettingsDefinitions.ExposureCompensation.N_1_0, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置成功");
                         } else {
@@ -503,7 +502,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError gduError) {
+                    public void onFailure(Error error) {
                         toast("获取失败： ");
                     }
                 });
@@ -511,7 +510,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_set_hd_liveview_enabled:
                 mGDUCamera.setHDLiveViewEnabled(false, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置成功");
                         } else {
@@ -528,7 +527,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError gduError) {
+                    public void onFailure(Error error) {
                         toast("获取失败： ");
                     }
                 });
@@ -542,7 +541,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError gduError) {
+                    public void onFailure(Error error) {
                         toast("设置失败： ");
                     }
                 });
@@ -556,7 +555,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
 
                     @Override
-                    public void onFailure(GDUError gduError) {
+                    public void onFailure(Error error) {
                         toast("设置失败： ");
                     }
                 });

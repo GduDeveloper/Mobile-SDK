@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import com.gdu.battery.BatteryState;
-import com.gdu.common.error.GDUError;
-import com.gdu.sdk.battery.GDUBattery;
+import com.gdu.common.error.Error;
+import com.gdu.sdk.battery.Battery;
 import com.gdu.sdk.util.CommonCallbacks;
 
 /**
@@ -17,7 +17,7 @@ import com.gdu.sdk.util.CommonCallbacks;
  */
 public class BatteryActivity extends Activity implements View.OnClickListener {
 
-    private GDUBattery mBattery;
+    private Battery mBattery;
 
     private TextView mBatteryStateTextView;
     private TextView mBatterySNTextView;
@@ -76,7 +76,7 @@ public class BatteryActivity extends Activity implements View.OnClickListener {
                         }
 
                         @Override
-                        public void onFailure(GDUError var1) {
+                        public void onFailure(Error var1) {
                             showText(mBatterySNTextView, "fail");
                         }
                     });
@@ -91,7 +91,7 @@ public class BatteryActivity extends Activity implements View.OnClickListener {
                         }
 
                         @Override
-                        public void onFailure(GDUError var1) {
+                        public void onFailure(Error var1) {
                             showText(mBatteryVersionTextView, "fail");
                         }
                     });

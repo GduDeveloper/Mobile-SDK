@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
@@ -118,8 +118,8 @@ public class SettingFlyViewModel extends BaseViewModel {
         }
         mGDUFlightController.setGoHomeHeightInMeters((short) height, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError gduError) {
-                if (null==gduError){
+            public void onResult(Error error) {
+                if (null==error){
                     int value = checkAndSaveGoHomeHeightData(height);
                     toastLiveData.postValue(R.string.string_set_success);
                     preBackHeight = value;
@@ -159,7 +159,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -207,7 +207,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 toastLiveData.postValue(R.string.Label_SettingFail);
                 backHomeSpeedLiveData.postValue(preBackSpeed*100);
             }
@@ -229,7 +229,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -248,8 +248,8 @@ public class SettingFlyViewModel extends BaseViewModel {
             default:
                 break;
         }
-        mGDUFlightController.setConnectionFailSafeBehavior(behavior, gduError -> {
-            if (null == gduError){
+        mGDUFlightController.setConnectionFailSafeBehavior(behavior, error -> {
+            if (null == error){
                 outOfControlActionLiveData.postValue(position);
                 toastLiveData.postValue(R.string.string_set_success);
             }else {
@@ -269,7 +269,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -287,7 +287,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 toastLiveData.postValue(R.string.Label_SettingFail);
             }
         });
@@ -338,7 +338,7 @@ public class SettingFlyViewModel extends BaseViewModel {
                 }
 
                 @Override
-                public void onFailure(GDUError gduError) {
+                public void onFailure(Error error) {
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 }
             });
@@ -356,7 +356,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -377,7 +377,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 switchFlyModeLiveData.postValue(null);
             }
         });
@@ -395,7 +395,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 isTfaMode = false;
                 tripoModeLiveData.postValue(false);
             }
@@ -436,7 +436,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 if (GlobalVariable.droneFlyState == 1 || GlobalVariable.droneFlyState == 4) {
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 } else {
@@ -458,7 +458,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 changeNoFlyAreActionLiveData.postValue(false);
             }
         });

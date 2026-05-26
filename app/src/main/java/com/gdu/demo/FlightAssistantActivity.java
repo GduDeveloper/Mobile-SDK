@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.radar.GDUFlightAssistantObstacleSensingDirection;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
@@ -39,7 +39,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             }
 
             @Override
-            public void onFailure(GDUError error) {
+            public void onFailure(Error error) {
                 toastText("获取下视灯失败 ");
             }
         });
@@ -50,7 +50,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             }
 
             @Override
-            public void onFailure(GDUError error) {
+            public void onFailure(Error error) {
                 toastText("获取降落保护失败 ");
             }
         });
@@ -61,7 +61,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             }
 
             @Override
-            public void onFailure(GDUError error) {
+            public void onFailure(Error error) {
                 toastText("获取返航避障失败 ");
             }
         });
@@ -88,7 +88,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.downward_fill_light_button:
                 mFlightAssistant.setDownwardFillLightMode(FillLightMode.ON, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("下视灯操作成功");
                         } else {
@@ -100,7 +100,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.landing_protection_button:
                 mFlightAssistant.setLandingProtectionEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("降落保护操作成功");
                         } else {
@@ -112,7 +112,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.rth_button:
                 mFlightAssistant.setRTHObstacleAvoidanceEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("返航避障操作成功");
                         } else {
@@ -124,7 +124,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.vision_sensing_button:
                 mFlightAssistant.setVisionSensingEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("视觉感知操作成功");
                         } else {
@@ -136,7 +136,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.obstacle_avoidance_strategy_button:
                 mFlightAssistant.setObstacleAvoidanceStrategyEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("避障策略操作成功");
                         } else {
@@ -148,7 +148,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.horizontal_vision_obstacle_avoidance_button:
                 mFlightAssistant.setHorizontalVisionObstacleAvoidanceEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("水平避障操作成功");
                         } else {
@@ -160,7 +160,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.horizontal_visual_obstacles_avoidance_distance_button:
                 mFlightAssistant.setVisualObstaclesAvoidanceDistance(3, GDUFlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("水平避障距离操作成功");
                         } else {
@@ -172,7 +172,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.upward_vision_obstacle_avoidance_button:
                 mFlightAssistant.setUpwardVisionObstacleAvoidanceEnabled(true, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("上视避障操作成功");
                         } else {
@@ -184,7 +184,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
             case R.id.upward_visual_obstacles_avoidance_distance_button:
                 mFlightAssistant.setVisualObstaclesAvoidanceDistance(2, GDUFlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("上视避障距离操作成功");
                         } else {

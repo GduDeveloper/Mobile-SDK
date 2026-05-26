@@ -3,7 +3,7 @@ package com.gdu.demo.widget.zoomView;
 import android.util.Log;
 import android.view.View;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.gimbal.GDUGimbal;

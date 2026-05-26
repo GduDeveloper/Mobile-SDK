@@ -7,8 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
-import com.gdu.sdk.airlink.GDUAirLink;
+import com.gdu.common.error.Error;
+import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.airlink.SignalQualityCallback;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -17,7 +17,7 @@ import com.gdu.sdk.util.CommonCallbacks;
  */
 public class AirLinkActivity extends Activity implements View.OnClickListener {
 
-    private GDUAirLink mGDUAirLink;
+    private AirLink mGDUAirLink;
     private TextView mAirLinkSignalQualityTextView;
     private TextView mAirLinkVersionTextView;
 
@@ -30,7 +30,7 @@ public class AirLinkActivity extends Activity implements View.OnClickListener {
     }
 
     private void initData() {
-        mGDUAirLink = (GDUAirLink) SdkDemoApplication.getAircraftInstance().getAirLink();
+        mGDUAirLink = SdkDemoApplication.getAircraftInstance().getAirLink();
         mGDUAirLink.setUplinkSignalQualityCallback(new SignalQualityCallback() {
             @Override
             public void onUpdate(int uplinkQuality, int downlinkQuality) {
@@ -80,7 +80,7 @@ public class AirLinkActivity extends Activity implements View.OnClickListener {
                         }
 
                         @Override
-                        public void onFailure(GDUError var1) {
+                        public void onFailure(Error var1) {
                             showText(mAirLinkVersionTextView, "fail");
                         }
                     });

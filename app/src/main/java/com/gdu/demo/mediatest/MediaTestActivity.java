@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.adapter.MediaListAdapter;
@@ -184,7 +184,7 @@ public class MediaTestActivity extends Activity {
 
 
             @Override
-            public void onFail(GDUError error) {
+            public void onFail(Error error) {
 
             }
 
@@ -238,7 +238,7 @@ public class MediaTestActivity extends Activity {
             }
 
             @Override
-            public void onFail(GDUError gduError) {
+            public void onFail(Error error) {
 
                 if (index < 20 - 1 || index < mediaFiles.size()) {
                     int nextIndex = index + 1;
@@ -261,7 +261,7 @@ public class MediaTestActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if (manager != null) {
-            manager.disable(gduError -> {
+            manager.disable(error -> {
 
             });
         }

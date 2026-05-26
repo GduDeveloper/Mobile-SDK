@@ -5,7 +5,7 @@ import android.widget.Toast;
 import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.airlink.FrequencyBandwidth;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
@@ -67,7 +67,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -85,7 +85,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -103,7 +103,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 outputStreamLiveData.postValue(false);
             }
         });
@@ -137,7 +137,7 @@ public class SettingSDRViewModel extends BaseViewModel {
                 }
 
                 @Override
-                public void onFailure(GDUError gduError) {
+                public void onFailure(Error error) {
                     serviceIpLiveData.postValue(GlobalVariable.BackAirLinkUrl);
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 }
@@ -160,7 +160,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 if (type!=3) { //非获取模式
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 }
@@ -205,7 +205,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 isImgChannelSwitching = false;
                 toastLiveData.postValue(R.string.Label_SettingFail);
             }
@@ -222,7 +222,7 @@ public class SettingSDRViewModel extends BaseViewModel {
                 }
 
                 @Override
-                public void onFailure(GDUError gduError) {
+                public void onFailure(Error error) {
 
                 }
             });
@@ -240,7 +240,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -273,7 +273,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 toastLiveData.postValue(R.string.Label_SettingFail);
             }
         });

@@ -15,7 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -241,7 +241,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         }
         manager.playVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("开始播放成功");
                 } else {
@@ -281,7 +281,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         }
         manager.pauseVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
 
             }
         });
@@ -297,7 +297,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 
         manager.seekVideo(path, (byte) type, positionTime, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("发送跳转成功");
                 } else {
@@ -317,7 +317,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         }
         manager.stopVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
 
                 if (var1 == null) {
                     toastText("停止播放成功");
@@ -380,7 +380,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         if (manager != null) {
             manager.stopVideo(path, (byte) type, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError var1) {
+                public void onResult(Error var1) {
 
                 }
             });

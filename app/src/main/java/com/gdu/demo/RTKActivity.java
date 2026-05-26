@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.NetworkServiceState;
 import com.gdu.rtk.RTKState;
@@ -122,7 +122,7 @@ public class RTKActivity extends Activity implements View.OnClickListener {
                 if (rtk != null) {
                     rtk.setReferenceStationSource(ReferenceStationSource.CUSTOM_NETWORK_SERVICE, new CommonCallbacks.CompletionCallback() {
                         @Override
-                        public void onResult(GDUError error) {
+                        public void onResult(Error error) {
                             if (error == null) {
                                 toastText("设置自定义网络RTK成功");
                             } else {
@@ -136,7 +136,7 @@ public class RTKActivity extends Activity implements View.OnClickListener {
                 if (rtk != null) {
                     rtk.setReferenceStationSource(ReferenceStationSource.ONBOARD_RTK, new CommonCallbacks.CompletionCallback() {
                         @Override
-                        public void onResult(GDUError error) {
+                        public void onResult(Error error) {
                             if (error == null) {
                                 toastText("设置机载RTK成功");
                             } else {

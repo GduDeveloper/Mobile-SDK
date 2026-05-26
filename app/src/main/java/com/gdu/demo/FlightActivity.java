@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.gdu.AlgorithmMark;
 import com.gdu.beans.WarnBean;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
@@ -139,7 +139,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                 }
             });
         }

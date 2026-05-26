@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.gdu.GlobalVariableTest;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
@@ -178,7 +178,7 @@ public class SettingCommonFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                 }
             });
         }
@@ -573,7 +573,7 @@ public class SettingCommonFragment extends Fragment {
                     byte detectType = 0x00;
                     if (hasChecked) detectType = 0x01;
                     SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(data.getId(), detectType, (short) data.getLabels().size(), typeArray,
-                            gduError -> AppLog.e("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + gduError));
+                            error -> AppLog.e("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
                 }
             });
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);

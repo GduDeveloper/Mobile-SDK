@@ -12,7 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaDetailBinding;
@@ -140,7 +140,7 @@ public class MediaDetailActivity extends Activity {
 
 
             @Override
-            public void onFail(GDUError error) {
+            public void onFail(Error error) {
 
             }
 
@@ -189,7 +189,7 @@ public class MediaDetailActivity extends Activity {
 
 
             @Override
-            public void onFail(GDUError error) {
+            public void onFail(Error error) {
 
             }
 
@@ -239,7 +239,7 @@ public class MediaDetailActivity extends Activity {
 
 
             @Override
-            public void onFail(GDUError error) {
+            public void onFail(Error error) {
 
             }
 

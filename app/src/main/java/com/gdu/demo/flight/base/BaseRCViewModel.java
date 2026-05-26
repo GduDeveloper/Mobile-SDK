@@ -3,7 +3,7 @@ package com.gdu.demo.flight.base;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
@@ -31,7 +31,7 @@ public class BaseRCViewModel extends ViewModel {
     public void setAircraftMappingStyle(AircraftMappingStyle style){
         mGDURemoteController.setAircraftMappingStyle(style, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 AircraftMappingStyleBean bean = new AircraftMappingStyleBean();
                 bean.setSet(true);
                 if (error == null) {
@@ -56,7 +56,7 @@ public class BaseRCViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
 
             }
         });

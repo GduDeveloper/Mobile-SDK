@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.databinding.ActivityPsdkPipelineBinding;
 import com.gdu.sdk.mop.Pipeline;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -96,7 +96,7 @@ public class PsdkPipelineActivity extends Activity {
         connect[9] = 0x66;
         mPipeline.writeData(connect, 0, 10, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toast("发送成功");
                 } else {

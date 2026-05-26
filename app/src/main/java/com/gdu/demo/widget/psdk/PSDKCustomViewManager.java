@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 
 import com.gdu.demo.R;
@@ -252,7 +252,7 @@ public class PSDKCustomViewManager {
                                 }
 
                                 @Override
-                                public void onFailure(GDUError gduError) {
+                                public void onFailure(Error error) {
 
                                 }
                             });
@@ -348,7 +348,7 @@ public class PSDKCustomViewManager {
     private void changeButtonStatus(int iconId, byte status) {
         PSDKManager.getInstance().setPSDKWidgetState((short) iconId, (byte) 1, status,  new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError gduError) {
+            public void onResult(Error error) {
 
             }
         });
@@ -383,11 +383,11 @@ public class PSDKCustomViewManager {
                 byte finalChange = change;
                 PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 2, finalChange, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError gduError) {
+                    public void onResult(Error error) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (gduError == null) {
+                                if (error == null) {
                                     updateIconBean(itemBean.getWidget_index(), finalChange == 1);
                                 } else {
 //                                    Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));
@@ -473,8 +473,8 @@ public class PSDKCustomViewManager {
                 AppLog.d(TAG, "addListView onItemClick index: " + itemBean.getWidget_index() + ", position: " + position);
                 PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 4, position, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError gduError) {
-                        if (gduError == null) {
+                    public void onResult(Error error) {
+                        if (error == null) {
                             recyclerView.setSelectedPosition(position);
                         } else {
 
@@ -560,11 +560,11 @@ public class PSDKCustomViewManager {
             public void onChange(int startProgress, int progress) {
                 PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 3, progress, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError gduError) {
+                    public void onResult(Error error) {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                if (gduError == null) {
+                                if (error == null) {
                                     progressLayout.setProgress(progress);
                                 } else {
 //                                    Toaster.show(GduActivityManager.getInstance().getTopActivity().getString(R.string.Label_SettingFail));

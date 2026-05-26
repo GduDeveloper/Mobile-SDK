@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.flightcontroller.CompassCalibrationState;
 import com.gdu.sdk.flightcontroller.Compass;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -63,7 +63,7 @@ public class CompassActivity extends Activity implements View.OnClickListener {
             case R.id.start_calibration_button:
                 mCompass.startCalibration(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("指南针校准开始成功");
                         } else {
@@ -75,7 +75,7 @@ public class CompassActivity extends Activity implements View.OnClickListener {
             case R.id.stop_calibration_button:
                 mCompass.stopCalibration(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toastText("指南针校准停止成功");
                         } else {

@@ -3,7 +3,7 @@ package com.gdu.demo.flight.setting.viewmodel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.sdk.battery.GDUBattery;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -32,7 +32,7 @@ public class SettingBatteryViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });

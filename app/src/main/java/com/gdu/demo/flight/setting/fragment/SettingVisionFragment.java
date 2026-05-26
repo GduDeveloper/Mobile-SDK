@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gdu.AlgorithmMark;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
@@ -144,9 +144,9 @@ public class SettingVisionFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
-                Log.d("Vision", "getLanding   gduError = " + gduError.getDescription());
+                Log.d("Vision", "getLanding   error = " + error.getDescription());
 
             }
         });
@@ -160,7 +160,7 @@ public class SettingVisionFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -587,7 +587,7 @@ public class SettingVisionFragment extends Fragment {
 
         mFlightAssistant.setVisionSensingEnabled(isOn, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     mHandler.sendEmptyMessage(SWITCH_SUCCESS);
                 } else {

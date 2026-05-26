@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.remotecontroller.MultiControlInfo;
 import com.gdu.remotecontroller.MultiControlMode;
@@ -121,7 +121,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         if (mGDURemoteController != null) {
             mGDURemoteController.setAircraftMappingStyle(aircraftMappingStyle, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     if (error == null) {
                         toastText("设置控制手成功");
                     } else {
@@ -135,7 +135,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
     private void setContinueSendRCControlMidValueEnable(){
         mGDURemoteController.setContinueSendRCControlMidValueEnable(true, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     toastText("设置持续发送中值成功：");
                 } else {
@@ -153,7 +153,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 toastText("获取持续发送中值失败：");
             }
         });
@@ -167,7 +167,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取多控模式失败：");
             }
         });
@@ -176,7 +176,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
     private void setMultiControlMode(){
         mGDURemoteController.setMultiControlMode(MultiControlMode.TWO_C_ONE, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     toastText("设置多控模式成功：");
                 } else {
@@ -194,7 +194,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取多控飞机列表失败：");
             }
         });
@@ -208,7 +208,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取多控遥控器列表失败：");
             }
         });
@@ -217,7 +217,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
     private void setDroneControlEnable(){
         mGDURemoteController.setDroneControlEnable(0, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     toastText("设置飞机控制权开关成功：");
                 } else {
@@ -235,7 +235,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取飞机控制权开关失败：" + var1);
             }
         });
@@ -244,7 +244,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
     private void setDroneLivingEnable(){
         mGDURemoteController.setDroneLivingEnable(0, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     toastText("设置飞机视频流开关成功：");
                 } else {
@@ -262,7 +262,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取飞机视频流开关失败：" + var1);
             }
         });
@@ -277,7 +277,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError error) {
+                public void onFailure(Error error) {
                     toastText("获取控制手失败");
                 }
             });
@@ -288,7 +288,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         if (mGDURemoteController != null) {
             mGDURemoteController.startPairing(new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     if (error == null) {
                         toastText("对频指令发送成功");
                     } else {
@@ -308,7 +308,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError error) {
+                public void onFailure(Error error) {
                     toastText("版本号：" + error);
                 }
             });
