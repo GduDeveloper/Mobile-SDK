@@ -28,7 +28,7 @@ import com.gdu.event.EventConnState;
 import com.gdu.event.EventMessage;
 import com.gdu.event.GimbalEvent;
 import com.gdu.remotecontroller.AircraftMappingStyle;
-import com.gdu.sdk.remotecontroller.GDURemoteController;
+import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socket.GduFrame3;
@@ -69,7 +69,7 @@ public class SettingRControlFragment extends Fragment {
     private boolean isClickConnect = false;
 
     private Handler handler;
-    private GDURemoteController mGDURemoteController;
+    private RemoteController mGDURemoteController;
 
     @Nullable
     @Override
@@ -273,7 +273,7 @@ public class SettingRControlFragment extends Fragment {
     }
 
     private void confirmMatch() {
-        GDURemoteController gduRemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
+        RemoteController gduRemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
         if (gduRemoteController != null) {
             gduRemoteController.startPairing(error -> {
                 if (handler != null) {

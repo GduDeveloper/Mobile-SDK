@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.remotecontroller.AircraftMappingStyle;
-import com.gdu.sdk.remotecontroller.GDURemoteController;
+import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
 
 /**
@@ -16,7 +16,7 @@ import com.gdu.sdk.util.CommonCallbacks;
  */
 public class BaseRCViewModel extends ViewModel {
 
-    private GDURemoteController mGDURemoteController;
+    private RemoteController mGDURemoteController;
 
     private final MutableLiveData<AircraftMappingStyleBean> aircraftMappingStyleLiveData;
 

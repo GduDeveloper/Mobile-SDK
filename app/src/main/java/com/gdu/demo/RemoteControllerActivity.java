@@ -13,7 +13,7 @@ import com.gdu.common.error.Error;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.remotecontroller.MultiControlInfo;
 import com.gdu.remotecontroller.MultiControlMode;
-import com.gdu.sdk.remotecontroller.GDURemoteController;
+import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
 
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
 public class RemoteControllerActivity extends Activity implements View.OnClickListener {
 
     private Context mContext;
-    private GDURemoteController mGDURemoteController;
+    private RemoteController mGDURemoteController;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
