@@ -31,7 +31,7 @@ import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
-import com.gdu.sdk.products.GDUAircraft;
+import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileSaveUtil;
 import com.gdu.util.ThreadHelper;
@@ -96,7 +96,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     }
 
     private void initGimbal() {
-        mGDUGimbal = (GDUGimbal) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getGimbal();
+        mGDUGimbal = (GDUGimbal) ((Aircraft) SdkDemoApplication.getProductInstance()).getGimbal();
         if (mGDUGimbal == null) {
             toast("云台未识别，相关功能可能出现异常");
             return;
@@ -136,7 +136,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     }
 
     private void initCamera() {
-        mGDUCamera = (GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera();
+        mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
         if (mGDUCamera != null) {
             mGDUCamera.setSystemStateCallback(new SystemState.Callback() {
                 @Override

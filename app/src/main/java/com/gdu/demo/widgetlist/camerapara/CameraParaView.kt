@@ -9,7 +9,7 @@ import com.gdu.demo.databinding.LayoutCameraParaBinding
 import com.gdu.demo.utils.CameraUtil
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.sdk.camera.GDUCamera
-import com.gdu.sdk.products.GDUAircraft
+import com.gdu.sdk.products.Aircraft
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.ux.core.extension.getString
 import java.math.BigDecimal
@@ -29,7 +29,7 @@ class CameraParaView @JvmOverloads constructor(
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         binding = LayoutCameraParaBinding.bind(inflate(context, R.layout.layout_camera_para, this))
-        mGDUCamera = (SdkDemoApplication.getProductInstance() as GDUAircraft).camera as? GDUCamera
+        mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? GDUCamera
         initListener()
 
     }

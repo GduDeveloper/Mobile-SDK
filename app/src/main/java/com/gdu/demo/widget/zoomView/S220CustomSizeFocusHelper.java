@@ -7,7 +7,7 @@ import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.gimbal.GDUGimbal;
-import com.gdu.sdk.products.GDUAircraft;
+import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.logger.MyLogUtils;
@@ -73,7 +73,7 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
     private void updateZoom() {
         if (mGduCamera == null) {
-            mGduCamera = (GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGduCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
         }
         if (mGduCamera == null) {
             return;

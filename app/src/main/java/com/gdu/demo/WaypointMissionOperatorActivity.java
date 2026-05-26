@@ -44,7 +44,6 @@ import com.gdu.sdk.mission.MissionControl;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperator;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperatorListener;
 import com.gdu.sdk.products.Aircraft;
-import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -115,7 +114,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             waypointMissionOperator = getWaypointMissionOperator();
             setUpListener();
 
-            mGDUCamera = (GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
 
         }
     }

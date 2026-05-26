@@ -51,7 +51,6 @@ import com.gdu.sdk.mission.followme.FollowMeMissionOperatorListener;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperator;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperatorListener;
 import com.gdu.sdk.products.Aircraft;
-import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
@@ -143,7 +142,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             mFollowMeMissionOperator = getFollowMeMissionOperator();
             setUpListener();
 
-            mGDUCamera = (GDUCamera) ((GDUAircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
 
         }
     }
