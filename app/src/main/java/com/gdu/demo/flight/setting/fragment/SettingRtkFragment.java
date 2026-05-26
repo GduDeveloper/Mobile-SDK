@@ -21,13 +21,13 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
 import com.gdu.drone.RTKNetConnectStatus;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.SPUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.RonLog2FileRTK;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.concurrent.TimeUnit;
@@ -378,7 +378,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         lastChangeRtkTime = System.currentTimeMillis();
-        RonLog2FileRTK.getSingle().saveData("RTK setRTkType =  " + type);
+        XLogger.INSTANCE.getAPP().i("RTK setRTkType =  " + type);
         mLastRTKType = type;
         switch (type) {
             case 0:

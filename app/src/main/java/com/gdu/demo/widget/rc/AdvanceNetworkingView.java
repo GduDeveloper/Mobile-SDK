@@ -14,11 +14,11 @@ import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.widget.GduSpinner;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.remotecontroller.IMChildPointInfo;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.util.CollectionUtils;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.RonLog;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -183,14 +183,14 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 
         mDroneListView.setOnItemClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mDroneInfoList.get(position);
-            RonLog.LogD("test updateStatus Match mac " + info.mac);
+            XLogger.INSTANCE.getAPP().i("test updateStatus Match mac " + info.mac);
             if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None || info.mac == null) {
                 Toast.makeText(mContext, R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                 return;
             }
             if (info.connectStatus == 0) {
                 showMatchDialog(info);
-                RonLog.LogD("test updateStatus Match " + info.id);
+                XLogger.INSTANCE.getAPP().i("test updateStatus Match " + info.id);
 //                GduApplication.getSingleApp().gduCommunication.setNetworking((byte)0x03, (byte) info.id, new SocketCallBack3() {
 //                    @Override
 //                    public void callBack(int code, GduFrame3 bean) {

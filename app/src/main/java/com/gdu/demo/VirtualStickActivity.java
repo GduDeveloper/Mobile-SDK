@@ -23,10 +23,10 @@ import com.gdu.demo.views.JoystickView;
 import com.gdu.demo.views.OnJoystickListener;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.FlightControlData;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.logs.RonLog;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -180,7 +180,7 @@ public class VirtualStickActivity extends Activity {
 
         @Override
         public void run() {
-            RonLog.LogD("test FlightControlData pitch " + pitch + " roll " + roll + " yaw " + yaw + " throttle " + throttle);
+            XLogger.INSTANCE.getAPP().i("test FlightControlData pitch " + pitch + " roll " + roll + " yaw " + yaw + " throttle " + throttle);
             FlightControlData flightControlData = new FlightControlData(pitch, roll, yaw, throttle);
             SdkDemoApplication.getAircraftInstance()
                     .getFlightController()

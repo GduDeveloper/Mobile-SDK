@@ -35,7 +35,6 @@ import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileSaveUtil;
 import com.gdu.util.ThreadHelper;
-import com.gdu.util.logs.RonLog;
 
 import java.io.File;
 import java.util.ArrayList;

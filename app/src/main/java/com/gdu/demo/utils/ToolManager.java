@@ -21,15 +21,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
-import com.gdu.config.UavStaticVar;
-import com.gdu.util.SPUtils;
-import com.gdu.util.Validator;
-import com.gdu.util.logs.RonLog;
-
-import java.lang.reflect.Method;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Administrator on 2017/8/8.

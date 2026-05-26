@@ -7,8 +7,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Build;
 import android.os.Environment;
 
-import com.gdu.config.GduConfig;
-import com.gdu.util.logs.RonLog;
+import com.gdu.lib.util.GduFileDir;
+import com.gdu.lib.util.core.XLogger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +45,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	//用于格式化日期,作为日志文件名的一部分
 	private DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
 	
-	public static final String LOG_DIR = GduConfig.BaseDirectory +"/crash/";
+	public static final String LOG_DIR = GduFileDir.INSTANCE.getAppRootDir().getAbsolutePath() +"/crash/";
 	
 
 	/** 保证只有一个CrashHandler实例 */
@@ -186,7 +186,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 		printWriter.close();
 		String result = writer.toString();
 		sb.append(result);
-		RonLog.LogE(getClass().getSimpleName(), sb.toString());
+		XLogger.INSTANCE.getAPP().i(getClass().getSimpleName(), sb.toString());
 		try {
 			String time = dateFormat.format(new Date());
 			String fileName = "log-" + time + "err.log";

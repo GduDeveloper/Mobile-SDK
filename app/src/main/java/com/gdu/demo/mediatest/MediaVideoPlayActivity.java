@@ -20,6 +20,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaVideoBinding;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.media.VideoBackPlayState;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.MediaManager;
@@ -28,7 +29,6 @@ import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileDownCallback;
-import com.gdu.util.logs.RonLog;
 
 import java.text.DecimalFormat;
 
@@ -355,7 +355,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             codecManager.onPause();
         }
 //        mGduPlayView.setVisibility(View.GONE);
-        RonLog.LogD("test decoder onPause");
+        XLogger.INSTANCE.getAPP().i("test decoder onPause");
     }
 
     @Override
@@ -370,7 +370,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
         }
 
 
-        RonLog.LogD("test decoder onStop");
+        XLogger.INSTANCE.getAPP().i("test decoder onStop");
     }
 
     @Override

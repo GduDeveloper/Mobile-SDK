@@ -39,6 +39,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.TapFlyState;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.Camera;
@@ -53,10 +54,6 @@ import com.gdu.sdk.mission.hotpoint.HotpointMissionOperatorListener;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.logs.RonLog;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class MissionOperatorActivity extends Activity implements LocationSource , View.OnClickListener {
 
@@ -293,7 +290,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 //                waypointMissionOperator.loadMission(mission);
                 break;
             case R.id.start_hotpoint_button:
-                RonLog.LogD("test status " + MissionControl.getInstance().getHotpointMissionOperator().getCurrentState().getName());
+                XLogger.INSTANCE.getAPP().i("test status " + MissionControl.getInstance().getHotpointMissionOperator().getCurrentState().getName());
                 HotpointMission hotpointMission = new HotpointMission();
                 LocationCoordinate2D hotpoint = new LocationCoordinate2D(30.471033, 114.4280014);
                 hotpointMission.setHotpoint(hotpoint);
@@ -554,7 +551,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                                         }
                                     }
                                 });
-                                RonLog.LogD("test FollowingTarget " + newLocation.toString());
+                                XLogger.INSTANCE.getAPP().i("test FollowingTarget " + newLocation.toString());
                                 mFollowMeMissionOperator.updateFollowingTarget(newLocation, new CommonCallbacks.CompletionCallback() {
                                     @Override
                                     public void onResult(Error error) {
