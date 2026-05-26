@@ -5,7 +5,7 @@ import android.view.View;
 
 import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
-import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
@@ -26,7 +26,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
-    private GDUCamera mGduCamera;
+    private Camera mGduCamera;
     private Disposable disposable;
 
     public S220CustomSizeFocusHelper(CustomVerticalRangeSeekBar rangeSeekBar) {
@@ -72,7 +72,7 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
     private void updateZoom() {
         if (mGduCamera == null) {
-            mGduCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGduCamera = (Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
         }
         if (mGduCamera == null) {
             return;

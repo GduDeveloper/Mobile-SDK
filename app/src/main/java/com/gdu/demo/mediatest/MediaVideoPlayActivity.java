@@ -21,8 +21,8 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaVideoBinding;
 import com.gdu.media.VideoBackPlayState;
-import com.gdu.sdk.camera.GDUCamera;
-import com.gdu.sdk.camera.GDUMediaManager;
+import com.gdu.sdk.camera.Camera;
+import com.gdu.sdk.camera.MediaManager;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.products.Aircraft;
@@ -55,7 +55,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     DecimalFormat format = new DecimalFormat("#0.00");
 
 
-    GDUMediaManager manager;
+    MediaManager manager;
 
     private String saveVideoPath;
 
@@ -132,7 +132,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 
     private void initData() {
 
-        GDUCamera camera = ((GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
+        Camera camera = ((Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
 
         if (camera == null) {
             return;

@@ -24,8 +24,8 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.adapter.MediaListAdapter;
 import com.gdu.demo.databinding.ActivityMediaTestBinding;
 import com.gdu.media.MediaFile;
-import com.gdu.sdk.camera.GDUCamera;
-import com.gdu.sdk.camera.GDUMediaManager;
+import com.gdu.sdk.camera.Camera;
+import com.gdu.sdk.camera.MediaManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileDownCallback;
@@ -37,7 +37,7 @@ public class MediaTestActivity extends Activity {
 
     private ActivityMediaTestBinding viewBinding;
 
-    private GDUMediaManager manager;
+    private MediaManager manager;
 
     private Handler handler;
 
@@ -98,7 +98,7 @@ public class MediaTestActivity extends Activity {
     }
 
     private void initData() {
-        GDUCamera camera = ((GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
+        Camera camera = ((Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
         if (camera != null) {
             manager = camera.getMediaManager();
         }

@@ -16,8 +16,8 @@ import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaDetailBinding;
-import com.gdu.sdk.camera.GDUCamera;
-import com.gdu.sdk.camera.GDUMediaManager;
+import com.gdu.sdk.camera.Camera;
+import com.gdu.sdk.camera.MediaManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.FileDownCallback;
 
@@ -31,7 +31,7 @@ public class MediaDetailActivity extends Activity {
 
     DecimalFormat format = new DecimalFormat("#0.00");
 
-    GDUMediaManager manager;
+    MediaManager manager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public class MediaDetailActivity extends Activity {
     }
 
     private void initData() {
-        GDUCamera camera = ((GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
+        Camera camera = ((Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera());
         if (camera != null) {
             manager = camera.getMediaManager();
         }

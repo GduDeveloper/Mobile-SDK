@@ -25,7 +25,7 @@ import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.sdk.camera.CameraMode;
-import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
@@ -60,7 +60,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     private TextView mGimbalStateTextView;
     private Context mContext;
-    private GDUCamera mGDUCamera;
+    private Camera mGDUCamera;
 
     private Gimbal mGDUGimbal;
 
@@ -136,7 +136,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     }
 
     private void initCamera() {
-        mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
+        mGDUCamera = (Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
         if (mGDUCamera != null) {
             mGDUCamera.setSystemStateCallback(new SystemState.Callback() {
                 @Override

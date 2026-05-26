@@ -8,7 +8,7 @@ import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutCameraParaBinding
 import com.gdu.demo.utils.CameraUtil
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import com.gdu.sdk.camera.GDUCamera
+import com.gdu.sdk.camera.Camera
 import com.gdu.sdk.products.Aircraft
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.ux.core.extension.getString
@@ -24,12 +24,12 @@ class CameraParaView @JvmOverloads constructor(
     private lateinit var binding: LayoutCameraParaBinding
     private lateinit var popWindow: GimbalControlTopOptItemPopView
 
-    private var mGDUCamera: GDUCamera? = null
+    private var mGDUCamera: Camera? = null
 
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {
         binding = LayoutCameraParaBinding.bind(inflate(context, R.layout.layout_camera_para, this))
-        mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? GDUCamera
+        mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? Camera
         initListener()
 
     }

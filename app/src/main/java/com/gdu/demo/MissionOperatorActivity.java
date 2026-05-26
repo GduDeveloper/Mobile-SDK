@@ -41,7 +41,7 @@ import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.TapFlyState;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
-import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.FlightController;
@@ -82,7 +82,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 
     private FlightController mGDUFlightController;
 
-    private GDUCamera mGDUCamera;
+    private Camera mGDUCamera;
 
     private HotpointMissionOperator mHotpointMissionOperator;
 
@@ -142,7 +142,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             mFollowMeMissionOperator = getFollowMeMissionOperator();
             setUpListener();
 
-            mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGDUCamera = (Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
 
         }
     }

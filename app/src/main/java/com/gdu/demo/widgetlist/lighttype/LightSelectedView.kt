@@ -7,7 +7,7 @@ import com.gdu.camera.SettingsDefinitions
 import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutLightSelectedBinding
-import com.gdu.sdk.camera.GDUCamera
+import com.gdu.sdk.camera.Camera
 import com.gdu.sdk.gimbal.Gimbal
 import com.gdu.sdk.products.Aircraft
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
@@ -233,7 +233,7 @@ class LightSelectedView @JvmOverloads constructor(
 
 
     private fun changeLight(type: SettingsDefinitions.DisplayMode) {
-        val mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? GDUCamera
+        val mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? Camera
         mGDUCamera?.setDisplayMode(type) { error ->
             if (error == null) {
                 Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show()

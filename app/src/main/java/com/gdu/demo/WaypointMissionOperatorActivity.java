@@ -36,7 +36,7 @@ import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
-import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
@@ -73,7 +73,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
     private WaypointMissionOperator waypointMissionOperator = null;
     private WaypointMission mission = null;
     private WaypointMissionOperatorListener listener;
-    private GDUCamera mGDUCamera;
+    private Camera mGDUCamera;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             waypointMissionOperator = getWaypointMissionOperator();
             setUpListener();
 
-            mGDUCamera = (GDUCamera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
+            mGDUCamera = (Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
 
         }
     }
