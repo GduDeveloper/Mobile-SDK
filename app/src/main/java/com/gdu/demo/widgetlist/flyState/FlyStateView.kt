@@ -3,9 +3,9 @@ package com.gdu.demo.widgetlist.flyState
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
+import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.FlyStateLayoutBinding
 import com.gdu.demo.utils.UnitChnageUtils
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
@@ -32,7 +32,7 @@ class FlyStateView @JvmOverloads constructor(
     override fun initWidgetModel(): FlyStateModel = FlyStateModel()
 
     override fun bindingData(data: Any) {
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             binding.tvDis.text = context.getText(R.string.Label_N_A)
             binding.tvHeight.text = context.getText(R.string.Label_N_A)
             binding.tvHSpeed.text = context.getText(R.string.Label_N_A)

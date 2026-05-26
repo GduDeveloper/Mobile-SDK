@@ -1,7 +1,7 @@
 package com.gdu.demo.widgetlist.rtk
 
-import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
@@ -18,7 +18,7 @@ class RTKStateModel : WidgetModel() {
     }
 
     private fun updateState() {
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             notify(RTKStateValue(-1, ""))
             return;
         }

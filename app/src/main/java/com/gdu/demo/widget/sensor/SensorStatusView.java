@@ -22,6 +22,7 @@ import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.calibration.CompassCalibrationHelper;
 import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
 import com.gdu.util.logger.MyLogUtils;
@@ -237,19 +238,10 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
      */
     private boolean connStateToast() {
         MyLogUtils.i("connStateToast()");
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_MoreOne:
-                Toast.makeText(mContext, R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_Sucess:
-                return true;
-
-            default:
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 }

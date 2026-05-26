@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.RcCustomKeyViewBinding;

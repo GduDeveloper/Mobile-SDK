@@ -3,8 +3,8 @@ package com.gdu.demo.flight.base;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 
 /**
  * @author wuqb
@@ -26,19 +26,11 @@ public class BaseViewModel extends ViewModel {
 
 
     public boolean connStateToast() {
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                toastLiveData.setValue(R.string.DeviceNoConn);
-                return false;
-            case Conn_MoreOne:
-                toastLiveData.setValue(R.string.Label_ConnMore);
-                return false;
-            case Conn_Sucess:
-                return true;
-            default:
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            toastLiveData.setValue(R.string.DeviceNoConn);
+            return false;
         }
-        return false;
+        return true;
     }
 
     public MutableLiveData<ErrTipBean> getErrTipBeanLiveData() {

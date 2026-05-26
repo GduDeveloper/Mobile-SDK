@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.gdu.AlgorithmMark;
 import com.gdu.beans.WarnBean;
 import com.gdu.common.error.Error;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.databinding.ActivityFlightBinding;
@@ -391,7 +390,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     @Override
     public void updateWarnList(HashMap<Long, WarnBean> warnList) {
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess || warnList.isEmpty()) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected() || warnList.isEmpty()) {
             msgData.clear();
             ThreadHelper.runOnUiThread(() -> {
                 viewBinding.tvMsgBoxNum.setText("0");

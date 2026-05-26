@@ -15,11 +15,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityPreFligthInspectionBinding;
 import com.gdu.demo.databinding.DialogLayoutBackHomePointBinding;
 import com.gdu.demo.flight.pre.adapter.PreFlightStatusAdapter;
@@ -869,7 +869,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
      * 无人机未连接判断
      * */
     private boolean uavUnConnect(){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             showToast(getString(R.string.DeviceNoConn));
             return true;
         }

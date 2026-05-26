@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.gdu.GlobalVariableTest;
 import com.gdu.common.error.Error;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
@@ -615,7 +614,7 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void setTargetType() {
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(requireContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
             resetAiRecognitionSwitch();
             return;
@@ -659,7 +658,7 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void getTargetDetectModels() {
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(requireContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
             cancelLoadingAnimator();
             return;

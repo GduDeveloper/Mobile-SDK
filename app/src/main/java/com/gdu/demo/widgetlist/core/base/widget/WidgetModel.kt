@@ -1,7 +1,7 @@
 package com.gdu.demo.widgetlist.core.base.widget
 
-import com.gdu.config.ConnStateEnum
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.SdkDemoApplication
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -50,7 +50,7 @@ abstract class WidgetModel: CoroutineScope by MainScope() {
      * @return true 未连接
      */
     fun isConnect(): Boolean {
-        return GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess
+        return SdkDemoApplication.getAircraftInstance().isConnected()
     }
 
     @Synchronized

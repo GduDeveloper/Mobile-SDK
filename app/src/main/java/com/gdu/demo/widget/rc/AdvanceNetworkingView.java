@@ -10,9 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.remotecontroller.IMChildPointInfo;
@@ -148,7 +148,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
     private void initListener() {
         mGduSettingOptionView.setOnOptionClickListener((parentId, view, position) -> {
             // 未连接飞机不能点击
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                 Toast.makeText(mContext, R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -184,7 +184,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
         mDroneListView.setOnItemClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mDroneInfoList.get(position);
             XLogger.INSTANCE.getAPP().i("test updateStatus Match mac " + info.mac);
-            if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None || info.mac == null) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected() || info.mac == null) {
                 Toast.makeText(mContext, R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                 return;
             }

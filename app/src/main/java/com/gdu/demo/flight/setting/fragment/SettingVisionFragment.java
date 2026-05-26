@@ -598,19 +598,11 @@ public class SettingVisionFragment extends Fragment {
     }
 
     private boolean connStateToast() {
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                Toast.makeText(requireContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_MoreOne:
-                Toast.makeText(requireContext(), R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_Sucess:
-                return true;
-            default:
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            Toast.makeText(requireContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 
     @Override

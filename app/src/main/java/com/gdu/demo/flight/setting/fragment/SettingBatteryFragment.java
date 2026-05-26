@@ -22,9 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gdu.GlobalVariableTest;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingBatteryBinding;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
@@ -104,8 +104,9 @@ public class SettingBatteryFragment extends Fragment {
         GlobalVariable.twoLevelLowBattery = mViewBinding.lowPowerWarnSb.getSeekBarMin();
         GlobalVariable.oneLevelLowBattery = mViewBinding.lowestPowerWarnSb.getSeekBarMin();
 
-        mViewBinding.lowPowerWarnSb.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
-        mViewBinding.lowestPowerWarnSb.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
+        boolean isConnect = SdkDemoApplication.getAircraftInstance().isConnected();
+        mViewBinding.lowPowerWarnSb.setEnabled(isConnect);
+        mViewBinding.lowestPowerWarnSb.setEnabled(isConnect);
         mViewBinding.incBatteryLayout2.getRoot().setVisibility(View.GONE);
         LinearLayoutManager upLayoutManager = new LinearLayoutManager(getContext());
         LinearLayoutManager downLayoutManager = new LinearLayoutManager(getContext());
@@ -308,7 +309,7 @@ public class SettingBatteryFragment extends Fragment {
             return;
         }
 
-        if(GlobalVariable.connStateEnum == ConnStateEnum.Conn_None){
+        if(!SdkDemoApplication.getAircraftInstance().isConnected()){
             resetBatteryInfoOnce();
             return;
         } else {
@@ -368,7 +369,7 @@ public class SettingBatteryFragment extends Fragment {
             realTemp = (batteryTemp - 2731)/10;
         }
         String vlotage = df.format(mBatteryNo1.getTotalVoltage()/1000.0f);
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             realTemp = 0;
             vlotage = "0";
         }
@@ -459,7 +460,7 @@ public class SettingBatteryFragment extends Fragment {
         if (flyTime < 0) {
             flyTime += 65535;
         }
-        if (GlobalVariable.droneFlyState == 1 || GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (GlobalVariable.droneFlyState == 1 || !SdkDemoApplication.getAircraftInstance().isConnected()) {
             flyTime = 0;
         }
         String time = TimeUtil.getTime(flyTime * 1000 - 8 * 3600 * 1000, "HH:mm:ss");

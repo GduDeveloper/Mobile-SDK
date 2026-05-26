@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentActivity;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.ControlHand;
 
@@ -245,17 +246,11 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
         if (UavStaticVar.isOpenTextEnvironment) {
             return true;
         }
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_MoreOne:
-                Toast.makeText(mContext, R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_Sucess:
-                return true;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**

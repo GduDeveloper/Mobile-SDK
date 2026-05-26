@@ -3,9 +3,9 @@ package com.gdu.demo.flight.msgbox;
 import androidx.fragment.app.FragmentActivity;
 
 import com.gdu.beans.WarnBean;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
@@ -61,7 +61,7 @@ public class MsgBoxManager {
      */
     private void getAlarmData() {
         boolean hadErr;
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mNewWarnBeans.clear();
             mWarnTable = null;
             mWarnTable = CommonUtils.initWarnTable(mActivity);//初始化警告列表集合
@@ -143,34 +143,22 @@ public class MsgBoxManager {
             MyLogUtils.i("noErrHandle() mViewCallBack is null");
             return;
         }
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                mCallback.updateTitleTvTxt(mActivity.getString(R.string.DeviceNoConn));
-                mCallback.updateHeadViewBg(android.R.color.transparent);
-                mCallback.updateWarnList(mWarnTable);
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            mCallback.updateTitleTvTxt(mActivity.getString(R.string.DeviceNoConn));
+            mCallback.updateHeadViewBg(android.R.color.transparent);
+            mCallback.updateWarnList(mWarnTable);
+        } else {
+            final StringBuilder sb = new StringBuilder();
+            if (GlobalVariable.droneFlyState == 1) {
+                sb.append(mActivity.getString(R.string.Label_Good2Go));
+            } else if (!GlobalVariable.planeHadLock) { //bug-3911-shang-20171111 室内未解锁，状态栏显示“正常飞行中”
+                sb.append(mImportType == 2 ? mActivity.getString(R.string.Label_InFlight_Task) : mActivity.getString(R.string.Label_InFlight_Manual));
+            }
 
-            case Conn_MoreOne:
-                mCallback.updateTitleTvTxt(mActivity.getString(R.string.Label_ConnMore));
-                mCallback.updateHeadViewBg(android.R.color.transparent);
-                mCallback.updateWarnList(mWarnTable);
-                break;
-
-            case Conn_Sucess:
-                final StringBuilder sb = new StringBuilder();
-                if (GlobalVariable.droneFlyState == 1) {
-                    sb.append(mActivity.getString(R.string.Label_Good2Go));
-                } else if (!GlobalVariable.planeHadLock) { //bug-3911-shang-20171111 室内未解锁，状态栏显示“正常飞行中”
-                    sb.append(mImportType == 2 ? mActivity.getString(R.string.Label_InFlight_Task) : mActivity.getString(R.string.Label_InFlight_Manual));
-                }
-
-                mCallback.updateTitleTVColor(R.color.white);
-                mCallback.updateTitleTvTxt(sb.toString());
-                mCallback.updateWarnList(mWarnTable);
-                mCallback.updateHeadViewBg(android.R.color.transparent);
-                break;
-            default:
-                break;
+            mCallback.updateTitleTVColor(R.color.white);
+            mCallback.updateTitleTvTxt(sb.toString());
+            mCallback.updateWarnList(mWarnTable);
+            mCallback.updateHeadViewBg(android.R.color.transparent);
         }
     }
 }

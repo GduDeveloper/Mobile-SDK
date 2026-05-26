@@ -533,16 +533,7 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public boolean isConnect() {
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-            case Conn_MoreOne:
-                return false;
-            case Conn_Sucess:
-                return true;
-            default:
-                break;
-        }
-        return false;
+        return SdkDemoApplication.getAircraftInstance().isConnected();
     }
 
     public void setHomePoint(double lat, double lng, byte type) {

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.airlink.FrequencyBandwidth;
 import com.gdu.common.error.Error;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
@@ -113,7 +112,7 @@ public class SettingSDRViewModel extends BaseViewModel {
      * 设置云台推流地址
      * */
     public void set4GServiceIp(String setIp){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             toastLiveData.setValue(R.string.fly_no_conn);
             return;
         }
@@ -251,7 +250,7 @@ public class SettingSDRViewModel extends BaseViewModel {
      * @param type  1: rtmp   2: webrtc
      * */
     public void setLTEPushStreamType(byte type){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             toastLiveData.setValue(R.string.fly_no_conn);
             ltePushStreamTypeLiveData.postValue(true);
             return;

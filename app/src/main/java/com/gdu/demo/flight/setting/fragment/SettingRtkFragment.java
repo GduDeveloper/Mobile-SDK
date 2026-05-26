@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gdu.api.GduRtkManager;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -129,7 +128,7 @@ public class SettingRtkFragment extends Fragment {
         binding.rtkSwitchView.setOnClickListener(listener);
 
         binding.rtkServiceView.setOnOptionClickListener((parentId, view, position) -> {
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {   //未连接飞机
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -187,7 +186,7 @@ public class SettingRtkFragment extends Fragment {
 
     private void initData() {
         MyLogUtils.i("initData()");
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             GlobalVariable.sRTKType = 1;
             GlobalVariable.sDroneRTKStatus = 0;
             GlobalVariable.sPhoneRTKStatus = 0;
@@ -520,7 +519,7 @@ public class SettingRtkFragment extends Fragment {
 
 
     private void confirmRTK() {
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {   //未连接飞机
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
             Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return;
         }

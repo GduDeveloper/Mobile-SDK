@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
@@ -186,7 +185,7 @@ public class SettingRControlFragment extends Fragment {
 //                    });
                     break;
                 case R.id.tv_rc_control_check://遥控器校准
-                    if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+                    if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                         setSecondLevelView(mViewBinding.rcCalibrationLayout, true, getString(R.string.string_remote_cortrol_check));
 //                        mRcCalibrationHelper.startMediumCalibration();
                         currentSecondLevelType = 5;
@@ -207,7 +206,7 @@ public class SettingRControlFragment extends Fragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void deviceConnChange(EventConnState event) {
         switchControlEnable();
-        boolean isShow = isClickConnect && event.connStateEnum == ConnStateEnum.Conn_Sucess;
+        boolean isShow = isClickConnect && SdkDemoApplication.getAircraftInstance().isConnected();
         if (isShow) {
             GlobalEventBus.getBus().post(new GimbalEvent(GlobalVariable.gimbalType));
             GlobalEventBus.getBus().post(new EventMessage(MyConstants.GET_CONTROL_PERMISSION_SUC));
@@ -244,12 +243,12 @@ public class SettingRControlFragment extends Fragment {
     }
 
     private void rcMatch() {
-        if (GlobalVariable.droneFlyState != 1 && GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (GlobalVariable.droneFlyState != 1 && SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(getContext(), R.string.Label_CannotMatchRc, Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess && GlobalVariable.isUseBackupsAirlink) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected() && GlobalVariable.isUseBackupsAirlink) {
             Toast.makeText(getContext(), R.string.string_plz_switch_image_transmission_match, Toast.LENGTH_SHORT).show();
             return;
         }

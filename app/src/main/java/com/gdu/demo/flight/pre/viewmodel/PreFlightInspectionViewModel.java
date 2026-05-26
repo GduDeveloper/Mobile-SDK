@@ -14,7 +14,6 @@ import com.gdu.api.GduRtkManager;
 import com.gdu.api.Util.ConnectUtil;
 import com.gdu.api.rtk.QxSdkManager;
 import com.gdu.beans.WarnBean;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -202,7 +201,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
      * */
     private void getFlightStatus(){
         BaseSysStatusBean bean = new BaseSysStatusBean();
-        if(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if(SdkDemoApplication.getAircraftInstance().isConnected()) {
             ArrayList<MessageBean> warnErrorList = getWarnErrorList();
             boolean isHaveAbnormal = !warnErrorList.isEmpty();
 
@@ -362,7 +361,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
             bean.setContentTextColor(R.color.color_FF5800);
             bean.setContentEnable(false);
         } else {
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_None && rtkConnected) {
+            if (SdkDemoApplication.getAircraftInstance().isConnected() && rtkConnected) {
                 bean.setContentStrId(R.string.flight_connect);
                 bean.setContentTextColor(R.color.color_5B5B5B);
                 bean.setContentEnable(true);
@@ -505,7 +504,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
     private void judgeHaveAlarm(Context context) {
         //已连接的才需处理
-        if(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if(SdkDemoApplication.getAircraftInstance().isConnected()) {
             getAlarmData(context);
             sendCmdHandle();
         }
@@ -557,7 +556,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
      * 返航高度获取
      * */
     private void getHomeBackHeight(){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess){
+        if (SdkDemoApplication.getAircraftInstance().isConnected()){
             if (GlobalVariable.backHeight > 0) {
                 preGoHomeHeight = GlobalVariable.backHeight / 10;
                 goHomeHeightLiveData.postValue(String.valueOf(UnitChnageUtils.getUnitValue(preGoHomeHeight)));

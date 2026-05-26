@@ -5,7 +5,6 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
@@ -297,7 +296,7 @@ public class SettingFlyViewModel extends BaseViewModel {
      * 是否能设置GPS
      * */
     public boolean getCanSetGps(){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             toastLiveData.setValue(R.string.DeviceNoConn);
             return false;
         }
@@ -406,7 +405,7 @@ public class SettingFlyViewModel extends BaseViewModel {
      * 设置三脚架模式
      * */
     public boolean setCanTripodMode(int position){
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             toastLiveData.setValue(R.string.DeviceNoConn);
             return false;
         }

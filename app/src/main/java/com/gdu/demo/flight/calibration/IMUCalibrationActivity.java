@@ -13,9 +13,9 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
 import com.gdu.util.logs.AppLog;
@@ -189,7 +189,7 @@ public class IMUCalibrationActivity extends FragmentActivity implements View.OnC
      * 开始校磁
      */
     private void switchCalibration(byte status) {
-        if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(this, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return;
         }

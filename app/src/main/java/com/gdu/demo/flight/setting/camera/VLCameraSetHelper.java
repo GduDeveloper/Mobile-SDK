@@ -13,11 +13,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.GimbalType;
 import com.gdu.event.GimbalEvent;
@@ -298,10 +298,11 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             }
         };
 
-        sb_pitch_speed.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
-        sb_ptz_yaw_speed.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
-        sb_pitch_slow_setting.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
-        sb_yaw_slow_setting.setEnabled(GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess);
+        boolean isConnect = SdkDemoApplication.getAircraftInstance().isConnected();
+        sb_pitch_speed.setEnabled(isConnect);
+        sb_ptz_yaw_speed.setEnabled(isConnect);
+        sb_pitch_slow_setting.setEnabled(isConnect);
+        sb_yaw_slow_setting.setEnabled(isConnect);
 
         sb_pitch_speed.setOnSeekBarChangeListener(mSeekBarFourLightListener);
         sb_ptz_yaw_speed.setOnSeekBarChangeListener(mSeekBarPTZYawListener);
@@ -522,17 +523,11 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     public boolean checkDroneConnState() {
         MyLogUtils.d("checkDroneConnState()");
         boolean result = false;
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                showToast(R.string.fly_no_conn);
-                result = false;
-            case Conn_MoreOne:
-                showToast(R.string.Label_ConnMore);
-                result = false;
-            case Conn_Sucess:
-                result = true;
-            default:
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            showToast(R.string.fly_no_conn);
+            result = false;
+        } else {
+            result = true;
         }
         MyLogUtils.d("checkDroneConnState() result = " + result);
         return result;

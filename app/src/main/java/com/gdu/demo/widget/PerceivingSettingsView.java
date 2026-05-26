@@ -12,10 +12,10 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.DroneUtil;
@@ -273,7 +273,7 @@ public class PerceivingSettingsView extends RelativeLayout {
     private void initListener() {
         // 水平避障开关
         mObsHorSwitch.setOnClickListener(v -> {
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -364,7 +364,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
         // 上视避障开关
         mObsTopSwitch.setOnClickListener(v -> {
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -457,7 +457,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
         // 下视避障开关
         mBottomSwitch.setOnClickListener(v -> {
-            if (GlobalVariable.connStateEnum != ConnStateEnum.Conn_Sucess) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -576,19 +576,11 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     private boolean connStateToast() {
         MyLogUtils.i("connStateToast()");
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_MoreOne:
-                Toast.makeText(getContext(), R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_Sucess:
-                return true;
-            default:
-                break;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 
     private String getScalePbValue(int progress) {

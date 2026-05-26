@@ -11,9 +11,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
 import com.gdu.demo.utils.MultiTimerManager;
 
@@ -85,7 +85,7 @@ public class TopStateView  extends ConstraintLayout {
 
     private void updateObstacleAvoidance() {
 
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             binding.ivVision.setSelected(false);
             return;
         }
@@ -104,7 +104,7 @@ public class TopStateView  extends ConstraintLayout {
     }
 
     private void updateAircraftLockState() {
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             binding.ivLock.setVisibility(View.GONE);
             return;
         }
@@ -118,7 +118,7 @@ public class TopStateView  extends ConstraintLayout {
 
     private void updateFlyMode() {
 
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             binding.tvSportMode.setVisibility(GONE);
             return;
         }

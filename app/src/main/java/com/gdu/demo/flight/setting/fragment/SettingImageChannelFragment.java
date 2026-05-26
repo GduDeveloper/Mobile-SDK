@@ -16,9 +16,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
 import com.gdu.demo.flight.setting.viewmodel.SettingSDRViewModel;
 import com.gdu.drone.AirlinkType;
@@ -132,7 +132,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void setListener() {
         mViewBinding.ovSwitchImgChannel.setOnOptionClickListener((parentId, view, position) -> {
-            if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_None) {
+            if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }

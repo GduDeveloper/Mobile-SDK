@@ -19,10 +19,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.gdu.config.ConnStateEnum;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSetingFlyBinding;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.event.ChangeUnitEvent;
@@ -129,7 +129,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.etHeightLimit.setText(String.valueOf(preHeightLimit));
         mUnitChnageUtils.showUnit(MyConstants.LIMIT_HEIGHT_MIN, mViewBinding.tvLimitHeightMin);
         mUnitChnageUtils.showUnit(MyConstants.LIMIT_HEIGHT_MAX, mViewBinding.tvLimitHeightMax);
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etHeightLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitHeight.getProgress())));
         } else {
             if (!GlobalVariable.isNewHeightLimitStrategy) {
@@ -228,7 +228,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mUnitChnageUtils.showUnit(MyConstants.LIMIT_DISTANCE_MIN, mViewBinding.tvLimitDistanceMin);
         mUnitChnageUtils.showUnit(MyConstants.LIMIT_DISTANCE_MAX, mViewBinding.tvLimitDistanceMax);
 
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etDistanceLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitDistance.getProgress())));
         } else {
             mViewBinding.etDistanceLimit.setText("INF");
@@ -299,7 +299,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             mViewBinding.etHeight.setText(goHomeHeightStr);
         }
 
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etHeight.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbBackHeight.getProgress())));
             mViewBinding.etHeight.setEnabled(true);
             mViewBinding.sbBackHeight.setEnabled(true);
@@ -339,7 +339,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.sbBackSpeed.setMax(MyConstants.GO_HOME_SPEED_MAX);
         mViewBinding.tvMinSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(MyConstants.GO_HOME_SPEED_MIN));
         mViewBinding.tvMaxSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(MyConstants.GO_HOME_SPEED_MAX));
-        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etBackSpeed.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbBackSpeed.getProgress())));
             mViewBinding.etBackSpeed.setEnabled(true);
             mViewBinding.sbBackSpeed.setEnabled(true);
@@ -896,7 +896,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void connDrone(EventConnState connEvent) {
-        if (connEvent.connStateEnum != ConnStateEnum.Conn_Sucess) {
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             initData();
         }
     }

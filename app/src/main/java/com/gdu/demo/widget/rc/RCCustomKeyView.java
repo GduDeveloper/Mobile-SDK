@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.drone.ControlHand;
 
@@ -241,17 +242,11 @@ public class RCCustomKeyView extends RelativeLayout implements View.OnClickListe
         if (UavStaticVar.isOpenTextEnvironment) {
             return true;
         }
-        switch (GlobalVariable.connStateEnum) {
-            case Conn_None:
-                Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_MoreOne:
-                Toast.makeText(mContext, R.string.Label_ConnMore, Toast.LENGTH_SHORT).show();
-                return false;
-            case Conn_Sucess:
-                return true;
+        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+            Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            return false;
         }
-        return false;
+        return true;
     }
 
     /**
