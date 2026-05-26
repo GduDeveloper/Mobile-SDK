@@ -23,7 +23,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.common.mission.followme.FollowMeGimbalPitch;
 import com.gdu.common.mission.followme.FollowMeHeading;
 import com.gdu.common.mission.followme.FollowMeMission;
@@ -44,12 +44,13 @@ import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.mission.MissionControl;
 import com.gdu.sdk.mission.followme.FollowMeMissionOperator;
 import com.gdu.sdk.mission.followme.FollowMeMissionOperatorListener;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperator;
 import com.gdu.sdk.mission.hotpoint.HotpointMissionOperatorListener;
+import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -80,7 +81,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
     private TextView mMissionInfoTextView;
     private CheckBox mSetDistanceAndHeightEnableCheckBox;
 
-    private GDUFlightController mGDUFlightController;
+    private FlightController mGDUFlightController;
 
     private GDUCamera mGDUCamera;
 
@@ -107,7 +108,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         if (product == null || !product.isConnected()) {
             return;
         } else {
-            mGDUFlightController = ((GDUAircraft) product).getFlightController();
+            mGDUFlightController = ((Aircraft) product).getFlightController();
             mGDUFlightController.setStateCallback(new FlightControllerState.Callback() {
                 @Override
                 public void onUpdate(FlightControllerState flightControllerState) {
@@ -160,7 +161,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             }
 
             @Override
-            public void onExecutionFinish(GDUError error) {
+            public void onExecutionFinish(Error error) {
                 toast("环绕状态 结束 " + error.getDescription());
             }
         });
@@ -177,8 +178,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             }
 
             @Override
-            public void onExecutionFinish(GDUError gduError) {
-                toast("跟随状态 结束" + gduError);
+            public void onExecutionFinish(Error error) {
+                toast("跟随状态 结束" + error);
             }
         });
     }
@@ -255,8 +256,8 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             InitializationData initializationData = new InitializationData(locationCoordinate3D, (short) 90, PositioningSolution.FIXED_POINT, (byte) 30);
             mGDUFlightController.getSimulator().start(initializationData, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError gduError) {
-                    if (gduError == null) {
+                public void onResult(Error error) {
+                    if (error == null) {
 
                     }
                 }
@@ -280,7 +281,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
 
                 mGDUFlightController.setHomeLocation(coordinate2D, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("home点设置成功");
                         } else {
@@ -305,7 +306,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 hotpointMission.setStartPoint(HotpointStartPoint.NORTH);
                 mHotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("开始环绕发送成功");
                         } else {
@@ -318,7 +319,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.pause_hotpoint_button:
                 mHotpointMissionOperator.pause(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("暂停环绕发送成功");
                         } else {
@@ -331,7 +332,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.continue_hotpoint_button:
                 mHotpointMissionOperator.resume(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError gduError) {
+                    public void onResult(Error error) {
 
                     }
                 });
@@ -339,7 +340,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.stop_hotpoint_button:
                 mHotpointMissionOperator.stop(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("结束环绕发送成功");
                         } else {
@@ -351,7 +352,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.set_hotpoint_heading_button:
                 mHotpointMissionOperator.setHotPointHeading(HotpointHeading.AWAY_FROM_HOT_POINT, 0, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置机头角度发送成功");
                         } else {
@@ -363,7 +364,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.set_hotpoint_gimbal_pitch_button:
                 mHotpointMissionOperator.setHotpointGimbalPitch(HotpointGimbalPitch.SET_GIMBAL_PITCH, 60, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置云台角度发送成功");
                         } else {
@@ -385,7 +386,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 float vSpeed = 5;
                 mGDUFlightController.startTapFly(targetPoint, hSpeed, vSpeed, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("开始指点飞行发送成功");
                         } else {
@@ -397,7 +398,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.stop_tapfly_button:
                 mGDUFlightController.stopTapFly(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("停止指点飞行发送成功");
                         } else {
@@ -412,7 +413,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.stop_follow_button:
                 mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         isStartFollow = false;
                         if (error == null) {
                             toast("停止跟随发送成功");
@@ -429,7 +430,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.stop_high_precision_follow_button:
                 mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         isStartFollow = false;
                         if (error == null) {
                             toast("停止跟随发送成功");
@@ -442,7 +443,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.set_follow_me_heading_button:
                 mFollowMeMissionOperator.setFollowMeHeading(FollowMeHeading.SET_HEADING_ANGLE, 50, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置跟随机头发送成功");
                         } else {
@@ -454,7 +455,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.set_follow_me_gimbal_pitch_button:
                 mFollowMeMissionOperator.setFollowMeGimbalPitch(FollowMeGimbalPitch.SET_GIMBAL_PITCH, 80, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("设置跟随云台发送成功");
                         } else {
@@ -466,7 +467,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.start_fly_button:
                 mGDUFlightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("开始起飞发送成功");
                         } else {
@@ -478,7 +479,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
             case R.id.start_land_button:
                 mGDUFlightController.startLanding(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("开始降落发送成功");
                         } else {
@@ -505,7 +506,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
         FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, true, isSetDistanceAndHeightEnable, 15f,  isSetDistanceAndHeightEnable, 3, 0);
         mFollowMeMissionOperator.startMission(followMeMission, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     if (error == null) {
                         toast("开始跟随发送成功");
@@ -524,7 +525,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                 latitude + 5 * ONE_METER_OFFSET, longitude + 5 * ONE_METER_OFFSET, 30f
         ), new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     toast("开始跟随发送成功");
                 } else {
@@ -557,7 +558,7 @@ public class MissionOperatorActivity extends Activity implements LocationSource 
                                 RonLog.LogD("test FollowingTarget " + newLocation.toString());
                                 mFollowMeMissionOperator.updateFollowingTarget(newLocation, new CommonCallbacks.CompletionCallback() {
                                     @Override
-                                    public void onResult(GDUError error) {
+                                    public void onResult(Error error) {
                                         if (error == null) {
                                             toast("跟随目标点发送成功");
                                         } else {

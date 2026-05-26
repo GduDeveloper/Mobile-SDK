@@ -43,7 +43,7 @@ import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.radar.GDURadar;
@@ -97,7 +97,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     }
 
     private void initListener() {
-        GDUFlightController mGDUFlightController = SdkDemoApplication.getAircraftInstance().getFlightController();
+        FlightController mGDUFlightController = SdkDemoApplication.getAircraftInstance().getFlightController();
         if (mGDUFlightController != null){
             mGDUFlightController.setStateCallback(flightControllerState -> {
                 //航向

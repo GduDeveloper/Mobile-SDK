@@ -22,7 +22,7 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.PolylineOptions;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.common.mission.waypoint.Waypoint;
 import com.gdu.common.mission.waypoint.WaypointAction;
 import com.gdu.common.mission.waypoint.WaypointActionType;
@@ -38,11 +38,12 @@ import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.SystemState;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.mission.MissionControl;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperator;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperatorListener;
+import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -69,7 +70,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
     private TextView mMissionInfoTextView;
 
 
-    private GDUFlightController mGDUFlightController;
+    private FlightController mGDUFlightController;
     private WaypointMissionOperator waypointMissionOperator = null;
     private WaypointMission mission = null;
     private WaypointMissionOperatorListener listener;
@@ -93,7 +94,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         if (product == null || !product.isConnected()) {
             return;
         } else {
-            mGDUFlightController = ((GDUAircraft) product).getFlightController();
+            mGDUFlightController = ((Aircraft) product).getFlightController();
             mGDUFlightController.setStateCallback(new FlightControllerState.Callback() {
                 @Override
                 public void onUpdate(FlightControllerState flightControllerState) {
@@ -160,7 +161,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             }
 
             @Override
-            public void onExecutionFinish(GDUError djiError) {
+            public void onExecutionFinish(Error error) {
 //                show("Mission finished");
                 toast("Mission finished");
 //                updateWaypointMissionState();
@@ -246,8 +247,8 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             InitializationData initializationData = new InitializationData(locationCoordinate3D, (short) 90, PositioningSolution.FIXED_POINT, (byte) 30);
             mGDUFlightController.getSimulator().start(initializationData, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError gduError) {
-                    if (gduError == null) {
+                public void onResult(Error error) {
+                    if (error == null) {
 
                     }
                 }
@@ -269,7 +270,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             case R.id.upload_waypoint_button:
                 waypointMissionOperator.uploadMission(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("上传航迹发送成功");
                         } else {
@@ -282,7 +283,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
                     waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
                         @Override
-                        public void onResult(GDUError error) {
+                        public void onResult(Error error) {
                             if (error == null) {
                                 toast("开始航迹成功");
                             } else {
@@ -295,7 +296,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             case R.id.resume_waypoint_button:
                 waypointMissionOperator.resumeMission(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("继续航迹成功");
                         } else {
@@ -307,7 +308,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             case R.id.pause_waypoint_button:
                     waypointMissionOperator.pauseMission(new CommonCallbacks.CompletionCallback() {
                         @Override
-                        public void onResult(GDUError error) {
+                        public void onResult(Error error) {
                             if (error == null) {
                                 toast("暂停航迹成功");
                             } else {
@@ -319,7 +320,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
             case R.id.stop_waypoint_button:
                 waypointMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError error) {
+                    public void onResult(Error error) {
                         if (error == null) {
                             toast("停止航迹成功");
                         } else {

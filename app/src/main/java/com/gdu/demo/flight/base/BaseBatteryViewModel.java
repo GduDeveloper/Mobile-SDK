@@ -3,7 +3,7 @@ package com.gdu.demo.flight.base;
 import androidx.lifecycle.ViewModel;
 
 import com.gdu.demo.SdkDemoApplication;
-import com.gdu.sdk.battery.GDUBattery;
+import com.gdu.sdk.battery.Battery;
 
 /**
  * @author wuqb
@@ -12,11 +12,11 @@ import com.gdu.sdk.battery.GDUBattery;
  */
 public class BaseBatteryViewModel extends ViewModel {
 
-    private GDUBattery mGDUBattery;
+    private Battery battery;
 
 
     public BaseBatteryViewModel() {
-        mGDUBattery = SdkDemoApplication.getAircraftInstance().getBattery();
+        battery = SdkDemoApplication.getAircraftInstance().getBattery();
     }
 
 }

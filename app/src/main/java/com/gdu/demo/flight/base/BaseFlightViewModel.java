@@ -6,7 +6,7 @@ import android.widget.Toast;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
@@ -17,8 +17,7 @@ import com.gdu.demo.map.utils.JTSUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
-import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
@@ -39,7 +38,7 @@ import java.util.HashMap;
  */
 public class BaseFlightViewModel extends BaseViewModel {
 
-    private GDUFlightController mGDUFlightController;
+    private FlightController mGDUFlightController;
     private final MutableLiveData<LimitHeightInfo> limitHeightLiveData;
 
     private final MutableLiveData<LimitDistanceInfo> limitDistanceLiveData;
@@ -134,7 +133,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                     LimitHeightInfo bean = new LimitHeightInfo();
                     bean.setOpen(false);
                     bean.setHeight(0);
@@ -154,7 +153,7 @@ public class BaseFlightViewModel extends BaseViewModel {
         }
         mGDUFlightController.setConnectionFailSafeBehavior(behavior, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error != null) {
                     ConnectionFailSafeBehaviorBean behaviorBean = new ConnectionFailSafeBehaviorBean();
                     behaviorBean.setSet(true);
@@ -186,7 +185,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
 
             }
         });
@@ -220,7 +219,7 @@ public class BaseFlightViewModel extends BaseViewModel {
         }
         mGDUFlightController.setGoHomeHeightInMeters((short) height, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 GoHomeHeightBean homeHeightBean = new GoHomeHeightBean();
                 if (error == null) {
                     int value = checkAndSaveGoHomeHeightData(height);
@@ -383,7 +382,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
 
             }
         });
@@ -550,7 +549,7 @@ public class BaseFlightViewModel extends BaseViewModel {
         LocationCoordinate2D homeLocation = new LocationCoordinate2D(lat, lng);
         mGDUFlightController.setHomeLocation(homeLocation, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
 //                    CommonUtils.stopAllHomePointMusic();
                     GlobalVariable.returnHomeSettingType = type;
@@ -568,7 +567,7 @@ public class BaseFlightViewModel extends BaseViewModel {
     public void setLowBatteryWarningThreshold(int lowBatteryWarning, int seriousLowBatteryWarning){
         mGDUFlightController.setLowBatteryWarningThreshold((byte) seriousLowBatteryWarning, (byte) lowBatteryWarning, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 getLowBatteryWarningThreshold();
             }
         });
@@ -595,7 +594,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 LowBatteryWarnInfo warningBean = new LowBatteryWarnInfo();
                 warningBean.setSuccess(false);
                 warningBean.setOneLevelWarn(0);

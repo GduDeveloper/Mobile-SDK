@@ -12,14 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -31,7 +31,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
 
     private Context mContext;
 
-    private GDUFlightController mGDUFlightController;
+    private FlightController mGDUFlightController;
 
     private TextView mSimulatorStatusTextview;
     private TextView mFCStateInfoTextView;
@@ -108,7 +108,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         if (mGDUFlightController != null) {
             mGDUFlightController.setMaxFlightHeight(50, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     if (error == null) {
                         showText(mMaxFlightHeightTextView, "50");
                     } else {
@@ -131,7 +131,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                     showText(mMaxFlightHeightTextView, "fail");
                 }
             });
@@ -146,7 +146,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         if (mGDUFlightController != null) {
             mGDUFlightController.setMaxFlightRadiusLimitationEnabled(isEnable, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     if (error == null) {
                         toastText("限距 " + isEnable);
                     } else {
@@ -178,7 +178,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
 
                 }
             });
@@ -192,7 +192,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         if (mGDUFlightController != null) {
             mGDUFlightController.setMaxFlightRadius(100, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError error) {
+                public void onResult(Error error) {
                     if (error == null) {
                         showText(mMaxFlightRadiusTextView, 100+"");
                     } else {
@@ -215,7 +215,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                     showText(mMaxFlightRadiusTextView, "fail");
                 }
             });
@@ -228,7 +228,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     public void setGoHomeHeightInMeters() {
         mGDUFlightController.setGoHomeHeightInMeters((short) 115, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
                 if (error == null) {
                     showText(mGoHomeHeightTextview, "115");
                 } else {
@@ -249,7 +249,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 showText(mGoHomeHeightTextview, "fail");
             }
         });
@@ -267,7 +267,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 }
 
                 @Override
-                public void onFailure(GDUError var1) {
+                public void onFailure(Error var1) {
                     showText(mFCVersionTextview, "fail");
                 }
             });
@@ -283,8 +283,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             InitializationData initializationData = new InitializationData(locationCoordinate3D, (short) 90, PositioningSolution.FIXED_POINT, (byte) 30);
             mGDUFlightController.getSimulator().start(initializationData, new CommonCallbacks.CompletionCallback() {
                 @Override
-                public void onResult(GDUError gduError) {
-                    if (gduError == null) {
+                public void onResult(Error error) {
+                    if (error == null) {
 
                     }
                 }
@@ -296,7 +296,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         // 1.5m
         mGDUFlightController.startTakeoff(150, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("起飞成功");
                 } else {
@@ -309,7 +309,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void startLanding(){
         mGDUFlightController.startLanding(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("开始降落成功");
                 } else {
@@ -322,7 +322,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void cancelLanding(){
         mGDUFlightController.cancelLanding(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("取消降落成功");
                 } else {
@@ -335,7 +335,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void startGoHome(){
         mGDUFlightController.startGoHome(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("开始返航成功");
                 } else {
@@ -348,7 +348,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void cancelGoHome(){
         mGDUFlightController.cancelGoHome(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("取消返航成功");
                 } else {
@@ -361,7 +361,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void startPrecisionGoHome() {
         mGDUFlightController.startPrecisionGoHome(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("开始精准返航成功");
                 } else {
@@ -375,7 +375,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void cancelPrecisionGoHome() {
         mGDUFlightController.cancelPrecisionGoHome(new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("取消精准返航成功");
                 } else {
@@ -388,7 +388,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void setConnectionFailSafeBehavior(){
         mGDUFlightController.setConnectionFailSafeBehavior(ConnectionFailSafeBehavior.GO_HOME, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("设置失联行为成功");
                 } else {
@@ -406,7 +406,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取失联行为失败 " + var1);
             }
         });
@@ -415,7 +415,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void setLowBatteryWarningThreshold() {
         mGDUFlightController.setLowBatteryWarningThreshold(35, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("设置低电量阈值成功 ");
                 } else {
@@ -433,7 +433,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取低电量阈值失败 ");
             }
         });
@@ -442,7 +442,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private void setSeriousLowBatteryWarningThreshold() {
         mGDUFlightController.setSeriousLowBatteryWarningThreshold(20, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError var1) {
+            public void onResult(Error var1) {
                 if (var1 == null) {
                     toastText("设置严重低电量阈值成功 ");
                 } else {
@@ -460,7 +460,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             }
 
             @Override
-            public void onFailure(GDUError var1) {
+            public void onFailure(Error var1) {
                 toastText("获取严重低电量阈值失败 ");
             }
         });
@@ -545,7 +545,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.set_drone_angle:
                 mGDUFlightController.changYawAngular(RotationMode.ABSOLUTE_ANGLE, 90, new CommonCallbacks.CompletionCallback() {
                     @Override
-                    public void onResult(GDUError gduError) {
+                    public void onResult(Error error) {
 
                     }
                 });
@@ -615,7 +615,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                     }
 
                     @Override
-                    public void onFailure(GDUError var1) {
+                    public void onFailure(Error var1) {
                         showText(mAircraftSNTextview, var1.getDescription());
                     }
                 });

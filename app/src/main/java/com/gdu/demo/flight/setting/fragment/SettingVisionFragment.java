@@ -29,7 +29,6 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
 import com.gdu.drone.SwitchType;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;

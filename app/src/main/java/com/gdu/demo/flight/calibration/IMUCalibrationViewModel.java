@@ -3,12 +3,12 @@ package com.gdu.demo.flight.calibration;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.drone.PlanType;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.DroneUtil;
 
@@ -19,7 +19,7 @@ import com.gdu.util.DroneUtil;
  */
 public class IMUCalibrationViewModel extends ViewModel {
 
-    private final GDUFlightController mGDUFlightController;
+    private final FlightController mGDUFlightController;
     private final MutableLiveData<Integer> recoveryStatusLiveData; //恢复状态
     private final MutableLiveData<Integer> changeStatusLiveData; //状态变更
     private MutableLiveData<Boolean> checkStatusLiveData; //校准状态
@@ -108,7 +108,7 @@ public class IMUCalibrationViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -133,7 +133,7 @@ public class IMUCalibrationViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 checkStatusLiveData.postValue(false);
             }
         });

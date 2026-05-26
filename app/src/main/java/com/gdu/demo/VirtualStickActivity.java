@@ -18,13 +18,13 @@ import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.demo.views.JoystickView;
 import com.gdu.demo.views.OnJoystickListener;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.FlightControlData;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logs.RonLog;
 
@@ -39,7 +39,7 @@ public class VirtualStickActivity extends Activity {
     private MapView mMapView;
     private Context mContext;
 
-    private GDUFlightController mFlightController;
+    private FlightController mFlightController;
     private Timer sendVirtualStickDataTimer;
     private SendVirtualStickDataTask sendVirtualStickDataTask;
 
@@ -104,7 +104,7 @@ public class VirtualStickActivity extends Activity {
         });
         mFlightController.setVirtualStickModeEnabled(true, new CommonCallbacks.CompletionCallback() {
             @Override
-            public void onResult(GDUError error) {
+            public void onResult(Error error) {
 
             }
         });
@@ -187,7 +187,7 @@ public class VirtualStickActivity extends Activity {
                     .sendVirtualStickFlightControlData(flightControlData,
                             new CommonCallbacks.CompletionCallback() {
                                 @Override
-                                public void onResult(GDUError gduError) {
+                                public void onResult(Error error) {
 
                                 }
                             });

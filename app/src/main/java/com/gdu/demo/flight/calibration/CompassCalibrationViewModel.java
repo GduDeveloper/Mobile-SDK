@@ -3,12 +3,12 @@ package com.gdu.demo.flight.calibration;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.common.error.GDUError;
+import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.drone.PlanType;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.ThreadHelper;
@@ -19,7 +19,7 @@ import com.gdu.util.ThreadHelper;
  * @description 指南针校磁
  */
 public class CompassCalibrationViewModel extends ViewModel {
-    private final GDUFlightController mGDUFlightController;
+    private final FlightController mGDUFlightController;
     private final MutableLiveData<Integer> mXyRectifyStartLiveData;
     /** 校磁状态更新 */
     private final MutableLiveData<Integer> mRectifyUpdateLiveData;
@@ -161,7 +161,7 @@ public class CompassCalibrationViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });
@@ -209,7 +209,7 @@ public class CompassCalibrationViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
                 isRectifying = false;
                 onRectifyFail();
             }
@@ -227,7 +227,7 @@ public class CompassCalibrationViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(GDUError gduError) {
+            public void onFailure(Error error) {
 
             }
         });

@@ -14,6 +14,7 @@ import com.gdu.demo.flight.base.BaseViewModel;
 import com.gdu.demo.flight.base.ErrTipBean;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
+import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -29,7 +30,7 @@ import com.gdu.util.SPUtils;
  */
 public class SettingFlyViewModel extends BaseViewModel {
 
-    private GDUFlightController mGDUFlightController;
+    private FlightController mGDUFlightController;
     private final MutableLiveData<Integer> backHomeHeightLiveData;  //返航高度
     private final MutableLiveData<Integer> backHomeSpeedLiveData;  //返航速度
     private final MutableLiveData<Integer> outOfControlActionLiveData;
