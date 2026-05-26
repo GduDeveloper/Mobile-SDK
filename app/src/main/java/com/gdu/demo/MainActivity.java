@@ -14,14 +14,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gdu.common.error.Error;
-import com.gdu.drone.GimbalType;
-import com.gdu.sdk.airlink.GDUAirLink;
+import com.gdu.msdk.key.value.bean.GimbalType;
+import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
-import com.gdu.sdk.gimbal.GDUGimbal;
+import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.manager.SDKInitEvent;
 import com.gdu.sdk.manager.SDKManager;
-import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.wrapper.BuildConfig;
@@ -177,7 +176,7 @@ public class MainActivity extends Activity {
     }
 
     private void refreshComponent(BaseComponent component){
-        if (component instanceof GDURemoteController || component instanceof GDUAirLink) {
+        if (component instanceof RemoteController || component instanceof AirLink) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -186,8 +185,8 @@ public class MainActivity extends Activity {
             });
         }
 
-        if (component instanceof GDUGimbal) {
-            GDUGimbal gimbal = (GDUGimbal) component;
+        if (component instanceof Gimbal) {
+            Gimbal gimbal = (Gimbal) component;
             GimbalType gimbalType = gimbal.getGimbalType();
 
             runOnUiThread(new Runnable() {
