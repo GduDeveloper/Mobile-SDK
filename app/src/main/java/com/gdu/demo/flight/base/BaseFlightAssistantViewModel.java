@@ -3,16 +3,14 @@ package com.gdu.demo.flight.base;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.gdu.AlgorithmMark;
-import com.gdu.api.Util.ConnectUtil;
 import com.gdu.common.error.Error;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
 import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.radar.FlightAssistantObstacleSensingDirection;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -224,7 +222,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
      * 获取避障子方向开关和距离
      */
     private void getObstacleCallback() {
-        if (!ConnectUtil.isConnect()) {
+        if (!IGduDroneDevice.get().isConnected()) {
             toastLiveData.setValue(R.string.DeviceNoConn);
             return;
         }

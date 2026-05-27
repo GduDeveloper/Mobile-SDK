@@ -17,6 +17,7 @@ import com.gdu.demo.map.utils.JTSUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -385,7 +386,7 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void setLimitDistance(boolean isOpen, int distance) {
-            if (!ConnectUtil.isConnect()) {
+            if (!IGduDroneDevice.get().isConnected()) {
                 ErrTipBean tipBean = new ErrTipBean();
                 tipBean.setSetType(2);
                 tipBean.setType(1);

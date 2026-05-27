@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.amap.api.maps.AMapUtils;
 import com.gdu.api.GduRtkManager;
-import com.gdu.api.Util.ConnectUtil;
 import com.gdu.api.rtk.QxSdkManager;
 import com.gdu.beans.WarnBean;
 import com.gdu.config.GlobalVariable;
@@ -238,7 +237,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_MODE);
         if (null == bean) return;
         String modeStr;
-        if(!ConnectUtil.isConnect()){
+        if(!IGduDroneDevice.get().isConnected()){
             modeStr = "---";
         }else {
             if (GlobalVariable.flyMode == 0) {
@@ -269,7 +268,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_FLY_BATTERY);
         if (null == bean) return;
         String batteryStr = bean.getContent();
-        if (GlobalVariable.sBattery1InfoZ4C == null || !ConnectUtil.isConnect()) {
+        if (GlobalVariable.sBattery1InfoZ4C == null || !IGduDroneDevice.get().isConnected()) {
             bean.setContent("--");
             bean.setContentEnable(false);
             if (!TextUtils.equals(bean.getContent(), batteryStr)) {

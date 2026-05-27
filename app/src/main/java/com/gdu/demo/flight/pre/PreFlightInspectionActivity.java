@@ -15,8 +15,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -28,16 +26,10 @@ import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
-import com.gdu.drone.ControlHand;
-import com.gdu.healthmanager.FlightHealthStatusDetailBean;
-import com.gdu.healthmanager.MessageBean;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.ConnectUtil;
-import com.gdu.util.MyConstants;
-import com.gdu.util.SPUtils;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 
 import java.util.ArrayList;
@@ -105,7 +97,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.sbpLowPowerAlarmPb.setHeightMinMaxValue(20, 50);
         mViewBinding.sbpLowPowerAlarmPb.setMinMarginPercent(GlobalVariable.BATTERY_MIN_INTERVAL);
         mViewBinding.sbpLowPowerAlarmPb.setShowScale(true);
-        ViewUtils.setViewShowOrInVisible(mViewBinding.sbpLowPowerAlarmPb, ConnectUtil.isConnect());
+        ViewUtils.setViewShowOrInVisible(mViewBinding.sbpLowPowerAlarmPb, IGduDroneDevice.get().isConnected());
 
         mViewBinding.sbpAroundObstacleAvoidPb.setMaxPb(4000);
         mViewBinding.sbpAroundObstacleAvoidPb.setObstacleSet(true);
@@ -565,7 +557,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             mViewBinding.preFlightLimitDistanceEdit.setEnabled(data.isOpen());
         });
         SingleClickUtil.onSingleClick(mViewBinding.preFlightLimitDistanceSwitch, false, v -> {
-            if (!ConnectUtil.isConnect()) {
+            if (!IGduDroneDevice.get().isConnected()) {
                 return;
             }
             final int value = preLimitDistanceValue == 0 ? MyConstants.LIMIT_DISTANCE_DEFAULT : preLimitDistanceValue;
@@ -659,7 +651,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private void setHeightLimitSwitch() {
         XLogger.INSTANCE.getAPP().i("setHeightLimitSwitch()");
         if (!GlobalVariable.isNewHeightLimitStrategy) {
-            if (!ConnectUtil.isConnect()) {
+            if (!IGduDroneDevice.get().isConnected()) {
                 return;
             }
         }
