@@ -6,6 +6,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
+import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
@@ -181,7 +182,7 @@ public class FirmwareVersion implements IFirmwareVersion {
      */
     private void getPlanType() {
         printLog("getPlanType()");
-        int planType = SPUtils.getInt(GduAppEnv.application, SPUtils.USER_LAST_PLANTYPE);
+        int planType = SPUtils.getInt(GduEnvConfig.application, SPUtils.USER_LAST_PLANTYPE);
         mCurrentFlyType = PlanType.get(planType);
         printLog("getPlanType() mCurrentFlyType = " + mCurrentFlyType);
     }
@@ -225,7 +226,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     private void addNewFirmwareTypeAndVersion(String firmwareType, String versionStr) {
         XLogger.INSTANCE.getAPP().i("addNewFirmwareTypeAndVersion() firmwareType = " + firmwareType + "; versionStr = " + versionStr);
         FirmwareTypeAndVersionBean versionBean = new FirmwareTypeAndVersionBean();
-//        String typeStr = CommonUtils.getFirmwareNameByFirmwareType(GduAppEnv.application, firmwareType);
+//        String typeStr = CommonUtils.getFirmwareNameByFirmwareType(GduEnvConfig.application, firmwareType);
 //        versionBean.setType(typeStr);
         versionBean.setVersion(versionStr);
         CollectionUtils.listAddAvoidNull(GlobalVariable.sTypeVersionList, versionBean);
@@ -1646,7 +1647,7 @@ public class FirmwareVersion implements IFirmwareVersion {
             return;
         }
         String codeKey = UpgradeUtils.getVersionKey(GduConfig.FLY_TYPE, mCurrentFlyType.getKey(), key);
-        SPUtils.put(GduAppEnv.application, codeKey, CommonUtils.convertNull2EmptyStr(value));
+        SPUtils.put(GduEnvConfig.application, codeKey, CommonUtils.convertNull2EmptyStr(value));
     }
 
     /**
@@ -1657,7 +1658,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     private void clearFlyVersion(String key) {
         for (PlanType planType : PlanType.values()) {
             String flyCodeKey = UpgradeUtils.getVersionKey(GduConfig.FLY_TYPE, planType.getKey(), key);
-            SPUtils.put(GduAppEnv.application, flyCodeKey, "");
+            SPUtils.put(GduEnvConfig.application, flyCodeKey, "");
         }
     }
 

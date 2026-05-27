@@ -29,6 +29,7 @@ import com.gdu.demo.flight.setting.viewmodel.SettingFlyViewModel;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
 
@@ -408,7 +409,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
         // dh大华的先默认BDS
         if (ChannelUtils.isDahua(getContext()) || ChannelUtils.isDahuaBDS(getContext())) {
-            GlobalVariable.sGNSSType = (byte) SPUtils.getCustomInt(GduAppEnv.application, "sGNSSType", 6);
+            GlobalVariable.sGNSSType = (byte) SPUtils.getCustomInt(GduEnvConfig.application, "sGNSSType", 6);
         }
         if (GlobalVariable.sGNSSType == 6) {
             mViewBinding.ovGnss.setIndex(1);
@@ -853,17 +854,17 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
     private void updateLimitHeightView(boolean isOpen) {
         if (isOpen) {
-            mViewBinding.etHeightLimit.setTextColor(GduAppEnv.application.getResources().getColor(R.color.color_EF4E22, null));
+            mViewBinding.etHeightLimit.setTextColor(GduEnvConfig.application.getResources().getColor(R.color.color_EF4E22, null));
         } else {
-            mViewBinding.etHeightLimit.setTextColor(GduAppEnv.application.getResources().getColor(R.color.color_9D9D9D, null));
+            mViewBinding.etHeightLimit.setTextColor(GduEnvConfig.application.getResources().getColor(R.color.color_9D9D9D, null));
         }
     }
 
     private void updateLimitDistanceView(boolean isOpen) {
         if (isOpen) {
-            mViewBinding.etDistanceLimit.setTextColor(GduAppEnv.application.getResources().getColor(R.color.color_EF4E22, null));
+            mViewBinding.etDistanceLimit.setTextColor(GduEnvConfig.application.getResources().getColor(R.color.color_EF4E22, null));
         } else {
-            mViewBinding.etDistanceLimit.setTextColor(GduAppEnv.application.getResources().getColor(R.color.color_9D9D9D, null));
+            mViewBinding.etDistanceLimit.setTextColor(GduEnvConfig.application.getResources().getColor(R.color.color_9D9D9D, null));
         }
     }
 

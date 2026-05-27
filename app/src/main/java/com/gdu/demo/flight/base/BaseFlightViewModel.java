@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GduAppEnv;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -17,6 +16,7 @@ import com.gdu.demo.map.utils.JTSUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
+import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
@@ -106,7 +106,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             return;
         }
         if (GlobalVariable.isNewHeightLimitStrategy) {
-            int localHeightLimit = SPUtils.getCustomInt(GduAppEnv.application,
+            int localHeightLimit = SPUtils.getCustomInt(GduEnvConfig.application,
                     SPUtils.KEY_LOCAL_HEIGHT_LIMIT, MyConstants.LIMIT_HEIGHT_DEFAULT);
             LimitHeightInfo bean = new LimitHeightInfo();
             bean.setOpen(localHeightLimit != MyConstants.LIMIT_HEIGHT_CLOSE);
@@ -268,7 +268,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                         return;
                     }
                 }
-                SPUtils.put(GduAppEnv.application, SPUtils.KEY_LOCAL_HEIGHT_LIMIT, isOpen ? limitHeight : MyConstants.LIMIT_HEIGHT_CLOSE);
+                SPUtils.put(GduEnvConfig.application, SPUtils.KEY_LOCAL_HEIGHT_LIMIT, isOpen ? limitHeight : MyConstants.LIMIT_HEIGHT_CLOSE);
                 int value = checkAndSaveHeightData(isOpen, limitHeight);
                 LimitHeightInfo bean = new LimitHeightInfo();
                 bean.setOpen(isOpen);
@@ -470,7 +470,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             distance = MyConstants.LIMIT_DISTANCE_MIN;
         }
         GlobalVariable.limitDiatsnce = (short) distance;
-        SPUtils.put(GduAppEnv.application, SPUtils.LAST_LIMIT_DISTANCE, distance);
+        SPUtils.put(GduEnvConfig.application, SPUtils.LAST_LIMIT_DISTANCE, distance);
         return distance;
     }
 
@@ -493,7 +493,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             value = MyConstants.LIMIT_HEIGHT_MAX;
         }
         GlobalVariable.limitHeight = (short) value;
-        SPUtils.put(GduAppEnv.application, SPUtils.LAST_LIMIT_HEIGHT, value);
+        SPUtils.put(GduEnvConfig.application, SPUtils.LAST_LIMIT_HEIGHT, value);
         return value;
     }
 

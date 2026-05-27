@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.gdu.GlobalVariableTest;
 import com.gdu.common.error.Error;
-import com.gdu.config.GduAppEnv;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
@@ -35,6 +34,7 @@ import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
 import com.gdu.detect.AIModelState;
 import com.gdu.drone.FirmwareType;
+import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.login.LoginType;
@@ -117,22 +117,22 @@ public class SettingCommonFragment extends Fragment {
             mViewBinding.tvUnit.setIndex(1);
         }
 
-        mViewBinding.gimbalVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.gimbal_version));
-        mViewBinding.vlCameraVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.vl_camera_version));
-        mViewBinding.irCameraVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.ir_camera_version));
+        mViewBinding.gimbalVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.gimbal_version));
+        mViewBinding.vlCameraVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.vl_camera_version));
+        mViewBinding.irCameraVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.ir_camera_version));
 
-        mViewBinding.upgradeVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.upgrade_package_version));
-        mViewBinding.svnVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.svn_version));
-        mViewBinding.acVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.center_control_version));
-        mViewBinding.visionVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.vision_version));
-        mViewBinding.rtcmVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.rtcm_version));
-        mViewBinding.itCompVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.img_version));
-        mViewBinding.vvPicTransFirmwareVersion.setFirmwareName(GduAppEnv.application.getString(R.string.Label_PicTransFirmwareVersion));
-        mViewBinding.fcCoprocessorVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.fly_control_coprocessor_version));
-        mViewBinding.fifthGenerationVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.five_g_version));
+        mViewBinding.upgradeVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.upgrade_package_version));
+        mViewBinding.svnVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.svn_version));
+        mViewBinding.acVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.center_control_version));
+        mViewBinding.visionVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.vision_version));
+        mViewBinding.rtcmVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.rtcm_version));
+        mViewBinding.itCompVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.img_version));
+        mViewBinding.vvPicTransFirmwareVersion.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_PicTransFirmwareVersion));
+        mViewBinding.fcCoprocessorVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.fly_control_coprocessor_version));
+        mViewBinding.fifthGenerationVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.five_g_version));
 
         ViewUtils.setViewShowOrHide(mViewBinding.vvRtkVersionView, GlobalVariable.RTKOnline == 0);
-        mViewBinding.vvRtkVersionView.setFirmwareName(GduAppEnv.application.getString(R.string.Label_RtkVersion));
+        mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
         ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, GlobalVariable.ads_b_state == 1);
 
         final boolean isOpenADSB = SPUtils.getBoolean(requireContext(), MyConstants.IS_OPEN_ASD_B);
@@ -160,7 +160,7 @@ public class SettingCommonFragment extends Fragment {
                 + GlobalVariable.battery_silence_status);
         final boolean showRouteHistory = SPUtils.getBoolean(requireContext(), MyConstants.SHOW_ROUTE_HISTORY);
         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(showRouteHistory);
-        final boolean showImageDebugText = SPUtils.getCustomBoolean(GduAppEnv.application, MyConstants.SHOW_IMAGE_DEBUG_TEXT, true);
+        final boolean showImageDebugText = SPUtils.getCustomBoolean(GduEnvConfig.application, MyConstants.SHOW_IMAGE_DEBUG_TEXT, true);
     }
 
 
@@ -363,7 +363,7 @@ public class SettingCommonFragment extends Fragment {
             mViewBinding.tvSnRC.setText(rcSn);
         }
         if (GlobalVariableTest.AllFlyTime == 0) {
-            mViewBinding.tvTotalFlyTime.setText(GduAppEnv.application.getString(R.string.Label_TextView_NA));
+            mViewBinding.tvTotalFlyTime.setText(GduEnvConfig.application.getString(R.string.Label_TextView_NA));
         } else {
             mViewBinding.tvTotalFlyTime.setText((TimeUtil.getHourAndMinute(GlobalVariableTest.AllFlyTime * 1000 * 60)) + " ");
         }
@@ -477,7 +477,7 @@ public class SettingCommonFragment extends Fragment {
                     break;
                 case R.id.target_recognition_item:
                     initTargetDetectView();
-                    setSecondLevelView(mViewBinding.layoutTargetRecognition, true, GduAppEnv.application.getString(R.string.Label_Visition_Target_Detect));
+                    setSecondLevelView(mViewBinding.layoutTargetRecognition, true, GduEnvConfig.application.getString(R.string.Label_Visition_Target_Detect));
                     currentSecondLevelType = 3;
                     break;
                 case R.id.drone_info_item:
