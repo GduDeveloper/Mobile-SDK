@@ -12,6 +12,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
+import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.radar.FlightAssistantObstacleSensingDirection;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -72,12 +73,10 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
         mFlightAssistant.getVisionSensingEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean enable) {
-                GlobalVariable.obstacleIsOpen = enable;
-                AlgorithmMark.getSingleton().ObStacle = enable;
                 VisionSensingBean visionSensingBean = new VisionSensingBean();
                 visionSensingBean.setSuccess(true);
                 visionSensingBean.setVisionSensingEnable(enable);
-                visionSensingBean.setObstacleAvoidanceStrategyEnable(GlobalVariable.obstacleStrategyIsOpen);
+                visionSensingBean.setObstacleAvoidanceStrategyEnable(IVision.get().getOverallObstacleAvoidanceStrategy() == 0);
 //                visionSensingLiveData.postValue(visionSensingBean);
             }
 
@@ -199,8 +198,6 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
         mFlightAssistant.getVisionSensingEnabled(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean open) {
-                GlobalVariable.obstacleIsOpen = open;
-                AlgorithmMark.getSingleton().ObStacle = open;
                 visionSensingLiveData.postValue(open);
             }
 

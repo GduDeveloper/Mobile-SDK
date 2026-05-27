@@ -16,33 +16,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.AlgorithmMark;
 import com.gdu.common.error.Error;
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingVisionBinding;
-import com.gdu.demo.flight.base.VisionSensingBean;
 import com.gdu.demo.utils.CommonDialog;
-import com.gdu.drone.PlanType;
-import com.gdu.drone.SwitchType;
-import com.gdu.healthmanager.FlightHealthStatusDetailBean;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.socket.GduSocketManager;
-import com.gdu.socket.GduUDPSocket3;
-import com.gdu.socket.SocketCallBack3;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.FormatConfig;
-import com.gdu.util.NumberUtils;
-import com.gdu.util.SPUtils;
-import com.gdu.util.StringUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.List;
@@ -116,7 +101,8 @@ public class SettingVisionFragment extends Fragment {
 
         mFlightAssistant = SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant();
         initSwitchBtn();
-        pre_switch_vision_obstacle = AlgorithmMark.getSingleton().ObStacle;
+        CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
+        pre_switch_vision_obstacle = radarInfo != null && radarInfo.getObstacleIsOpen();
         mVisionBinding.ivFillInLight.setSelected(GlobalVariable.sFillInLightOpen == 1);
 
 
@@ -169,8 +155,10 @@ public class SettingVisionFragment extends Fragment {
     private void preLoadData(){
         Message preMessage = new Message();
         preMessage.what = PRE_LOAD_OBSTACLE;
-        preMessage.arg1 = GlobalVariable.obstacleIsOpen ? 0 : 1;
-        preMessage.arg2 = GlobalVariable.obstacleStrategyIsOpen ? 0 : 1;
+        CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
+        boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
+        preMessage.arg1 = obstacleIsOpen ? 0 : 1;
+        preMessage.arg2 = IVision.get().getOverallObstacleAvoidanceStrategy();
         mHandler.sendMessage(preMessage);
     }
 
@@ -433,7 +421,6 @@ public class SettingVisionFragment extends Fragment {
                     }
                     changeVisibilityObstacleView();
 
-                    AlgorithmMark.getSingleton().ObStacle = switch_vision_obstacle_strategy;
                     mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(switch_vision_obstacle_strategy);
 
                     break;
@@ -482,11 +469,9 @@ public class SettingVisionFragment extends Fragment {
                 mVisionBinding.ivSwitchVisionObstacle.setSelected(curSwitch_vision_obstacle);
                 changeObserveTipVisibility(curSwitch_vision_obstacle);
                 //视觉避障功能关闭后再次开启，雷达图选项默认开启; 视觉避障功能处于关闭状态时，显示雷达图选项置灰；
-                GlobalVariable.obstacleIsOpen = curSwitch_vision_obstacle;
                 break;
             case OBSTACLE_TYPE_STRATEGY:
                 pre_switch_vision_obstacle_strategy = switch_vision_obstacle_strategy;
-                AlgorithmMark.getSingleton().ObStacle = switch_vision_obstacle_strategy;
                 mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(switch_vision_obstacle_strategy);
                 break;
 
@@ -506,7 +491,6 @@ public class SettingVisionFragment extends Fragment {
                 }
                 break;
             case OBSTACLE_TYPE_STRATEGY:
-                AlgorithmMark.getSingleton().ObStacle = pre_switch_vision_obstacle_strategy;
                 mVisionBinding.ivSwitchVisionObstacleStrategy.setSelected(pre_switch_vision_obstacle_strategy);
                 if (isAdded()) {
                     Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();

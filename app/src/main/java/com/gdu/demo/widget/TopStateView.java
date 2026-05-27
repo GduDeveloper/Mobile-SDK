@@ -16,6 +16,8 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
 import com.gdu.demo.utils.MultiTimerManager;
+import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.key.value.CycleRadarInfo;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -97,7 +99,9 @@ public class TopStateView  extends ConstraintLayout {
         boolean isDroneAttitudeModel = GlobalVariable.flyMode == 0;//是否是姿态模式
         isShowRadarModel = isShowRadarModel && !isDroneAttitudeModel;
         if (isShowRadarModel) {
-            binding.ivVision.setSelected(GlobalVariable.obstacleIsOpen);
+            CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
+            boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
+            binding.ivVision.setSelected(obstacleIsOpen);
         } else {
             binding.ivVision.setSelected(false);
         }
