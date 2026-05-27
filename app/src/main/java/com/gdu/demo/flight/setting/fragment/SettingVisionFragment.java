@@ -395,7 +395,6 @@ public class SettingVisionFragment extends Fragment {
 
                 case SWITCH_FAILED:
                     if (setFlyType == SWITCH_VISION_ON) {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                         changeSwitchStateFailed(SwitchType.OBSTACLE_TYPE_MAIN);
                     } else if (setFlyType == SWITCH_VISION_OFF) {
                         changeSwitchStateFailed(SwitchType.OBSTACLE_TYPE_MAIN);

@@ -11,62 +11,45 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.AlgorithmMark;
-import com.gdu.beans.WarnBean;
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.databinding.ActivityFlightBinding;
 import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
 import com.gdu.demo.flight.msgbox.MsgBoxBean;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
-import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
-import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
-import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.viewmodel.FlightViewModel;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.demo.widget.zoomView.S220CustomSizeFocusHelper;
-import com.gdu.drone.GimbalType;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
-import com.gdu.drone.ScreenContentType;
-import com.gdu.drone.TargetMode;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.key.value.CycleFCInfo1;
+import com.gdu.msdk.key.value.CycleRadarInfo;
+import com.gdu.msdk.key.value.ai.TargetMode;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
-import com.gdu.sdk.camera.VideoFeeder;
-import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.socketmodel.GduSocketConfig3;
-import com.gdu.util.ConnectUtil;
-import com.gdu.util.StatusBarUtils;
-import com.gdu.util.StringUtils;
 import com.gdu.lib.util.ThreadHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
 
@@ -95,29 +78,32 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private void initListener() {
         FlightController mGDUFlightController = SdkDemoApplication.getAircraftInstance().getFlightController();
-        if (mGDUFlightController != null){
-            mGDUFlightController.setStateCallback(flightControllerState -> {
-                //航向
-                float yaw = (float) flightControllerState.getAttitude().yaw;
-                float roll = (float) flightControllerState.getAttitude().roll;
-                LocationCoordinate3D aircraftLocation = flightControllerState.getAircraftLocation();
-                double uavLon = aircraftLocation.getLongitude();
-                double uavLat = aircraftLocation.getLatitude();
-                LocationCoordinate2D homeLocation = flightControllerState.getHomeLocation();
-                double homeLon = homeLocation.getLongitude();
-                double homeLat = homeLocation.getLatitude();
-                int distance = (int) GisUtil.calculateDistance(uavLon, uavLat, homeLon, homeLat);
-                runOnUiThread(()->{
-                    viewBinding.fpvRv.setHeadingAngle(yaw);
-                    viewBinding.fpvRv.setHorizontalDipAngle(roll);
-                    if (homeLon == 0 && homeLat == 0){
-                        viewBinding.fpvRv.setReturnDistance(GlobalVariable.flyDistance +"m");
-                    }else {
-                        viewBinding.fpvRv.setReturnDistance(distance + "m");
+        mGDUFlightController.setStateCallback(flightControllerState -> {
+            //航向
+            float yaw = (float) flightControllerState.getAttitude().yaw;
+            float roll = (float) flightControllerState.getAttitude().roll;
+            LocationCoordinate3D aircraftLocation = flightControllerState.getAircraftLocation();
+            double uavLon = aircraftLocation.getLongitude();
+            double uavLat = aircraftLocation.getLatitude();
+            LocationCoordinate2D homeLocation = flightControllerState.getHomeLocation();
+            double homeLon = homeLocation.getLongitude();
+            double homeLat = homeLocation.getLatitude();
+            int distance = (int) GisUtil.calculateDistance(uavLon, uavLat, homeLon, homeLat);
+            runOnUiThread(()->{
+                viewBinding.fpvRv.setHeadingAngle(yaw);
+                viewBinding.fpvRv.setHorizontalDipAngle(roll);
+                if (homeLon == 0 && homeLat == 0){
+                    CycleFCInfo1 fcInfo1 = mGDUFlightController.getFcInfo1();
+                    int flyDistance = 0;
+                    if (fcInfo1 != null) {
+                        flyDistance = fcInfo1.getFlyDistance();
                     }
-                });
+                    viewBinding.fpvRv.setReturnDistance(flyDistance +"m");
+                }else {
+                    viewBinding.fpvRv.setReturnDistance(distance + "m");
+                }
             });
-        }
+        });
 
         Radar radar = (Radar) SdkDemoApplication.getAircraftInstance().getRadar();
         if (radar != null){
@@ -177,7 +163,9 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 }
             }
         };
-        viewBinding.fpvRv.setShowObstacleOFF(!GlobalVariable.obstacleIsOpen);
+        CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
+        boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
+        viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
         viewBinding.ivMsgBoxLabel.setOnClickListener(this);
         viewBinding.aiRecognizeImageview.setOnClickListener(this);
@@ -200,7 +188,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                     XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
                     GlobalVariable.isTargetDetectMode = true;
                     mTargetDetectHelper.startShowTarget();
-                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                     ThreadHelper.runOnUiThread(() -> Toast.makeText(FlightActivity.this, "识别到"+targetModes.size()+"个", Toast.LENGTH_SHORT).show());
                 } else if (targetModes == null) {
                     XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = 0");
@@ -211,7 +198,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             public void onTargetDetectSend(boolean isSuccess) {
                 XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
                 if (isSuccess) {
-                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                     GlobalVariable.discernIsOpen = true;
                     GlobalVariable.isTargetDetectMode = true;
                 } else {

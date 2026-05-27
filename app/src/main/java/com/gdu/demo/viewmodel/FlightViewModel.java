@@ -96,7 +96,6 @@ public class FlightViewModel extends ViewModel {
         SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType.getKey(), gduError -> {
                     XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
                     if (gduError == null) {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                         GlobalVariable.discernIsOpen = true;
                         GlobalVariable.isTargetDetectMode = true;
                         toastLiveData.postValue(R.string.ai_box_open_success);
@@ -133,7 +132,6 @@ public class FlightViewModel extends ViewModel {
             @Override
             public void onResult(Error error) {
                 if (error == null){
-                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                 }
             }
         });
@@ -154,11 +152,9 @@ public class FlightViewModel extends ViewModel {
             SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
                 if (null == gduError){
                     if (detectType == 0x01) {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                         GlobalVariable.discernIsOpen = true;
                         GlobalVariable.isTargetDetectMode = true;
                     }else {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                     }
                 }else {
                     if (detectType == 0x01) {
@@ -170,11 +166,9 @@ public class FlightViewModel extends ViewModel {
             SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, detectType, (short) 3, typeArray, gduError -> {
                 if (null == gduError){
                     if (detectType == 0x01) {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                         GlobalVariable.discernIsOpen = true;
                         GlobalVariable.isTargetDetectMode = true;
                     }else {
-                        GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                     }
                 }else {
                     if (detectType == 0x01) {

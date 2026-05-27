@@ -5,11 +5,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
 
-import com.gdu.AlgorithmMark;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.SdkDemoApplication;
-import com.gdu.drone.TargetMode;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.key.value.ai.TargetMode;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -131,7 +129,6 @@ public class TargetDetectHelper {
                     }
                     break;
                 case TARGET_DETECT_QUIT_SUCCEED:
-                    GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.NONE;
                     if (mOnTargetDetectListener != null) {
                         mOnTargetDetectListener.onDetectClosed();
                     }
@@ -155,7 +152,7 @@ public class TargetDetectHelper {
      */
     private void addTargetDetectACK() {
         XLogger.INSTANCE.getAPP().i("addTargetDetectACK()");
-        SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectListener(new com.gdu.sdk.vision.OnTargetDetectListener() {
+        SdkDemoApplication.getAircraftInstance().getVision().setOnTargetDetectListener(new com.gdu.sdk.vision.OnTargetDetectListener() {
             @Override
             public void onTargetDetecting(List<TargetMode> list) {
                 if (list == null){
