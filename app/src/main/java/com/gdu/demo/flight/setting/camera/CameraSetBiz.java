@@ -4,9 +4,9 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.gdu.config.GduConfig;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.SocketCallBack3;
-import com.gdu.util.logger.MyLogUtils;
 
 /**
  * Created by yuhao on 2017/4/13.
@@ -38,7 +38,7 @@ public class CameraSetBiz {
     private final SocketCallBack3 sGimbalModeCallback = new SocketCallBack3() {
         @Override
         public void callBack(int code, GduFrame3 bean) {
-            MyLogUtils.i("setGimbalMode callBack() code = " + code);
+            XLogger.INSTANCE.getAPP().i("setGimbalMode callBack() code = " + code);
             if (code == GduConfig.OK) {
                 handler.sendEmptyMessage(SET_GIMBAL_MODE_OK);
             }else{

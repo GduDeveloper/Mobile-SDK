@@ -31,15 +31,15 @@ import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
 import com.gdu.drone.ControlHand;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
 import com.gdu.healthmanager.MessageBean;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.CollectionUtils;
 import com.gdu.util.ConnectUtil;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -661,7 +661,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
     private void setHeightLimitSwitch() {
-        MyLogUtils.i("setHeightLimitSwitch()");
+        XLogger.INSTANCE.getAPP().i("setHeightLimitSwitch()");
         if (!GlobalVariable.isNewHeightLimitStrategy) {
             if (!ConnectUtil.isConnect()) {
                 return;
@@ -778,7 +778,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
      * 避障策略开启关闭
      */
     public void switchObstacleStrategy(boolean isOn) {
-        MyLogUtils.i("switchObstacleStrategy() isOn = " + isOn);
+        XLogger.INSTANCE.getAPP().i("switchObstacleStrategy() isOn = " + isOn);
         if(isOn){
             sendObstacleStrategy(true);
         }else{
@@ -850,7 +850,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
     private void switchVisionObstacle(boolean isOn) {
-        MyLogUtils.i("switchVisionObstacle() isOn = " + isOn);
+        XLogger.INSTANCE.getAPP().i("switchVisionObstacle() isOn = " + isOn);
         viewModel.getBaseFlightAssistantViewModel().setVisionSensingEnabled(isOn);
     }
 

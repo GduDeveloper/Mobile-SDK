@@ -15,17 +15,17 @@ import com.gdu.drone.FirmwareType;
 import com.gdu.drone.GimbalType;
 import com.gdu.drone.ObstacleType;
 import com.gdu.drone.PlanType;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
 import com.gdu.util.ByteUtilsLowBefore;
-import com.gdu.util.CollectionUtils;
 import com.gdu.util.DataUtil;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.GimbalUtil;
 import com.gdu.util.SPUtils;
 import com.gdu.util.StringUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.gdu.util.logs.UpgradeLog2File;
 
 import java.util.ArrayList;
@@ -240,7 +240,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     }
 
     private void addNewFirmwareTypeAndVersion(String firmwareType, String versionStr) {
-        MyLogUtils.i("addNewFirmwareTypeAndVersion() firmwareType = " + firmwareType + "; versionStr = " + versionStr);
+        XLogger.INSTANCE.getAPP().i("addNewFirmwareTypeAndVersion() firmwareType = " + firmwareType + "; versionStr = " + versionStr);
         FirmwareTypeAndVersionBean versionBean = new FirmwareTypeAndVersionBean();
 //        String typeStr = CommonUtils.getFirmwareNameByFirmwareType(GduAppEnv.application, firmwareType);
 //        versionBean.setType(typeStr);
@@ -715,10 +715,10 @@ public class FirmwareVersion implements IFirmwareVersion {
     }
 
     private void visionVersionGet(ObstacleType obstacleType, GduFrame3 bean, int startIndex) {
-        MyLogUtils.i("visionVersionGet() obstacleType = " + obstacleType + "; startIndex = " + startIndex);
+        XLogger.INSTANCE.getAPP().i("visionVersionGet() obstacleType = " + obstacleType + "; startIndex = " + startIndex);
         final String versionStr = bean.frameContent[startIndex++] + "."
                 + bean.frameContent[startIndex++] + "." + bean.frameContent[startIndex];
-        MyLogUtils.i("visionVersionGet() versionStr = " + versionStr);
+        XLogger.INSTANCE.getAPP().i("visionVersionGet() versionStr = " + versionStr);
         final int visionNum = Integer.parseInt(versionStr.replace(".", ""));
         if (visionNum > 0) {
             addNewFirmwareTypeAndVersion(obstacleType.getValue(), versionStr);
@@ -1567,7 +1567,7 @@ public class FirmwareVersion implements IFirmwareVersion {
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
-                MyLogUtils.e("获取AI盒子SN等待出错", e);
+                XLogger.INSTANCE.getAPP().e("获取AI盒子SN等待出错", e);
             }
 //            GduApplication.getSingleApp().gduCommunication.getAiBoxSNAndType((code, bean) -> {
 //                printLog("getAIBoxSN callBack() code = " + code);
@@ -1588,12 +1588,12 @@ public class FirmwareVersion implements IFirmwareVersion {
             return;
         }
         String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
-        MyLogUtils.i("parseAIBoxSN() hexStr = " + hexStr);
+        XLogger.INSTANCE.getAPP().i("parseAIBoxSN() hexStr = " + hexStr);
         byte[] snBytes = new byte[17];
         System.arraycopy(bean.frameContent, 2, snBytes, 0, 17);
         String snStr = new String(snBytes);
         byte type = bean.frameContent[19];
-        MyLogUtils.i("parseAIBoxSN() snStr = " + snStr + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("parseAIBoxSN() snStr = " + snStr + "; type = " + type);
         String endSnStr = "";
         if (type == 1) {
             endSnStr = "A-AI01-" + snStr;
@@ -1715,7 +1715,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     }
 
     private void printLog(String logStr) {
-        MyLogUtils.i(logStr);
+        XLogger.INSTANCE.getAPP().i(logStr);
         UpgradeLog2File.getSingle().saveData(logStr);
     }
 }

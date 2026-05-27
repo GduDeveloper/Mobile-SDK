@@ -9,8 +9,8 @@ import android.widget.PopupWindow;
 
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.LayoutMessageBoxListBinding;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.XLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,9 +53,9 @@ public class MsgBoxPopView extends PopupWindow {
     }
 
     public void updateMsgData(List<MsgBoxBean> data) {
-        MyLogUtils.i("updateMsgData() dataSize = " + data.size());
+        XLogger.INSTANCE.getAPP().i("updateMsgData() dataSize = " + data.size());
         msgData.clear();
-        CommonUtils.listAddAllAvoidNPE(msgData, data);
+        CollectionUtils.listAddAllAvoidNPE(msgData, data);
         if (mBoxAdapter == null) {
             return;
         }

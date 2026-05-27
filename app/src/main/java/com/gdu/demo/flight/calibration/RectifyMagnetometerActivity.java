@@ -14,8 +14,8 @@ import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.drone.PlanType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.util.StatusBarUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 /**
  * 指南针校磁界面
@@ -104,7 +104,7 @@ public class RectifyMagnetometerActivity extends FragmentActivity {
      * 解决虚拟按键事件
      */
     private void solveNavigationBar() {
-        MyLogUtils.d("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
+        XLogger.INSTANCE.getAPP().i("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
         if (UavStaticVar.isHasNavigationBar) {
             ToolManager.hideNavigationBar(getWindow());
         }

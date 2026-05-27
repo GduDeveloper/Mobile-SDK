@@ -26,7 +26,6 @@ import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.SPUtils;
 import com.gdu.util.StringUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.concurrent.TimeUnit;
@@ -120,7 +119,7 @@ public class SettingRtkFragment extends Fragment {
     private void initView() {
         rtk = SdkDemoApplication.getAircraftInstance().getFlightController().getRTK();
         initHandler();
-        MyLogUtils.i("initListener()");
+        XLogger.INSTANCE.getAPP().i("initListener()");
         binding.ivBack.setOnClickListener(listener);
         binding.rtkSwitchView.setOnClickListener(listener);
         binding.tvConnect.setOnClickListener(listener);
@@ -185,7 +184,7 @@ public class SettingRtkFragment extends Fragment {
     }
 
     private void initData() {
-        MyLogUtils.i("initData()");
+        XLogger.INSTANCE.getAPP().i("initData()");
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             GlobalVariable.sRTKType = 1;
             GlobalVariable.sDroneRTKStatus = 0;
@@ -243,7 +242,7 @@ public class SettingRtkFragment extends Fragment {
 
 
     private void initHandler() {
-        MyLogUtils.i("initHandler()");
+        XLogger.INSTANCE.getAPP().i("initHandler()");
         mHandler = new Handler(Looper.getMainLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
@@ -286,7 +285,7 @@ public class SettingRtkFragment extends Fragment {
         if (getContext() == null) {
             return;
         }
-        MyLogUtils.i("showConnectingView()");
+        XLogger.INSTANCE.getAPP().i("showConnectingView()");
         binding.tvConnectState.setText(getString(R.string.connecting));
         binding.tvConnectState.setTextColor(getResources().getColor(R.color.color_FF4E00));
         binding.tvConnectState.setVisibility(View.VISIBLE);
@@ -303,7 +302,7 @@ public class SettingRtkFragment extends Fragment {
         if (getContext() == null) {
             return;
         }
-        MyLogUtils.i("showConnectedView()");
+        XLogger.INSTANCE.getAPP().i("showConnectedView()");
         if (GlobalVariable.sRTKType == 1 && GlobalVariable.rtkIsLoading == 1) {
             binding.tvConnectState.setText(getString(R.string.string_converging));
         } else {
@@ -320,7 +319,7 @@ public class SettingRtkFragment extends Fragment {
      * 初始化登陆参数
      */
     private void initParam() {
-        MyLogUtils.i("initParam()");
+        XLogger.INSTANCE.getAPP().i("initParam()");
         String ip = SPUtils.getString(getContext(), SPUtils.RTK_IP);
         if (!StringUtils.isEmptyString(ip)) {
             binding.ipAddressEdit.setText(ip);
@@ -549,7 +548,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
 
-        MyLogUtils.d("mLastRTKType  =" + mLastRTKType);
+        XLogger.INSTANCE.getAPP().i("mLastRTKType  =" + mLastRTKType);
         ReferenceStationSource stationSource = ReferenceStationSource.CUSTOM_NETWORK_SERVICE;
         if (mLastRTKType == 1) {
             stationSource = ReferenceStationSource.CUSTOM_NETWORK_SERVICE;

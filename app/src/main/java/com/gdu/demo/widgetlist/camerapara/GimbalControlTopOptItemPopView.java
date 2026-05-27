@@ -11,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.gdu.demo.R;
 import com.gdu.demo.adapter.GimbalControlTopOptAdapter;
 import com.gdu.demo.databinding.LayoutCameraParamSetPopBinding;
+import com.gdu.lib.util.CollectionUtils;
 import com.gdu.sdk.util.CommonUtils;
 
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class GimbalControlTopOptItemPopView extends PopupWindow {
     public void updateData(List<GimbalControlTopOptBean> data, int selectIndex) {
         Log.i("updateData","updateData() dataSize = " + data.size() + "; selectIndex = " + selectIndex);
         mBeanList.clear();
-        CommonUtils.listAddAllAvoidNPE(mBeanList, data);
+        CollectionUtils.listAddAllAvoidNPE(mBeanList, data);
         if (mGimbalControlTopOptAdapter == null || CommonUtils.isEmptyList(mBeanList)) {
             return;
         }

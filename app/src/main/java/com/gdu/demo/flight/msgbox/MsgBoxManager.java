@@ -6,8 +6,9 @@ import com.gdu.beans.WarnBean;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class MsgBoxManager {
         if (getAlarmDispose == null || getAlarmDispose.isDisposed()) {
             getAlarmDispose = Observable.interval(0, 3000, TimeUnit.MILLISECONDS)
                     .to(RxLife.to(mActivity))
-                    .subscribe(l -> getAlarmData(), throwable -> MyLogUtils.e("获取告警信息出错", throwable));
+                    .subscribe(l -> getAlarmData(), throwable -> XLogger.INSTANCE.getAPP().e("获取告警信息出错", throwable));
         }
     }
 
@@ -76,7 +77,7 @@ public class MsgBoxManager {
             }
             if (CommonUtils.isEmptyList(mOldWarnBeans)) {//如果展示的警告列表为空，将mNewWarnBeans添加到列表中
                 currentShowIndex = 0;
-                CommonUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
+                CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
             } else {
                 if (mOldWarnBeans.size() == mNewWarnBeans.size()) {//新老列表长度一样
                     for (int k = 0; k < mNewWarnBeans.size(); k++) {
@@ -92,14 +93,14 @@ public class MsgBoxManager {
                         if (!isHaveWarn) {
                             currentShowIndex = 0;
                             mOldWarnBeans.clear();
-                            CommonUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
+                            CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
                             break;
                         }
                     }
                 } else {//新老列表长度不一样
                     currentShowIndex = 0;
                     mOldWarnBeans.clear();
-                    CommonUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
+                    CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
                 }
             }
             hadErr = !CommonUtils.isEmptyList(mOldWarnBeans);
@@ -114,7 +115,7 @@ public class MsgBoxManager {
             long errId = showWarnBean.warnId;
             // 是否是警告类异常提示(靠近禁飞区 和 GPS>8&&<12的时候)
             if (mCallback == null) {
-                MyLogUtils.i("getAlarmData() mViewCallBack is null");
+                XLogger.INSTANCE.getAPP().i("getAlarmData() mViewCallBack is null");
                 return;
             }
             if (errId == WarnBean.NEARNOFLY || errId == WarnBean.GPS) {
@@ -140,7 +141,7 @@ public class MsgBoxManager {
     private void noErrHandle() {
         currentShowIndex = -1;
         if (mCallback == null) {
-            MyLogUtils.i("noErrHandle() mViewCallBack is null");
+            XLogger.INSTANCE.getAPP().i("noErrHandle() mViewCallBack is null");
             return;
         }
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {

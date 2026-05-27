@@ -38,6 +38,7 @@ import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.drone.ScreenContentType;
 import com.gdu.drone.TargetMode;
 import com.gdu.gimbal.GimbalState;
+import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
@@ -49,13 +50,11 @@ import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
-import com.gdu.util.CollectionUtils;
 import com.gdu.util.ConnectUtil;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -210,7 +209,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
             @Override
             public void onTargetDetectSend(boolean isSuccess) {
-                MyLogUtils.d("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
+                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
                 if (isSuccess) {
                     GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                     GlobalVariable.discernIsOpen = true;
@@ -222,7 +221,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
             @Override
             public void onTargetLocateSend(boolean isSuccess) {
-                MyLogUtils.d("mTargetDetectHelper onTargetLocateSend() isSuccess = " + isSuccess);
+                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetLocateSend() isSuccess = " + isSuccess);
                 if (isSuccess) {
 //                    DialogUtils.createLoadDialog(ZorroRealControlActivity.this);
                 } else {
@@ -231,7 +230,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
             @Override
             public void onTargetLocate(boolean isSuccess, TargetMode targetMode) {
-                MyLogUtils.d("mTargetDetectHelper onTargetLocate() isSuccess = " + isSuccess);
+                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetLocate() isSuccess = " + isSuccess);
 //                DialogUtils.cancelLoadDialog();
             }
 

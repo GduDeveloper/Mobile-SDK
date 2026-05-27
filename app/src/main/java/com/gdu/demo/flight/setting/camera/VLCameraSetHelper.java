@@ -29,7 +29,6 @@ import com.gdu.util.DroneUtil;
 import com.gdu.util.NumberUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.lib.model.LiveType;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
@@ -105,7 +104,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      */
 
     public void initView() {
-        MyLogUtils.d("initView()   ");
+        XLogger.INSTANCE.getAPP().i("initView()   ");
         mCameraMainLayout = mView.findViewById(R.id.camera_main_layout);
 
         tv_check_clound = mView.findViewById(R.id.tv_check_clound);
@@ -128,7 +127,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     }
 
     public void initCameraParams() {
-        MyLogUtils.d("initCameraParams()");
+        XLogger.INSTANCE.getAPP().i("initCameraParams()");
     }
 
 
@@ -230,7 +229,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.d("mSeekBarListener onProgressChanged() progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("mSeekBarListener onProgressChanged() progress = " + progress);
                 et_pitch_speed.setText(String.valueOf(progress + 5));
             }
 
@@ -248,7 +247,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.d("mSeekBarPTZYawListener onProgressChanged() progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("mSeekBarPTZYawListener onProgressChanged() progress = " + progress);
                 et_ptz_yaw_speed.setText(String.valueOf(progress + 5));
             }
 
@@ -266,7 +265,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.d("mSeekBarPitchSlowSettingListener onProgressChanged() progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("mSeekBarPitchSlowSettingListener onProgressChanged() progress = " + progress);
                 et_pitch_slow_setting.setText(String.valueOf(progress));
             }
 
@@ -284,7 +283,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                MyLogUtils.d("mSeekBarYawSlowSettingListener onProgressChanged() progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("mSeekBarYawSlowSettingListener onProgressChanged() progress = " + progress);
                 et_yaw_slow_setting.setText(String.valueOf(progress));
             }
 
@@ -316,7 +315,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 根据周期反馈，更新进度值
      */
     protected void setPitchSpeed() {
-        MyLogUtils.i("setPitchSpeed() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
+        XLogger.INSTANCE.getAPP().i("setPitchSpeed() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
         if (sb_pitch_speed != null) {
             if (GlobalVariable.thumbWheelSpeed >= 5) {
                 sb_pitch_speed.setProgress(GlobalVariable.thumbWheelSpeed - 5);
@@ -337,15 +336,15 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 return;
             }
             boolean isHaveData = code == GduConfig.OK && bean != null && bean.frameContent != null && bean.frameContent.length > 3;
-            MyLogUtils.d("getGimbalSetting callback() isHaveData = " + isHaveData);
+            XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() isHaveData = " + isHaveData);
             if (isHaveData) {
                 GlobalVariable.thumbWheelSpeed = bean.frameContent[2];
-                MyLogUtils.d("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
+                XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
                 if (bean.frameContent.length > 6) {
                     GlobalVariable.sGimbalYawMaxSpeed = bean.frameContent[3];
                     GlobalVariable.spitchSlowSetting = bean.frameContent[4];
                     GlobalVariable.yawSlowSetting = bean.frameContent[5];
-                    MyLogUtils.d("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
+                    XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
                             + "; spitchSlowSetting = " + bean.frameContent[4] + "; yawSlowSetting = " + bean.frameContent[5]);
                 }
                 mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
@@ -361,7 +360,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台俯仰缓启停设置
      */
     private void setPitchSlowSetting() {
-        MyLogUtils.i("setPitchSlowSetting() spitchSlowSetting = " + GlobalVariable.spitchSlowSetting);
+        XLogger.INSTANCE.getAPP().i("setPitchSlowSetting() spitchSlowSetting = " + GlobalVariable.spitchSlowSetting);
         if (sb_pitch_slow_setting != null) {
             if (GlobalVariable.spitchSlowSetting >= 0 && GlobalVariable.spitchSlowSetting <= 30) {
                 sb_pitch_slow_setting.setProgress(GlobalVariable.spitchSlowSetting);
@@ -375,7 +374,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台方位缓启停设置
      */
     private void setYawSlowSetting() {
-        MyLogUtils.i("setYawSlowSetting() yawSlowSetting = " + GlobalVariable.yawSlowSetting);
+        XLogger.INSTANCE.getAPP().i("setYawSlowSetting() yawSlowSetting = " + GlobalVariable.yawSlowSetting);
         if (sb_yaw_slow_setting != null) {
             if (GlobalVariable.yawSlowSetting >= 0 && GlobalVariable.yawSlowSetting <= 30) {
                 sb_yaw_slow_setting.setProgress(GlobalVariable.yawSlowSetting);
@@ -389,7 +388,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台方位最大偏航速度
      */
     private void setYawSpeed(){
-        MyLogUtils.i("setYawSpeed() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed);
+        XLogger.INSTANCE.getAPP().i("setYawSpeed() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed);
         if (sb_ptz_yaw_speed != null) {
             if (GlobalVariable.sGimbalYawMaxSpeed >= 5) {
                 sb_ptz_yaw_speed.setProgress(GlobalVariable.sGimbalYawMaxSpeed - 5);
@@ -400,10 +399,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     }
 
     private void setPTZYawSpeed(int speed) {
-        MyLogUtils.d("setPTZYawSpeed() speed = " + speed);
+        XLogger.INSTANCE.getAPP().i("setPTZYawSpeed() speed = " + speed);
 //        GduApplication.getSingleApp().gduCommunication.setThumbWheelSpeed((byte) speed, GlobalVariable.ThumbWheelSpeedType.PTZ_YAW,
 //                (code, bean) -> {
-//                    MyLogUtils.d("setPTZYawSpeed callBack() code = " + code);
+//                    XLogger.INSTANCE.getAPP().i("setPTZYawSpeed callBack() code = " + code);
 //                    if (mHandler == null) {
 //                        return;
 //                    }
@@ -419,13 +418,13 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
 
     private void setSlowSetting(int set, GlobalVariable.SlowSettingType type) {
-        MyLogUtils.d("setSlowSetting() set = " + set + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("setSlowSetting() set = " + set + "; type = " + type);
         if (type == null) {
             return;
         }
         GduSocketManager.getInstance().getGduCommunication().setSlowSetting((byte) set, type,
                 (code, bean) -> {
-                    MyLogUtils.d("setSlowSetting callBack() code = " + code);
+                    XLogger.INSTANCE.getAPP().i("setSlowSetting callBack() code = " + code);
                     if (mHandler == null) {
                         return;
                     }
@@ -442,12 +441,12 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     }
 
     public void initData() {
-        MyLogUtils.d("initData()");
+        XLogger.INSTANCE.getAPP().i("initData()");
         initPTZSetting(mView);
     }
 
     public void initListener() {
-        MyLogUtils.d("initListener()");
+        XLogger.INSTANCE.getAPP().i("initListener()");
         if (tv_check_clound != null) {
             tv_check_clound.setOnClickListener(this);
         }
@@ -465,10 +464,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     }
 
     protected void setPitchSpeed(int speed) {
-        MyLogUtils.d("setPitchSpeed() speed = " + speed);
+        XLogger.INSTANCE.getAPP().i("setPitchSpeed() speed = " + speed);
         GduSocketManager.getInstance().getGduCommunication().setThumbWheelSpeed((byte) speed, GlobalVariable.ThumbWheelSpeedType.PITCH,
                 (code, bean) -> {
-                    MyLogUtils.d("setPitchSpeed callBack() code = " + code);
+                    XLogger.INSTANCE.getAPP().i("setPitchSpeed callBack() code = " + code);
                     if (mHandler == null) {
                         return;
                     }
@@ -521,7 +520,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * <P>检查无人机连接状态</P>
      */
     public boolean checkDroneConnState() {
-        MyLogUtils.d("checkDroneConnState()");
+        XLogger.INSTANCE.getAPP().i("checkDroneConnState()");
         boolean result = false;
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             showToast(R.string.fly_no_conn);
@@ -529,7 +528,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         } else {
             result = true;
         }
-        MyLogUtils.d("checkDroneConnState() result = " + result);
+        XLogger.INSTANCE.getAPP().i("checkDroneConnState() result = " + result);
         return result;
     }
 
@@ -547,7 +546,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     };
 
     public void handleSetMessage(Message msg) {
-        MyLogUtils.d("mHandler handleMessage() msgWhat = " + msg.what);
+        XLogger.INSTANCE.getAPP().i("mHandler handleMessage() msgWhat = " + msg.what);
         switch (msg.what) {
 
             case SET_FAILE:
@@ -596,7 +595,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 检查航迹是否执行,航迹执行中禁止
      */
     public boolean checkWaypointTaskRunning() {
-        MyLogUtils.d("checkWaypointTaskRunning()");
+        XLogger.INSTANCE.getAPP().i("checkWaypointTaskRunning()");
         boolean result;
         if (GlobalVariable.isOpenFlightRoutePlan) {
             showToast(R.string.please_exit_flight_route);
@@ -604,7 +603,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         } else {
             result = false;
         }
-        MyLogUtils.d("checkWaypointTaskRunning() result = " + result);
+        XLogger.INSTANCE.getAPP().i("checkWaypointTaskRunning() result = " + result);
         return result;
     }
 

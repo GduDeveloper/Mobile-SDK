@@ -29,6 +29,7 @@ import com.gdu.drone.PlanType;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.errreport.ErrCodeGrade;
 import com.gdu.healthmanager.MessageBean;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -40,7 +41,6 @@ import com.gdu.util.DroneUtil;
 import com.gdu.util.GimbalUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.StringUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
@@ -822,7 +822,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         com.amap.api.maps.model.LatLng homeLatLng = new com.amap.api.maps.model.LatLng(lat, lng);
         com.amap.api.maps.model.LatLng currentLatLng = new com.amap.api.maps.model.LatLng(GlobalVariable.GPS_Lat, GlobalVariable.GPS_Lon);
         float distance = AMapUtils.calculateLineDistance(homeLatLng, currentLatLng);
-        MyLogUtils.i("setHomePoint() distance = " + BigDecimal.valueOf(distance).setScale(2, RoundingMode.HALF_UP));
+        XLogger.INSTANCE.getAPP().i("setHomePoint() distance = " + BigDecimal.valueOf(distance).setScale(2, RoundingMode.HALF_UP));
         if (distance > 2500) {
             // 返航点设置不能大于2500米
             toastLiveData.setValue(R.string.Msg_GoHomePointDistanceOut);

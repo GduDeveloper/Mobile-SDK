@@ -5,7 +5,7 @@ import android.content.Context;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.drone.GimbalType;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.core.XLogger;
 
 import java.util.Objects;
 
@@ -285,10 +285,10 @@ public class CameraUtil {
      * @return
      */
     public static String getISODisplayByValue(Context context) {
-//        MyLogUtils.i("getISODisplayByValue() lightISOValue = " + DataUtil.byte2Hex((byte) GlobalVariable.lightISOValue));
+//        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() lightISOValue = " + DataUtil.byte2Hex((byte) GlobalVariable.lightISOValue));
         String isoDisplay = "N/A";
         if (context == null) {
-//            MyLogUtils.i("getISODisplayByValue() isoDisplay = " + isoDisplay);
+//            XLogger.INSTANCE.getAPP().i("getISODisplayByValue() isoDisplay = " + isoDisplay);
             return isoDisplay;
         }
         int[] gimbalISOSet = getISOSetByGimbal(context);
@@ -296,10 +296,10 @@ public class CameraUtil {
         boolean isEmptyData = gimbalISOSet == null || gimbalISOSet.length == 0 || gimbalDisplayISOSet == null
                 || gimbalDisplayISOSet.length == 0 || gimbalISOSet.length != gimbalDisplayISOSet.length;
         if (isEmptyData) {
-            MyLogUtils.i("getISODisplayByValue() isEmptyData");
+            XLogger.INSTANCE.getAPP().i("getISODisplayByValue() isEmptyData");
             return isoDisplay;
         }
-        MyLogUtils.i("getISODisplayByValue() lightISOValue = " + GlobalVariable.lightISOValue);
+        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() lightISOValue = " + GlobalVariable.lightISOValue);
         int pos = -1;
         for (int i = 0; i < gimbalISOSet.length; i++) {
             if (GlobalVariable.lightISOValue == gimbalISOSet[i]) {
@@ -307,11 +307,11 @@ public class CameraUtil {
                 break;
             }
         }
-        MyLogUtils.i("getISODisplayByValue() pos = " + pos);
+        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() pos = " + pos);
         if (pos >= 0) {
             isoDisplay = gimbalDisplayISOSet[pos];
         }
-        MyLogUtils.i("getISODisplayByValue() isoDisplay = " + isoDisplay);
+        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() isoDisplay = " + isoDisplay);
         return isoDisplay;
     }
 
@@ -390,7 +390,7 @@ public class CameraUtil {
      * @return
      */
     public static String getESNameByValue(GimbalType gimbalType, int value,boolean isFromCycleUpload) {
-        MyLogUtils.i("getESNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+        XLogger.INSTANCE.getAPP().i("getESNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         if ((gimbalType == GimbalType.GIMBAL_PDL_S220
                 || gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
                 || gimbalType == GimbalType.GIMBAL_PQL02_SE
@@ -404,14 +404,14 @@ public class CameraUtil {
             return getS220ESNameByValue(value);
         } else {
             final int index = getESValueIndexByValue(gimbalType, value);
-            MyLogUtils.i("getESNameIndexByValue() index = " + index);
+            XLogger.INSTANCE.getAPP().i("getESNameIndexByValue() index = " + index);
             final String[] mNames = getESNamesByGimbalType(gimbalType);
             return mNames[index];
         }
     }
 
     public static int getESValueIndexByValue(GimbalType gimbalType, int value) {
-        MyLogUtils.i("getESValueIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+        XLogger.INSTANCE.getAPP().i("getESValueIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         int index;
         switch (gimbalType) {
             case ByrdT_4k:
@@ -484,7 +484,7 @@ public class CameraUtil {
     }
 
     public static String[] getESNamesByGimbalType(GimbalType gimbalType) {
-//        MyLogUtils.d("getESNamesByGimbalType() isPhoto = " + GlobalVariable.isPhoto);
+//        XLogger.INSTANCE.getAPP().i("getESNamesByGimbalType() isPhoto = " + GlobalVariable.isPhoto);
         String[] names;
         switch (gimbalType) {
             case ByrdT_4kc:
@@ -596,9 +596,9 @@ public class CameraUtil {
      * @return
      */
     public static String getEVNameByValue(Context context, GimbalType gimbalType, int value) {
-//        MyLogUtils.i("getEVNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+//        XLogger.INSTANCE.getAPP().i("getEVNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         final int index = getEVValueIndexByValue(gimbalType, value);
-//        MyLogUtils.i("getEVNameIndexByValue() index = " + index);
+//        XLogger.INSTANCE.getAPP().i("getEVNameIndexByValue() index = " + index);
         final String[] mNames = getEVNamesByGimbalType(context, gimbalType);
         if(mNames.length<index){
 
@@ -606,7 +606,7 @@ public class CameraUtil {
         return mNames[index];
     }
     public static int getEVValueIndexByValue(GimbalType gimbalType, int value) {
-//        MyLogUtils.i("getEVValueIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+//        XLogger.INSTANCE.getAPP().i("getEVValueIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         int index = 0;
         switch (gimbalType) {
 
@@ -824,7 +824,7 @@ public class CameraUtil {
     }
 
     public static int getISONameIndexByValue(GimbalType gimbalType, String value) {
-        MyLogUtils.i("getISONameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+        XLogger.INSTANCE.getAPP().i("getISONameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         int index;
         switch (gimbalType) {
             case ByrdT_4k:
@@ -964,7 +964,7 @@ public class CameraUtil {
      * @return
      */
     public static int getESNameIndexByValue(GimbalType gimbalType, String value) {
-        MyLogUtils.i("getESNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
+        XLogger.INSTANCE.getAPP().i("getESNameIndexByValue() gimbalType = " + gimbalType + "; value = " + value);
         int index;
         switch (gimbalType) {
             case ByrdT_4kc:

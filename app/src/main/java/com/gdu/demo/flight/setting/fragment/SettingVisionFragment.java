@@ -29,6 +29,7 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
 import com.gdu.drone.SwitchType;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -42,7 +43,6 @@ import com.gdu.util.NumberUtils;
 import com.gdu.util.SPUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.List;
@@ -245,7 +245,7 @@ public class SettingVisionFragment extends Fragment {
                     return;
                 }
                 float height = Float.parseFloat(inputStr) * 100;
-                MyLogUtils.i("switchLandingProtectNew() height = " + height);
+                XLogger.INSTANCE.getAPP().i("switchLandingProtectNew() height = " + height);
             } else {
             }
         }
@@ -476,7 +476,7 @@ public class SettingVisionFragment extends Fragment {
     }
 
     private void changeSwitchStateSuccess(SwitchType type) {
-        MyLogUtils.i("changeSwitchStateSuccess() type = " + type);
+        XLogger.INSTANCE.getAPP().i("changeSwitchStateSuccess() type = " + type);
         switch (type) {
             case OBSTACLE_TYPE_MAIN:
                 pre_switch_vision_obstacle = curSwitch_vision_obstacle;
@@ -497,7 +497,7 @@ public class SettingVisionFragment extends Fragment {
     }
 
     private void changeSwitchStateFailed(SwitchType type) {
-        MyLogUtils.i("changeSwitchStateFailed() type = " + type);
+        XLogger.INSTANCE.getAPP().i("changeSwitchStateFailed() type = " + type);
         switch (type) {
             case OBSTACLE_TYPE_MAIN:
                 mVisionBinding.ivSwitchVisionObstacle.setSelected(pre_switch_vision_obstacle);
@@ -538,7 +538,7 @@ public class SettingVisionFragment extends Fragment {
     }
 
     private void switchGoHomeObstacle(boolean isOpen) {
-        MyLogUtils.i("switchGoHomeObstacle() isOpen = " + isOpen);
+        XLogger.INSTANCE.getAPP().i("switchGoHomeObstacle() isOpen = " + isOpen);
 
         mFlightAssistant.setRTHObstacleAvoidanceEnabled(isOpen, error -> {
             uiThreadHandle(() -> {
@@ -567,7 +567,7 @@ public class SettingVisionFragment extends Fragment {
     }
 
     public void switchVisionObstacle(boolean isOn, SwitchType type) {
-        MyLogUtils.i("switchVisionObstacle() isOn = " + isOn + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("switchVisionObstacle() isOn = " + isOn + "; type = " + type);
         switch (type) {
             case OBSTACLE_TYPE_MAIN:
                 setFlyType = isOn ? SWITCH_VISION_ON : SWITCH_VISION_OFF;
@@ -627,11 +627,11 @@ public class SettingVisionFragment extends Fragment {
 
 
     public void uiThreadHandle(Action action) {
-        MyLogUtils.i("uiThreadHandle() isAdded = " + isAdded());
+        XLogger.INSTANCE.getAPP().i("uiThreadHandle() isAdded = " + isAdded());
         if (!isAdded()) {
             return;
         }
         Observable.empty().to(RxLife.toMain(requireActivity())).subscribe(o -> {},
-                throwable -> MyLogUtils.e("UI线程处理失败", throwable), action);
+                throwable -> XLogger.INSTANCE.getAPP().e("UI线程处理失败", throwable), action);
     }
 }

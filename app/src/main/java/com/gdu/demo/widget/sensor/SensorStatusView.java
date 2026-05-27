@@ -25,7 +25,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.calibration.CompassCalibrationHelper;
 import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.concurrent.TimeUnit;
@@ -146,7 +146,7 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
                     setCompassValue();
 
                 }, throwable -> {
-                    MyLogUtils.e("获取传感器状态失败", throwable);
+                    XLogger.INSTANCE.getAPP().e("获取传感器状态失败", throwable);
                 });
     }
 
@@ -237,7 +237,7 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
      * <P>无人机连接状态提示</P>
      */
     private boolean connStateToast() {
-        MyLogUtils.i("connStateToast()");
+        XLogger.INSTANCE.getAPP().i("connStateToast()");
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return false;

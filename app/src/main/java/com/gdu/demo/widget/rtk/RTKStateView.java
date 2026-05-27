@@ -13,8 +13,8 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.ViewRtkStateBinding;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.util.DroneUtil;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
@@ -56,7 +56,7 @@ public class RTKStateView extends LinearLayout {
                     }
                     updateRTKInfo();
                 }, throwable -> {
-                    MyLogUtils.e("更新RTK信息出错", throwable);
+                    XLogger.INSTANCE.getAPP().e("更新RTK信息出错", throwable);
                 }, () -> {});
 
     }
@@ -70,7 +70,7 @@ public class RTKStateView extends LinearLayout {
     }
 
     private void initView() {
-        MyLogUtils.i("initView()");
+        XLogger.INSTANCE.getAPP().i("initView()");
         viewBinding = ViewRtkStateBinding.inflate(LayoutInflater.from(mContext), this, true);
         if(DroneUtil.showBDSOrGNSS()){
             viewBinding.layoutGalileo.setVisibility(View.GONE);

@@ -219,7 +219,7 @@ public class DoubleDragThumbSeekBar2 extends View {
 
         mOffsetLow = formatDouble((curLowProgress * stepDistance) + halfThumbWidth);
         mOffsetHigh = formatDouble((curHeightProgress * stepDistance) + halfThumbWidth);
-//        MyLogUtils.i("onMeasure() mScrollBarWidth = " + mScrollBarWidth
+//        XLogger.INSTANCE.getAPP().i("onMeasure() mScrollBarWidth = " + mScrollBarWidth
 //                + "; halfThumbWidth = " + halfThumbWidth
 //                + "; maxPb = " + maxPb
 //                + "; mDistance = " + mDistance
@@ -339,7 +339,7 @@ public class DoubleDragThumbSeekBar2 extends View {
 //        curHeightProgress = formatDouble((mOffsetHigh - halfThumbWidth) * maxPb / mDistance);
         curLowProgress = formatDouble((mOffsetLow - halfThumbWidth)  / stepDistance);
         curHeightProgress = formatDouble((mOffsetHigh - halfThumbWidth) / stepDistance);
-//        MyLogUtils.i("onDraw() curLowProgress = " + curLowProgress
+//        XLogger.INSTANCE.getAPP().i("onDraw() curLowProgress = " + curLowProgress
 //                + "; curHeightProgress = " + curHeightProgress
 //                + "; mOffsetLow = " + mOffsetLow
 //                + "; mOffsetHigh = " + mOffsetHigh
@@ -358,7 +358,7 @@ public class DoubleDragThumbSeekBar2 extends View {
         if (isShowScale) {
             int scaleTop = thumbBot + oneDpToPixValue;
             int scaleBot = scaleTop + mThumbMarginBot;
-//            MyLogUtils.i("onDraw() halfRenameViewHeight = " + halfRenameViewHeight + "; scaleTop = " + scaleTop + "; " +
+//            XLogger.INSTANCE.getAPP().i("onDraw() halfRenameViewHeight = " + halfRenameViewHeight + "; scaleTop = " + scaleTop + "; " +
 //                    "scaleBot = " + scaleBot);
             for (int i = 1; i < maxPb / 10; i++) {
                 int scale = (int) (stepDistance * (i * 10)) + halfThumbWidth;
@@ -473,7 +473,7 @@ public class DoubleDragThumbSeekBar2 extends View {
     }
 
     private void heightValueOutOfBoundsJudge() {
-//        MyLogUtils.i("heightValueOutOfBoundsJudge() minMarginViewWidth = " + minMarginViewWidth
+//        XLogger.INSTANCE.getAPP().i("heightValueOutOfBoundsJudge() minMarginViewWidth = " + minMarginViewWidth
 //                + "; heightPbMinValue = " + heightPbMinValue
 //                + "; heightPbMaxValue = " + heightPbMaxValue);
         final int halfThumbWidth = mThumbWidth >> 1;
@@ -490,11 +490,11 @@ public class DoubleDragThumbSeekBar2 extends View {
         } else if (mOffsetHigh > mScrollBarWidth - halfThumbWidth) {
             mOffsetHigh = halfThumbWidth + mDistance;
         }
-//        MyLogUtils.i("lowValueOutOfBoundsJudge() mOffsetHigh = " + mOffsetHigh);
+//        XLogger.INSTANCE.getAPP().i("lowValueOutOfBoundsJudge() mOffsetHigh = " + mOffsetHigh);
     }
 
     private void lowValueOutOfBoundsJudge() {
-//        MyLogUtils.i("lowValueOutOfBoundsJudge() minMarginViewWidth = " + minMarginViewWidth
+//        XLogger.INSTANCE.getAPP().i("lowValueOutOfBoundsJudge() minMarginViewWidth = " + minMarginViewWidth
 //                + "; mOffsetHigh = " + mOffsetHigh
 //                + "; mOffsetLow = " + mOffsetLow
 //                + "; lowPbMinValue = " + lowPbMinValue
@@ -513,7 +513,7 @@ public class DoubleDragThumbSeekBar2 extends View {
             mOffsetLow = halfThumbWidth + mDistance;
             mOffsetHigh = mOffsetLow;
         }
-//        MyLogUtils.i("lowValueOutOfBoundsJudge() mOffsetLow = " + mOffsetLow);
+//        XLogger.INSTANCE.getAPP().i("lowValueOutOfBoundsJudge() mOffsetLow = " + mOffsetLow);
     }
 
     public int getAreaFlag(MotionEvent e) {
@@ -608,7 +608,7 @@ public class DoubleDragThumbSeekBar2 extends View {
     }
 
     public void setLowAndHeightProgress(double progressLow, double progressHigh) {
-//        MyLogUtils.i("setLowAndHeightProgress() progressLow = " + progressLow
+//        XLogger.INSTANCE.getAPP().i("setLowAndHeightProgress() progressLow = " + progressLow
 //                + "; progressHigh = " + progressHigh);
         if (mThumbLow.getState() == STATE_PRESSED || mThumbHigh.getState() == STATE_PRESSED) {
             //如果当前正处于触控滑动，则屏蔽手动设置值
@@ -622,7 +622,7 @@ public class DoubleDragThumbSeekBar2 extends View {
             this.curLowProgress = progressLow;
         }
         mOffsetLow = formatDouble(curLowProgress * stepDistance + (mThumbWidth >> 1)) ;
-//        MyLogUtils.i("setLowAndHeightProgress() mOffsetLow = " + mOffsetLow);
+//        XLogger.INSTANCE.getAPP().i("setLowAndHeightProgress() mOffsetLow = " + mOffsetLow);
         if (progressHigh < heightPbMinSetValue) {
             this.curHeightProgress = heightPbMinSetValue;
         } else if(progressHigh > heightPbMaxSetValue) {

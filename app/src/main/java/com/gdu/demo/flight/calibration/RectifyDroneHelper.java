@@ -19,7 +19,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.core.XLogger;
 
 /**
  * Created by yuhao on 2017/7/4.
@@ -70,7 +70,7 @@ public class RectifyDroneHelper implements View.OnClickListener {
      * @param isShow
      */
     private void show2HideLayout(boolean isShow) {
-        MyLogUtils.i("show2HideLayout() isShow = " + isShow);
+        XLogger.INSTANCE.getAPP().i("show2HideLayout() isShow = " + isShow);
         ll_rectifying.setVisibility(isShow ? View.VISIBLE : View.GONE);
         tv_rectify_again.setVisibility(isShow ? View.GONE : View.VISIBLE);
         mRectifyCountDownTextView.setVisibility(isShow ? View.VISIBLE : View.GONE);

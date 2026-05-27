@@ -14,8 +14,8 @@ import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.drone.PlanType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.util.StatusBarUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 /**
  * 新指南针校磁界面
@@ -49,7 +49,7 @@ public class RectifyMagnetometerActivityNew extends FragmentActivity {
     }
 
     private final RectifyDroneHelper.OnCheckNorthListener onCheckNorthListener = needShowRestart -> {
-        MyLogUtils.i("onCheckNorthOver() needShowRestart = " + needShowRestart);
+        XLogger.INSTANCE.getAPP().i("onCheckNorthOver() needShowRestart = " + needShowRestart);
         if(needShowRestart){
             showRestartDialog();
         }else{
@@ -107,7 +107,7 @@ public class RectifyMagnetometerActivityNew extends FragmentActivity {
      * 解决虚拟按键事件
      */
     private void solveNavigationBar() {
-        MyLogUtils.i("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
+        XLogger.INSTANCE.getAPP().i("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
         if (UavStaticVar.isHasNavigationBar) {
             ToolManager.hideNavigationBar(getWindow());
         }

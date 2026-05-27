@@ -40,7 +40,6 @@ import com.gdu.util.MyConstants;
 import com.gdu.util.NetWorkUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.eventbus.GlobalEventBus;
-import com.gdu.util.logger.MyLogUtils;
 import com.google.gson.Gson;
 import com.rxjava.rxlife.RxLife;
 

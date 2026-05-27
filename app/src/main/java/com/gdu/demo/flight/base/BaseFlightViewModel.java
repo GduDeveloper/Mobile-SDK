@@ -27,7 +27,6 @@ import com.gdu.util.ConnectUtil;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 import java.util.HashMap;
 

@@ -31,9 +31,9 @@ import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
 import com.gdu.drone.BatteryInfoZ4C;
 import com.gdu.drone.PlanType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.util.FormatConfig;
 import com.gdu.util.TimeUtil;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.text.DecimalFormat;
@@ -393,7 +393,7 @@ public class SettingBatteryFragment extends Fragment {
 
     //刷新并显示当前遥控器电池2信息界面
     private void updateRcBattery1UI() {
-        MyLogUtils.i("updateRcBattery1UI()");
+        XLogger.INSTANCE.getAPP().i("updateRcBattery1UI()");
         mViewBinding.incBatteryLayout2.tvBatteryState.setText(getString(R.string.state_normal));
         mViewBinding.battery1.setVisibility(View.VISIBLE);
         int upBatteryProgress = GlobalVariable.mainLevel;
@@ -424,7 +424,7 @@ public class SettingBatteryFragment extends Fragment {
 
     //刷新并显示当前遥控器电池2信息界面
     private void updateRcBattery2UI() {
-        MyLogUtils.i("updateRcBattery2UI()");
+        XLogger.INSTANCE.getAPP().i("updateRcBattery2UI()");
         mViewBinding.incBatteryLayout2.tvBatteryState.setText(getString(R.string.state_normal));
         mViewBinding.battery2.setVisibility(View.VISIBLE);
         mViewBinding.incBatteryLayout2.z4bBatterySub.setVisibility(View.VISIBLE);
@@ -582,7 +582,7 @@ public class SettingBatteryFragment extends Fragment {
 
             int progress = BatteryUtil.getSingleRemainingPower(GlobalVariable.planType,voltage);
 
-            MyLogUtils.d("cellVoltage  value =   " + mDatas.get(position) + " progress = " + progress);
+            XLogger.INSTANCE.getAPP().i("cellVoltage  value =   " + mDatas.get(position) + " progress = " + progress);
             if(progress >= 40){
                 holder.cellProgress.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.cell_progress_vertical_green));
                 holder.cellProgress.setBackgroundResource(R.drawable.battery_bg_normal);

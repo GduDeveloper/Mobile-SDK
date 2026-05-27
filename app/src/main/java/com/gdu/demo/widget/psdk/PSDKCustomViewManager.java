@@ -28,7 +28,6 @@ import com.gdu.demo.widget.psdk.widget.CustomRecyclerView;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.psdk.PSDKManager;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.logger.MyLogUtils;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -170,7 +169,7 @@ public class PSDKCustomViewManager {
 
     public void updateView() {
         PSdkCustomViewBean viewBean = mPSDKCustomViewBean;
-        MyLogUtils.i("addView()");
+        XLogger.INSTANCE.getAPP().i("addView()");
         try {
             mRootView.removeAllViews();
             iconBeansMap.clear();
@@ -183,7 +182,7 @@ public class PSDKCustomViewManager {
             }
 
             if (viewBean != null && viewBean.getMain_interface() != null && viewBean.getMain_interface().getWidget_list() != null) {
-                MyLogUtils.i("addView() list handle");
+                XLogger.INSTANCE.getAPP().i("addView() list handle");
                 List<WidgetItemBean> list = viewBean.getMain_interface().getWidget_list();
                 for (int i = 0; i < list.size(); i++) {
                     WidgetItemBean item = list.get(i);
@@ -207,7 +206,7 @@ public class PSDKCustomViewManager {
                 mRootView.removeAllViews();
             }
         } catch (Exception e) {
-            MyLogUtils.e("addView error", e);
+            XLogger.INSTANCE.getAPP().e("addView error", e);
         }
 
     }
@@ -261,7 +260,7 @@ public class PSDKCustomViewManager {
 //                                public void callBack(int code, GduFrame3 bean) {
 //                                    if (code == GduConfig.OK) {
 //                                        int state = ByteUtilsLowBefore.byte2Int(bean.frameContent, 5);
-////                                        MyLogUtils.d("updateIconBean   id =  " + iconBean.getId() + ", type = " + iconBean.getType() + ", state = " + state);
+////                                        XLogger.INSTANCE.getAPP().i("updateIconBean   id =  " + iconBean.getId() + ", type = " + iconBean.getType() + ", state = " + state);
 //                                        if (handler != null) {
 //                                            handler.post(new Runnable() {
 //                                                @Override
@@ -379,7 +378,7 @@ public class PSDKCustomViewManager {
                 if (bean != null) {
                     change = (byte) (bean.isSelected() ? 0 : 1);
                 }
-//                MyLogUtils.d("SwitchButton   change = " + change);
+//                XLogger.INSTANCE.getAPP().i("SwitchButton   change = " + change);
                 byte finalChange = change;
                 PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 2, finalChange, new CommonCallbacks.CompletionCallback() {
                     @Override
@@ -433,7 +432,7 @@ public class PSDKCustomViewManager {
 
         imageView.setClickable(true);
         imageView.setEnabled(true);
-//        MyLogUtils.d("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
+//        XLogger.INSTANCE.getAPP().i("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
         Bitmap selectedBitmap = iconsMap.get(iconBean.getSelectedIconName());
         Bitmap unSelectedBitmap = iconsMap.get(iconBean.getUnSelectedIconName());
         StateListDrawable selector = new StateListDrawable();
@@ -521,7 +520,7 @@ public class PSDKCustomViewManager {
 
         imageView.setClickable(true);
         imageView.setEnabled(true);
-//        MyLogUtils.d("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
+//        XLogger.INSTANCE.getAPP().i("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
         Bitmap selectedBitmap = iconsMap.get(iconBean.getSelectedIconName());
         Bitmap unSelectedBitmap = iconsMap.get(iconBean.getUnSelectedIconName());
         StateListDrawable selector = new StateListDrawable();
@@ -629,7 +628,7 @@ public class PSDKCustomViewManager {
         }
         imageView.setClickable(true);
         imageView.setEnabled(true);
-//        MyLogUtils.d("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
+//        XLogger.INSTANCE.getAPP().i("addSwitch   " + iconBean.getSelectedIconName() + ", " + iconBean.getUnSelectedIconName());
         Bitmap selectedBitmap = iconsMap.get(iconBean.getSelectedIconName());
         Bitmap unSelectedBitmap = iconsMap.get(iconBean.getUnSelectedIconName());
         StateListDrawable selector = new StateListDrawable();
@@ -647,7 +646,7 @@ public class PSDKCustomViewManager {
 
 
     private void addFloatWindow(Context context, RelativeLayout viewGroup) {
-//        MyLogUtils.i("addFloatWindow()");
+//        XLogger.INSTANCE.getAPP().i("addFloatWindow()");
         if (viewGroup != null && floatWindowView != null) {
             viewGroup.removeView(floatWindowView);
         }

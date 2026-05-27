@@ -20,13 +20,13 @@ import com.gdu.demo.R;
 import com.gdu.demo.flight.event.ChangeUnitEvent;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
 import com.gdu.socket.SocketCallBack3;
 import com.gdu.util.ByteUtilsLowBefore;
 import com.gdu.util.DroneUtil;
-import com.gdu.util.logger.MyLogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -140,7 +140,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
     /** 获取避障子方向开关和距离*/
     private void getObstacleCallback() {
         GduSocketManager.getInstance().getGduCommunication().getObstacleDirectionDistance((code, bean) -> {
-            MyLogUtils.d("getObstacleCallback() code = " + code);
+            XLogger.INSTANCE.getAPP().i("getObstacleCallback() code = " + code);
             // 这里不去判断code的状态
             if (bean != null && bean.frameContent != null) {
                 isHorSwitchSelected = bean.frameContent[0];
@@ -176,15 +176,15 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                     mHandler.obtainMessage(GET_BOTTOM_WARN_DISTANCE, bottomWarnDistance, 0).sendToTarget();
                 }
 
-                MyLogUtils.d("getObstacleCallback() horOpen = " + (isHorSwitchSelected));
-                MyLogUtils.d("getObstacleCallback() horStop = " + horBrakeDistance);
-                MyLogUtils.d("getObstacleCallback() horWarning = " + horWarnDistance);
-                MyLogUtils.d("getObstacleCallback() topOpen = " + (isTopSwitchSelected ));
-                MyLogUtils.d("getObstacleCallback() topStop = " + topBrakeDistance);
-                MyLogUtils.d("getObstacleCallback() topWarning = " + topWarnDistance);
-                MyLogUtils.d("getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
-                MyLogUtils.d("getObstacleCallback() bottomStop = " + bottomBrakeDistance);
-                MyLogUtils.d("getObstacleCallback() bottomWarning = " + bottomWarnDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() horOpen = " + (isHorSwitchSelected));
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() horStop = " + horBrakeDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() horWarning = " + horWarnDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() topOpen = " + (isTopSwitchSelected ));
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() topStop = " + topBrakeDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() topWarning = " + topWarnDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomStop = " + bottomBrakeDistance);
+                XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomWarning = " + bottomWarnDistance);
             }
         });
     }
@@ -289,7 +289,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onBrake(int progress) {
-                MyLogUtils.d("setOnPerceiveHorizontalListener() onBrake -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveHorizontalListener() onBrake -> progress = " + progress);
                 if (isHorSwitchSelected != 0) {
                     return;
                 }
@@ -304,7 +304,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onWarn(int progress) {
-                MyLogUtils.d("setOnPerceiveHorizontalListener() onWarn -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveHorizontalListener() onWarn -> progress = " + progress);
                 if (isHorSwitchSelected != 0) {
                     return;
                 }
@@ -328,7 +328,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onBrake(int progress) {
-                MyLogUtils.d("setOnPerceiveTopListener() onBrake -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveTopListener() onBrake -> progress = " + progress);
                 if (isTopSwitchSelected != 0) {
                     return;
                 }
@@ -340,7 +340,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onWarn(int progress) {
-                MyLogUtils.d("setOnPerceiveTopListener() onWarn -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveTopListener() onWarn -> progress = " + progress);
                 if (isTopSwitchSelected != 0) {
                     return;
                 }
@@ -364,7 +364,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onBrake(int progress) {
-                MyLogUtils.d("setOnPerceiveBottomListener() onBrake -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveBottomListener() onBrake -> progress = " + progress);
                 if (isBottomSwitchSelected != 0) {
                     return;
                 }
@@ -376,7 +376,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
             @Override
             public void onWarn(int progress) {
-                MyLogUtils.d("setOnPerceiveBottomListener() onWarn -> progress = " + progress);
+                XLogger.INSTANCE.getAPP().i("setOnPerceiveBottomListener() onWarn -> progress = " + progress);
                 if (isBottomSwitchSelected != 0) {
                     return;
                 }
@@ -405,7 +405,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
      * @param position 0：水平设置 1：上视设置 3：辅助降落/下视设置（S200系列）
      */
     private void setObstacleType(int position) {
-        MyLogUtils.i("setObstacleType() position = " + position);
+        XLogger.INSTANCE.getAPP().i("setObstacleType() position = " + position);
         if (position == 0) {
             setHorizontallySetting();
             mPerceivingSettingsView.showHideSettingView(1);
@@ -436,7 +436,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
      * @param str
      */
     private void tipBrake(int str) {
-        MyLogUtils.i("tipSpeedObstealOn() str = " + str);
+        XLogger.INSTANCE.getAPP().i("tipSpeedObstealOn() str = " + str);
 //        if (mDialogUtils == null) {
 //            mDialogUtils = new DialogUtils(mContext);
 //        }

@@ -9,7 +9,7 @@ import com.gdu.AlgorithmMark;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.drone.TargetMode;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.core.XLogger;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -64,7 +64,7 @@ public class TargetDetectHelper {
     }
 
     public void init(Context context){
-        MyLogUtils.i("init()");
+        XLogger.INSTANCE.getAPP().i("init()");
         mContext = context;
         mTargetModeList = new CopyOnWriteArrayList<>();
 
@@ -77,7 +77,7 @@ public class TargetDetectHelper {
     }
 
     private void initHandler() {
-        MyLogUtils.i("initHandler()");
+        XLogger.INSTANCE.getAPP().i("initHandler()");
         mHandler = new Handler(msg -> {
             switch (msg.what) {
                 case ADD_TARGET:
@@ -154,7 +154,7 @@ public class TargetDetectHelper {
      * 添加目标检测和跟踪的长监听
      */
     private void addTargetDetectACK() {
-        MyLogUtils.i("addTargetDetectACK()");
+        XLogger.INSTANCE.getAPP().i("addTargetDetectACK()");
         SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectListener(new com.gdu.sdk.vision.OnTargetDetectListener() {
             @Override
             public void onTargetDetecting(List<TargetMode> list) {
@@ -193,7 +193,7 @@ public class TargetDetectHelper {
      * 直接显示目标框
      */
     public void startShowTarget(){
-        MyLogUtils.i("startShowTarget()");
+        XLogger.INSTANCE.getAPP().i("startShowTarget()");
         isTargetDetect = true;
         Message message = new Message();
         message.what = TARGET_DETECT_SEND_SUCCEED;
@@ -201,7 +201,7 @@ public class TargetDetectHelper {
     }
 
     private void returnDetectResult(int detectResult, String result){
-        MyLogUtils.i("returnDetectResult() detectResult = " + detectResult + "; result = " + result);
+        XLogger.INSTANCE.getAPP().i("returnDetectResult() detectResult = " + detectResult + "; result = " + result);
         Message message = Message.obtain();
         message.what = detectResult;
         message.obj = result;
@@ -211,7 +211,7 @@ public class TargetDetectHelper {
     }
 
     public void onDestroy() {
-        MyLogUtils.i("onDestroy()");
+        XLogger.INSTANCE.getAPP().i("onDestroy()");
         mContext = null;
         mOnTargetDetectListener = null;
     }

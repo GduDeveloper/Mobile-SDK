@@ -17,11 +17,11 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.FormatConfig;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 
 import java.text.DecimalFormat;
 
@@ -152,7 +152,7 @@ public class PerceivingSettingsView extends RelativeLayout {
         mWarnDistanceValueTextViewBottom.setText(unit);
 
 //        GduApplication.getSingleApp().gduCommunication.getLandingProtectState((code, bean) -> {
-//            MyLogUtils.i("getLandingProtectState() code = " + code );
+//            XLogger.INSTANCE.getAPP().i("getLandingProtectState() code = " + code );
 //            boolean isEmptyData = code != GduConfig.OK || bean == null || bean.frameContent == null
 //                    || bean.frameContent.length < 2;
 //            if (isEmptyData) {
@@ -562,10 +562,10 @@ public class PerceivingSettingsView extends RelativeLayout {
     }
 
     private void switchLandingProtect(final boolean openLandProtect) {
-        MyLogUtils.i("switchLandingProtect() openLandProtect = " + openLandProtect);
+        XLogger.INSTANCE.getAPP().i("switchLandingProtect() openLandProtect = " + openLandProtect);
 //        GduApplication.getSingleApp().gduCommunication.switchLandingProtect((byte) (openLandProtect ? 1 : 2),
 //                (code, bean) -> {
-//            MyLogUtils.i("switchLandingProtect() code = " + code);
+//            XLogger.INSTANCE.getAPP().i("switchLandingProtect() code = " + code);
 //            if (code != 0) {
 //                post(() -> mIvLandingProtect.setSelected(!openLandProtect));
 //            }
@@ -575,7 +575,7 @@ public class PerceivingSettingsView extends RelativeLayout {
     }
 
     private boolean connStateToast() {
-        MyLogUtils.i("connStateToast()");
+        XLogger.INSTANCE.getAPP().i("connStateToast()");
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return false;
@@ -594,7 +594,7 @@ public class PerceivingSettingsView extends RelativeLayout {
      * @param type 1：水平 2：上视 3：下视/辅助降落
      */
     public void showHideSettingView(int type) {
-        MyLogUtils.i("showHideSettingView() type = " + type);
+        XLogger.INSTANCE.getAPP().i("showHideSettingView() type = " + type);
         switch (type) {
             case 1:
                 ViewUtils.setViewShowOrHide(mHorizontalLayout, true);
@@ -634,7 +634,7 @@ public class PerceivingSettingsView extends RelativeLayout {
      * @param type 1:水平 2:上视 3:下视
      */
     public void setObstacleOpen(boolean isOpen, int type) {
-        MyLogUtils.i("setObstacleOpen() isOpen = " + isOpen + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("setObstacleOpen() isOpen = " + isOpen + "; type = " + type);
         switch (type) {
             case 1:
                 mObsHorSwitch.setSelected(isOpen);
@@ -664,7 +664,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置水平刹停距离*/
     public void setBrakeSeekbarProgress(int progress) {
-//        MyLogUtils.i("setBrakeSeekbarProgress() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setBrakeSeekbarProgress() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mBrakeDistanceSeekBar.setProgress(progress);
         horSeekbarValue = progress;
@@ -675,7 +675,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置上视刹停距离*/
     public void setBrakeSeekbarTop(int progress) {
-//        MyLogUtils.i("setBrakeSeekbarTop() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setBrakeSeekbarTop() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mBrakeDistanceSeekBarTop.setProgress(progress);
         topSeekbarValue = progress;
@@ -685,7 +685,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置下视刹停距离*/
     public void setBrakeSeekbarBottom(int progress) {
-//        MyLogUtils.i("setBrakeSeekbarBottom() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setBrakeSeekbarBottom() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mBrakeDistanceSeekBarBottom.setProgress(progress);
         bottomSeekbarValue = progress;
@@ -695,7 +695,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置水平告警距离*/
     public void setWarnSeekbarProgress(int progress) {
-//        MyLogUtils.i("setWarnSeekbarProgress() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setWarnSeekbarProgress() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mWarnDistanceSeekBar.setProgress(progress);
         horizontalAlarmValue = progress;
@@ -705,7 +705,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置上视告警距离*/
     public void setWarnSeekbarTop(int progress) {
-//        MyLogUtils.i("setWarnSeekbarTop() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setWarnSeekbarTop() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mWarnDistanceSeekBarTop.setProgress(progress);
         topAlarmValue = progress;
@@ -715,7 +715,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置下视告警距离*/
     public void setWarnSeekbarBottom(int progress) {
-//        MyLogUtils.i("setWarnSeekbarBottom() progress = " + progress);
+//        XLogger.INSTANCE.getAPP().i("setWarnSeekbarBottom() progress = " + progress);
 //        final String value = getScalePbValue(progress);
         mWarnDistanceSeekBarBottom.setProgress(progress);
         bottomAlarmValue = progress;
@@ -726,7 +726,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置水平感知名*/
     public void setPerceiveName(String name, int type) {
-        MyLogUtils.i("setPerceiveName() name = " + name + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("setPerceiveName() name = " + name + "; type = " + type);
         switch (type) {
             case 1:
                 mObstacleNameTextView.setText(name);
@@ -744,7 +744,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置水平刹停距离提示*/
     public void setBrakeDistanceHint(String hint, int type) {
-        MyLogUtils.i("setBrakeDistanceHint() hint = " + hint + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("setBrakeDistanceHint() hint = " + hint + "; type = " + type);
         switch (type) {
             case 1:
                 mBrakeDistanceHintTextView.setText(hint);
@@ -762,7 +762,7 @@ public class PerceivingSettingsView extends RelativeLayout {
 
     /** 设置水平警告距离提示*/
     public void setWarnDistanceHint(String hint, int type) {
-        MyLogUtils.i("setWarnDistanceHint() hint = " + hint + "; type = " + type);
+        XLogger.INSTANCE.getAPP().i("setWarnDistanceHint() hint = " + hint + "; type = " + type);
         switch (type) {
             case 1:
                 mWarnDistanceHintTextView.setText(hint);

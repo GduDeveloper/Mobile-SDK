@@ -1,16 +1,13 @@
 package com.gdu.demo.widget.zoomView;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.products.Aircraft;
-import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.logger.MyLogUtils;
-import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -21,7 +18,6 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
@@ -39,7 +35,7 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
     @Override
     protected void initView() {
-        MyLogUtils.i("initView()");
+        XLogger.INSTANCE.getAPP().i("initView()");
         mRangeSeekBar.setRange(0, 1000);
         mRangeSeekBar.setSteps(24);
         mRangeSeekBar.getLeftSeekBar().setThumbText("1.0X");
@@ -89,11 +85,11 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
     @Override
     protected void initListener() {
-        MyLogUtils.i("initListener()");
+        XLogger.INSTANCE.getAPP().i("initListener()");
         mRangeSeekBar.setOnRangeChangedListener(new OnRangeChangedListener() {
             @Override
             public void onRangeChanged(RangeSeekBar view, float leftValue, float rightValue, boolean isFromUser) {
-                MyLogUtils.i("onRangeChanged() leftValue = " + leftValue + "; isFromUser = " + isFromUser);
+                XLogger.INSTANCE.getAPP().i("onRangeChanged() leftValue = " + leftValue + "; isFromUser = " + isFromUser);
                 final float mFocusSize = getCurFocusValue(leftValue);
                 String formatSizeStr = "";
                 if (mFocusSize <= ELECTRON_ZOOM_START_SIZE) {
@@ -108,8 +104,8 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
                     mBigDecimal = mBigDecimal.setScale(1, RoundingMode.HALF_UP);
                     formatSizeStr = mBigDecimal.toPlainString() + "X";
                 }
-                MyLogUtils.i("onRangeChanged() mFocusSize = " + mFocusSize + "; formatSizeStr = " + formatSizeStr);
-                if (CommonUtils.isEmptyString(formatSizeStr)) {
+                XLogger.INSTANCE.getAPP().i("onRangeChanged() mFocusSize = " + mFocusSize + "; formatSizeStr = " + formatSizeStr);
+                if (TextUtils.isEmpty(formatSizeStr)) {
                     return;
                 }
                 mRangeSeekBar.getLeftSeekBar().setThumbText(formatSizeStr);
@@ -117,13 +113,13 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
 
             @Override
             public void onStartTrackingTouch(RangeSeekBar view, boolean isLeft) {
-                MyLogUtils.i("onStartTrackingTouch() isLeft = " + isLeft);
+                XLogger.INSTANCE.getAPP().i("onStartTrackingTouch() isLeft = " + isLeft);
                 isManualSetFocus = true;
             }
 
             @Override
             public void onStopTrackingTouch(RangeSeekBar view, boolean isLeft) {
-                MyLogUtils.i("onStopTrackingTouch() isLeft = " + isLeft);
+                XLogger.INSTANCE.getAPP().i("onStopTrackingTouch() isLeft = " + isLeft);
                 isManualSetFocus = false;
                 if (!isLeft) {
                     return;
@@ -144,29 +140,29 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
         if (size > ELECTRON_ZOOM_START_SIZE) {
             size = (size - ELECTRON_ZOOM_START_SIZE) / ELECTRON_ZOOM_START_SIZE + ELECTRON_ZOOM_START_SIZE;
         }
-        MyLogUtils.i("updateCurFocusSize() partProgress = " + partProgress + "; mFocusSize = " + mFocusSize + "; after size = " + size);
+        XLogger.INSTANCE.getAPP().i("updateCurFocusSize() partProgress = " + partProgress + "; mFocusSize = " + mFocusSize + "; after size = " + size);
         final BigDecimal bd1 = new BigDecimal(String.valueOf(size));
         final BigDecimal bd2 = new BigDecimal(String.valueOf(mFocusSize));
         if (bd1.compareTo(bd2) == 0) {
             return;
         }
         final float progressValue = (size - 1) * partProgress;
-        MyLogUtils.i("updateCurFocusSize() progressValue = " + progressValue);
+        XLogger.INSTANCE.getAPP().i("updateCurFocusSize() progressValue = " + progressValue);
         mRangeSeekBar.setProgress(progressValue);
     }
 
     private void sendFocusCmd(RangeSeekBar view) {
-        MyLogUtils.i("sendFocusCmd()");
+        XLogger.INSTANCE.getAPP().i("sendFocusCmd()");
         try {
             if (view == null) {
                 return;
             }
             final float ratioValue = Float.parseFloat(view.getLeftSeekBar().getUserText2Thumb().replace("X", ""));
-            MyLogUtils.i("sendFocusCmd() ratioValue = " + ratioValue);
+            XLogger.INSTANCE.getAPP().i("sendFocusCmd() ratioValue = " + ratioValue);
             sendAndReceiveCmdNum += 1;
             zoomCustomSizeRatio((short) (ratioValue));
         } catch (Exception e) {
-            MyLogUtils.e("解析变焦倍数出错", e);
+            XLogger.INSTANCE.getAPP().e("解析变焦倍数出错", e);
         }
     }
 

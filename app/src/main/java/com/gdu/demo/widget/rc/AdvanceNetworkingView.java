@@ -18,7 +18,6 @@ import com.gdu.lib.util.core.XLogger;
 import com.gdu.remotecontroller.IMChildPointInfo;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.util.CollectionUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -110,7 +109,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
                         updateData(false);
                     }
                 }, throwable -> {
-                    MyLogUtils.e("更新组网信息出错", throwable);
+                    XLogger.INSTANCE.getAPP().e("更新组网信息出错", throwable);
                 }, () -> {});
     }
 
@@ -178,7 +177,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
             int mode = NetworkingHelper.getModeByPosition(position);
 //            LoadingDialogUtils.createLoadDialog(mContext, mContext.getString(R.string.mode_changing));
 //            GduApplication.getSingleApp().gduCommunication.setNetworking((byte)0x05, (byte) mode,
-//                    (code, bean) -> MyLogUtils.i("setNetworking callBack() code = " + code));
+//                    (code, bean) -> XLogger.INSTANCE.getAPP().i("setNetworking callBack() code = " + code));
         });
 
         mDroneListView.setOnItemClickListener((parent, view, position, id) -> {
@@ -344,7 +343,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
             }
         }
         int rcNum = mCurrentRCInfoList.size();
-//        MyLogUtils.i("updateStatus() rcNum = " + rcNum);
+//        XLogger.INSTANCE.getAPP().i("updateStatus() rcNum = " + rcNum);
         if (rcNum > 0 && rcNum < 4) {
             for (int i = 0; i < rcNum; i++) {
                 IMChildPointInfo tmpRCInfo = mCurrentRCInfoList.get(i);
@@ -399,7 +398,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 //            @Override
 //            public void positiveOnClick() {
 //                GduApplication.getSingleApp().gduCommunication.setNetworking((byte)0x04, (byte) info.id,
-//                        (code, bean) -> MyLogUtils.i("setNetworking callBack() type = 0x04; code " + code));
+//                        (code, bean) -> XLogger.INSTANCE.getAPP().i("setNetworking callBack() type = 0x04; code " + code));
 //                this.dismiss();
 //            }
 //

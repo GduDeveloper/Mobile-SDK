@@ -18,7 +18,6 @@ import com.gdu.drone.GimbalType;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
-import com.gdu.util.logger.MyLogUtils;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -92,10 +91,10 @@ public class FlightViewModel extends ViewModel {
      * @param lightType
      */
     public void startTargetDetect(LightType lightType) {
-        MyLogUtils.i("startTargetDetect() lightType = " + lightType);
+        XLogger.INSTANCE.getAPP().i("startTargetDetect() lightType = " + lightType);
         setAIBoxTargetDetect((byte) 0x01);
         SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType.getKey(), gduError -> {
-                    MyLogUtils.i("targetDetect callBack() code = " + gduError);
+                    XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
                     if (gduError == null) {
                         GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                         GlobalVariable.discernIsOpen = true;
@@ -125,7 +124,7 @@ public class FlightViewModel extends ViewModel {
     }
 
     public void stopTarget(byte stopType, LightType lightType) {
-        MyLogUtils.i("stopTarget() stopType = " + stopType + "; lightType = " + lightType);
+        XLogger.INSTANCE.getAPP().i("stopTarget() stopType = " + stopType + "; lightType = " + lightType);
         setTargetDetect((byte) 0x00);
         if (GlobalVariable.otherCompId != GduSocketConfig3.AI_BOX) {
             return;

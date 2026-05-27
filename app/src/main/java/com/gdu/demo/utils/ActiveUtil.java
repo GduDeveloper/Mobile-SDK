@@ -206,8 +206,8 @@
 //        String contentStr = MyConstants.S220_API_REQUEST_KEY + "#" + curTimeSecond + "#" + upBeanJsonStr + "#";
 //        String signMd5 = MD5Util.stringToMD5(contentStr);
 //        String url = WebUrlConfig.S220_UPLOAD_URL_AND_PORT + WebUrlConfig.SEND_UAV_ACTIVE;
-//        //MyLogUtils.i("uploadActiveInfo(), 请求入参=" + upBeanJsonStr);
-//        //MyLogUtils.i("uploadActiveInfo(), sign=" + signMd5+",timestamp="+curTimeSecond);
+//        //XLogger.INSTANCE.getAPP().i("uploadActiveInfo(), 请求入参=" + upBeanJsonStr);
+//        //XLogger.INSTANCE.getAPP().i("uploadActiveInfo(), sign=" + signMd5+",timestamp="+curTimeSecond);
 //        getFlightRecordService().sendCustomUrlAndBody(signMd5, String.valueOf(curTimeSecond), url, contentBody)
 //                .subscribeOn(Schedulers.newThread())
 //                .to(holder.owner != null ? RxLife.toMain(holder.owner) : RxLife.toMain(holder.scope))

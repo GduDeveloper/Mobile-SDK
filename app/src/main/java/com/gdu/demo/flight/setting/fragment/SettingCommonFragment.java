@@ -54,7 +54,6 @@ import com.gdu.util.TextUtil;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.TimeUtil;
 import com.gdu.util.ViewUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -147,13 +146,13 @@ public class SettingCommonFragment extends Fragment {
 //            }
 //        }
 
-        MyLogUtils.i("onResume() isShowActiveBtn = " + isShowActiveBtn);
+        XLogger.INSTANCE.getAPP().i("onResume() isShowActiveBtn = " + isShowActiveBtn);
         ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !CommonUtils.curPlanIsSmallFlight());
         ViewUtils.setViewShowOrHide(mViewBinding.fifthGenerationVersionView, !CommonUtils.curPlanIsSmallFlight());
 
         boolean isOpenArmLamp = GlobalVariable.flight_arm_lamp_status == 0;
         boolean isOpenBatteryLight = GlobalVariable.battery_silence_status == 1;
-        MyLogUtils.i("initView() isOpenArmLamp = " + isOpenArmLamp + "; isOpenBatteryLight = "
+        XLogger.INSTANCE.getAPP().i("initView() isOpenArmLamp = " + isOpenArmLamp + "; isOpenBatteryLight = "
                 + isOpenBatteryLight + "; flight_arm_lamp_status = "
                 + GlobalVariable.flight_arm_lamp_status
                 + "; battery_silence_status = "
@@ -377,10 +376,10 @@ public class SettingCommonFragment extends Fragment {
         // 默认0 自动
         int type = SPUtils.getInt(requireContext(), SPUtils.MAP_TYPE);
         mViewBinding.opMapModel.setIndex(type);
-        MyLogUtils.d("MapType  type = " + type);
+        XLogger.INSTANCE.getAPP().i("MapType  type = " + type);
 
         mViewBinding.opMapModel.setOnOptionClickListener((parentId, view, position) -> {
-            MyLogUtils.d("MapType  type = " + position);
+            XLogger.INSTANCE.getAPP().i("MapType  type = " + position);
             if (GlobalVariable.isOpenFlightRoutePlan) {
                 Toast.makeText(requireContext(), R.string.please_exit_flight_route, Toast.LENGTH_SHORT).show();
                 return;

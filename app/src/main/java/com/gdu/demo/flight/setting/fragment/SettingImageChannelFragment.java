@@ -22,11 +22,11 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
 import com.gdu.demo.flight.setting.viewmodel.SettingSDRViewModel;
 import com.gdu.drone.AirlinkType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.util.CollectionUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.SPUtils;
-import com.gdu.util.logger.MyLogUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -289,7 +289,7 @@ public class SettingImageChannelFragment extends Fragment {
      * @param channel
      */
     private void setImgChannel(int channel){
-        MyLogUtils.d("test setImgChannel channel="+channel);
+        XLogger.INSTANCE.getAPP().i("test setImgChannel channel="+channel);
         if (mHandler != null && isAdded() && isAttached) {
             mHandler.post(() -> {
                 if (isAdded() && isAttached) {
@@ -333,7 +333,7 @@ public class SettingImageChannelFragment extends Fragment {
             } else if (GlobalVariable.sFourthGStatus.pushStreamType == 2) {
                 mViewBinding.ovSwitchPushType.setIndex(1);
             } else {
-                MyLogUtils.w("showPushTypeView = " + GlobalVariable.sFourthGStatus.pushStreamType);
+                XLogger.INSTANCE.getAPP().i("showPushTypeView = " + GlobalVariable.sFourthGStatus.pushStreamType);
             }
         }
     }

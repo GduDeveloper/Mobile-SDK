@@ -6,8 +6,8 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.gdu.util.CollectionUtils;
-import com.gdu.util.logger.MyLogUtils;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.XLogger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +36,7 @@ public class CycleFirmwareVersionManage {
         mHandler = new Handler(mHandlerThread.getLooper()) {
             @Override
             public void handleMessage(@NonNull Message msg) {
-                MyLogUtils.i("handleMessage() msgWhat = " + msg.what + "; mFirmwareVersion = " + mFirmwareVersion);
+                XLogger.INSTANCE.getAPP().i("handleMessage() msgWhat = " + msg.what + "; mFirmwareVersion = " + mFirmwareVersion);
                 if (msg.what != 1) {
                     return;
                 }
@@ -51,7 +51,7 @@ public class CycleFirmwareVersionManage {
      * @param status 0：默认；1:更新中；2：更新完成
      */
     private void statusUpdate(int status) {
-        MyLogUtils.i("statusUpdate() status = " + status + "; callbackListSize = " + callbackList.size());
+        XLogger.INSTANCE.getAPP().i("statusUpdate() status = " + status + "; callbackListSize = " + callbackList.size());
         Optional.ofNullable(callbackList).ifPresent(list -> {
             for (ICycleGetFirmwareUpdate mUpdate : list) {
                 mUpdate.statusUpdate(status);
@@ -63,7 +63,7 @@ public class CycleFirmwareVersionManage {
             new IFirmwareVersion.OnFirmwareVersionGetListener() {
         @Override
         public void onFirmwareStatusCallback(int status) {
-            MyLogUtils.i("CycleFirmwareVersionManage onFirmwareStatusCallback() status = " + status +
+            XLogger.INSTANCE.getAPP().i("CycleFirmwareVersionManage onFirmwareStatusCallback() status = " + status +
                     "; isHaveGetFwVersion = " + isHaveGetFwVersion);
             if (status == 1 && isHaveGetFwVersion) {
                 isHaveGetFwVersion = false;
@@ -72,14 +72,14 @@ public class CycleFirmwareVersionManage {
 
         @Override
         public void onVersionReqEnd() {
-            MyLogUtils.i("CycleFirmwareVersionManage onVersionReqEnd() isHaveGetFwVersion = " + isHaveGetFwVersion +
+            XLogger.INSTANCE.getAPP().i("CycleFirmwareVersionManage onVersionReqEnd() isHaveGetFwVersion = " + isHaveGetFwVersion +
                     "; mIsAutoCycle = " + mIsAutoCycle);
             if (!isHaveGetFwVersion) {
                 return;
             }
             Optional.ofNullable(mFirmwareVersion).ifPresent(IFirmwareVersion::dispose);
             reqNum++;
-            MyLogUtils.i("onVersionReqEnd() reqNum = " + reqNum);
+            XLogger.INSTANCE.getAPP().i("onVersionReqEnd() reqNum = " + reqNum);
             if (reqNum >= 3) {
                 if (isHaveGetFwVersion) {
                     isHaveGetFwVersion = false;
@@ -95,7 +95,7 @@ public class CycleFirmwareVersionManage {
     };
 
     private void updateVersionData() {
-        MyLogUtils.i("updateVersionData() callbackListSize = " + callbackList.size());
+        XLogger.INSTANCE.getAPP().i("updateVersionData() callbackListSize = " + callbackList.size());
         Optional.ofNullable(callbackList).ifPresent(list -> {
             for (ICycleGetFirmwareUpdate mUpdate : list) {
                 mUpdate.updateVersionData();
@@ -104,17 +104,17 @@ public class CycleFirmwareVersionManage {
     }
 
     public void setCycleGetVersionCallback(ICycleGetFirmwareUpdate callback) {
-        MyLogUtils.i("setCycleGetVersionCallback()");
+        XLogger.INSTANCE.getAPP().i("setCycleGetVersionCallback()");
         CollectionUtils.listAddAvoidNull(callbackList, callback);
     }
 
     public void startCycleGetFWVersion() {
-        MyLogUtils.i("CycleFirmwareVersionManage startCycleGetFWVersion()");
+        XLogger.INSTANCE.getAPP().i("CycleFirmwareVersionManage startCycleGetFWVersion()");
         startCycleGetFWVersion(true);
     }
 
     public void startCycleGetFWVersion(boolean isAutoCycle) {
-        MyLogUtils.i("CycleFirmwareVersionManage startCycleGetFWVersion() isAutoCycle = " + isAutoCycle);
+        XLogger.INSTANCE.getAPP().i("CycleFirmwareVersionManage startCycleGetFWVersion() isAutoCycle = " + isAutoCycle);
         isHaveGetFwVersion = true;
         mIsAutoCycle = isAutoCycle;
         if (mIsAutoCycle) {
@@ -124,12 +124,12 @@ public class CycleFirmwareVersionManage {
     }
 
     public void unRegisterVersionCallback(ICycleGetFirmwareUpdate callback) {
-        MyLogUtils.i("unRegisterVersionCallback()");
+        XLogger.INSTANCE.getAPP().i("unRegisterVersionCallback()");
         Optional.ofNullable(callbackList).ifPresent(list -> list.remove(callback));
     }
 
     public void stopGetFwVersion() {
-        MyLogUtils.i("stopGetFwVersion()");
+        XLogger.INSTANCE.getAPP().i("stopGetFwVersion()");
         mHandler.removeMessages(1);
         mIsAutoCycle = true;
         isHaveGetFwVersion = false;
@@ -137,7 +137,7 @@ public class CycleFirmwareVersionManage {
     }
 
     public void onDestroy() {
-        MyLogUtils.i("onDestroy()");
+        XLogger.INSTANCE.getAPP().i("onDestroy()");
         stopGetFwVersion();
         Optional.ofNullable(mFirmwareVersion).ifPresent(version -> version.unRegisterListener(mVersionGetListener));
     }
