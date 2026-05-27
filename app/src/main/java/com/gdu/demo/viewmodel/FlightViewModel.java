@@ -15,10 +15,10 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.detect.AIModelState;
 import com.gdu.drone.GimbalType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.AppLog;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -150,7 +150,7 @@ public class FlightViewModel extends ViewModel {
         } else {
             typeArray = new byte[3];
         }
-        AppLog.e("TargetDetectHelper", "setTargetDetect aiRecognitionSwitch.first = " + GlobalVariable.aiRecognitionSwitch.first);
+        XLogger.INSTANCE.getAPP().i("TargetDetectHelper", "setTargetDetect aiRecognitionSwitch.first = " + GlobalVariable.aiRecognitionSwitch.first);
         if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
             SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
                 if (null == gduError){

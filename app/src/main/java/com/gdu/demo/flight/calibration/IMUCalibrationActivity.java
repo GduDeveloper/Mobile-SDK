@@ -18,7 +18,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
-import com.gdu.util.logs.AppLog;
+import com.gdu.lib.util.core.XLogger;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -600,7 +600,7 @@ public class IMUCalibrationActivity extends FragmentActivity implements View.OnC
 
     private void checkTimeout() {
         stopCheckTimeout();
-        AppLog.i(TAG, "checkTimeout()");
+        XLogger.INSTANCE.getAPP().i(TAG, "checkTimeout()");
         checkDispose = Observable.interval(0,1, TimeUnit.SECONDS)
                 .take(MAX_TIMEOUT)
                 .map(l -> MAX_TIMEOUT - l)

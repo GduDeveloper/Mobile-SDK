@@ -25,10 +25,10 @@ import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
 import com.gdu.demo.widget.psdk.widget.CustomFloatWindow;
 import com.gdu.demo.widget.psdk.widget.CustomProgressLayout;
 import com.gdu.demo.widget.psdk.widget.CustomRecyclerView;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.psdk.PSDKManager;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.AppLog;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class PSDKCustomViewManager {
             @Override
             public void onCustomViewJsonUpdate(String viewJson) {
                 mPSDKCustomViewBean = new Gson().fromJson(viewJson, PSdkCustomViewBean.class);
-                AppLog.d(TAG, "viewJson : " + viewJson);
+                XLogger.INSTANCE.getAPP().i(TAG, "viewJson : " + viewJson);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -104,7 +104,7 @@ public class PSDKCustomViewManager {
 
             @Override
             public void onIconsUpdate(Map<String, Bitmap> map) {
-                AppLog.d(TAG, "onIconsUpdate: " + map);
+                XLogger.INSTANCE.getAPP().i(TAG, "onIconsUpdate: " + map);
                 handler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -128,7 +128,7 @@ public class PSDKCustomViewManager {
 
             @Override
             public void onWidgetStateUpdate(int viewId, int viewType, int value) {
-                AppLog.d(TAG, "onWidgetStateUpdate viewId: " + viewId + ", viewType: " + viewType + ", value: " + value);
+                XLogger.INSTANCE.getAPP().i(TAG, "onWidgetStateUpdate viewId: " + viewId + ", viewType: " + viewType + ", value: " + value);
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
@@ -297,7 +297,7 @@ public class PSDKCustomViewManager {
     }
 
     private void addButtonView(Context context, LinearLayout rootView, WidgetItemBean itemBean) {
-        AppLog.d(TAG, "addButtonView");
+        XLogger.INSTANCE.getAPP().i(TAG, "addButtonView");
         ImageView imageView = new ImageView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 (int) context.getResources().getDimension(R.dimen.dp_24),
@@ -356,7 +356,7 @@ public class PSDKCustomViewManager {
 
 
     private void addSwitch(Context context, LinearLayout rootView, WidgetItemBean itemBean) {
-        AppLog.d(TAG, "addSwitch");
+        XLogger.INSTANCE.getAPP().i(TAG, "addSwitch");
         ImageView imageView = new ImageView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 (int) context.getResources().getDimension(R.dimen.dp_24),
@@ -451,7 +451,7 @@ public class PSDKCustomViewManager {
 
 
     private void addListView(Context context, ViewGroup viewGroup, LinearLayout rootView, WidgetItemBean itemBean) {
-        AppLog.d(TAG, "addListView");
+        XLogger.INSTANCE.getAPP().i(TAG, "addListView");
         CustomRecyclerView recyclerView = new CustomRecyclerView(context);
         showViewList.add(recyclerView);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -470,7 +470,7 @@ public class PSDKCustomViewManager {
         recyclerView.setItemClickListener(new CustomRecyclerView.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                AppLog.d(TAG, "addListView onItemClick index: " + itemBean.getWidget_index() + ", position: " + position);
+                XLogger.INSTANCE.getAPP().i(TAG, "addListView onItemClick index: " + itemBean.getWidget_index() + ", position: " + position);
                 PSDKManager.getInstance().setPSDKWidgetState((short) itemBean.getWidget_index(), (byte) 4, position, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(Error error) {
@@ -538,7 +538,7 @@ public class PSDKCustomViewManager {
     }
 
     private void addScaleView(Context context, RelativeLayout viewGroup, LinearLayout rootView, WidgetItemBean itemBean) {
-        AppLog.d(TAG, "addScaleView");
+        XLogger.INSTANCE.getAPP().i(TAG, "addScaleView");
         CustomProgressLayout progressLayout = new CustomProgressLayout(context);
         showViewList.add(progressLayout);
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(

@@ -12,7 +12,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
-import com.gdu.radar.GDUFlightAssistantObstacleSensingDirection;
+import com.gdu.radar.FlightAssistantObstacleSensingDirection;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -110,7 +110,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     }
 
     public void setTopVisionObstacleAvoidanceDistance(int brakeDistance, int warnDistance){
-        mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
+        mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, FlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
 
@@ -119,7 +119,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
     }
 
     public void setBottomVisionObstacleAvoidanceDistance(int brakeDistance, int warnDistance){
-        mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Downward, new CommonCallbacks.CompletionCallback() {
+        mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, FlightAssistantObstacleSensingDirection.Downward, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
 
@@ -129,7 +129,7 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
 
     public void setHorVisionObstacleAvoidanceDistance(int brakeDistance, int warnDistance){
             Log.d("test ", " setHorVisionObstacleAvoidanceDistance Horizontal: " + brakeDistance + " warnDistance: " + warnDistance );
-            mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, GDUFlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
+            mFlightAssistant.setVisualObstaclesAvoidanceDistance(brakeDistance, warnDistance, FlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
                 @Override
                 public void onResult(Error error) {
                     Log.d("test ", " setHorVisionObstacleAvoidanceDistance error: " + error);

@@ -2,7 +2,7 @@ package com.gdu.demo.map.utils
 
 import com.gdu.demo.map.SpatialReference
 import com.gdu.demo.map.geometry.Point
-import com.gdu.util.logs.AppLog
+import com.gdu.lib.util.core.XLogger
 import org.locationtech.jts.algorithm.distance.DistanceToPoint
 import org.locationtech.jts.algorithm.distance.PointPairDistance
 import org.locationtech.jts.geom.Geometry
@@ -182,7 +182,7 @@ object JTSUtils {
      * 一条线分割多个多边形
      */
     fun splitPolygons(polylinePoints: MutableList<Point>, polygonsPoints: MutableList<MutableList<Point>>, closing: Boolean): MutableList<MutableList<Point>>? {
-        AppLog.e("JTSUtils", "splitPolygons input polygon size = ${polygonsPoints.size}")
+        XLogger.APP.i("JTSUtils", "splitPolygons input polygon size = ${polygonsPoints.size}")
         if (polylinePoints.isEmpty()) {
             return null
         }

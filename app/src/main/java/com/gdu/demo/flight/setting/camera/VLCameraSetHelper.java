@@ -21,6 +21,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.GimbalType;
 import com.gdu.event.GimbalEvent;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
 import com.gdu.socket.SocketCallBack3;
@@ -29,7 +30,6 @@ import com.gdu.util.NumberUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.AppLog;
 import com.lib.model.LiveType;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
@@ -332,7 +332,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      */
     protected void getGimbalCurrentSetting(boolean isRetry) {
         GduSocketManager.getInstance().getGduCommunication().getGimbalSetting((code, bean) -> {
-            AppLog.i(TAG, "getGimbalSetting callback() code = " + code);
+            XLogger.INSTANCE.getAPP().i(TAG, "getGimbalSetting callback() code = " + code);
             if (mHandler == null) {
                 return;
             }
@@ -682,7 +682,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 if (mHandler == null) {
                     return;
                 }
-                AppLog.i(TAG, "resetGimbalParams() code:" + code);
+                XLogger.INSTANCE.getAPP().i(TAG, "resetGimbalParams() code:" + code);
                 if (code == GduConfig.OK) {
                     mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_SUC);
                 } else {

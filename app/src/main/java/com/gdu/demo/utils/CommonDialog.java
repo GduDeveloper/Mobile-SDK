@@ -24,7 +24,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.gdu.demo.R;
-import com.gdu.util.logs.AppLog;
 
 /**
  * @author wuqb

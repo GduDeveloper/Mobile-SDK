@@ -7,14 +7,11 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.util.logs.AppLog;
+import com.gdu.lib.util.core.XLogger;
 
 
 public abstract class GeneralDialog extends Dialog implements View.OnClickListener {
@@ -202,7 +199,7 @@ public abstract class GeneralDialog extends Dialog implements View.OnClickListen
             View decorView = window.getDecorView();
             if (decorView.getHeight() == 0 || decorView.getWidth() == 0) {
                 decorView.requestLayout();
-                AppLog.e("backgroundDimEnabled", "布局异常，重新布局");
+                XLogger.INSTANCE.getAPP().i("backgroundDimEnabled", "布局异常，重新布局");
             }
         }
     }

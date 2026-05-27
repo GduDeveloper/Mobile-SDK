@@ -20,11 +20,11 @@ import com.gdu.camera.Capabilities;
 import com.gdu.camera.SettingsDefinitions;
 import com.gdu.camera.StorageState;
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.lib.util.ThreadHelper;
+import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
@@ -201,7 +201,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             };
         }
         tvPreviewFormat = findViewById(R.id.preview_format);
-        tvPreviewFormat.setText(GlobalVariable.sCodingFormat == 0 ? "H264" : "H265");
+        tvPreviewFormat.setText(ICamera.get().getFlowCodingFormat().getValue() == 0 ? "H264" : "H265");
     }
 
     public void toast(final String toast) {

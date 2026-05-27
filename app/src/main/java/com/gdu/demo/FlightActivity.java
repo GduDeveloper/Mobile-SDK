@@ -38,6 +38,7 @@ import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.drone.ScreenContentType;
 import com.gdu.drone.TargetMode;
 import com.gdu.gimbal.GimbalState;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
 import com.gdu.sdk.camera.VideoFeeder;
@@ -55,8 +56,6 @@ import com.gdu.util.StringUtils;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.AppLog;
-import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -199,13 +198,13 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 LoadingDialogUtils.cancelLoadingDialog();
                 //视频是主界面时，在视频上画框
                 if (isSuccess && targetModes != null && !targetModes.isEmpty()) {
-                    AppLog.e("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
+                    XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
                     GlobalVariable.isTargetDetectMode = true;
                     mTargetDetectHelper.startShowTarget();
                     GlobalVariable.algorithmType = AlgorithmMark.AlgorithmType.DEVICE_RECOGNISE;
                     ThreadHelper.runOnUiThread(() -> Toast.makeText(FlightActivity.this, "识别到"+targetModes.size()+"个", Toast.LENGTH_SHORT).show());
                 } else if (targetModes == null) {
-                    AppLog.e("TargetDetect", "onTargetDetect targetModes size = 0");
+                    XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = 0");
                 }
             }
 

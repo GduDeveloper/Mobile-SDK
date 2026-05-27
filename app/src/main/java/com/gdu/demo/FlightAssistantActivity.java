@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.gdu.common.error.Error;
-import com.gdu.radar.GDUFlightAssistantObstacleSensingDirection;
+import com.gdu.radar.FlightAssistantObstacleSensingDirection;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -158,7 +158,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
                 });
                 break;
             case R.id.horizontal_visual_obstacles_avoidance_distance_button:
-                mFlightAssistant.setVisualObstaclesAvoidanceDistance(3, GDUFlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
+                mFlightAssistant.setVisualObstaclesAvoidanceDistance(3, FlightAssistantObstacleSensingDirection.Horizontal, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {
@@ -182,7 +182,7 @@ public class FlightAssistantActivity extends Activity implements View.OnClickLis
                 });
                 break;
             case R.id.upward_visual_obstacles_avoidance_distance_button:
-                mFlightAssistant.setVisualObstaclesAvoidanceDistance(2, GDUFlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
+                mFlightAssistant.setVisualObstaclesAvoidanceDistance(2, FlightAssistantObstacleSensingDirection.Upward, new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {

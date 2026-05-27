@@ -35,6 +35,7 @@ import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
 import com.gdu.detect.AIModelState;
 import com.gdu.drone.FirmwareType;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.login.LoginType;
 import com.gdu.login.UserInfoBeanNew;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -54,7 +55,6 @@ import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.TimeUtil;
 import com.gdu.util.ViewUtils;
 import com.gdu.util.logger.MyLogUtils;
-import com.gdu.util.logs.AppLog;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -572,7 +572,7 @@ public class SettingCommonFragment extends Fragment {
                     byte detectType = 0x00;
                     if (hasChecked) detectType = 0x01;
                     SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(data.getId(), detectType, (short) data.getLabels().size(), typeArray,
-                            error -> AppLog.e("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
+                            error -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
                 }
             });
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
@@ -671,7 +671,7 @@ public class SettingCommonFragment extends Fragment {
                 transModelData(response.getModels());
             });
         });
-        SdkDemoApplication.getAircraftInstance().getGduVision().getTargetDetectModels(gduError -> AppLog.e("SettingCommonFragment", "getTargetDetectModels callBack() code = " + gduError));
+        SdkDemoApplication.getAircraftInstance().getGduVision().getTargetDetectModels(gduError -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "getTargetDetectModels callBack() code = " + gduError));
     }
 
     private void cancelLoadingAnimator() {
@@ -703,14 +703,14 @@ public class SettingCommonFragment extends Fragment {
                             labelId = (int) (double) labelIdStr;
                         }
                     } catch (Exception e) {
-                        AppLog.e("SettingCommonFragment", "transModelData " + aiModel.getLabels().get(j));
+                        XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "transModelData " + aiModel.getLabels().get(j));
                     }
                     String labelName = "";
                     TargetLabel targetLabel = TargetLabel.get(labelId);
                     if (targetLabel != null) {
                         labelName = ResourceUtil.getStringById(targetLabel.getValue());
                     }
-                    AppLog.e("SettingCommonFragment", "transModelData labelId = " + labelId + ", labelName = " + labelName);
+                    XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "transModelData labelId = " + labelId + ", labelName = " + labelName);
                     labels.add(new TargetDetectLabel(j, String.valueOf(labelId), labelName, getDetectLabelState(aiModel.getId(), j)));
                 } else { // 自定义模型
                     Object labelObject = aiModel.getLabels().get(j);

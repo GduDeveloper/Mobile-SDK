@@ -23,7 +23,6 @@ import com.gdu.sdk.manager.SDKInitEvent;
 import com.gdu.sdk.manager.SDKManager;
 import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.wrapper.BuildConfig;
 
 /**
  *
