@@ -9,12 +9,11 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.ViewRtkStateBinding;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.util.DroneUtil;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
@@ -72,7 +71,7 @@ public class RTKStateView extends LinearLayout {
     private void initView() {
         XLogger.INSTANCE.getAPP().i("initView()");
         viewBinding = ViewRtkStateBinding.inflate(LayoutInflater.from(mContext), this, true);
-        if(DroneUtil.showBDSOrGNSS()){
+        if(IGduDroneDevice.get().getPlanType().getValue().isBDSOnlyDrone()){
             viewBinding.layoutGalileo.setVisibility(View.GONE);
             viewBinding.layoutGps.setVisibility(View.GONE);
             viewBinding.layoutGlonass.setVisibility(View.GONE);

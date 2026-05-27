@@ -13,23 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
-import com.gdu.drone.GimbalType;
-import com.gdu.event.GimbalEvent;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.socket.GduFrame3;
-import com.gdu.socket.GduSocketManager;
-import com.gdu.socket.SocketCallBack3;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.NumberUtils;
-import com.gdu.util.StringUtils;
-import com.lib.model.LiveType;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 
@@ -115,7 +105,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         //恢复云台默认设置
         tv_reset_gimbal = mView.findViewById(R.id.tv_reset_gimbal);
         View mViewGimbalPositionGroup = mView.findViewById(R.id.viewGimbalPositionGroup);
-        if (DroneUtil.unSupportGimbalYaw()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
         } else {
             LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);

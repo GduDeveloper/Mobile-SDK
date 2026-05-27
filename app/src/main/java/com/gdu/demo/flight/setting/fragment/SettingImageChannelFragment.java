@@ -22,11 +22,9 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
 import com.gdu.demo.flight.setting.viewmodel.SettingSDRViewModel;
 import com.gdu.drone.AirlinkType;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.sdk.remotecontroller.NetworkingHelper;
-import com.gdu.util.CollectionUtils;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.SPUtils;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -102,7 +100,7 @@ public class SettingImageChannelFragment extends Fragment {
         mViewBinding.combinedChart.setVisibility(View.INVISIBLE);
 
         String[] channelNames;
-        if (DroneUtil.isS200Serials()) {
+        if (RCUtils.INSTANCE.isS200RC()) {
             channelNames = getResources().getStringArray(R.array.array_channel_s200);
         } else {
             channelNames = getResources().getStringArray(R.array.array_channel);
@@ -307,7 +305,7 @@ public class SettingImageChannelFragment extends Fragment {
      */
     private int getPositionFromChannel(int channel){
         int position = 0;
-        if (DroneUtil.isS200Serials()) {
+        if (RCUtils.INSTANCE.isS200RC()) {
             channel = sdrViewModel.getS200SetChannel();
             switch (channel) {
                 case 0:
@@ -395,7 +393,7 @@ public class SettingImageChannelFragment extends Fragment {
      */
     private void generateChartData(List<Short> shortList, byte selectNum) {
         if (!sdrViewModel.isImgChannelSwitching()) {
-            if (!DroneUtil.isS200Serials()) {
+            if (!RCUtils.INSTANCE.isS200RC()) {
                 setImgChannel(GlobalVariable.singalChannel);
                 mViewBinding.tvCurrentChannel.setVisibility(View.GONE);
             }else {

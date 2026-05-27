@@ -4,13 +4,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
-import com.gdu.drone.PlanType;
+import com.gdu.lib.util.RCUtils;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.DroneUtil;
 import com.gdu.lib.util.ThreadHelper;
 
 /**
@@ -62,7 +60,7 @@ public class CompassCalibrationViewModel extends ViewModel {
     }
 
     public int getDroneMagneticHorizontalIcon() {
-        if (DroneUtil.isS200Serials()) {//S200系列
+        if (RCUtils.INSTANCE.isS200RC()) {//S200系列
             if (GlobalVariable.planType == PlanType.S200
                     || GlobalVariable.planType == PlanType.S200BDS
                     || GlobalVariable.planType == PlanType.S200_SD
@@ -88,7 +86,7 @@ public class CompassCalibrationViewModel extends ViewModel {
     }
 
     public int getDroneMagneticVerticalIcon() {
-        if (DroneUtil.isS200Serials()) {//S200系列
+        if (RCUtils.INSTANCE.isS200RC()) {//S200系列
             if (GlobalVariable.planType == PlanType.S200
                     || GlobalVariable.planType == PlanType.S200BDS
                     || GlobalVariable.planType == PlanType.S200_SD

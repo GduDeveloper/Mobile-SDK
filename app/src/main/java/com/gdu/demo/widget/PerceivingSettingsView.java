@@ -20,9 +20,6 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.FormatConfig;
 
 import java.text.DecimalFormat;
 

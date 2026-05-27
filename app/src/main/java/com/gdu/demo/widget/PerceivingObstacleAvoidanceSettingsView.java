@@ -14,20 +14,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.flight.event.ChangeUnitEvent;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.socket.GduFrame3;
-import com.gdu.socket.GduSocketManager;
-import com.gdu.socket.SocketCallBack3;
-import com.gdu.util.ByteUtilsLowBefore;
-import com.gdu.util.DroneUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

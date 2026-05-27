@@ -19,8 +19,6 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.gdu.config.GduAppEnv;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSetingFlyBinding;
@@ -32,12 +30,7 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.sdk.vision.GDUVision;
-import com.gdu.util.ChannelUtils;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.MyConstants;
-import com.gdu.util.SPUtils;
+import com.gdu.msdk.key.value.bean.PlanType;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -403,7 +396,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
         }
         // 大华需支持S200软件单北斗模式切换+GPS等GNSS功能(S400已经支持切换)
-        if (ChannelUtils.isDahua(getContext()) && IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtil.isBDSOnlyDrone()) {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
+        if ( planType.isS200Type() && !planType.isBDSOnlyDrone()) {
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
         }
         // dhBDS不允许切换GNSS，直接显示BDS
@@ -919,7 +913,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     public static String getAModelContentString(Context context) {
-        if (DroneUtil.showBDSOrGNSS()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isBDSOnlyDrone()) {
             return context.getString(R.string.string_a_model_content_bds);
         } else {
             return context.getString(R.string.string_a_model_content);
@@ -927,7 +921,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     public static String getPModelContentString(Context context) {
-        if (DroneUtil.showBDSOrGNSS()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isBDSOnlyDrone()) {
             return context.getString(R.string.string_p_mode_content_bds);
         } else {
             return context.getString(R.string.string_p_mode_content);
@@ -935,7 +929,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     public static String getSModelContentString(Context context) {
-        if (DroneUtil.showBDSOrGNSS()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isBDSOnlyDrone()) {
             return context.getString(R.string.string_s_model_content_bds);
         } else {
             return context.getString(R.string.string_s_model_content);

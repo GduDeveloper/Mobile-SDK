@@ -22,13 +22,6 @@ import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.ConnectUtil;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.MyConstants;
-import com.gdu.util.SPUtils;
-
-import java.util.HashMap;
 
 /**
  * @author wuqb

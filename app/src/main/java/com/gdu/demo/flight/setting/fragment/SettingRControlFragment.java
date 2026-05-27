@@ -1,10 +1,7 @@
 package com.gdu.demo.flight.setting.fragment;
 
-import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,34 +11,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentRcControlBinding;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.GeneralDialog;
-import com.gdu.demo.widget.ControlHandModeView;
-import com.gdu.drone.ControlHand;
-import com.gdu.event.EventConnState;
-import com.gdu.event.EventMessage;
-import com.gdu.event.GimbalEvent;
+import com.gdu.lib.util.RCUtils;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.remotecontroller.RemoteController;
-import com.gdu.sdk.remotecontroller.NetworkingHelper;
-import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.socket.GduFrame3;
-import com.gdu.socket.SocketCallBack3;
-import com.gdu.socket.UICallBack;
-import com.gdu.util.ByteUtilsLowBefore;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.MD5Util;
-import com.gdu.util.MyConstants;
-import com.gdu.util.NetWorkUtils;
-import com.gdu.util.StringUtils;
-import com.gdu.util.eventbus.GlobalEventBus;
-import com.google.gson.Gson;
-import com.rxjava.rxlife.RxLife;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -93,7 +70,7 @@ public class SettingRControlFragment extends Fragment {
         mViewBinding.tvRcControlCheck.setOnClickListener(listener);
 //        mViewBinding.rcCheckLin.setVisibility(GlobalVariable.isRCSEE ? View.VISIBLE : View.GONE);
 
-        if (DroneUtil.isS200Serials()) {
+        if (RCUtils.INSTANCE.isS200RC()) {
             mViewBinding.controlModeGroup.setVisibility(View.GONE);
         } else {
             mViewBinding.controlModeGroup.setVisibility(View.VISIBLE);

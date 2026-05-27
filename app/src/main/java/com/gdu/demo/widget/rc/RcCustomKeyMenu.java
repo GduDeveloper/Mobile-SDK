@@ -47,22 +47,7 @@ public class RcCustomKeyMenu {
         list.add(new RcCustomKeyMenu(3, context.getString(R.string.string_rc_key_camera_add_ev)));
         list.add(new RcCustomKeyMenu(4, context.getString(R.string.string_rc_key_camera_sub_ev)));
         list.add(new RcCustomKeyMenu(5, context.getString(R.string.string_rc_key_camera_change_mode)));
-        if (GlobalVariable.planType != PlanType.S220
-                && GlobalVariable.planType != PlanType.S280
-                && GlobalVariable.planType != PlanType.S200
-                && GlobalVariable.planType != PlanType.S220Pro
-                && GlobalVariable.planType != PlanType.S220ProS
-                && GlobalVariable.planType != PlanType.S220ProH
-                && GlobalVariable.planType != PlanType.S220_SD
-                && GlobalVariable.planType != PlanType.S200_SD
-                && GlobalVariable.planType != PlanType.S220BDS
-                && GlobalVariable.planType != PlanType.S280BDS
-                && GlobalVariable.planType != PlanType.S200BDS
-                && GlobalVariable.planType != PlanType.S220ProBDS
-                && GlobalVariable.planType != PlanType.S220ProSBDS
-                && GlobalVariable.planType != PlanType.S220ProHBDS
-                && GlobalVariable.planType != PlanType.S220_SD_BDS
-                && GlobalVariable.planType != PlanType.S200_SD_BDS) {
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             list.add(new RcCustomKeyMenu(7, context.getString(R.string.string_ffc)));
         }
         list.add(new RcCustomKeyMenu(8, context.getString(R.string.string_high_temp_warn)));

@@ -4,17 +4,13 @@ import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.gdu.airlink.FrequencyBandwidth;
 import com.gdu.common.error.Error;
-import com.gdu.config.GduAppEnv;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
+import com.gdu.lib.util.RCUtils;
 import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.SPUtils;
 
 import java.nio.charset.StandardCharsets;
 
@@ -176,7 +172,7 @@ public class SettingSDRViewModel extends BaseViewModel {
         }
         isImgChannelSwitching = true;
         int channel = 0;
-        if (DroneUtil.isS200Serials()) {
+        if (RCUtils.INSTANCE.isS200RC()) {
             switch (position) {
                 case  0:
                     channel = 2;
@@ -197,7 +193,7 @@ public class SettingSDRViewModel extends BaseViewModel {
             public void onSuccess(Byte integer) {
                 isImgChannelSwitching = false;
                 toastLiveData.postValue(R.string.string_set_success);
-                if (DroneUtil.isS200Serials()) {
+                if (RCUtils.INSTANCE.isS200RC()) {
                     mS200SetChannel = finalChannel;
                 }
                 imageChannelLiveData.postValue((byte) finalChannel);
@@ -212,7 +208,7 @@ public class SettingSDRViewModel extends BaseViewModel {
     }
 
     public void getImageTransmissionInfo(int channel){
-        if (DroneUtil.isS200Serials()) {
+        if (RCUtils.INSTANCE.isS200RC()) {
             mGDUAirLink.setImageTransmissionInfo(channel, new CommonCallbacks.CompletionCallbackWith<Byte>() {
                 @Override
                 public void onSuccess(Byte value) {

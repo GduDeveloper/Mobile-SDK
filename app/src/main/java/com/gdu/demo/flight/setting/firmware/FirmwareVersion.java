@@ -6,28 +6,9 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.gdu.api.upgrade.UpgradeUtils;
-import com.gdu.beans.FirmwareTypeAndVersionBean;
-import com.gdu.config.GduAppEnv;
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
-import com.gdu.drone.FirmwareType;
-import com.gdu.drone.GimbalType;
-import com.gdu.drone.ObstacleType;
-import com.gdu.drone.PlanType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.socket.GduFrame3;
-import com.gdu.socket.GduSocketManager;
-import com.gdu.util.ByteUtilsLowBefore;
-import com.gdu.util.DataUtil;
-import com.gdu.util.DroneUtil;
-import com.gdu.util.GimbalUtil;
-import com.gdu.util.SPUtils;
-import com.gdu.util.StringUtils;
-import com.gdu.util.logs.UpgradeLog2File;
 
 import java.util.ArrayList;
 import java.util.List;
