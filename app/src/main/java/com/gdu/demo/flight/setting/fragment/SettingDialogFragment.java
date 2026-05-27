@@ -29,7 +29,7 @@ import com.gdu.demo.flight.setting.adapter.SettingLeftAdapter;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.rc.SettingMenuItem;
 import com.gdu.drone.GimbalType;
-import com.gdu.lib.util.ViewUtils;
+import com.gdu.lib.util.core.ScreenUtils;
 import com.gdu.sdk.airlink.AirlinkUtils;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.LanguageUtil;
@@ -234,7 +234,7 @@ public class SettingDialogFragment extends DialogFragment {
         window.getDecorView().setPadding(0, 0, 0, 0);
         window.setGravity(Gravity.RIGHT);
 
-        int weight = (int) (ViewUtils.getWindowWidth(getContext()) * 0.6);
+        int weight = (int) (ScreenUtils.getScreenWidth() * 0.6);
         window.setLayout(weight, ViewGroup.LayoutParams.MATCH_PARENT);
         window.setWindowAnimations(R.style.SettingDialogAnim);
         WindowManager.LayoutParams layoutParams = window.getAttributes();

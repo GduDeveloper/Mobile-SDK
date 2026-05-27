@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
+import com.gdu.lib.util.core.SizeUtils;
 
 /**
  * Created by Administrator on 2016/11/4.
@@ -29,9 +30,9 @@ public class AnimationUtils {
     public static void showMediaFragBottom(Context context, final boolean isShow, final View view) {
         TranslateAnimation translateAnimation;
         if (isShow) {
-            translateAnimation = new TranslateAnimation(0, 0, ViewUtils.dip2px(context, 44), 0);
+            translateAnimation = new TranslateAnimation(0, 0, SizeUtils.dp2px(44), 0);
         } else {
-            translateAnimation = new TranslateAnimation(0, 0, 0, ViewUtils.dip2px(context, 44));
+            translateAnimation = new TranslateAnimation(0, 0, 0, SizeUtils.dp2px(44));
         }
 
         translateAnimation.setDuration(500);

@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gdu.demo.R;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.util.core.SizeUtils;
 
 import java.math.BigDecimal;
 
@@ -211,7 +212,7 @@ public class DoubleDragThumbSeekBar2 extends View {
 //        final Paint.FontMetrics mFontMetrics = mTextPaint.getFontMetrics();
 //        mThumbMarginBot = (int) (mFontMetrics.bottom - mFontMetrics.top);
         if (isShowScale) {
-            mThumbMarginBot = ViewUtils.dip2px(getContext(), mScaleHeight);
+            mThumbMarginBot = SizeUtils.dp2px(mScaleHeight);
         } else {
             mThumbMarginBot = 0;
         }
@@ -233,7 +234,7 @@ public class DoubleDragThumbSeekBar2 extends View {
 //                + "; curHeightProgress = " + curHeightProgress
 //                + "; mOffsetLow = " + mOffsetLow
 //                + "; mOffsetHigh = " + mOffsetHigh);
-        int spaceHeight = ViewUtils.dip2px(getContext(), 1);
+        int spaceHeight = SizeUtils.dp2px(1);
         if (isShowScale) {
             mViewHeight = mThumbHeight + mThumbMarginBot + spaceHeight + getPaddingTop() + getPaddingBottom();
         } else {
@@ -292,20 +293,20 @@ public class DoubleDragThumbSeekBar2 extends View {
         mBgPaint.setColor(mBaseBgColor);
         // 灰色，不会动
         if (mBaseBgRf != null) {
-            canvas.drawRoundRect(mBaseBgRf, ViewUtils.dip2px(getContext(),5),
-                    ViewUtils.dip2px(getContext(), 5), mBgPaint);
+            canvas.drawRoundRect(mBaseBgRf, SizeUtils.dp2px(5),
+                    SizeUtils.dp2px(5), mBgPaint);
         }
 
         mBgPaint.setColor(mOneBgColor);
         if (mHasScrollBarSecondBg != null) {
-            canvas.drawRoundRect(mHasScrollBarSecondBg, ViewUtils.dip2px(getContext(),5),
-                    ViewUtils.dip2px(getContext(),5), mBgPaint);
+            canvas.drawRoundRect(mHasScrollBarSecondBg, SizeUtils.dp2px(5),
+                    SizeUtils.dp2px(5), mBgPaint);
         }
 
         mBgPaint.setColor(mTwoBgColor);
         if (mOnePbBgRf != null) {
-            canvas.drawRoundRect(mOnePbBgRf, ViewUtils.dip2px(getContext(),5),
-                    ViewUtils.dip2px(getContext(),5), mBgPaint);
+            canvas.drawRoundRect(mOnePbBgRf, SizeUtils.dp2px(5),
+                    SizeUtils.dp2px(5), mBgPaint);
         }
     }
 
@@ -313,7 +314,7 @@ public class DoubleDragThumbSeekBar2 extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         initOrUpdateBgRect(canvas);
-        int oneDpToPixValue = ViewUtils.dip2px(getContext(), 1);
+        int oneDpToPixValue = SizeUtils.dp2px(1);
         final int halfThumbWidth = mThumbWidth / 2;
         final int halfThumbHeight = mThumbHeight / 2;
         final int halfViewHeight = mViewHeight / 2;
