@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.PlanType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -376,7 +377,7 @@ public class FirmwareVersion implements IFirmwareVersion {
      * 飞控协处理器组件版本号
      */
     private Completable getFCCoprocessorVersion() {
-        printLog("getFCCoprocessorVersion() planType = " + GlobalVariable.planType);
+        printLog("getFCCoprocessorVersion() planType = " + IGduDroneDevice.get().getPlanType().getValue());
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
             if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
@@ -1698,6 +1699,5 @@ public class FirmwareVersion implements IFirmwareVersion {
 
     private void printLog(String logStr) {
         XLogger.INSTANCE.getAPP().i(logStr);
-        UpgradeLog2File.getSingle().saveData(logStr);
     }
 }

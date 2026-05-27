@@ -30,8 +30,9 @@ import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
 import com.gdu.drone.BatteryInfoZ4C;
-import com.gdu.drone.PlanType;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.util.FormatConfig;
 import com.gdu.util.TimeUtil;
 import com.rxjava.rxlife.RxLife;
@@ -115,22 +116,23 @@ public class SettingBatteryFragment extends Fragment {
         mViewBinding.incBatteryLayout2.rvCellUpContent.setLayoutManager(downLayoutManager);
         mViewBinding.incBatteryLayout1.rvCellUpContent.setLayoutManager(upLayoutManager);
 
-        if (GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
+        if (planType == PlanType.S220
+                || planType == PlanType.S280
+                || planType == PlanType.S200
+                || planType == PlanType.S220Pro
+                || planType == PlanType.S220ProS
+                || planType == PlanType.S220ProH
+                || planType == PlanType.S220_SD
+                || planType == PlanType.S200_SD
+                || planType == PlanType.S220BDS
+                || planType == PlanType.S280BDS
+                || planType == PlanType.S200BDS
+                || planType == PlanType.S220ProBDS
+                || planType == PlanType.S220ProSBDS
+                || planType == PlanType.S220ProHBDS
+                || planType == PlanType.S220_SD_BDS
+                || planType == PlanType.S200_SD_BDS) {
             upCellDatas = new ArrayList<>(Arrays.asList(0, 0, 0, 0));
         }
 
@@ -139,25 +141,25 @@ public class SettingBatteryFragment extends Fragment {
         mViewBinding.incBatteryLayout2.rvCellUpContent.setAdapter(downCellAdapter);
         mViewBinding.incBatteryLayout1.rvCellUpContent.setAdapter(upCellAdapter);
 
-        if (GlobalVariable.planType == PlanType.MGP12
-                || GlobalVariable.planType == PlanType.S480
-                || GlobalVariable.planType == PlanType.S450
-                || GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+        if (planType == PlanType.MGP12
+                || planType == PlanType.S480
+                || planType == PlanType.S450
+                || planType == PlanType.S220
+                || planType == PlanType.S280
+                || planType == PlanType.S200
+                || planType == PlanType.S220Pro
+                || planType == PlanType.S220ProS
+                || planType == PlanType.S220ProH
+                || planType == PlanType.S220_SD
+                || planType == PlanType.S200_SD
+                || planType == PlanType.S220BDS
+                || planType == PlanType.S280BDS
+                || planType == PlanType.S200BDS
+                || planType == PlanType.S220ProBDS
+                || planType == PlanType.S220ProSBDS
+                || planType == PlanType.S220ProHBDS
+                || planType == PlanType.S220_SD_BDS
+                || planType == PlanType.S200_SD_BDS) {
             mViewBinding.incBatteryLayout1.tvBatteryName.setText( getResources().getString(R.string.Label_Battery));
         } else {
             mViewBinding.incBatteryLayout1.tvBatteryName.setText(getResources().getString(R.string.Label_Battery_Upper));
@@ -347,25 +349,26 @@ public class SettingBatteryFragment extends Fragment {
         }
         batteryTemp = mBatteryNo1.getTemp();
         float realTemp = batteryTemp / 10;
-        if (GlobalVariable.planType == PlanType.MGP12
-                || GlobalVariable.planType == PlanType.S480
-                || GlobalVariable.planType == PlanType.S450
-                || GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
+        if (planType == PlanType.MGP12
+                || planType == PlanType.S480
+                || planType == PlanType.S450
+                || planType == PlanType.S220
+                || planType == PlanType.S280
+                || planType == PlanType.S200
+                || planType == PlanType.S220Pro
+                || planType == PlanType.S220ProS
+                || planType == PlanType.S220ProH
+                || planType == PlanType.S220_SD
+                || planType == PlanType.S200_SD
+                || planType == PlanType.S220BDS
+                || planType == PlanType.S280BDS
+                || planType == PlanType.S200BDS
+                || planType == PlanType.S220ProBDS
+                || planType == PlanType.S220ProSBDS
+                || planType == PlanType.S220ProHBDS
+                || planType == PlanType.S220_SD_BDS
+                || planType == PlanType.S200_SD_BDS) {
             realTemp = (batteryTemp - 2731)/10;
         }
         String vlotage = df.format(mBatteryNo1.getTotalVoltage()/1000.0f);

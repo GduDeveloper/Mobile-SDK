@@ -7,6 +7,8 @@ import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -36,22 +38,23 @@ public class IMUCalibrationViewModel extends ViewModel {
     }
 
     public Integer[] getIMUPhotos() {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
         if (RCUtils.INSTANCE.isS200RC()) {//S200系列
-            if (GlobalVariable.planType == PlanType.S200
-                    || GlobalVariable.planType == PlanType.S200BDS
-                    || GlobalVariable.planType == PlanType.S200_SD
-                    || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+            if (planType == PlanType.S200
+                    || planType == PlanType.S200BDS
+                    || planType == PlanType.S200_SD
+                    || planType == PlanType.S200_SD_BDS) {
                 return new Integer[]{
                         R.drawable.drone_s200_first, R.drawable.drone_s200_second,
                         R.drawable.drone_s200_third, R.drawable.drone_s200_four,
                         R.drawable.drone_s200_five, R.drawable.drone_s200_six
                 };
-            } else if (GlobalVariable.planType == PlanType.S220Pro
-                    || GlobalVariable.planType == PlanType.S220ProS
-                    || GlobalVariable.planType == PlanType.S220ProH
-                    || GlobalVariable.planType == PlanType.S220ProBDS
-                    || GlobalVariable.planType == PlanType.S220ProSBDS
-                    || GlobalVariable.planType == PlanType.S220ProHBDS) {
+            } else if (planType == PlanType.S220Pro
+                    || planType == PlanType.S220ProS
+                    || planType == PlanType.S220ProH
+                    || planType == PlanType.S220ProBDS
+                    || planType == PlanType.S220ProSBDS
+                    || planType == PlanType.S220ProHBDS) {
                 return new Integer[]{
                         R.drawable.drone_s220pro_first, R.drawable.drone_s220pro_second,
                         R.drawable.drone_s220pro_third, R.drawable.drone_s220pro_four,
@@ -65,7 +68,7 @@ public class IMUCalibrationViewModel extends ViewModel {
                 };
             }
         } else {//默认S400
-            if (GlobalVariable.planType == PlanType.S480) {
+            if (planType == PlanType.S480) {
                 return new Integer[]{
                         R.drawable.drone_s480_first, R.drawable.drone_s480_second,
                         R.drawable.drone_s480_third, R.drawable.drone_s480_four,

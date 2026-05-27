@@ -15,11 +15,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
-import com.gdu.drone.PlanType;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.PlanType;
 
 /**
  * Created by yuhao on 2017/7/4.
@@ -250,22 +250,23 @@ public class RectifyDroneHelper implements View.OnClickListener {
         SpannableStringBuilder mSSBuilder = new SpannableStringBuilder();
         mSSBuilder.append(hint);
         ForegroundColorSpan foregroundColorSpan;
-        if (GlobalVariable.planType == PlanType.S220
-                || GlobalVariable.planType == PlanType.S280
-                || GlobalVariable.planType == PlanType.S200
-                || GlobalVariable.planType == PlanType.S220Pro
-                || GlobalVariable.planType == PlanType.S220ProS
-                || GlobalVariable.planType == PlanType.S220ProH
-                || GlobalVariable.planType == PlanType.S220_SD
-                || GlobalVariable.planType == PlanType.S200_SD
-                || GlobalVariable.planType == PlanType.S220BDS
-                || GlobalVariable.planType == PlanType.S280BDS
-                || GlobalVariable.planType == PlanType.S200BDS
-                || GlobalVariable.planType == PlanType.S220ProBDS
-                || GlobalVariable.planType == PlanType.S220ProSBDS
-                || GlobalVariable.planType == PlanType.S220ProHBDS
-                || GlobalVariable.planType == PlanType.S220_SD_BDS
-                || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
+        if (planType == PlanType.S220
+                || planType == PlanType.S280
+                || planType == PlanType.S200
+                || planType == PlanType.S220Pro
+                || planType == PlanType.S220ProS
+                || planType == PlanType.S220ProH
+                || planType == PlanType.S220_SD
+                || planType == PlanType.S200_SD
+                || planType == PlanType.S220BDS
+                || planType == PlanType.S280BDS
+                || planType == PlanType.S200BDS
+                || planType == PlanType.S220ProBDS
+                || planType == PlanType.S220ProSBDS
+                || planType == PlanType.S220ProHBDS
+                || planType == PlanType.S220_SD_BDS
+                || planType == PlanType.S200_SD_BDS) {
             foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(mActivity, R.color.color_ADADAD));
         } else {
             foregroundColorSpan = new ForegroundColorSpan(ContextCompat.getColor(mActivity, R.color.color_EF4E22));

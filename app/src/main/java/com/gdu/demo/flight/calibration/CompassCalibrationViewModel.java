@@ -7,6 +7,8 @@ import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.lib.util.ThreadHelper;
@@ -60,24 +62,25 @@ public class CompassCalibrationViewModel extends ViewModel {
     }
 
     public int getDroneMagneticHorizontalIcon() {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
         if (RCUtils.INSTANCE.isS200RC()) {//S200系列
-            if (GlobalVariable.planType == PlanType.S200
-                    || GlobalVariable.planType == PlanType.S200BDS
-                    || GlobalVariable.planType == PlanType.S200_SD
-                    || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+            if (planType == PlanType.S200
+                    || planType == PlanType.S200BDS
+                    || planType == PlanType.S200_SD
+                    || planType == PlanType.S200_SD_BDS) {
                 return R.drawable.s200_magnetic_img1;
-            } else if (GlobalVariable.planType == PlanType.S220Pro
-                    || GlobalVariable.planType == PlanType.S220ProS
-                    || GlobalVariable.planType == PlanType.S220ProH
-                    || GlobalVariable.planType == PlanType.S220ProBDS
-                    || GlobalVariable.planType == PlanType.S220ProSBDS
-                    || GlobalVariable.planType == PlanType.S220ProHBDS) {
+            } else if (planType == PlanType.S220Pro
+                    || planType == PlanType.S220ProS
+                    || planType == PlanType.S220ProH
+                    || planType == PlanType.S220ProBDS
+                    || planType == PlanType.S220ProSBDS
+                    || planType == PlanType.S220ProHBDS) {
                 return R.drawable.s220pro_magnetic_img1;
             } else {//经产品确认，默认显示S220，S280和S220一样，所以也走默认流程
                 return R.drawable.s220_magnetic_img1;
             }
         } else {//默认S400
-            if(GlobalVariable.planType == PlanType.Z4C){
+            if(planType == PlanType.Z4C){
                 return R.drawable.z4b_magnetic_img1;
             }else{
                 return R.drawable.magnetic_img1;
@@ -86,24 +89,25 @@ public class CompassCalibrationViewModel extends ViewModel {
     }
 
     public int getDroneMagneticVerticalIcon() {
+        PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
         if (RCUtils.INSTANCE.isS200RC()) {//S200系列
-            if (GlobalVariable.planType == PlanType.S200
-                    || GlobalVariable.planType == PlanType.S200BDS
-                    || GlobalVariable.planType == PlanType.S200_SD
-                    || GlobalVariable.planType == PlanType.S200_SD_BDS) {
+            if (planType == PlanType.S200
+                    || planType == PlanType.S200BDS
+                    || planType == PlanType.S200_SD
+                    || planType == PlanType.S200_SD_BDS) {
                 return R.drawable.s200_magnetic_img2;
-            } else if (GlobalVariable.planType == PlanType.S220Pro
-                    || GlobalVariable.planType == PlanType.S220ProS
-                    || GlobalVariable.planType == PlanType.S220ProH
-                    || GlobalVariable.planType == PlanType.S220ProBDS
-                    || GlobalVariable.planType == PlanType.S220ProSBDS
-                    || GlobalVariable.planType == PlanType.S220ProHBDS) {
+            } else if (planType == PlanType.S220Pro
+                    || planType == PlanType.S220ProS
+                    || planType == PlanType.S220ProH
+                    || planType == PlanType.S220ProBDS
+                    || planType == PlanType.S220ProSBDS
+                    || planType == PlanType.S220ProHBDS) {
                 return R.drawable.s220pro_magnetic_img2;
             } else {//经产品确认，默认显示S220，S280和S220一样，所以也走默认流程
                 return R.drawable.s220_magnetic_img2;
             }
         } else {//默认S400
-            if(GlobalVariable.planType == PlanType.Z4C){
+            if(planType == PlanType.Z4C){
                 return R.drawable.z4b_magnetic_img2;
             }else{
                 return R.drawable.magnetic_img2;
