@@ -35,6 +35,7 @@ import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
 import com.gdu.detect.AIModelState;
 import com.gdu.drone.FirmwareType;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.login.LoginType;
 import com.gdu.login.UserInfoBeanNew;
@@ -53,7 +54,6 @@ import com.gdu.util.SPUtils;
 import com.gdu.util.TextUtil;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.util.TimeUtil;
-import com.gdu.util.ViewUtils;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 

@@ -37,7 +37,6 @@ import com.gdu.util.ChannelUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
-import com.gdu.util.ViewUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;

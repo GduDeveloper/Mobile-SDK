@@ -29,6 +29,7 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.PlanType;
 import com.gdu.drone.SwitchType;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
@@ -42,7 +43,6 @@ import com.gdu.util.FormatConfig;
 import com.gdu.util.NumberUtils;
 import com.gdu.util.SPUtils;
 import com.gdu.util.StringUtils;
-import com.gdu.util.ViewUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.List;

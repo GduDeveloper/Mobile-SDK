@@ -21,6 +21,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.GimbalType;
 import com.gdu.event.GimbalEvent;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
@@ -28,7 +29,6 @@ import com.gdu.socket.SocketCallBack3;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.NumberUtils;
 import com.gdu.util.StringUtils;
-import com.gdu.util.ViewUtils;
 import com.lib.model.LiveType;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;

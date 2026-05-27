@@ -17,11 +17,11 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.FormatConfig;
-import com.gdu.util.ViewUtils;
 
 import java.text.DecimalFormat;
 

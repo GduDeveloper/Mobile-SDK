@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.util.ViewUtils;
 
 /**
  * Created by Administrator on 2016/11/4.

@@ -29,12 +29,12 @@ import com.gdu.demo.flight.setting.adapter.SettingLeftAdapter;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.demo.widget.rc.SettingMenuItem;
 import com.gdu.drone.GimbalType;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.sdk.airlink.AirlinkUtils;
 import com.gdu.socketmodel.GduSocketConfig3;
 import com.gdu.util.LanguageUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.StatusBarUtils;
-import com.gdu.util.ViewUtils;
 
 import java.util.ArrayList;
 

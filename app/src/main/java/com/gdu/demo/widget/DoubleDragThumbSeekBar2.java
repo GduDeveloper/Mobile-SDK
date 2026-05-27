@@ -15,7 +15,6 @@ import androidx.core.content.ContextCompat;
 
 import com.gdu.demo.R;
 import com.gdu.demo.utils.UnitChnageUtils;
-import com.gdu.util.ViewUtils;
 
 import java.math.BigDecimal;
 

@@ -32,22 +32,18 @@ import com.gdu.drone.ControlHand;
 import com.gdu.healthmanager.FlightHealthStatusDetailBean;
 import com.gdu.healthmanager.MessageBean;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.ConnectUtil;
-import com.gdu.util.DroneUtil;
 import com.gdu.util.MyConstants;
 import com.gdu.util.SPUtils;
 import com.gdu.lib.util.ThreadHelper;
-import com.gdu.util.ViewUtils;
-import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.functions.Action;
 
 /**
  * @author wuqb

@@ -39,6 +39,7 @@ import com.gdu.drone.ScreenContentType;
 import com.gdu.drone.TargetMode;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
@@ -54,7 +55,6 @@ import com.gdu.util.ConnectUtil;
 import com.gdu.util.StatusBarUtils;
 import com.gdu.util.StringUtils;
 import com.gdu.lib.util.ThreadHelper;
-import com.gdu.util.ViewUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
