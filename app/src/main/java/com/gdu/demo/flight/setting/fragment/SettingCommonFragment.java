@@ -39,6 +39,7 @@ import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.login.LoginType;
 import com.gdu.login.UserInfoBeanNew;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.sdk.vision.OnTargetDetectModelListener;
@@ -147,8 +148,8 @@ public class SettingCommonFragment extends Fragment {
 //        }
 
         XLogger.INSTANCE.getAPP().i("onResume() isShowActiveBtn = " + isShowActiveBtn);
-        ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !CommonUtils.curPlanIsSmallFlight());
-        ViewUtils.setViewShowOrHide(mViewBinding.fifthGenerationVersionView, !CommonUtils.curPlanIsSmallFlight());
+        ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !IGduDroneDevice.get().getPlanType().getValue().isS200Type());
+        ViewUtils.setViewShowOrHide(mViewBinding.fifthGenerationVersionView, !IGduDroneDevice.get().getPlanType().getValue().isS200Type());
 
         boolean isOpenArmLamp = GlobalVariable.flight_arm_lamp_status == 0;
         boolean isOpenBatteryLight = GlobalVariable.battery_silence_status == 1;
@@ -193,7 +194,7 @@ public class SettingCommonFragment extends Fragment {
                 });
             }
         });
-        if (CommonUtils.curPlanIsSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             GduSocketManager.getInstance().getGduCommunication().getRTKVersionNew((code, bean) -> {
                 if (handler != null && isAdded()) {
                     handler.post(() -> {
@@ -230,7 +231,7 @@ public class SettingCommonFragment extends Fragment {
                     if (bean != null && bean.frameContent != null && bean.frameContent.length >= 5) {
                         String otaVersion = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
                         mViewBinding.tvCurrentVersionOta.setText(otaVersion);
-                        if (!CommonUtils.curPlanIsSmallFlight()) {
+                        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                             String version = bean.frameContent[5] + "." + bean.frameContent[6] + "." + bean.frameContent[7];
                             mViewBinding.upgradeVersionView.setCurrentVersion(version);
                         }
@@ -239,7 +240,7 @@ public class SettingCommonFragment extends Fragment {
             }
         });
 
-        if (CommonUtils.curPlanIsSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             GduSocketManager.getInstance().getGduCommunication().getPicTransmissionApplicationVersion((code, bean) -> {
                 if (handler != null && isAdded()) {
                     handler.post(() -> {

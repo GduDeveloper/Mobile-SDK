@@ -19,6 +19,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.util.DroneUtil;
 import com.gdu.util.FormatConfig;
@@ -248,7 +249,7 @@ public class PerceivingSettingsView extends RelativeLayout {
         mBottomTipTv.setText(getContext().getResources().getString(R.string.below_disposed_hint));
         //因下视避障界面隐藏，这里暂不处理图片资源
 //        mPerceivingTypeImageViewBottom.setImageResource(CameraUtil.getVisionSettingBottomIcon());
-        if (DroneUtil.isSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             mBottomSwitch.setVisibility(INVISIBLE);
             mBrakeDistanceSeekBarBottom.setMax(200);
             mWarnDistanceSeekBarBottom.setMax(1000);
@@ -611,7 +612,7 @@ public class PerceivingSettingsView extends RelativeLayout {
                 break;
 
             case 3:
-                if (CommonUtils.curPlanIsSmallFlight()) {
+                if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                     ViewUtils.setViewShowOrHide(mBottomLayout, true);
                     ViewUtils.setViewShowOrHide(mHorizontalLayout, false);
                     ViewUtils.setViewShowOrHide(mTopLayout, false);

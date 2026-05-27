@@ -21,6 +21,7 @@ import com.gdu.demo.flight.event.ChangeUnitEvent;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
@@ -126,7 +127,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
         mPerceivingHighSettingsView = findViewById(R.id.perceive_high_setting_view);
         setHorizontallySetting();
 
-        if (DroneUtil.isSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             mRbBotVisionLabel.setText(mContext.getString(R.string.below_settings));
         } else {
             mRbBotVisionLabel.setText(mContext.getString(R.string.assisted_landing));
@@ -152,7 +153,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                 GlobalVariable.isObsBottomSwitchState = isBottomSwitchSelected == 0;
                 mHandler.obtainMessage(GET_OBSTACLE_HORIZONTAL_OPEN,isHorSwitchSelected, 0).sendToTarget(); //水平避障开关
                 mHandler.obtainMessage(GET_OBSTACLE_TOP_OPEN,isTopSwitchSelected, 0).sendToTarget();        //上视避障开关
-                if (CommonUtils.curPlanIsSmallFlight()) {
+                if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                     mHandler.obtainMessage(GET_OBSTACLE_BOTTOM_OPEN, isBottomSwitchSelected, 0).sendToTarget();    //下视避障开关
                 }
 
@@ -160,7 +161,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                 horWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 3);                        //水平避障告警距离
                 topBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 6);                       //上视避障刹停距离
                 topWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 8);                        //上视觉避告警距离
-                if (CommonUtils.curPlanIsSmallFlight()) {
+                if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                     //下视避障刹停距离
                     bottomBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 11);
                     //下视避障告警距离
@@ -171,7 +172,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                 mHandler.obtainMessage(GET_HOR_WARN_DISTANCE, horWarnDistance, 0).sendToTarget();
                 mHandler.obtainMessage(GET_TOP_STOP_DISTANCE, topBrakeDistance, 0).sendToTarget();
                 mHandler.obtainMessage(GET_TOP_WARN_DISTANCE, topWarnDistance, 0).sendToTarget();
-                if (CommonUtils.curPlanIsSmallFlight()) {
+                if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                     mHandler.obtainMessage(GET_BOTTOM_STOP_DISTANCE, bottomBrakeDistance, 0).sendToTarget();
                     mHandler.obtainMessage(GET_BOTTOM_WARN_DISTANCE, bottomWarnDistance, 0).sendToTarget();
                 }
@@ -422,7 +423,7 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
             mPerceivingHighSettingsView.setVisibility(GONE);
             mPerceivingSettingsView.setVisibility(VISIBLE);
             mCurrentSettingType = BELOW_SETTING;
-            String botTipLabel = CommonUtils.curPlanIsSmallFlight() ?
+            String botTipLabel = IGduDroneDevice.get().getPlanType().getValue().isS200Type() ?
                     mContext.getResources().getString(R.string.below_disposed_name_new) :
                     mContext.getResources().getString(R.string.below_disposed_name);
             mPerceivingSettingsView.setPerceiveName(botTipLabel, 3);
@@ -470,13 +471,13 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                 return mContext.getString(isMetric ? R.string.Msg_ObstacleAlarmDistanceTip2
                         : R.string.Msg_ObstacleAlarmDistanceTip2_ft);
             case 5:
-                return CommonUtils.curPlanIsSmallFlight() ?
+                return IGduDroneDevice.get().getPlanType().getValue().isS200Type() ?
                         mContext.getString(isMetric ? R.string.Msg_ObstacleDistanceTip3New
                                 : R.string.Msg_ObstacleDistanceTip3New_ft) :
                         mContext.getString(isMetric ? R.string.Msg_ObstacleDistanceTip3
                                 : R.string.Msg_ObstacleDistanceTip3_ft);
             case 6:
-                return CommonUtils.curPlanIsSmallFlight() ?
+                return IGduDroneDevice.get().getPlanType().getValue().isS200Type() ?
                         mContext.getString(isMetric ? R.string.Msg_ObstacleAlarmDistanceTip3New
                                 : R.string.Msg_ObstacleAlarmDistanceTip3New_ft) :
                         mContext.getString(isMetric ? R.string.Msg_ObstacleAlarmDistanceTip3

@@ -21,6 +21,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.gdu.sdk.util.CommonUtils;
@@ -522,7 +523,7 @@ public class SettingRtkFragment extends Fragment {
             Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!CommonUtils.isSmallFlight(GlobalVariable.planType) && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
             Toast.makeText(getContext(), R.string.Msg_bds_connot_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -617,7 +618,7 @@ public class SettingRtkFragment extends Fragment {
     }
 
     public void updateBDTips() {
-        if (!CommonUtils.isSmallFlight(GlobalVariable.planType) && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
             binding.tvGnssHint.setVisibility(View.VISIBLE);
         } else {
             binding.tvGnssHint.setVisibility(View.GONE);

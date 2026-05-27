@@ -17,6 +17,7 @@ import com.gdu.drone.ObstacleType;
 import com.gdu.drone.PlanType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.socket.GduFrame3;
 import com.gdu.socket.GduSocketManager;
@@ -397,7 +398,7 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getFCCoprocessorVersion() planType = " + GlobalVariable.planType);
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            if (DroneUtil.isSmallFlight()) {
+            if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                 cacheFlyVersion(FirmwareType.FC_COPROCESSOR_FIRMWARE.getEnValue(), "");
                 isRequestFinish();
                 return;
@@ -1037,7 +1038,7 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("getElectronicVersion() num = " + num);
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            if (!DroneUtil.isSmallFlight()) {
+            if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                 isRequestFinish();
                 return;
             }

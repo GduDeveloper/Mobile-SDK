@@ -30,6 +30,7 @@ import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.errreport.ErrCodeGrade;
 import com.gdu.healthmanager.MessageBean;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -356,7 +357,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 || (GlobalVariable.sRTKType == 2 && GlobalVariable.sBSRTKStatus == 1)
                 || (GlobalVariable.sRTKType == 3 && GlobalVariable.onDroneRtkState == 2)
                 || (GlobalVariable.sRTKType == 5 && QxSdkManager.getInstance().isConnect());
-        if (DroneUtil.isSmallFlight() && GlobalVariable.RTKOnline == 1) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.RTKOnline == 1) {
             bean.setContentStrId(R.string.string_not_insert);
             bean.setContentTextColor(R.color.color_FF5800);
             bean.setContentEnable(false);

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.drone.PlanType;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonUtils;
 
 import java.util.ArrayList;
@@ -73,7 +74,7 @@ public class RcCustomKeyMenu {
         ArrayList<RcCustomKeyMenu> list = new ArrayList<>();
         list.add(new RcCustomKeyMenu(101, context.getString(R.string.string_rc_key_gimbal_center)));
         list.add(new RcCustomKeyMenu(102, context.getString(R.string.string_rc_key_gimbal_down)));
-        if (!CommonUtils.isSmallFlight(GlobalVariable.planType)) {
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             list.add(new RcCustomKeyMenu(103, context.getString(R.string.string_rc_key_gimbal_center_down)));
             list.add(new RcCustomKeyMenu(104, context.getString(R.string.string_rc_key_gimbal_pitch_center)));
             list.add(new RcCustomKeyMenu(105, context.getString(R.string.string_rc_key_gimbal_couser_center)));

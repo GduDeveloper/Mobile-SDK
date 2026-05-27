@@ -1,7 +1,6 @@
 package com.gdu.demo.utils;
 
-import com.gdu.drone.PlanType;
-import com.gdu.sdk.util.CommonUtils;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 
 public class BatteryUtil {
 
@@ -44,14 +43,12 @@ public class BatteryUtil {
     /**
      * 获取单电芯剩余电量百分百
      *
-     * @param planType 飞机类型
      * @param voltage  当前电压值
-     * @return
      */
-    public static int getSingleRemainingPower(PlanType planType, float voltage) {
+    public static int getSingleRemainingPower(float voltage) {
         float max = MAX_VOLTAGE_S400;
         float min = MIN_VOLTAGE_S400;
-        if (CommonUtils.isSmallFlight(planType)) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             max = MAX_VOLTAGE_S200;
             min = MIN_VOLTAGE_S200;
         }

@@ -27,6 +27,7 @@ import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
@@ -115,7 +116,7 @@ public class SettingVisionFragment extends Fragment {
 
         setListener();
 
-        if (CommonUtils.isSmallFlight(GlobalVariable.planType)) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             mVisionBinding.clLandProtectSwitch.setVisibility(View.VISIBLE);
         }
     }
@@ -228,7 +229,7 @@ public class SettingVisionFragment extends Fragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
             int progress = seekBar.getProgress();
             mVisionBinding.etLandProtectHeightInput.setText(FormatConfig.format_4.format((progress + 100) / 100f));
-            if (DroneUtil.isSmallFlight()) {
+            if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                 String inputStr = mVisionBinding.etLandProtectHeightInput.getText().toString().trim();
                 boolean isErrInput = StringUtils.isEmptyString(inputStr) || !NumberUtils.isNumeric(inputStr);
                 if (isErrInput) {

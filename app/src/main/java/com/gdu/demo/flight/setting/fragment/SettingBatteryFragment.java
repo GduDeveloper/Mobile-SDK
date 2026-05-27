@@ -580,7 +580,7 @@ public class SettingBatteryFragment extends Fragment {
                 holder.cellVoltage.setText(df2.format(voltage / 1000.0f) + "V");
             }
 
-            int progress = BatteryUtil.getSingleRemainingPower(GlobalVariable.planType,voltage);
+            int progress = BatteryUtil.getSingleRemainingPower(voltage);
 
             XLogger.INSTANCE.getAPP().i("cellVoltage  value =   " + mDatas.get(position) + " progress = " + progress);
             if(progress >= 40){

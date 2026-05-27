@@ -31,6 +31,7 @@ import com.gdu.demo.flight.setting.viewmodel.SettingFlyViewModel;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonUtils;
 import com.gdu.sdk.vision.GDUVision;
 import com.gdu.util.ChannelUtils;
@@ -396,13 +397,13 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
      * 卫星定位系统
      */
     private void initGps() {
-        if (CommonUtils.curPlanIsSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             mViewBinding.groupGnss.setVisibility(View.GONE);
         } else {
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
         }
         // 大华需支持S200软件单北斗模式切换+GPS等GNSS功能(S400已经支持切换)
-        if (ChannelUtils.isDahua(getContext()) && CommonUtils.curPlanIsSmallFlight() && !DroneUtil.isBDSOnlyDrone()) {
+        if (ChannelUtils.isDahua(getContext()) && IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtil.isBDSOnlyDrone()) {
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
         }
         // dhBDS不允许切换GNSS，直接显示BDS

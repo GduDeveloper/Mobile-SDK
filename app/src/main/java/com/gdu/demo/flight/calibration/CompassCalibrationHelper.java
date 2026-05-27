@@ -5,7 +5,7 @@ import android.content.Intent;
 
 import com.gdu.config.GlobalVariable;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.util.DroneUtil;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 
 /**
  * @author wuqb
@@ -26,7 +26,7 @@ public class CompassCalibrationHelper {
 
     public static Intent getRectifyMagnetomterIntent(Context context) {
         Intent intent;
-        if (DroneUtil.isSmallFlight()) {
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             intent = new Intent(context,
                     RectifyMagnetometerActivityNew.class);
         } else {
