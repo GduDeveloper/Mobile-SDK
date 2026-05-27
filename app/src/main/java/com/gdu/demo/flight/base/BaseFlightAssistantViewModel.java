@@ -210,7 +210,6 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
             @Override
             public void onSuccess(Boolean b) {
                 getObstacleCallback();
-                GlobalVariable.obstacleStrategyIsOpen = b;
                 obstacleAvoidanceStrategyLiveData.postValue(b);
             }
 

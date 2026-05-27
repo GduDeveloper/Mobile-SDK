@@ -21,6 +21,9 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingVisionBinding;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.drone.SwitchType;
+import com.gdu.lib.util.NumberUtils;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
@@ -355,27 +358,20 @@ public class SettingVisionFragment extends Fragment {
                         changeVisibilityObstacleView();
                         changeObserveTipVisibility(false);
                     } else if (setFlyType == SWITCH_VISION_RETURN_ON) {
-                        GlobalVariable.obstacleReturnIsOpen = true;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_RETURN);
                     } else if (setFlyType == SWITCH_VISION_RETURN_OFF) {
-                        GlobalVariable.obstacleReturnIsOpen = false;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_RETURN);
                     } else if (setFlyType == SWITCH_VISION_BACK_ON) {
-                        GlobalVariable.obstacleBackIsOpen = true;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_BACK);
                     } else if (setFlyType == SWITCH_VISION_BACK_OFF) {
-                        GlobalVariable.obstacleBackIsOpen = false;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_BACK);
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_ON) {
-                        GlobalVariable.obstacleStrategyIsOpen = true;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_OFF) {
-                        GlobalVariable.obstacleStrategyIsOpen = false;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     } else if (setFlyType == SWITCH_OBSTACLE_STRATEGY_AROUND) {
-                        GlobalVariable.obstacleStrategyIsOpen = true;
                         changeSwitchStateSuccess(SwitchType.OBSTACLE_TYPE_STRATEGY);
                         changeVisibilityObstacleView();
                     }
@@ -526,7 +522,6 @@ public class SettingVisionFragment extends Fragment {
         mFlightAssistant.setRTHObstacleAvoidanceEnabled(isOpen, error -> {
             uiThreadHandle(() -> {
                 if (error == null) {
-                    GlobalVariable.obstacleReturnIsOpen = !mVisionBinding.ivGoHomeObstacleSwitch.isSelected();
                     mVisionBinding.ivGoHomeObstacleSwitch.setSelected(isOpen);
                     Toast.makeText(requireContext(), "设置成功", Toast.LENGTH_SHORT).show();
                 } else {
