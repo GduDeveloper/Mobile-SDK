@@ -20,6 +20,7 @@ import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.ControlHand;
 
 /**
@@ -243,7 +244,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
      * <P>无人机连接状态提示</P>
      */
     private boolean connStateToast() {
-        if (UavStaticVar.isOpenTextEnvironment) {
+        if (DroneUtils.isOpenTextEnvironment) {
             return true;
         }
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {

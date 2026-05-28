@@ -13,6 +13,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.detect.AIModelState;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
@@ -41,7 +42,7 @@ public class FlightViewModel extends ViewModel {
         // 仅可见光且在Debug模式才支持Ai识别的云台
         boolean isCustomSupportAiRecognizeGimbal2 = (gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
                 || gimbalType == GimbalType.ByrT_6k
-                || gimbalType == GimbalType.GIMBAL_8KC) && UavStaticVar.isOpenTextEnvironment;
+                || gimbalType == GimbalType.GIMBAL_8KC) && DroneUtils.isOpenTextEnvironment;
         // Debug模式才开放支持Ai识别的多光云台
         boolean isCustomSupportAiRecognizeGimbal3 = (gimbalType == GimbalType.Small_Double_Light
                 || gimbalType == GimbalType.ByrT_IR_1K
@@ -56,7 +57,7 @@ public class FlightViewModel extends ViewModel {
                 || gimbalType == GimbalType.GIMBAL_PWG01)
                 && (GlobalVariable.sCameraLightType == 0x00 || GlobalVariable.sCameraLightType == 0x02
                 || GlobalVariable.sCameraLightType == 0x06)
-                && UavStaticVar.isOpenTextEnvironment;
+                && DroneUtils.isOpenTextEnvironment;
         // 支持Ai识别的多光云台
         boolean isCustomSupportAiRecognizeGimbal4 = (gimbalType == GimbalType.GIMBAL_PDL_S220
                 || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT

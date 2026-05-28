@@ -9,12 +9,11 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.widget.GduSpinner;
-import com.gdu.drone.ControlHand;
+import com.gdu.msdk.key.value.bean.ControlHand;
 
 /**
  * 自定义按键view
@@ -239,7 +238,7 @@ public class RCCustomKeyView extends RelativeLayout implements View.OnClickListe
      * <P>无人机连接状态提示</P>
      */
     private boolean connStateToast() {
-        if (UavStaticVar.isOpenTextEnvironment) {
+        if (DroneUtils.isOpenTextEnvironment) {
             return true;
         }
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {

@@ -9,4 +9,8 @@ object DroneUtils {
         get() {
             return IFlightController.get.fcInfo1.value?.planeHadLock?: true
         }
+
+    @JvmField
+    val isOpenTextEnvironment = false
+
 }
