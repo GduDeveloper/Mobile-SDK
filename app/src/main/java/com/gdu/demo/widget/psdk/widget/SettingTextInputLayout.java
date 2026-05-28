@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.util.TextUtil;
+import com.gdu.lib.util.StringUtils;
 
 /**
  * @Author: lixiqiang
@@ -52,7 +52,7 @@ public class SettingTextInputLayout extends RelativeLayout {
 
     public void setName(String title) {
 
-        if (!TextUtil.isEmptyString(title)) {
+        if (!StringUtils.isEmptyString(title)) {
             tv_name.setText(title);
         }
     }

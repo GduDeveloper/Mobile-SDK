@@ -31,6 +31,7 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
@@ -180,7 +181,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     return;
                 }
                 String value = mViewBinding.etHeightLimit.getText().toString();
-                if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
+                if (TextUtils.isEmpty(value) || !NumberUtils.isNumber(value)) {
                     Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     setHeightFailHandle();
                     return;
@@ -242,7 +243,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     return;
                 }
                 String value = mViewBinding.etDistanceLimit.getText().toString();
-                if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
+                if (TextUtils.isEmpty(value) || !NumberUtils.isNumber(value)) {
                     Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     setDistanceFailHandle();
                     return;

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
@@ -1653,7 +1654,7 @@ public class FirmwareVersion implements IFirmwareVersion {
             return;
         }
         String codeKey = UpgradeUtils.getVersionKey(GduConfig.FLY_TYPE, mCurrentFlyType.getKey(), key);
-        SPUtils.getInstance().put(codeKey, CommonUtils.convertNull2EmptyStr(value));
+        SPUtils.getInstance().put(codeKey, StringUtils.convertNull2EmptyStr(value));
     }
 
     /**

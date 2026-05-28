@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gdu.demo.R;
-import com.gdu.util.StringUtils;
+import com.gdu.lib.util.StringUtils;
 
 /**
  * 自定义seekbar组件

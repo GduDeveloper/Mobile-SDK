@@ -2,11 +2,9 @@ package com.gdu.demo.widget.rc;
 
 import android.content.Context;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.drone.PlanType;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.sdk.util.CommonUtils;
 
 import java.util.ArrayList;
 

@@ -17,6 +17,8 @@ import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.lib.util.NumberUtils;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;

@@ -25,6 +25,7 @@ import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.RTKNetConnectStatus;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;

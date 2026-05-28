@@ -12,6 +12,7 @@ import com.gdu.demo.flight.base.BaseViewModel;
 import com.gdu.demo.flight.base.ErrTipBean;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
+import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.flightcontroller.FlightController;
@@ -71,7 +72,7 @@ public class SettingFlyViewModel extends BaseViewModel {
      * 设置返航高度
      * */
     public void setBackHomeHeight(String value){
-        if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
+        if (TextUtils.isEmpty(value) || !NumberUtils.isNumber(value)) {
             toastLiveData.setValue(R.string.input_error);
             backHomeHeightLiveData.setValue(preBackHeight);
             return;
@@ -175,7 +176,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             return;
         }
 
-        if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
+        if (TextUtils.isEmpty(value) || !NumberUtils.isNumber(value)) {
             backHomeSpeedLiveData.setValue(preBackSpeed);
             toastLiveData.setValue(R.string.input_error);
             return;

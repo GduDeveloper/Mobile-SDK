@@ -30,6 +30,7 @@ import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
 import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
@@ -188,7 +189,7 @@ public class SettingCommonFragment extends Fragment {
                 }
             });
         } else {
-            if (!TextUtil.isEmptyString(GlobalVariable.rtkVersion + "")) {
+            if (!StringUtils.isEmptyString(GlobalVariable.rtkVersion + "")) {
                 mViewBinding.vvRtkVersionView.setCurrentVersion("V" + GlobalVariable.rtkVersion);
             }
         }
@@ -645,7 +646,7 @@ public class SettingCommonFragment extends Fragment {
             return;
         }
         SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectModelsListener(sJson -> {
-            if (TextUtil.isEmptyString(sJson)) return;
+            if (StringUtils.isEmptyString(sJson)) return;
             GetAiModelResponse response = new Gson().fromJson(sJson, GetAiModelResponse.class);
             ThreadHelper.runOnUiThread(() -> {
                 cancelLoadingAnimator();
