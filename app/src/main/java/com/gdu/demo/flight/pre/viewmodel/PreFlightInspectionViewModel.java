@@ -381,15 +381,15 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
             } else {
                 String lightErrStr = CommonUtils.getSDCardDetailErrTip(context, 2);
-                if (!CommonUtils.isEmptyString(lightErrStr)) {
+                if (!TextUtils.isEmpty(lightErrStr)) {
                     sdCardTip = lightErrStr;
                 }
                 String irErrStr = CommonUtils.getSDCardDetailErrTip(context, 1);
-                if (CommonUtils.isEmptyString(sdCardTip) && !CommonUtils.isEmptyString(irErrStr)) {
+                if (TextUtils.isEmpty(sdCardTip) && !TextUtils.isEmpty(irErrStr)) {
                     sdCardTip = irErrStr;
                 }
 
-                if (CommonUtils.isEmptyString(sdCardTip)) {
+                if (TextUtils.isEmpty(sdCardTip)) {
                     sdCardTip = context.getString(com.gdu.api.R.string.Label_CardInserted);
                 }
             }
@@ -400,11 +400,11 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 sdCardTip = lightStorageFull;
             }
 
-            if (CommonUtils.isEmptyString(sdCardTip) && GimbalUtil.isIRMemoryIsFull()) {
+            if (TextUtils.isEmpty(sdCardTip) && GimbalUtil.isIRMemoryIsFull()) {
                 sdCardTip = irStorageFull;
             }
 
-            if (CommonUtils.isEmptyString(sdCardTip)) {
+            if (TextUtils.isEmpty(sdCardTip)) {
                 int sdInsertStatus = GimbalUtil.checkTMSSDCard();
                 switch (sdInsertStatus) {
                     // 2张卡都已插入
@@ -430,7 +430,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
             }
         } else if (GimbalUtil.isSingleSDReportGimbal()) {
             sdCardTip = CommonUtils.getSDCardDetailErrTip(context, 3);
-            if (CommonUtils.isEmptyString(sdCardTip)) {
+            if (TextUtils.isEmpty(sdCardTip)) {
                 sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
             }
         } else {
@@ -438,7 +438,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 sdCardTip = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), "");
             }
 
-            if (CommonUtils.isEmptyString(sdCardTip)) {
+            if (TextUtils.isEmpty(sdCardTip)) {
                 if (GimbalUtil.isInsertSDCard()) {
                     sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
                 } else {

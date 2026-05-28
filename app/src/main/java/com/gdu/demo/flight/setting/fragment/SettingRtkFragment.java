@@ -536,11 +536,11 @@ public class SettingRtkFragment extends Fragment {
         mAccount = binding.accountEdit.getText().toString().trim();
         mPassword = binding.passwordEdit.getText().toString().trim();
 
-        boolean haveEmptyData = CommonUtils.isEmptyString(mIP)
-                || CommonUtils.isEmptyString(mPort)
-                || CommonUtils.isEmptyString(mAccount)
-                || CommonUtils.isEmptyString(mPassword)
-                || CommonUtils.isEmptyString(mMountPoint);
+        boolean haveEmptyData = TextUtils.isEmpty(mIP)
+                || TextUtils.isEmpty(mPort)
+                || TextUtils.isEmpty(mAccount)
+                || TextUtils.isEmpty(mPassword)
+                || TextUtils.isEmpty(mMountPoint);
 
         if (haveEmptyData) {
             Toast.makeText(getContext(), "请输入正确的参数", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.setting.viewmodel;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 
@@ -70,7 +71,7 @@ public class SettingFlyViewModel extends BaseViewModel {
      * 设置返航高度
      * */
     public void setBackHomeHeight(String value){
-        if (CommonUtils.isEmptyString(value) || !CommonUtils.isNumber(value)) {
+        if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
             toastLiveData.setValue(R.string.input_error);
             backHomeHeightLiveData.setValue(preBackHeight);
             return;
@@ -174,7 +175,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             return;
         }
 
-        if (CommonUtils.isEmptyString(value) || !CommonUtils.isNumber(value)) {
+        if (TextUtils.isEmpty(value) || !CommonUtils.isNumber(value)) {
             backHomeSpeedLiveData.setValue(preBackSpeed);
             toastLiveData.setValue(R.string.input_error);
             return;

@@ -3,6 +3,7 @@ package com.gdu.demo.flight.pre;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -234,7 +235,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
                     @Override
                     public void onValueUpdate(String lowStr, String heightStr) {
-                        if (CommonUtils.isEmptyString(lowStr) || CommonUtils.isEmptyString(heightStr)) {
+                        if (TextUtils.isEmpty(lowStr) || TextUtils.isEmpty(heightStr)) {
                             return;
                         }
                         mViewBinding.tvLostLowPowerWarn.setText(lowStr + "%");
@@ -287,7 +288,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
                     @Override
                     public void onValueUpdate(String lowStr, String heightStr) {
-                        if (CommonUtils.isEmptyString(lowStr) || CommonUtils.isEmptyString(heightStr)) {
+                        if (TextUtils.isEmpty(lowStr) || TextUtils.isEmpty(heightStr)) {
                             return;
                         }
                         mViewBinding.tvAroundObstacleStop.setText(lowStr);
@@ -317,7 +318,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
                     @Override
                     public void onValueUpdate(String lowStr, String heightStr) {
-                        if (CommonUtils.isEmptyString(lowStr) || CommonUtils.isEmptyString(heightStr)) {
+                        if (TextUtils.isEmpty(lowStr) || TextUtils.isEmpty(heightStr)) {
                             return;
                         }
                         mViewBinding.tvTopObstacleStop.setText(lowStr);
@@ -346,7 +347,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
                     @Override
                     public void onValueUpdate(String lowStr, String heightStr) {
-                        if (CommonUtils.isEmptyString(lowStr) || CommonUtils.isEmptyString(heightStr)) {
+                        if (TextUtils.isEmpty(lowStr) || TextUtils.isEmpty(heightStr)) {
                             return;
                         }
                         mViewBinding.tvBotObstacleStop.setText(lowStr);
@@ -419,12 +420,12 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             boolean isErrData;
             // 是否开启限高
             if (mViewBinding.preFlightLimitHeightSwitch.isSelected()) {
-                isErrData = CommonUtils.isEmptyString(inputStr)
+                isErrData = TextUtils.isEmpty(inputStr)
                         || !CommonUtils.isNumberInt(inputStr)
-                        || CommonUtils.isEmptyString(preHeightStr)
+                        || TextUtils.isEmpty(preHeightStr)
                         || !CommonUtils.isNumberInt(preHeightStr);
             } else {
-                isErrData = CommonUtils.isEmptyString(inputStr) || !CommonUtils.isNumberInt(inputStr);
+                isErrData = TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr);
             }
             // 是否未输入数据或数据数据格式错误
             if (isErrData) {
@@ -479,7 +480,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 return false;
             }
             final String inputStr = v.getText().toString();
-            if (CommonUtils.isEmptyString(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
+            if (TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
                 showToast(getResources().getString(R.string.input_error));
                 return false;
             }
@@ -575,7 +576,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 return false;
             }
             final String inputStr = v.getText().toString();
-            if (CommonUtils.isEmptyString(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
+            if (TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
                 showToast(getResources().getString(R.string.Label_SettingFail));
                 return false;
             }
