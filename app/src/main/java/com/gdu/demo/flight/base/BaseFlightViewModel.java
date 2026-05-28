@@ -12,8 +12,10 @@ import com.gdu.demo.map.geometry.Point;
 import com.gdu.demo.map.utils.JTSUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
-import com.gdu.lib.util.core.SPUtils;
+import com.gdu.msdk.config.DroneValueConstants;
+import com.gdu.msdk.device.component.interfaces.IFlightController;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.CycleFCInfo1;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -40,7 +42,7 @@ public class BaseFlightViewModel extends BaseViewModel {
 
 
     private final MutableLiveData<Boolean> homeLocationBeanLiveData;
-
+    private Boolean isNewHeightLimitStrategy = true;
     /**
      * 是否在编辑限高
      */
@@ -80,18 +82,7 @@ public class BaseFlightViewModel extends BaseViewModel {
      * 获取默认高度
      * */
     public int getDefaultLimitHeight(Context context){
-        if (null == context) return 0;
-        int mLimitHeightValue = SPUtils.getInt(context, SPUtils.LAST_LIMIT_HEIGHT);
-        if (mLimitHeightValue == 0) {
-            preLimitHeight = MyConstants.LIMIT_HEIGHT_DEFAULT;
-        } else if (mLimitHeightValue < MyConstants.LIMIT_HEIGHT_MIN) {
-            preLimitHeight = MyConstants.LIMIT_HEIGHT_MIN;
-        } else if (mLimitHeightValue > MyConstants.LIMIT_HEIGHT_MAX) {
-            preLimitHeight = MyConstants.LIMIT_HEIGHT_MAX;
-        } else {
-            preLimitHeight = mLimitHeightValue;
-        }
-        return preLimitHeight;
+        return IFlightController.get().getFlightLimitHeight();
     }
 
     /**
@@ -99,16 +90,6 @@ public class BaseFlightViewModel extends BaseViewModel {
      * */
     public void getLimitHeight() {
         if (isEditLimitHeight) {
-            return;
-        }
-        if (GlobalVariable.isNewHeightLimitStrategy) {
-            int localHeightLimit = SPUtils.getInstance().getInt(
-                    SPUtils.KEY_LOCAL_HEIGHT_LIMIT, MyConstants.LIMIT_HEIGHT_DEFAULT);
-            LimitHeightInfo bean = new LimitHeightInfo();
-            bean.setOpen(localHeightLimit != MyConstants.LIMIT_HEIGHT_CLOSE);
-            bean.setHeight(localHeightLimit);
-            bean.setSet(false);
-            limitHeightLiveData.setValue(bean);
             return;
         }
         if (mGDUFlightController != null) {
@@ -230,24 +211,17 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void setLimitHeight(boolean isOpen, int limitHeight) {
-        if (limitHeight > MyConstants.LIMIT_HEIGHT_DEFAULT && preLimitHeight <= MyConstants.LIMIT_HEIGHT_DEFAULT && isEditLimitHeight) {
+        if (limitHeight > DroneValueConstants.LIMIT_HEIGHT_DEFAULT && preLimitHeight <= DroneValueConstants.LIMIT_HEIGHT_DEFAULT && isEditLimitHeight) {
             WarnTipBean warnTipBean = new WarnTipBean();
             warnTipBean.setType(1);
             warnTipBean.setWarnType(1);
             warnTipBean.setIntValue(limitHeight);
             warnTipBeanLiveData.postValue(warnTipBean);
         } else {
-            if (GlobalVariable.isNewHeightLimitStrategy) {
-                if (GlobalVariable.isTetherModel) {
-                    ErrTipBean tipBean = new ErrTipBean();
-                    tipBean.setSetType(1);
-                    tipBean.setType(2);
-                    errTipBeanLiveData.postValue(tipBean);
-                    return;
-                }
+            if (isNewHeightLimitStrategy) {
 
                 if (isOpen) {
-                    if (limitHeight < MyConstants.LIMIT_HEIGHT_MIN || limitHeight > MyConstants.LIMIT_HEIGHT_MAX) {
+                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.LIMIT_HEIGHT_MAX) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
                         tipBean.setType(4);
@@ -255,7 +229,11 @@ public class BaseFlightViewModel extends BaseViewModel {
                         return;
                     }
                     // 转化飞机高度单位(cm -> m)
-                    int droneHeight = GlobalVariable.height_drone / 100;
+                    CycleFCInfo1 fcInfo1 = IFlightController.get().getFcInfo1().getValue();
+                    int droneHeight = 0;
+                    if (fcInfo1 != null) {
+                        droneHeight = fcInfo1.getDroneHeight() / 100;
+                    }
                     if (limitHeight <= droneHeight + 10) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
@@ -264,7 +242,6 @@ public class BaseFlightViewModel extends BaseViewModel {
                         return;
                     }
                 }
-                SPUtils.getInstance().put(SPUtils.KEY_LOCAL_HEIGHT_LIMIT, isOpen ? limitHeight : MyConstants.LIMIT_HEIGHT_CLOSE);
                 int value = checkAndSaveHeightData(isOpen, limitHeight);
                 LimitHeightInfo bean = new LimitHeightInfo();
                 bean.setOpen(isOpen);
@@ -283,16 +260,8 @@ public class BaseFlightViewModel extends BaseViewModel {
                     return;
                 }
 
-                if (GlobalVariable.isTetherModel) {
-                    ErrTipBean tipBean = new ErrTipBean();
-                    tipBean.setSetType(1);
-                    tipBean.setType(2);
-                    errTipBeanLiveData.postValue(tipBean);
-                    return;
-                }
-
                 if (isOpen) {
-                    if (limitHeight < MyConstants.LIMIT_HEIGHT_MIN || limitHeight > MyConstants.LIMIT_HEIGHT_MAX) {
+                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.LIMIT_HEIGHT_MAX) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
                         tipBean.setType(4);
@@ -300,7 +269,11 @@ public class BaseFlightViewModel extends BaseViewModel {
                         return;
                     }
                     // 转化飞机高度单位(cm -> m)
-                    int droneHeight = GlobalVariable.height_drone / 100;
+                    CycleFCInfo1 fcInfo1 = IFlightController.get().getFcInfo1().getValue();
+                    int droneHeight = 0;
+                    if (fcInfo1 != null) {
+                        droneHeight = fcInfo1.getDroneHeight() / 100;
+                    }
                     if (limitHeight <= droneHeight + 10) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
@@ -322,7 +295,12 @@ public class BaseFlightViewModel extends BaseViewModel {
                         bean.setSet(true);
                         limitHeightLiveData.setValue(bean);
                     } else {
-                        if (!GlobalVariable.isActive) {
+                        CycleFCInfo1 fcInfo1 = IFlightController.get().getFcInfo1().getValue();
+                        boolean isActive = true;
+                        if (fcInfo1 != null) {
+                            isActive = fcInfo1.isDroneActive();
+                        }
+                        if (!isActive) {
                             toastLiveData.postValue(R.string.Err_DevUnActiveRetryTip);
                         } else {
                             toastLiveData.postValue(R.string.Label_SettingFail);
@@ -341,19 +319,8 @@ public class BaseFlightViewModel extends BaseViewModel {
     /**
      * 获取默认限制距离
      * */
-    public int getDefaultLimitDistance(Context context){
-        int mLimitDistanceValue = SPUtils.getInstance().getInt(SPUtils.LAST_LIMIT_DISTANCE);
-
-        if (mLimitDistanceValue == 0) {
-            preDistanceLimit = MyConstants.LIMIT_DISTANCE_DEFAULT;
-        } else if (mLimitDistanceValue < MyConstants.LIMIT_DISTANCE_MIN) {
-            preDistanceLimit = MyConstants.LIMIT_DISTANCE_MIN;
-        } else if (mLimitDistanceValue > MyConstants.LIMIT_DISTANCE_MAX) {
-            preDistanceLimit = MyConstants.LIMIT_DISTANCE_MAX;
-        } else {
-            preDistanceLimit = mLimitDistanceValue;
-        }
-        return preDistanceLimit;
+    public int getDefaultLimitDistance(Context context) {
+        return IFlightController.get().getDefaultLimitDistance();
     }
 
     /**
@@ -363,7 +330,7 @@ public class BaseFlightViewModel extends BaseViewModel {
         mGDUFlightController.getLimitDistance(new CommonCallbacks.CompletionCallbackWith<LimitDistanceInfo>() {
             @Override
             public void onSuccess(LimitDistanceInfo result) {
-                int distance = checkAndSaveDistanceData(result.isOpen(), result.getDistance());
+                int distance = IFlightController.get().checkAndSaveDistanceData(result.isOpen(), result.getDistance());
                 result.setDistance(distance);
                 result.setSet(false);
                 result.setSuccess(true);
@@ -382,24 +349,16 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     public void setLimitDistance(boolean isOpen, int distance) {
-            if (!IGduDroneDevice.get().isConnected()) {
-                ErrTipBean tipBean = new ErrTipBean();
-                tipBean.setSetType(2);
-                tipBean.setType(1);
-                errTipBeanLiveData.postValue(tipBean);
-                return;
-            }
-
-        if (GlobalVariable.isTetherModel) {
+        if (!IGduDroneDevice.get().isConnected()) {
             ErrTipBean tipBean = new ErrTipBean();
             tipBean.setSetType(2);
-            tipBean.setType(2);
+            tipBean.setType(1);
             errTipBeanLiveData.postValue(tipBean);
             return;
         }
 
         if (isOpen) {
-            if (distance < MyConstants.LIMIT_DISTANCE_MIN || distance > MyConstants.LIMIT_DISTANCE_MAX) {
+            if (distance < DroneValueConstants.LIMIT_DISTANCE_MIN || distance > DroneValueConstants.LIMIT_DISTANCE_MAX) {
                 ErrTipBean tipBean = new ErrTipBean();
                 tipBean.setSetType(2);
                 tipBean.setType(4);
@@ -407,7 +366,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                 return;
             }
 
-            if (GlobalVariable.flyDistance > MyConstants.LIMIT_DISTANCE_MIN && distance < GlobalVariable.flyDistance) {
+            if (GlobalVariable.flyDistance > DroneValueConstants.LIMIT_DISTANCE_MIN && distance < GlobalVariable.flyDistance) {
                 ErrTipBean tipBean = new ErrTipBean();
                 tipBean.setSetType(2);
                 tipBean.setType(6);
@@ -435,14 +394,19 @@ public class BaseFlightViewModel extends BaseViewModel {
                     toastLiveData.postValue(R.string.string_set_success);
                 }
                 int value = distance;
-                value = checkAndSaveDistanceData(isOpen, value);
+                value = IFlightController.get().checkAndSaveDistanceData(isOpen, value);
                 limitDistanceBean.setSet(true);
                 limitDistanceBean.setDistance(value);
                 limitDistanceBean.setOpen(isOpen);
                 limitDistanceBean.setSuccess(true);
                 preDistanceLimit = value;
             } else {
-                if (!GlobalVariable.isActive) {
+                CycleFCInfo1 fcInfo1 = IFlightController.get().getFcInfo1().getValue();
+                boolean isActive = true;
+                if (fcInfo1 != null) {
+                    isActive = fcInfo1.isDroneActive();
+                }
+                if (!isActive) {
                     toastLiveData.postValue(R.string.Err_DevUnActiveRetryTip);
                 } else {
                     toastLiveData.postValue(R.string.Label_SettingFail);
@@ -454,20 +418,6 @@ public class BaseFlightViewModel extends BaseViewModel {
             }
             limitDistanceLiveData.postValue(limitDistanceBean);
         });
-    }
-
-    private int checkAndSaveDistanceData(boolean isOpen, int distance) {
-        if (!isOpen) {
-            return distance;
-        }
-        if (distance > MyConstants.LIMIT_DISTANCE_MAX) {
-            distance = MyConstants.LIMIT_DISTANCE_MAX;
-        } else if (distance < MyConstants.LIMIT_DISTANCE_MIN) {
-            distance = MyConstants.LIMIT_DISTANCE_MIN;
-        }
-        GlobalVariable.limitDiatsnce = (short) distance;
-        SPUtils.getInstance().put(SPUtils.LAST_LIMIT_DISTANCE, distance);
-        return distance;
     }
 
     private int checkAndSaveGoHomeHeightData(int value) {
@@ -483,13 +433,11 @@ public class BaseFlightViewModel extends BaseViewModel {
         if (!isOpen) {
             return value;
         }
-        if (value < MyConstants.LIMIT_HEIGHT_MIN) {
-            value = MyConstants.LIMIT_HEIGHT_MIN;
-        } else if (value > MyConstants.LIMIT_HEIGHT_MAX) {
-            value = MyConstants.LIMIT_HEIGHT_MAX;
+        if (value < DroneValueConstants.LIMIT_HEIGHT_MIN) {
+            value = DroneValueConstants.LIMIT_HEIGHT_MIN;
+        } else if (value > DroneValueConstants.LIMIT_HEIGHT_MAX) {
+            value = DroneValueConstants.LIMIT_HEIGHT_MAX;
         }
-        GlobalVariable.limitHeight = (short) value;
-        SPUtils.getInstance().put(SPUtils.LAST_LIMIT_HEIGHT, value);
         return value;
     }
 

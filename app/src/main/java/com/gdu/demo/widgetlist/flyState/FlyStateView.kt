@@ -3,12 +3,12 @@ package com.gdu.demo.widgetlist.flyState
 import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.FlyStateLayoutBinding
 import com.gdu.demo.utils.UnitChnageUtils
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
+import com.gdu.msdk.device.component.interfaces.IFlightController
 import java.math.BigDecimal
 import java.math.RoundingMode
 
@@ -48,7 +48,8 @@ class FlyStateView @JvmOverloads constructor(
                 val showDis = BigDecimal((data.dis / 1.0f).toDouble()).setScale(1, RoundingMode.HALF_UP).toFloat()
                 binding.tvDis.text = UnitChnageUtils.getUnitString(showDis)
 
-                if (GlobalVariable.limitDiatsnce > 19 && GlobalVariable.limitDiatsnce - data.dis <= 5) {
+                val limitDistance = IFlightController.get.getDefaultLimitDistance()
+                if (limitDistance > 19 && limitDistance - data.dis <= 5) {
                     binding.tvDis.setTextColor(Color.RED)
                 } else {
                     binding.tvDis.setTextColor(Color.WHITE)
@@ -57,7 +58,8 @@ class FlyStateView @JvmOverloads constructor(
                 val showHeight = BigDecimal((data.height / 100.0f).toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat()
                 binding.tvHeight.text =UnitChnageUtils.getUnitString(showHeight)
 
-                if (GlobalVariable.height_drone > 5 && GlobalVariable.limitHeight > 19 && (GlobalVariable.limitHeight - data.height * 1.0 / 100) <= 5) {
+                val limitHeight = IFlightController.get.getFlightLimitHeight()
+                if ((IFlightController.get.fcInfo1.value?.droneHeight?:0) > 5 && limitHeight > 19 && (limitHeight - data.height * 1.0 / 100) <= 5) {
                     binding.tvHeight.setTextColor(Color.RED)
                 } else {
                     binding.tvHeight.setTextColor(Color.WHITE)
