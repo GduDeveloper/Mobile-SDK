@@ -12,16 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
-import com.gdu.drone.ControlHand;
+import com.gdu.msdk.key.value.bean.ControlHand;
 
 /**
  * 控制手view
@@ -48,7 +45,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
     private TextView mRightHandLeftTextView;
     private TextView mRightHandRightTextView;
 
-    private ControlHand mSelectedHand = GlobalVariable.controlHand;//控制手型
+    private ControlHand mSelectedHand = DroneUtils.getControlHand();//控制手型
 
     public ControlHandModeView(Context context) {
         this(context, null);
@@ -196,7 +193,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
      * <li>并经过跟踪，发现是在plansetactivity 的 initView 生命周期中 初始化，但是不知道为毛，能进来三次。</li>
      */
     public void setControlHandPic() {
-        mSelectedHand = GlobalVariable.controlHand;
+        mSelectedHand = DroneUtils.getControlHand();
 //        BBLog.LogE("setControlHandPic：", "isSuccess;" + isSuccess + "----" + "perControlHand:" + perControlHand + "----" + "selectHand.ordinal():" + selectHand);
         mAmericaControlView.setSelected(mSelectedHand == ControlHand.HAND_AMERICA);
         mChinaControlView.setSelected(mSelectedHand == ControlHand.HAND_CHINA);
@@ -211,7 +208,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
                 if (!connStateToast()) {
                     return;
                 }
-                if(GlobalVariable.controlHand==ControlHand.HAND_AMERICA){
+                if(DroneUtils.getControlHand() ==ControlHand.HAND_AMERICA){
                     return;
                 }
                 selectControlHand(01);
@@ -221,7 +218,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
                 if (!connStateToast()) {
                     return;
                 }
-                if(GlobalVariable.controlHand==ControlHand.HAND_CHINA){
+                if(DroneUtils.getControlHand()==ControlHand.HAND_CHINA){
                     return;
                 }
                 selectControlHand(02);
@@ -231,7 +228,7 @@ public class ControlHandModeView extends RelativeLayout implements View.OnClickL
                 if (!connStateToast()) {
                     return;
                 }
-                if(GlobalVariable.controlHand==ControlHand.HAND_JAPAN){
+                if(DroneUtils.getControlHand()==ControlHand.HAND_JAPAN){
                     return;
                 }
                 selectControlHand(03);

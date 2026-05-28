@@ -24,6 +24,7 @@ import com.gdu.demo.flight.pre.adapter.PreFlightStatusAdapter;
 import com.gdu.demo.flight.pre.adapter.TextAdapter;
 import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
 import com.gdu.lib.util.CollectionUtils;
@@ -32,6 +33,7 @@ import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
+import com.gdu.msdk.key.value.bean.ControlHand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -596,8 +598,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.preFlightRockerModeEdit.setOnOptionClickListener((parentId, view, position) ->
                 SingleClickUtil.determineTriggerSingleClick(view, v -> {
                     if (uavUnConnect()) return;
-                    if ((GlobalVariable.controlHand == ControlHand.HAND_AMERICA && position == 0) || (GlobalVariable.controlHand == ControlHand.HAND_CHINA && position == 1)
-                            || (GlobalVariable.controlHand == ControlHand.HAND_JAPAN && position == 2)) {
+                    if ((DroneUtils.getControlHand() == ControlHand.HAND_AMERICA && position == 0) || (DroneUtils.getControlHand() == ControlHand.HAND_CHINA && position == 1)
+                            || (DroneUtils.getControlHand() == ControlHand.HAND_JAPAN && position == 2)) {
                         return;
                     }
                     new CommonDialog.Builder(getSupportFragmentManager())

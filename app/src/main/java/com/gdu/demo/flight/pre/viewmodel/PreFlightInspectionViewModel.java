@@ -755,13 +755,10 @@ public class PreFlightInspectionViewModel extends ViewModel {
         int index = 0;
         if (style == AircraftMappingStyle.STYLE_1) {
             index = 2;
-            GlobalVariable.controlHand = ControlHand.HAND_JAPAN;
         } else if(style == AircraftMappingStyle.STYLE_2){
             index = 0;
-            GlobalVariable.controlHand = ControlHand.HAND_AMERICA;
         } else if(style == AircraftMappingStyle.STYLE_3){
             index = 1;
-            GlobalVariable.controlHand = ControlHand.HAND_CHINA;
         }
        return index;
     }

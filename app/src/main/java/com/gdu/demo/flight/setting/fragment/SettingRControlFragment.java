@@ -18,6 +18,7 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.GeneralDialog;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
+import com.gdu.msdk.key.value.bean.ControlHand;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.remotecontroller.RemoteController;
 
@@ -95,7 +96,6 @@ public class SettingRControlFragment extends Fragment {
                 @Override
                 public void run() {
                     if (error == null) {
-                        GlobalVariable.controlHand = controlHand;
                         mViewBinding.controlHandView.setControlHandPic();
                     } else {
                     }
