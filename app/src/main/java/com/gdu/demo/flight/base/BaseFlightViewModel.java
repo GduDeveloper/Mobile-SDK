@@ -366,7 +366,12 @@ public class BaseFlightViewModel extends BaseViewModel {
                 return;
             }
 
-            if (GlobalVariable.flyDistance > DroneValueConstants.LIMIT_DISTANCE_MIN && distance < GlobalVariable.flyDistance) {
+            CycleFCInfo1 fcInfo1 = IFlightController.get().getFcInfo1().getValue();
+            int flyDistance = 0;
+            if (fcInfo1 != null) {
+                flyDistance = fcInfo1.getFlyDistance();
+            }
+            if (flyDistance > DroneValueConstants.LIMIT_DISTANCE_MIN && distance < flyDistance) {
                 ErrTipBean tipBean = new ErrTipBean();
                 tipBean.setSetType(2);
                 tipBean.setType(6);

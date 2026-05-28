@@ -1,9 +1,9 @@
 package com.gdu.demo.widgetlist.flyState
 
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import com.gdu.msdk.device.component.interfaces.IFlightController
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class FlyStateModel : WidgetModel() {
@@ -17,7 +17,7 @@ class FlyStateModel : WidgetModel() {
     }
 
     private fun updateState() {
-        val distance = GlobalVariable.flyDistance
+        val distance = IFlightController.get.fcInfo1.value?.flyDistance?: 0
         // 相对高度
 
         val height =
