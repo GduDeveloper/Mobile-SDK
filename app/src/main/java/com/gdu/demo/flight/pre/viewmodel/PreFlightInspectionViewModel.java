@@ -22,6 +22,7 @@ import com.gdu.demo.flight.base.BaseRCViewModel;
 import com.gdu.demo.flight.pre.bean.BaseFlightStatusBean;
 import com.gdu.demo.flight.pre.bean.BaseSysStatusBean;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.core.XLogger;
@@ -557,7 +558,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 goHomeHeightLiveData.postValue(INF);
             }
         }else {
-            if (GlobalVariable.isNewHeightLimitStrategy){
+            if (DroneUtils.isNewHeightLimitStrategy){
                 baseViewModel.getLimitHeight();
             }
         }

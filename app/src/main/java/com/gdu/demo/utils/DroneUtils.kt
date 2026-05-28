@@ -15,6 +15,10 @@ object DroneUtils {
     @JvmField
     val isOpenTextEnvironment = false
 
+    // 是否使用新得限高策略
+    @JvmField
+    val isNewHeightLimitStrategy = true
+
     @JvmStatic
     val controlHand: ControlHand
         get() = IGduRCDevice.get.rcControlHand.value?.controlHand?: ControlHand.HAND_AMERICA

@@ -10,6 +10,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.map.SpatialReference;
 import com.gdu.demo.map.geometry.Point;
 import com.gdu.demo.map.utils.JTSUtils;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.msdk.config.DroneValueConstants;
@@ -42,7 +43,6 @@ public class BaseFlightViewModel extends BaseViewModel {
 
 
     private final MutableLiveData<Boolean> homeLocationBeanLiveData;
-    private Boolean isNewHeightLimitStrategy = true;
     /**
      * 是否在编辑限高
      */
@@ -218,7 +218,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             warnTipBean.setIntValue(limitHeight);
             warnTipBeanLiveData.postValue(warnTipBean);
         } else {
-            if (isNewHeightLimitStrategy) {
+            if (DroneUtils.isNewHeightLimitStrategy) {
 
                 if (isOpen) {
                     if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.LIMIT_HEIGHT_MAX) {

@@ -28,6 +28,7 @@ import com.gdu.demo.flight.event.EventConnState;
 import com.gdu.demo.flight.setting.viewmodel.SettingFlyViewModel;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.core.SPUtils;
@@ -127,7 +128,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etHeightLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitHeight.getProgress())));
         } else {
-            if (!GlobalVariable.isNewHeightLimitStrategy) {
+            if (!DroneUtils.isNewHeightLimitStrategy) {
                 mViewBinding.etHeightLimit.setEnabled(false);
                 mViewBinding.sbLimitHeight.setEnabled(false);
             }
@@ -141,7 +142,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             mViewBinding.ivSwitchLimitHeight.setSelected(data.isOpen());
             updateLimitHeightView(data.isOpen());
             isOpenLimitHeight = data.isOpen();
-            if (GlobalVariable.isNewHeightLimitStrategy) {
+            if (DroneUtils.isNewHeightLimitStrategy) {
                 mViewBinding.sbLimitHeight.setEnabled(data.isOpen());
                 mViewBinding.etHeightLimit.setEnabled(data.isOpen());
             }
@@ -575,7 +576,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                 break;
             case R.id.iv_switch_limit_height:
                 // 限高
-                if (!GlobalVariable.isNewHeightLimitStrategy) {
+                if (!DroneUtils.isNewHeightLimitStrategy) {
                     if (!flyViewModel.connStateToast()) {
                         return;
                     }
@@ -760,7 +761,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
         @Override
         public void onStopTrackingTouch(final SeekBar seekBar) {
-            if (!GlobalVariable.isNewHeightLimitStrategy) {
+            if (!DroneUtils.isNewHeightLimitStrategy) {
                 if (!flyViewModel.connStateToast()) {
                     mViewBinding.sbLimitHeight.setProgress(preHeightLimit);
                     mViewBinding.ivSwitchLimitHeight.setSelected(false);

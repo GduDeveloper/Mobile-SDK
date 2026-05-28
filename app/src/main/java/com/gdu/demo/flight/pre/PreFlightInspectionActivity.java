@@ -653,7 +653,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
     private void setHeightLimitSwitch() {
         XLogger.INSTANCE.getAPP().i("setHeightLimitSwitch()");
-        if (!GlobalVariable.isNewHeightLimitStrategy) {
+        if (!DroneUtils.isNewHeightLimitStrategy) {
             if (!IGduDroneDevice.get().isConnected()) {
                 return;
             }
