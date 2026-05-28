@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
@@ -182,7 +183,7 @@ public class FirmwareVersion implements IFirmwareVersion {
      */
     private void getPlanType() {
         printLog("getPlanType()");
-        int planType = SPUtils.getInt(GduEnvConfig.application, SPUtils.USER_LAST_PLANTYPE);
+        int planType = SPUtils.getInstance().getInt(SPUtils.USER_LAST_PLANTYPE);
         mCurrentFlyType = PlanType.get(planType);
         printLog("getPlanType() mCurrentFlyType = " + mCurrentFlyType);
     }
@@ -1647,7 +1648,7 @@ public class FirmwareVersion implements IFirmwareVersion {
             return;
         }
         String codeKey = UpgradeUtils.getVersionKey(GduConfig.FLY_TYPE, mCurrentFlyType.getKey(), key);
-        SPUtils.put(GduEnvConfig.application, codeKey, CommonUtils.convertNull2EmptyStr(value));
+        SPUtils.getInstance().put(codeKey, CommonUtils.convertNull2EmptyStr(value));
     }
 
     /**
@@ -1658,7 +1659,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     private void clearFlyVersion(String key) {
         for (PlanType planType : PlanType.values()) {
             String flyCodeKey = UpgradeUtils.getVersionKey(GduConfig.FLY_TYPE, planType.getKey(), key);
-            SPUtils.put(GduEnvConfig.application, flyCodeKey, "");
+            SPUtils.getInstance().put(flyCodeKey, "");
         }
     }
 

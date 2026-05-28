@@ -15,10 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
-import com.gdu.GlobalVariableTest;
 import com.gdu.common.error.Error;
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -32,29 +29,13 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
-import com.gdu.detect.AIModelState;
-import com.gdu.drone.FirmwareType;
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.ViewUtils;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.login.LoginType;
-import com.gdu.login.UserInfoBeanNew;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.sdk.vision.OnTargetDetectModelListener;
-import com.gdu.sdk.vision.aibox.bean.TargetLabel;
-import com.gdu.socket.GduSocketManager;
-import com.gdu.socketmodel.GduSocketConfig3;
-import com.gdu.util.ByteUtilsLowBefore;
-import com.gdu.util.ChannelUtils;
-import com.gdu.util.ConnectUtil;
-import com.gdu.util.MyConstants;
-import com.gdu.util.ResourceUtil;
-import com.gdu.util.SPUtils;
-import com.gdu.util.TextUtil;
 import com.gdu.lib.util.ThreadHelper;
-import com.gdu.util.TimeUtil;
 import com.google.gson.Gson;
 import com.google.gson.internal.LinkedTreeMap;
 
@@ -135,11 +116,11 @@ public class SettingCommonFragment extends Fragment {
         mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
         ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, GlobalVariable.ads_b_state == 1);
 
-        final boolean isOpenADSB = SPUtils.getBoolean(requireContext(), MyConstants.IS_OPEN_ASD_B);
+        final boolean isOpenADSB = SPUtils.getInstance().getBoolean(MyConstants.IS_OPEN_ASD_B);
         mViewBinding.ivSwitchADSBBtn.setSelected(isOpenADSB);
 
         boolean isShowActiveBtn = false;
-        String loginTypeStr = SPUtils.getString(requireContext(), MyConstants.SAVE_LOGIN_TYPE);
+        String loginTypeStr = SPUtils.getInstance().getString(MyConstants.SAVE_LOGIN_TYPE);
 //        if (LoginType.TYPE_PHONE.getValue().equals(loginTypeStr)) {
 //            final UserInfoBeanNew mLoginInfo = new Gson().fromJson(SPUtils.getString(requireContext(), MyConstants.SAVE_NEW_USER_INFO), UserInfoBeanNew.class);
 //            if (mLoginInfo != null && mLoginInfo.getData() != null && mLoginInfo.getData().getAdmin() != null) {
@@ -158,9 +139,9 @@ public class SettingCommonFragment extends Fragment {
                 + GlobalVariable.flight_arm_lamp_status
                 + "; battery_silence_status = "
                 + GlobalVariable.battery_silence_status);
-        final boolean showRouteHistory = SPUtils.getBoolean(requireContext(), MyConstants.SHOW_ROUTE_HISTORY);
+        final boolean showRouteHistory = SPUtils.getInstance().getBoolean(MyConstants.SHOW_ROUTE_HISTORY);
         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(showRouteHistory);
-        final boolean showImageDebugText = SPUtils.getCustomBoolean(GduEnvConfig.application, MyConstants.SHOW_IMAGE_DEBUG_TEXT, true);
+        final boolean showImageDebugText = SPUtils.getInstance().getBoolean(MyConstants.SHOW_IMAGE_DEBUG_TEXT, true);
     }
 
 
@@ -375,7 +356,7 @@ public class SettingCommonFragment extends Fragment {
         ViewUtils.setViewShowOrHide(mViewBinding.opMapModel, !isHideMapView);
         ViewUtils.setViewShowOrHide(mViewBinding.divMapType, !isHideMapView);
         // 默认0 自动
-        int type = SPUtils.getInt(requireContext(), SPUtils.MAP_TYPE);
+        int type = SPUtils.getInstance().getInt(SPUtils.MAP_TYPE);
         mViewBinding.opMapModel.setIndex(type);
         XLogger.INSTANCE.getAPP().i("MapType  type = " + type);
 
@@ -389,11 +370,11 @@ public class SettingCommonFragment extends Fragment {
                 Toast.makeText(requireContext(), R.string.please_exit_point_fly, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (position == SPUtils.getInt(requireContext(), SPUtils.MAP_TYPE)) {
+            if (position == SPUtils.getInstance().getInt(SPUtils.MAP_TYPE)) {
                 return;
             }
             mViewBinding.opMapModel.setIndex(position);
-            SPUtils.put(requireContext(), SPUtils.MAP_TYPE, position);
+            SPUtils.getInstance().put(SPUtils.MAP_TYPE, position);
             // 切换地图
         });
 
@@ -448,10 +429,10 @@ public class SettingCommonFragment extends Fragment {
                 case R.id.iv_voice_tip:  //音效提示
                     if (mViewBinding.ivVoiceTip.isSelected()) {
                         mViewBinding.ivVoiceTip.setSelected(false);
-                        SPUtils.put(requireContext(), GduConfig.VOICE, false);
+                        SPUtils.getInstance().put(GduConfig.VOICE, false);
                     } else {
                         mViewBinding.ivVoiceTip.setSelected(true);
-                        SPUtils.put(requireContext(), GduConfig.VOICE, true);
+                        SPUtils.getInstance().put(GduConfig.VOICE, true);
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
@@ -459,7 +440,7 @@ public class SettingCommonFragment extends Fragment {
                 case R.id.iv_northPointer:  //指北针
                     boolean selected = !mViewBinding.ivNorthPointer.isSelected();
                     mViewBinding.ivNorthPointer.setSelected(selected);
-                    SPUtils.put(requireContext(), GduConfig.NORTH_POINTER, selected);
+                    SPUtils.getInstance().put(GduConfig.NORTH_POINTER, selected);
                     EventBus.getDefault().post(new NorthPointerView.EventNorthPointer(selected));
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
@@ -468,10 +449,10 @@ public class SettingCommonFragment extends Fragment {
                 case R.id.iv_poseModeSwitchBtn:
                     if (mViewBinding.ivPoseModeSwitchBtn.isSelected()) {
                         mViewBinding.ivPoseModeSwitchBtn.setSelected(false);
-                        SPUtils.put(requireContext(), GduConfig.POSE_TIP, false);
+                        SPUtils.getInstance().put(GduConfig.POSE_TIP, false);
                     } else {
                         mViewBinding.ivPoseModeSwitchBtn.setSelected(true);
-                        SPUtils.put(requireContext(), GduConfig.POSE_TIP, true);
+                        SPUtils.getInstance().put(GduConfig.POSE_TIP, true);
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
@@ -487,18 +468,18 @@ public class SettingCommonFragment extends Fragment {
 
                 case R.id.iv_switchADSBBtn:
                     mViewBinding.ivSwitchADSBBtn.setSelected(!mViewBinding.ivSwitchADSBBtn.isSelected());
-                    SPUtils.put(requireContext(), MyConstants.IS_OPEN_ASD_B, mViewBinding.ivSwitchADSBBtn.isSelected());
+                    SPUtils.getInstance().put(MyConstants.IS_OPEN_ASD_B, mViewBinding.ivSwitchADSBBtn.isSelected());
                     break;
 
                 // 显示飞行轨迹
                 case R.id.iv_ShowRouteHistorySwitchBtn:
                     if (mViewBinding.ivShowRouteHistorySwitchBtn.isSelected()) {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(false);
-                        SPUtils.put(requireContext(), MyConstants.SHOW_ROUTE_HISTORY, false);
+                        SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, false);
                         GlobalVariable.showRouteHistory = false;
                     } else {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(true);
-                        SPUtils.put(requireContext(), MyConstants.SHOW_ROUTE_HISTORY, true);
+                        SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, true);
                         GlobalVariable.showRouteHistory = true;
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
@@ -533,15 +514,15 @@ public class SettingCommonFragment extends Fragment {
 
     public void initShow() {
         //音效提示开关
-        final boolean aBoolean = SPUtils.getTrueBoolean(requireContext(), GduConfig.VOICE);
+        final boolean aBoolean = SPUtils.getInstance().getBoolean(GduConfig.VOICE, true);
         mViewBinding.ivVoiceTip.setSelected(aBoolean);
         // 指北针开关 默认不开启
-        mViewBinding.ivNorthPointer.setSelected(SPUtils.getBoolean(requireContext(), GduConfig.NORTH_POINTER));
+        mViewBinding.ivNorthPointer.setSelected(SPUtils.getInstance().getBoolean(GduConfig.NORTH_POINTER));
         // 姿态模式持续语音提示开关
-        final boolean isOpenPoseTip = SPUtils.getTrueBoolean(requireContext(), GduConfig.POSE_TIP);
+        final boolean isOpenPoseTip = SPUtils.getInstance().getBoolean(GduConfig.POSE_TIP, true);
         mViewBinding.ivPoseModeSwitchBtn.setSelected(isOpenPoseTip);
 
-        final boolean isCompress = SPUtils.getBoolean(requireContext(), GduConfig.Live_Compress);
+        final boolean isCompress = SPUtils.getInstance().getBoolean(GduConfig.Live_Compress);
         ChannelUtils.setupSn(View.GONE, mViewBinding.rlSn, mViewBinding.rlSnRC, mViewBinding.gimbalSn, mViewBinding.batterySn);
     }
 

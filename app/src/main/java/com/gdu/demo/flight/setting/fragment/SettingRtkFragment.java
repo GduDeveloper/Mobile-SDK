@@ -20,13 +20,11 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
 import com.gdu.drone.RTKNetConnectStatus;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.SPUtils;
-import com.gdu.util.StringUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.concurrent.TimeUnit;
@@ -193,7 +191,7 @@ public class SettingRtkFragment extends Fragment {
             GlobalVariable.sBSRTKStatus = 0;
         }
         mRTKServiceList = getResources().getStringArray(R.array.rtk_service_array_onboard);
-        boolean isOpen = SPUtils.getTrueBoolean(requireContext(), SPUtils.RTK_SWITCH);
+        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
         if (isOpen) {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -321,27 +319,27 @@ public class SettingRtkFragment extends Fragment {
      */
     private void initParam() {
         XLogger.INSTANCE.getAPP().i("initParam()");
-        String ip = SPUtils.getString(getContext(), SPUtils.RTK_IP);
+        String ip = SPUtils.getInstance().getString(SPUtils.RTK_IP);
         if (!StringUtils.isEmptyString(ip)) {
             binding.ipAddressEdit.setText(ip);
         } else {
             binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
         }
-        String port = SPUtils.getString(getContext(), SPUtils.RTK_PORT);
+        String port = SPUtils.getInstance().getString(SPUtils.RTK_PORT);
         if (!StringUtils.isEmptyString(port)) {
             binding.portEdit.setText(port);
         } else {
             binding.portEdit.setText("8002");
         }
-        String account = SPUtils.getString(getContext(), SPUtils.RTK_ACCOUNT);
+        String account = SPUtils.getInstance().getString(SPUtils.RTK_ACCOUNT);
         if (!StringUtils.isEmptyString(account)) {
             binding.accountEdit.setText(account);
         }
-        String password = SPUtils.getString(getContext(), SPUtils.RTK_PASSWORD);
+        String password = SPUtils.getInstance().getString(SPUtils.RTK_PASSWORD);
         if (!StringUtils.isEmptyString(password)) {
             binding.passwordEdit.setText(password);
         }
-        String mp = SPUtils.getString(getContext(), SPUtils.RTK_MOUNT_POINT);
+        String mp = SPUtils.getInstance().getString(SPUtils.RTK_MOUNT_POINT);
         if (!StringUtils.isEmptyString(mp)) {
             binding.mountPointEdit.setText(mp);
         } else {
@@ -488,13 +486,13 @@ public class SettingRtkFragment extends Fragment {
 
     private void breakRTK() {
         rtk.disconnectRtk();
-        SPUtils.put(getContext(), SPUtils.RTK_CONNECT_STATE, false);
+        SPUtils.getInstance().put(SPUtils.RTK_CONNECT_STATE, false);
         lastChangeRtkTime = System.currentTimeMillis();
     }
 
     private void setRtkSwitch() {
 
-        boolean isOpen = SPUtils.getTrueBoolean(getContext(), SPUtils.RTK_SWITCH);
+        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
         //当前开启则关闭
         if (isOpen) {
             binding.rtkSwitchView.setSelected(false);
@@ -502,7 +500,7 @@ public class SettingRtkFragment extends Fragment {
             binding.rtkStateView.setVisibility(View.GONE);
             binding.rtkParamLayout.setVisibility(View.GONE);
             closeRTK();
-            SPUtils.put(getContext(), SPUtils.RTK_SWITCH, false);
+            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, false);
         } else {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -513,7 +511,7 @@ public class SettingRtkFragment extends Fragment {
             } else {
                 binding.rtkParamLayout.setVisibility(View.GONE);
             }
-            SPUtils.put(getContext(), SPUtils.RTK_SWITCH, true);
+            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, true);
         }
     }
 

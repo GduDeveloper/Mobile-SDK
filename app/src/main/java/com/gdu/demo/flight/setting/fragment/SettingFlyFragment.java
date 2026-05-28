@@ -30,6 +30,7 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
 
@@ -409,7 +410,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
 
         // dh大华的先默认BDS
         if (ChannelUtils.isDahua(getContext()) || ChannelUtils.isDahuaBDS(getContext())) {
-            GlobalVariable.sGNSSType = (byte) SPUtils.getCustomInt(GduEnvConfig.application, "sGNSSType", 6);
+            GlobalVariable.sGNSSType = (byte) SPUtils.getInstance().getInt("sGNSSType", 6);
         }
         if (GlobalVariable.sGNSSType == 6) {
             mViewBinding.ovGnss.setIndex(1);

@@ -28,6 +28,7 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.ViewUtils;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
@@ -61,8 +62,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         viewModel = new ViewModelProvider(this).get(PreFlightInspectionViewModel.class);
         viewModel.init(this);
 
-        final int mLimitHeightValue = SPUtils.getInt(this, SPUtils.LAST_LIMIT_HEIGHT);
-        final int mLimitDistanceValue = SPUtils.getInt(this, SPUtils.LAST_LIMIT_DISTANCE);
+        final int mLimitHeightValue = SPUtils.getInstance().getInt(SPUtils.LAST_LIMIT_HEIGHT);
+        final int mLimitDistanceValue = SPUtils.getInstance().getInt(SPUtils.LAST_LIMIT_DISTANCE);
         if (mLimitHeightValue == 0) {
             preLimitHeightValue = MyConstants.LIMIT_HEIGHT_DEFAULT;
         } else if (mLimitHeightValue < MyConstants.LIMIT_HEIGHT_MIN) {
@@ -834,7 +835,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
     private void closeOrShowRadar(boolean isShow) {
         GlobalVariable.hadShowObstacle = isShow;
-        SPUtils.put(this, GduConfig.ISSHOWROCKER, isShow);
+        SPUtils.getInstance().put(GduConfig.ISSHOWROCKER, isShow);
     }
 
     private void switchVisionObstacle(boolean isOn) {

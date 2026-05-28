@@ -6,10 +6,8 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
-import com.gdu.config.GduConfig
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
-import com.gdu.util.SPUtils
+import com.gdu.lib.util.core.SPUtils
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -32,7 +30,7 @@ class NorthPointerView @JvmOverloads constructor(
     private val imgInverse = ResourcesCompat.getDrawable(resources, R.drawable.north_pointer_inverse, null)
     private var curImg: Drawable? = null
 
-    private var isShow = SPUtils.getBoolean(getContext(), GduConfig.NORTH_POINTER)
+    private var isShow = SPUtils.getInstance().getBoolean(GduConfig.NORTH_POINTER)
 
 
     /*

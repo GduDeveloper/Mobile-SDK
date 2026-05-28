@@ -10,6 +10,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -128,7 +129,7 @@ public class SettingSDRViewModel extends BaseViewModel {
                 @Override
                 public void onSuccess(Boolean aBoolean) {
                     GlobalVariable.BackAirLinkUrl = setIp;
-                    SPUtils.put(GduEnvConfig.application, SPUtils.BACK_AIR_LINK_URL,  GlobalVariable.BackAirLinkUrl);
+                    SPUtils.getInstance().put(SPUtils.BACK_AIR_LINK_URL,  GlobalVariable.BackAirLinkUrl);
                     toastLiveData.postValue(R.string.string_set_success);
                 }
 

@@ -24,6 +24,7 @@ import com.gdu.demo.flight.setting.viewmodel.SettingSDRViewModel;
 import com.gdu.drone.AirlinkType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -145,8 +146,8 @@ public class SettingImageChannelFragment extends Fragment {
             }
         });
 
-        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInt(getContext(), SPUtils.BACK_HDMI_CAST_POSITION));
-        mViewBinding.selectWifiCast.setIndex(SPUtils.getInt(getContext(), SPUtils.BACK_WIFI_CAST_POSITION));
+        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_HDMI_CAST_POSITION));
+        mViewBinding.selectWifiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_WIFI_CAST_POSITION));
 
         mViewBinding.selectHdmiCast.setOnOptionClickListener((parentId, view, position) -> {
             switchHdmiCastType(position);
@@ -175,7 +176,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchWifiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.put(getContext(), SPUtils.BACK_WIFI_CAST_POSITION,position);
+            SPUtils.getInstance().put(SPUtils.BACK_WIFI_CAST_POSITION,position);
             changeSelectIndex(WIFI_CAST,position);
         });
     }
@@ -194,7 +195,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchHdmiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.put(getContext(), SPUtils.BACK_HDMI_CAST_POSITION, position);
+            SPUtils.getInstance().put(SPUtils.BACK_HDMI_CAST_POSITION, position);
             changeSelectIndex(HDMI_CAST,position);
         });
     }

@@ -5,24 +5,17 @@ import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GduAppEnv;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
 import com.gdu.demo.flight.base.ErrTipBean;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
-import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.flightcontroller.FlightController;
-import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.CommonUtils;
-import com.gdu.util.ChannelUtils;
-import com.gdu.util.MyConstants;
-import com.gdu.util.SPUtils;
 
 /**
  * @author wuqb
@@ -327,7 +320,7 @@ public class SettingFlyViewModel extends BaseViewModel {
         // 大华渠道S200系列软件支持单北斗模式(目前会切换失败 但是需要返回成功，做个假的支持)
         if ((ChannelUtils.isDahua(context) || ChannelUtils.isDahuaBDS(context)) && IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
             GlobalVariable.sGNSSType = isOpen;
-            SPUtils.put(GduEnvConfig.application, "sGNSSType", (int) isOpen);
+            SPUtils.getInstance().put("sGNSSType", (int) isOpen);
             toastLiveData.setValue(R.string.string_set_success);
             gnssLiveData.setValue(position);
         } else {
