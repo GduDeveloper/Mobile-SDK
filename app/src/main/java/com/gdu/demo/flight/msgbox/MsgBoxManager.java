@@ -76,7 +76,7 @@ public class MsgBoxManager {
                     CommonUtils.listAddAvoidNull(mNewWarnBeans, mWarnBean);
                 }
             }
-            if (CommonUtils.isEmptyList(mOldWarnBeans)) {//如果展示的警告列表为空，将mNewWarnBeans添加到列表中
+            if (CollectionUtils.isEmptyList(mOldWarnBeans)) {//如果展示的警告列表为空，将mNewWarnBeans添加到列表中
                 currentShowIndex = 0;
                 CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
             } else {
@@ -104,7 +104,7 @@ public class MsgBoxManager {
                     CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
                 }
             }
-            hadErr = !CommonUtils.isEmptyList(mOldWarnBeans);
+            hadErr = !CollectionUtils.isEmptyList(mOldWarnBeans);
         } else {//飞行器未连接，认为没有警告信息，不展示警告
             hadErr = false;
         }

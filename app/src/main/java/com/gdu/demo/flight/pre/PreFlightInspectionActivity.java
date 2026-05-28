@@ -29,6 +29,7 @@ import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
@@ -421,11 +422,11 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             // 是否开启限高
             if (mViewBinding.preFlightLimitHeightSwitch.isSelected()) {
                 isErrData = TextUtils.isEmpty(inputStr)
-                        || !CommonUtils.isNumberInt(inputStr)
+                        || !NumberUtils.isNumeric(inputStr)
                         || TextUtils.isEmpty(preHeightStr)
-                        || !CommonUtils.isNumberInt(preHeightStr);
+                        || !NumberUtils.isNumeric(preHeightStr);
             } else {
-                isErrData = TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr);
+                isErrData = TextUtils.isEmpty(inputStr) || !NumberUtils.isNumeric(inputStr);
             }
             // 是否未输入数据或数据数据格式错误
             if (isErrData) {
@@ -480,7 +481,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 return false;
             }
             final String inputStr = v.getText().toString();
-            if (TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
+            if (TextUtils.isEmpty(inputStr) || !NumberUtils.isNumeric(inputStr)) {
                 showToast(getResources().getString(R.string.input_error));
                 return false;
             }
@@ -576,7 +577,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 return false;
             }
             final String inputStr = v.getText().toString();
-            if (TextUtils.isEmpty(inputStr) || !CommonUtils.isNumberInt(inputStr)) {
+            if (TextUtils.isEmpty(inputStr) || !NumberUtils.isNumeric(inputStr)) {
                 showToast(getResources().getString(R.string.Label_SettingFail));
                 return false;
             }
@@ -796,7 +797,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         if (uavUnConnect()) return;
         // 视觉避障异常时无法开启
         if (!mViewBinding.ivVisionObstacleSwitch.isSelected()
-                && !CommonUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
+                && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
             String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(this));
             new CommonDialog.Builder(getSupportFragmentManager()).setTitle(getString(R.string.string_vision_error))
                     .setContent(errStr)

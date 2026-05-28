@@ -64,7 +64,7 @@ public class GimbalControlTopOptItemPopView extends PopupWindow {
         Log.i("updateData","updateData() dataSize = " + data.size() + "; selectIndex = " + selectIndex);
         mBeanList.clear();
         CollectionUtils.listAddAllAvoidNPE(mBeanList, data);
-        if (mGimbalControlTopOptAdapter == null || CommonUtils.isEmptyList(mBeanList)) {
+        if (mGimbalControlTopOptAdapter == null || CollectionUtils.isEmptyList(mBeanList)) {
             return;
         }
         for (int i = 0; i < mBeanList.size(); i++) {

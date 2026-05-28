@@ -22,6 +22,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingVisionBinding;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.drone.SwitchType;
+import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
@@ -254,7 +255,7 @@ public class SettingVisionFragment extends Fragment {
 
                     // 视觉避障异常时无法开启
                     if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
-                            && !CommonUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
+                            && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
                         String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
                         Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
                         return;
