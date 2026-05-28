@@ -21,6 +21,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
 import com.gdu.drone.RTKNetConnectStatus;
+import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.gdu.sdk.util.CommonUtils;
@@ -559,8 +560,13 @@ public class SettingRtkFragment extends Fragment {
         } else if (mLastRTKType == 3) {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
-
-        rtk.connectRtk(stationSource, null, new GduRtkManager.OnRtkConnectListener() {
+        NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
+        networkServiceSettings.setMountPoint(mMountPoint);
+        networkServiceSettings.setPassword(mPassword);
+        networkServiceSettings.setPort(Integer.parseInt(mPort));
+        networkServiceSettings.setServerAddress(mIP);
+        networkServiceSettings.setUserName(mAccount);
+        rtk.connectRtk(stationSource, networkServiceSettings, new GduRtkManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {
