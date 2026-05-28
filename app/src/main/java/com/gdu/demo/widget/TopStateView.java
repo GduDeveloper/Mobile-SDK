@@ -15,6 +15,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.TopStateViewLayoutBinding;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.MultiTimerManager;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.key.value.CycleRadarInfo;
@@ -113,7 +114,7 @@ public class TopStateView  extends ConstraintLayout {
             return;
         }
         binding.ivLock.setVisibility(View.VISIBLE);
-        if (GlobalVariable.planeHadLock) {
+        if (DroneUtils.getPlaneHadLock()) {
             binding.ivLock.setImageResource(R.drawable.plane_lock);
         } else {
             binding.ivLock.setImageResource(R.drawable.plane_unlock);

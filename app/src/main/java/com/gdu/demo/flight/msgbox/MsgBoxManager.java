@@ -6,6 +6,7 @@ import com.gdu.beans.WarnBean;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.sdk.util.CommonUtils;
@@ -152,7 +153,7 @@ public class MsgBoxManager {
             final StringBuilder sb = new StringBuilder();
             if (GlobalVariable.droneFlyState == 1) {
                 sb.append(mActivity.getString(R.string.Label_Good2Go));
-            } else if (!GlobalVariable.planeHadLock) { //bug-3911-shang-20171111 室内未解锁，状态栏显示“正常飞行中”
+            } else if (!DroneUtils.getPlaneHadLock()) { //bug-3911-shang-20171111 室内未解锁，状态栏显示“正常飞行中”
                 sb.append(mImportType == 2 ? mActivity.getString(R.string.Label_InFlight_Task) : mActivity.getString(R.string.Label_InFlight_Manual));
             }
 

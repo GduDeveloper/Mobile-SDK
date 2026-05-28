@@ -17,6 +17,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
@@ -195,7 +196,7 @@ public class IMUCalibrationActivity extends FragmentActivity implements View.OnC
             Toast.makeText(this, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!GlobalVariable.planeHadLock) {
+        if (!DroneUtils.getPlaneHadLock()) {
             Toast.makeText(this, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
             return;
         }

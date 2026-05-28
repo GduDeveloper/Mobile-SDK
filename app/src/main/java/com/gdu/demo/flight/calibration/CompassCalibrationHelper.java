@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.gdu.config.GlobalVariable;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 
@@ -15,9 +16,9 @@ import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 public class CompassCalibrationHelper {
     public static void jumpMagnetometerActivity(Context context) {
         // 飞机解锁或不在地面上都不能进行校磁
-        XLogger.INSTANCE.getAPP().i("jumpMagnetometerActivity() planeHadLock = " + GlobalVariable.planeHadLock
+        XLogger.INSTANCE.getAPP().i("jumpMagnetometerActivity() planeHadLock = " + DroneUtils.getPlaneHadLock()
                 + "; droneFlyState = " + GlobalVariable.droneFlyState);
-        if (!GlobalVariable.planeHadLock || GlobalVariable.droneFlyState != 1) {
+        if (!DroneUtils.getPlaneHadLock() || GlobalVariable.droneFlyState != 1) {
             return;
         }
         Intent intent = getRectifyMagnetomterIntent(context);

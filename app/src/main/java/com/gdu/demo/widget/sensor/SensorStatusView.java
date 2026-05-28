@@ -25,6 +25,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.calibration.CompassCalibrationHelper;
 import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.rxjava.rxlife.RxLife;
 
@@ -206,7 +207,7 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
                 if (!connStateToast()){
                     return;
                 }
-                if (!GlobalVariable.planeHadLock) {
+                if (!DroneUtils.getPlaneHadLock()) {
                     Toast.makeText(mContext, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -218,7 +219,7 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
                 if (!connStateToast()){
                     return;
                 }
-                if (!GlobalVariable.planeHadLock) {
+                if (!DroneUtils.getPlaneHadLock()) {
                     Toast.makeText(mContext, R.string.canNotCheckOnUnLockFly, Toast.LENGTH_SHORT).show();
                     return;
                 }
