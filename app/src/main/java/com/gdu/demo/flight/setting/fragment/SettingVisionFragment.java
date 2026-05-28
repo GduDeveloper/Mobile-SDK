@@ -21,6 +21,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingVisionBinding;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.SwitchType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.NumberUtils;
@@ -30,6 +31,7 @@ import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleRadarInfo;
+import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -261,10 +263,10 @@ public class SettingVisionFragment extends Fragment {
                         return;
                     }
 
-                    if (GlobalVariable.flyMode == 0 && !mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
+                    if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
                         Toast.makeText(requireContext(), R.string.Label_AttitudeModel_obstaticIsOff, Toast.LENGTH_SHORT).show();
                         return;
-                    } else if (GlobalVariable.flyMode == 1 && GlobalVariable.DroneFlyMode == 0
+                    } else if (DroneUtils.getFlyModel() == FlyMode.GPS_SPORT
                             && !mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
                         Toast.makeText(requireContext(), R.string.Label_SportModel_obstaticIsOff, Toast.LENGTH_SHORT).show();
                         return;

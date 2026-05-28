@@ -3,6 +3,7 @@ package com.gdu.demo.utils
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.interfaces.IGduRCDevice
 import com.gdu.msdk.key.value.bean.ControlHand
+import com.gdu.msdk.key.value.bean.FlyMode
 
 object DroneUtils {
 
@@ -22,5 +23,9 @@ object DroneUtils {
     @JvmStatic
     val controlHand: ControlHand
         get() = IGduRCDevice.get.rcControlHand.value?.controlHand?: ControlHand.HAND_AMERICA
+
+    @JvmStatic
+    val flyModel: FlyMode
+        get() = IFlightController.get.fcInfo1.value?.flyModel?: FlyMode.ATTITUDE
 
 }

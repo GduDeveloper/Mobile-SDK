@@ -73,7 +73,7 @@ public class MsgBoxManager {
             for (Map.Entry<Long, WarnBean> mEntry : mWarnTable.entrySet()) {
                 WarnBean mWarnBean = mEntry.getValue();
                 if (mWarnBean.isErr) {
-                    CommonUtils.listAddAvoidNull(mNewWarnBeans, mWarnBean);
+                    CollectionUtils.listAddAvoidNull(mNewWarnBeans, mWarnBean);
                 }
             }
             if (CollectionUtils.isEmptyList(mOldWarnBeans)) {//如果展示的警告列表为空，将mNewWarnBeans添加到列表中

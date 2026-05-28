@@ -19,6 +19,7 @@ import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.MultiTimerManager;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.key.value.CycleRadarInfo;
+import com.gdu.msdk.key.value.bean.FlyMode;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -93,11 +94,11 @@ public class TopStateView  extends ConstraintLayout {
             return;
         }
         //  需要显示避障的模式
-        boolean isShowRadarModel = (GlobalVariable.flyMode == 1 && GlobalVariable.DroneFlyMode == 1)
-                || GlobalVariable.flyMode == 4 || GlobalVariable.flyMode == 5
+        boolean isShowRadarModel = (DroneUtils.getFlyModel().isGpsMode() && DroneUtils.getFlyModel() == FlyMode.GPS_NORMAL)
+                || DroneUtils.getFlyModel() == FlyMode.VISION || DroneUtils.getFlyModel() == FlyMode.TRIPOD
                 || GlobalVariable.backState == 2 || GlobalVariable.backObstacleState == 1
                 || GlobalVariable.backObstacleState == 2;
-        boolean isDroneAttitudeModel = GlobalVariable.flyMode == 0;//是否是姿态模式
+        boolean isDroneAttitudeModel = DroneUtils.getFlyModel() == FlyMode.ATTITUDE;//是否是姿态模式
         isShowRadarModel = isShowRadarModel && !isDroneAttitudeModel;
         if (isShowRadarModel) {
             CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
@@ -128,19 +129,19 @@ public class TopStateView  extends ConstraintLayout {
             return;
         }
         binding.tvSportMode.setVisibility(VISIBLE);
-        if (GlobalVariable.flyMode == 0) {//调整到姿态模式了
+        if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE) {//调整到姿态模式了
             binding.tvSportMode.setText("A");
-        } else if (GlobalVariable.flyMode == 4) {
+        } else if (DroneUtils.getFlyModel() == FlyMode.VISION) {
             binding.tvSportMode.setText("V");
-        } else if (GlobalVariable.flyMode == 5) {
+        } else if (DroneUtils.getFlyModel() == FlyMode.TRIPOD) {
             binding.tvSportMode.setText("T");
-        } else if (GlobalVariable.flyMode == 1) {
-            if (GlobalVariable.DroneFlyMode == 0) {
+        } else if (DroneUtils.getFlyModel().isGpsMode()) {
+            if (DroneUtils.getFlyModel() == FlyMode.GPS_SPORT) {
                 binding.tvSportMode.setText("S");
             } else {
                 binding.tvSportMode.setText("P");
             }
-        } else if (GlobalVariable.flyMode == 6) {
+        } else if (DroneUtils.getFlyModel() == FlyMode.VI) {
             binding.tvSportMode.setText("VI");
         }
     }

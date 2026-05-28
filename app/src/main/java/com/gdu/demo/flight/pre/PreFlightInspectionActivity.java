@@ -36,6 +36,7 @@ import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.msdk.key.value.bean.ControlHand;
+import com.gdu.msdk.key.value.bean.FlyMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -808,10 +809,10 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         }
 
 
-        if (GlobalVariable.flyMode == 0 && !mViewBinding.ivVisionObstacleSwitch.isSelected()) {
+        if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mViewBinding.ivVisionObstacleSwitch.isSelected()) {
             showToast(getString(R.string.Label_AttitudeModel_obstaticIsOff));
             return;
-        } else if (GlobalVariable.flyMode == 1 && GlobalVariable.DroneFlyMode == 0
+        } else if (DroneUtils.getFlyModel() == FlyMode.GPS_SPORT
                 && !mViewBinding.ivVisionObstacleSwitch.isSelected()) {
             showToast(getString(R.string.Label_SportModel_obstaticIsOff));
             return;

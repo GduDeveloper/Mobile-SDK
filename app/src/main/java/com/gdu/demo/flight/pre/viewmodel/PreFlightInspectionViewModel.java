@@ -28,6 +28,7 @@ import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
@@ -242,16 +243,16 @@ public class PreFlightInspectionViewModel extends ViewModel {
         if(!IGduDroneDevice.get().isConnected()){
             modeStr = "---";
         }else {
-            if (GlobalVariable.flyMode == 0) {
+            if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE) {
                 modeStr = context.getResources().getString(R.string.Label_FlyMode_AGear);
                 judgeIsGetVisionInfo(bean.getContent(), modeStr);
-            } else if (GlobalVariable.flyMode == 4) {
+            } else if (DroneUtils.getFlyModel() == FlyMode.VISION) {
                 modeStr = context.getResources().getString(R.string.Label_FlyMode_VGear);
                 judgeIsGetVisionInfo(bean.getContent(), modeStr);
-            } else if (GlobalVariable.flyMode == 5) {
+            } else if (DroneUtils.getFlyModel() == FlyMode.TRIPOD) {
                 modeStr = context.getResources().getString(R.string.Label_FlyMode_TGear);
                 judgeIsGetVisionInfo(bean.getContent(), modeStr);
-            } else if (GlobalVariable.DroneFlyMode == 0) {
+            } else if (DroneUtils.getFlyModel() == FlyMode.GPS_SPORT) {
                 modeStr = context.getResources().getString(R.string.Label_FlyMode_FGear);
                 judgeIsGetVisionInfo(bean.getContent(), modeStr);
             } else {
