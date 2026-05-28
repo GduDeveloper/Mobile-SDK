@@ -594,7 +594,7 @@ public class SettingVisionFragment extends Fragment {
 
     private void initSwitchBtn() {
         //当视觉避障关闭时进入该界面雷达图关闭    余浩
-        mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && GlobalVariable.DroneFlyMode != 0);
+        mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && DroneUtils.getFlyModel() != FlyMode.ATTITUDE);
         changeObserveTipVisibility(mVisionBinding.ivSwitchVisionObstacle.isSelected());
     }
 
