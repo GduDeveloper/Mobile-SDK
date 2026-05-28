@@ -19,7 +19,9 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.GimbalType;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 
@@ -444,7 +446,8 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             if (!checkDroneConnState()) {//恢复云台默认设置
                 return;
             }
-            if (GlobalVariable.gimbalType == GimbalType.ByrdT_None_Zoom) {
+            GimbalType gimbalType = IGimbal.get().getGimbalType();
+            if (gimbalType == GimbalType.ByrdT_None_Zoom) {
                 showToast(R.string.Label_NoHolder);
                 return;
             }
@@ -476,7 +479,8 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             if (!checkDroneConnState()) {
                 return;
             }
-            if (GlobalVariable.gimbalType == GimbalType.ByrdT_None_Zoom) {
+            GimbalType gimbalType = IGimbal.get().getGimbalType();
+            if (gimbalType == GimbalType.ByrdT_None_Zoom) {
                 showToast(R.string.Label_NoHolder);
                 return;
             }

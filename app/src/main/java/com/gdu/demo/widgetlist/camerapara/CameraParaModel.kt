@@ -5,7 +5,7 @@ import com.gdu.demo.utils.CameraUtil
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
-import com.gdu.util.GimbalUtil
+import com.gdu.msdk.device.component.interfaces.IGimbal
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class CameraParaModel: WidgetModel() {
@@ -20,7 +20,7 @@ class CameraParaModel: WidgetModel() {
 
     private fun updateState() {
         val sdCardState = SDCardState()
-        val isMultiSDCard = CameraUtil.isSupportMultiSDCardGimbal(GlobalVariable.gimbalType)
+        val isMultiSDCard = CameraUtil.isSupportMultiSDCardGimbal(IGimbal.get.gimbalType)
         val vlStatus = GimbalUtil.checkVLSDCardStatus()
         val irState = GimbalUtil.checkIRSDCardStatus();
         sdCardState.isMultiSDCard = isMultiSDCard

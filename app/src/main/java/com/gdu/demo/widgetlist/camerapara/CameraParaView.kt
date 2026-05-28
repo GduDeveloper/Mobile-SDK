@@ -7,10 +7,11 @@ import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutCameraParaBinding
 import com.gdu.demo.utils.CameraUtil
+import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import com.gdu.msdk.device.component.interfaces.IGimbal
 import com.gdu.sdk.camera.Camera
 import com.gdu.sdk.products.Aircraft
-import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.ux.core.extension.getString
 import java.math.BigDecimal
 import java.math.RoundingMode
@@ -71,16 +72,16 @@ class CameraParaView @JvmOverloads constructor(
         when (data) {
             is CameraParaValue ->{
 
-
+                val gimbalType = IGimbal.get.gimbalType
                 if (GlobalVariable.sCameraLightType.toInt() == 2 || GlobalVariable.sCameraLightType.toInt() == 5 || GlobalVariable.sCameraLightType.toInt() == 6) {
                     binding.viewEVGroup.visibility = VISIBLE
                     binding.viewISOGroup.visibility =
-                        if (CameraUtil.isSupportISOGimbal(GlobalVariable.gimbalType)) VISIBLE else GONE
+                        if (CameraUtil.isSupportISOGimbal(gimbalType)) VISIBLE else GONE
                     binding.viewESGroup.visibility =
-                        if (CameraUtil.isSupportESGimbal(GlobalVariable.gimbalType)) VISIBLE else GONE
+                        if (CameraUtil.isSupportESGimbal(gimbalType)) VISIBLE else GONE
                     binding.viewAutoSwitchGroup.visibility =
-                        if (CameraUtil.isSupportAutoSwitchGimbal(GlobalVariable.gimbalType)) VISIBLE else GONE
-                    binding.ivAELockBtn.setVisibility(if (CameraUtil.isSupportAELockGimbal(GlobalVariable.gimbalType)) VISIBLE else GONE)
+                        if (CameraUtil.isSupportAutoSwitchGimbal(gimbalType)) VISIBLE else GONE
+                    binding.ivAELockBtn.setVisibility(if (CameraUtil.isSupportAELockGimbal(gimbalType)) VISIBLE else GONE)
                 } else {
                     binding.viewEVGroup.visibility = GONE
                     binding.viewISOGroup.visibility = GONE
@@ -94,10 +95,10 @@ class CameraParaView @JvmOverloads constructor(
                 binding.tvIsoSetContent.text = CameraUtil.getISODisplayByValue(context)
 
                 //快门
-                val esStr = CameraUtil.getESNameByValue(GlobalVariable.gimbalType, GlobalVariable.lightESValue, true);
+                val esStr = CameraUtil.getESNameByValue(gimbalType, GlobalVariable.lightESValue, true);
                 binding.tvShutterSetContent.text = esStr
 
-                val ev = CameraUtil.getEVNameByValue(context, GlobalVariable.gimbalType, GlobalVariable.lightEvValue)
+                val ev = CameraUtil.getEVNameByValue(context, gimbalType, GlobalVariable.lightEvValue)
                 binding.tvEvSetContent.text = ev
 
                 binding.ivAELockBtn.isSelected = data.aeLockValue != 1
@@ -171,6 +172,7 @@ class CameraParaView @JvmOverloads constructor(
      *   type 1 :iso 2 shutter 3 ev
      */
     fun showPopWindow(type: Int) {
+        val gimbalType = IGimbal.get.gimbalType
         popWindow = GimbalControlTopOptItemPopView(context, type)
         popWindow.setListener{ adapter, type, position ->
             val bean = adapter.getItem(position) as GimbalControlTopOptBean
@@ -194,22 +196,22 @@ class CameraParaView @JvmOverloads constructor(
         when (type) {
             1 -> {
                 val isoData = getISOData()
-                selectIndex = CameraUtil.getISONameIndexByValue(GlobalVariable.gimbalType, GlobalVariable.lightISOValue.toString())
+                selectIndex = CameraUtil.getISONameIndexByValue(gimbalType, GlobalVariable.lightISOValue.toString())
                 popWindow.updateData(isoData, selectIndex)
                 popWindow.showAsDropDown(binding.viewISOOver, 0, 0)
             }
 
             2 -> {
                 val mShutterData = getShutterData()
-                val esStr = CameraUtil.getESNameByValue(GlobalVariable.gimbalType, GlobalVariable.lightESValue, true)
-                selectIndex = CameraUtil.getESNameIndexByValue(GlobalVariable.gimbalType, esStr)
+                val esStr = CameraUtil.getESNameByValue(gimbalType, GlobalVariable.lightESValue, true)
+                selectIndex = CameraUtil.getESNameIndexByValue(gimbalType, esStr)
                 popWindow.updateData(mShutterData, selectIndex)
                 popWindow.showAsDropDown(binding.viewShutterOver, 0, 0)
             }
 
             3 -> {
                 val evData = getEvData()
-                selectIndex = CameraUtil.getEVValueIndexByValue(GlobalVariable.gimbalType, GlobalVariable.lightEvValue)
+                selectIndex = CameraUtil.getEVValueIndexByValue(gimbalType, GlobalVariable.lightEvValue)
                 popWindow.updateData(evData, selectIndex)
                 popWindow.showAsDropDown(binding.viewEVOver, 0, 0)
             }
@@ -220,8 +222,9 @@ class CameraParaView @JvmOverloads constructor(
     private fun getISOData(): List<GimbalControlTopOptBean> {
         val isoData: MutableList<GimbalControlTopOptBean> = arrayListOf()
         var bean: GimbalControlTopOptBean
-        val mISOValueArray = CameraUtil.getISOValuesByGimbalType(GlobalVariable.gimbalType)
-        val mISONameArray = CameraUtil.getISONamesByGimbalType(GlobalVariable.gimbalType)
+        val gimbalType = IGimbal.get.gimbalType
+        val mISOValueArray = CameraUtil.getISOValuesByGimbalType(gimbalType)
+        val mISONameArray = CameraUtil.getISONamesByGimbalType(gimbalType)
         if (mISOValueArray.size == mISONameArray.size) {
             for (i in mISONameArray.indices) {
                 bean = GimbalControlTopOptBean()
@@ -236,8 +239,9 @@ class CameraParaView @JvmOverloads constructor(
     private fun getShutterData():List<GimbalControlTopOptBean> {
         val mShutterData: MutableList<GimbalControlTopOptBean> = arrayListOf()
         var bean: GimbalControlTopOptBean
-        val mShutterValueArray = CameraUtil.getESValuesByGimbalType(GlobalVariable.gimbalType)
-        val mShutterNameArray = CameraUtil.getESNamesByGimbalType(GlobalVariable.gimbalType)
+        val gimbalType = IGimbal.get.gimbalType
+        val mShutterValueArray = CameraUtil.getESValuesByGimbalType(gimbalType)
+        val mShutterNameArray = CameraUtil.getESNamesByGimbalType(gimbalType)
         if (mShutterValueArray.size == mShutterNameArray.size) {
             for (i in mShutterNameArray.indices) {
                 bean = GimbalControlTopOptBean()
@@ -252,8 +256,9 @@ class CameraParaView @JvmOverloads constructor(
     private fun getEvData(): List<GimbalControlTopOptBean> {
         val evData: MutableList<GimbalControlTopOptBean> = arrayListOf()
         var bean: GimbalControlTopOptBean
-        val mEVValueArray = CameraUtil.getEVValuesByGimbalType(GlobalVariable.gimbalType)
-        val mEVNameArray = CameraUtil.getEVNamesByGimbalType(context, GlobalVariable.gimbalType)
+        val gimbalType = IGimbal.get.gimbalType
+        val mEVValueArray = CameraUtil.getEVValuesByGimbalType(gimbalType)
+        val mEVNameArray = CameraUtil.getEVNamesByGimbalType(context, gimbalType)
         for (i in mEVNameArray.indices) {
             bean = GimbalControlTopOptBean()
             bean.name = mEVNameArray[i]

@@ -2,10 +2,10 @@ package com.gdu.demo.utils;
 
 import android.content.Context;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
-import com.gdu.drone.GimbalType;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IGimbal;
+import com.gdu.msdk.key.value.bean.GimbalType;
 
 import java.util.Objects;
 
@@ -319,24 +319,25 @@ public class CameraUtil {
         if (context == null) {
             return null;
         }
-        if (GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_35X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrT_IR_1K
-                || GlobalVariable.gimbalType == GimbalType.Small_Double_Light
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT) {
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
+        if (gimbalType == GimbalType.ByrdT_30X_Zoom
+                || gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
+                || gimbalType == GimbalType.ByrdT_35X_Zoom
+                || gimbalType == GimbalType.ByrT_IR_1K
+                || gimbalType == GimbalType.Small_Double_Light
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT) {
             return context.getResources().getIntArray(R.array.visible_light_iso_set_ByrT_IR_1K);
-        } else if (GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PQL02_SE
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PWG01
+        } else if (gimbalType == GimbalType.GIMBAL_PDL_S220
+                || gimbalType == GimbalType.GIMBAL_PDL_S200
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
+                || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
+                || gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PQL02_SE
+                || gimbalType == GimbalType.GIMBAL_PWG01
         ) {
             return context.getResources().getIntArray(R.array.visible_light_iso_set_S220);
         } else {
@@ -353,29 +354,30 @@ public class CameraUtil {
         if (context == null) {
             return null;
         }
-        if (GlobalVariable.gimbalType == GimbalType.ByrdT_4k || GlobalVariable.gimbalType == GimbalType.ByrdT_4kc
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_8KC
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_300C) {
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
+        if (gimbalType == GimbalType.ByrdT_4k || gimbalType == GimbalType.ByrdT_4kc
+                || gimbalType == GimbalType.GIMBAL_8KC
+                || gimbalType == GimbalType.GIMBAL_PDL_300C) {
             return context.getResources().getStringArray(R.array.visiblelight_iso_set_display_ByrdT_4k);
-        } else if (GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_35X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrT_6k
-                || GlobalVariable.gimbalType == GimbalType.ByrT_IR_1K
-                || GlobalVariable.gimbalType == GimbalType.Small_Double_Light
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT) {
+        } else if (gimbalType == GimbalType.ByrdT_30X_Zoom
+                || gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
+                || gimbalType == GimbalType.ByrdT_35X_Zoom
+                || gimbalType == GimbalType.ByrT_6k
+                || gimbalType == GimbalType.ByrT_IR_1K
+                || gimbalType == GimbalType.Small_Double_Light
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT) {
             return context.getResources().getStringArray(R.array.visiblelight_iso_set_display_30x);
-        } else if (GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PQL02_SE
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PWG01) {
+        } else if (gimbalType == GimbalType.GIMBAL_PDL_S220
+                || gimbalType == GimbalType.GIMBAL_PDL_S200
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
+                || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
+                || gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PQL02_SE
+                || gimbalType == GimbalType.GIMBAL_PWG01) {
             return context.getResources().getStringArray(R.array.visiblelight_iso_set_display_S220);
         } else {
             return context.getResources().getStringArray(R.array.visiblelight_iso_set_display_normal);
@@ -1109,9 +1111,10 @@ public class CameraUtil {
     }
 
     public static boolean checkISOAndShutterUnableSet(boolean isAutoMode, int aeLockValue) {
-        if (isSupportAutoSwitchGimbal(GlobalVariable.gimbalType)) {
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
+        if (isSupportAutoSwitchGimbal(gimbalType)) {
             return isAutoMode || aeLockValue == 1;
-        } else if (isSupportAELockGimbal(GlobalVariable.gimbalType)) {
+        } else if (isSupportAELockGimbal(gimbalType)) {
             return aeLockValue == 1;
         } else {
             return false;
@@ -1119,9 +1122,10 @@ public class CameraUtil {
     }
 
     public static boolean checkEVUnableSet(boolean isAutoMode, int aeLockValue) {
-        if (isSupportAutoSwitchGimbal(GlobalVariable.gimbalType)) {
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
+        if (isSupportAutoSwitchGimbal(gimbalType)) {
             return aeLockValue == 1 || !isAutoMode;
-        } else if (isSupportAELockGimbal(GlobalVariable.gimbalType)) {
+        } else if (isSupportAELockGimbal(gimbalType)) {
             return aeLockValue == 1;
         } else {
             return false;

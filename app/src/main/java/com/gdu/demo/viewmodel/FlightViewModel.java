@@ -14,8 +14,9 @@ import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.detect.AIModelState;
-import com.gdu.drone.GimbalType;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IGimbal;
+import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
 
@@ -30,44 +31,45 @@ public class FlightViewModel extends ViewModel {
     private final MutableLiveData<Integer> toastLiveData = new MutableLiveData<>();
 
     public boolean isShowAiBox(){
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
         // 仅可见光支持Ai识别的云台
-        boolean isCustomSupportAiRecognizeGimbal1 = GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_10X_Zoom
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_4k
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_10X_C_Zoom
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_450J;
+        boolean isCustomSupportAiRecognizeGimbal1 = gimbalType == GimbalType.ByrdT_30X_Zoom
+                || gimbalType == GimbalType.ByrdT_10X_Zoom
+                || gimbalType == GimbalType.ByrdT_4k
+                || gimbalType == GimbalType.ByrdT_10X_C_Zoom
+                || gimbalType == GimbalType.GIMBAL_450J;
         // 仅可见光且在Debug模式才支持Ai识别的云台
-        boolean isCustomSupportAiRecognizeGimbal2 = (GlobalVariable.gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
-                || GlobalVariable.gimbalType == GimbalType.ByrT_6k
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_8KC) && UavStaticVar.isOpenTextEnvironment;
+        boolean isCustomSupportAiRecognizeGimbal2 = (gimbalType == GimbalType.ByrdT_30X_Zoom_NEW
+                || gimbalType == GimbalType.ByrT_6k
+                || gimbalType == GimbalType.GIMBAL_8KC) && UavStaticVar.isOpenTextEnvironment;
         // Debug模式才开放支持Ai识别的多光云台
-        boolean isCustomSupportAiRecognizeGimbal3 = (GlobalVariable.gimbalType == GimbalType.Small_Double_Light
-                || GlobalVariable.gimbalType == GimbalType.ByrT_IR_1K
-                || GlobalVariable.gimbalType == GimbalType.ByrdT_TMS
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PQL02_SE
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL600
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_300C
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_IR_1KG
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PWG01)
+        boolean isCustomSupportAiRecognizeGimbal3 = (gimbalType == GimbalType.Small_Double_Light
+                || gimbalType == GimbalType.ByrT_IR_1K
+                || gimbalType == GimbalType.ByrdT_TMS
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW
+                || gimbalType == GimbalType.GIMBAL_MICRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PQL02_SE
+                || gimbalType == GimbalType.GIMBAL_PTL600
+                || gimbalType == GimbalType.GIMBAL_PDL_300C
+                || gimbalType == GimbalType.GIMBAL_IR_1KG
+                || gimbalType == GimbalType.GIMBAL_PWG01)
                 && (GlobalVariable.sCameraLightType == 0x00 || GlobalVariable.sCameraLightType == 0x02
                 || GlobalVariable.sCameraLightType == 0x06)
                 && UavStaticVar.isOpenTextEnvironment;
         // 支持Ai识别的多光云台
-        boolean isCustomSupportAiRecognizeGimbal4 = (GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
-                || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_10X)
+        boolean isCustomSupportAiRecognizeGimbal4 = (gimbalType == GimbalType.GIMBAL_PDL_S220
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+                || gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
+                || gimbalType == GimbalType.GIMBAL_PDL_10X)
                 && (GlobalVariable.sCameraLightType == 0x00
                 || GlobalVariable.sCameraLightType == 0x02
                 || GlobalVariable.sCameraLightType == 0x05
                 || GlobalVariable.sCameraLightType == 0x06);
         // 支持Ai识别的广角变焦双光云台(无红外)
-        boolean isCustomSupportAiRecognizeGimbal5 = (GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200 || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200_IR640)
+        boolean isCustomSupportAiRecognizeGimbal5 = (gimbalType == GimbalType.GIMBAL_PDL_S200 || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640)
                 && (GlobalVariable.sCameraLightType == 0x05
                 || GlobalVariable.sCameraLightType == 0x06);
 

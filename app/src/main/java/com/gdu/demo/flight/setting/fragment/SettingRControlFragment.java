@@ -17,6 +17,7 @@ import com.gdu.demo.databinding.FragmentRcControlBinding;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.GeneralDialog;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.remotecontroller.RemoteController;
 
@@ -184,7 +185,7 @@ public class SettingRControlFragment extends Fragment {
         switchControlEnable();
         boolean isShow = isClickConnect && SdkDemoApplication.getAircraftInstance().isConnected();
         if (isShow) {
-            GlobalEventBus.getBus().post(new GimbalEvent(GlobalVariable.gimbalType));
+            GlobalEventBus.getBus().post(new GimbalEvent(IGimbal.get().getGimbalType()));
             GlobalEventBus.getBus().post(new EventMessage(MyConstants.GET_CONTROL_PERMISSION_SUC));
 //            uiThreadHandle(() -> showToast(R.string.match_success));
 //            AirlinkUtils.getUnique();

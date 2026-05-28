@@ -10,7 +10,10 @@ import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IGimbal;
+import com.gdu.msdk.device.component.pod.utils.GimbalUtil;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.msdk.key.value.bean.PlanType;
 
 import java.util.ArrayList;
@@ -536,16 +539,17 @@ public class FirmwareVersion implements IFirmwareVersion {
     }
 
     private Completable getObstacleVersion() {
-        printLog("getObstacleVersion() gimbalType = " + GlobalVariable.gimbalType);
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
+        printLog("getObstacleVersion() gimbalType = " + gimbalType);
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            if (GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
-                    || GlobalVariable.gimbalType == GimbalType.GIMBAL_PTL_S220_IR640) {
+            if (gimbalType == GimbalType.GIMBAL_PDL_S220
+                    || gimbalType == GimbalType.GIMBAL_PDL_S200
+                    || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640
+                    || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+                    || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+                    || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+                    || gimbalType == GimbalType.GIMBAL_PTL_S220_IR640) {
                 getObstacleFwVersionNew();
             } else {
                 getObstacleFwVersion();
@@ -1425,10 +1429,11 @@ public class FirmwareVersion implements IFirmwareVersion {
      * @param bean 待解析对象
      */
     private void parseGimbalVersion(int code, GduFrame3 bean) {
+        GimbalType gimbalType = IGimbal.get().getGimbalType();
         if (code != GduConfig.OK || bean == null || bean.frameContent == null || bean.frameContent.length < 5) {
             GlobalVariable.gimbelVersion = 0;
             GlobalVariable.sGimbalSN = "";
-            cacheGimbalVersionOld(GlobalVariable.gimbalType);
+            cacheGimbalVersionOld(gimbalType);
             return;
         }
         String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
@@ -1437,8 +1442,8 @@ public class FirmwareVersion implements IFirmwareVersion {
         printLog("parseGimbalVersion() isNewGimbal = " + isNewGimbal);
         if (!isNewGimbal) {
             GlobalVariable.gimbelVersion = bean.frameContent[2] / 100.0;
-            addNewFirmwareTypeAndVersion(GlobalVariable.gimbalType.getValue(), String.valueOf(GlobalVariable.gimbelVersion));
-            cacheGimbalVersionOld(GlobalVariable.gimbalType);
+            addNewFirmwareTypeAndVersion(gimbalType.getValue(), String.valueOf(GlobalVariable.gimbelVersion));
+            cacheGimbalVersionOld(gimbalType);
         }
         if (!GimbalUtil.isUseGetSNNewCmdGimbal()) {
 //            GlobalVariable.sGimbalSN = CommonUtils.getGimbalSN(GlobalVariable.gimbalType, bean.frameContent[4],
