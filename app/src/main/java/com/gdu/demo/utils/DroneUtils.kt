@@ -44,4 +44,12 @@ object DroneUtils {
     val battery1InfoZ4C: CycleBatteryInfo?
         get() = IBattery.get.droneBatteryInfo.value
 
+    @JvmStatic
+    val oneLevelLowBattery: Int
+        get() = IFlightController.get.currLowerBatteryWaring.oneLevel
+
+    @JvmStatic
+    val twoLevelLowBattery: Int
+        get() = IFlightController.get.currLowerBatteryWaring.twoLevel
+
 }

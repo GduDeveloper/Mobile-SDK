@@ -35,7 +35,7 @@ class TerminalBatteryWidgetModel: WidgetModel() {
         // 遥控器电量低于20 播报语音一次 避免首次进入立即播报语音过多8秒后提示
         if (battery <= 20) {
             status = BatteryStatus.WARNING_LEVEL_2
-            if (GlobalVariable.oneLevelLowBattery <= 20) {
+            if (DroneUtils.oneLevelLowBattery <= 20) {
                 status = BatteryStatus.WARNING_LEVEL_1
             }
         } else {

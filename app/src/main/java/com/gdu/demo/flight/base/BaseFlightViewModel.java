@@ -510,19 +510,9 @@ public class BaseFlightViewModel extends BaseViewModel {
         mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<LowBatteryWarnInfo>() {
             @Override
             public void onSuccess(LowBatteryWarnInfo info) {
-                int twolevel = info.getTwoLevelWarn();
-                int onelevel = info.getOneLevelWarn();
-                if (onelevel < MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN) {
-                    onelevel = MyConstants.DRONE_LOW_BATTERY_ONE_LEVEL_MIN;
-                }
-                info.setOneLevelWarn(onelevel);
-                if (twolevel < MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN) {
-                    twolevel = MyConstants.DRONE_LOW_BATTERY_TWO_LEVEL_MIN;
-                }
-                info.setTwoLevelWarn(twolevel);
+                info.setOneLevelWarn(info.getOneLevelWarn());
+                info.setTwoLevelWarn(info.getTwoLevelWarn());
                 info.setSuccess(true);
-                GlobalVariable.twoLevelLowBattery = twolevel;
-                GlobalVariable.oneLevelLowBattery = onelevel;
                 lowBatteryWarningLiveData.postValue(info);
             }
 

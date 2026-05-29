@@ -21,7 +21,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gdu.GlobalVariableTest;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingBatteryBinding;
@@ -30,6 +29,7 @@ import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.bean.PlanType;
@@ -73,6 +73,9 @@ public class SettingBatteryFragment extends Fragment {
     private final static int SET_SUCCESS = 100;
     private final static int SET_FAILED = 101;
 
+    private int oneLevelLowBattery = 0;
+    private int twoLevelLowBattery = 0;
+
     /**
      * 是否因断联重置了电池信息
      */
@@ -100,8 +103,8 @@ public class SettingBatteryFragment extends Fragment {
     private void initView() {
         setListener();
 
-        GlobalVariable.twoLevelLowBattery = mViewBinding.lowPowerWarnSb.getSeekBarMin();
-        GlobalVariable.oneLevelLowBattery = mViewBinding.lowestPowerWarnSb.getSeekBarMin();
+        twoLevelLowBattery = mViewBinding.lowPowerWarnSb.getSeekBarMin();
+        oneLevelLowBattery = mViewBinding.lowestPowerWarnSb.getSeekBarMin();
 
         boolean isConnect = SdkDemoApplication.getAircraftInstance().isConnected();
         mViewBinding.lowPowerWarnSb.setEnabled(isConnect);
@@ -475,6 +478,8 @@ public class SettingBatteryFragment extends Fragment {
 
     private void getBatteryWaringSet() {
         baseViewModel.getLowBatteryWarningLiveData().observe(mActivity, data->{
+            oneLevelLowBattery = data.getOneLevelWarn();
+            twoLevelLowBattery = data.getTwoLevelWarn();
             mViewBinding.lowestPowerWarnSb.setProgress(data.getOneLevelWarn());
             mViewBinding.lowPowerWarnSb.setProgress(data.getTwoLevelWarn());
         });
@@ -500,21 +505,21 @@ public class SettingBatteryFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                GlobalVariable.twoLevelLowBattery = seekBar.getProgress();
-                mViewBinding.lowPowerWarnSb.setTextProgress(GlobalVariable.twoLevelLowBattery );
-                if (GlobalVariable.twoLevelLowBattery < GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL) {
-                    GlobalVariable.oneLevelLowBattery = GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL;
-                    mViewBinding.lowestPowerWarnSb.setProgress(GlobalVariable.oneLevelLowBattery);
+                twoLevelLowBattery = seekBar.getProgress();
+                mViewBinding.lowPowerWarnSb.setTextProgress(twoLevelLowBattery);
+                if (twoLevelLowBattery < oneLevelLowBattery + DroneValueConstants.BATTERY_MIN_INTERVAL) {
+                    oneLevelLowBattery = twoLevelLowBattery - DroneValueConstants.BATTERY_MIN_INTERVAL;
+                    mViewBinding.lowestPowerWarnSb.setProgress(oneLevelLowBattery);
                 }
                 sendSetBatteryWaring();
             }
         });
 
         mViewBinding.lowPowerWarnSb.setOnEditChangeListener(progress -> {
-            GlobalVariable.twoLevelLowBattery = progress;
-            if (GlobalVariable.twoLevelLowBattery < GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL) {
-                GlobalVariable.oneLevelLowBattery = GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL;
-                mViewBinding.lowestPowerWarnSb.setProgress(GlobalVariable.oneLevelLowBattery);
+            twoLevelLowBattery = progress;
+            if (twoLevelLowBattery < oneLevelLowBattery + DroneValueConstants.BATTERY_MIN_INTERVAL) {
+                oneLevelLowBattery = twoLevelLowBattery - DroneValueConstants.BATTERY_MIN_INTERVAL;
+                mViewBinding.lowestPowerWarnSb.setProgress(oneLevelLowBattery);
             }
             sendSetBatteryWaring();
         });
@@ -531,29 +536,29 @@ public class SettingBatteryFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                GlobalVariable.oneLevelLowBattery = seekBar.getProgress();
-                mViewBinding.lowestPowerWarnSb.setTextProgress(GlobalVariable.oneLevelLowBattery);
-                if (GlobalVariable.oneLevelLowBattery > GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL) {
-                    GlobalVariable.twoLevelLowBattery = GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL;
-                    mViewBinding.lowPowerWarnSb.setProgress(GlobalVariable.twoLevelLowBattery);
+                oneLevelLowBattery = seekBar.getProgress();
+                mViewBinding.lowestPowerWarnSb.setTextProgress(oneLevelLowBattery);
+                if (oneLevelLowBattery > twoLevelLowBattery - DroneValueConstants.BATTERY_MIN_INTERVAL) {
+                    twoLevelLowBattery = oneLevelLowBattery + DroneValueConstants.BATTERY_MIN_INTERVAL;
+                    mViewBinding.lowPowerWarnSb.setProgress(twoLevelLowBattery);
                 }
                 sendSetBatteryWaring();
             }
         });
 
         mViewBinding.lowestPowerWarnSb.setOnEditChangeListener(progress -> {
-            GlobalVariable.oneLevelLowBattery = progress;
+            oneLevelLowBattery = progress;
 
-            if (GlobalVariable.oneLevelLowBattery > GlobalVariable.twoLevelLowBattery - GlobalVariable.BATTERY_MIN_INTERVAL) {
-                GlobalVariable.twoLevelLowBattery = GlobalVariable.oneLevelLowBattery + GlobalVariable.BATTERY_MIN_INTERVAL;
-                mViewBinding.lowPowerWarnSb.setProgress(GlobalVariable.twoLevelLowBattery);
+            if (oneLevelLowBattery > twoLevelLowBattery - DroneValueConstants.BATTERY_MIN_INTERVAL) {
+                twoLevelLowBattery = oneLevelLowBattery + DroneValueConstants.BATTERY_MIN_INTERVAL;
+                mViewBinding.lowPowerWarnSb.setProgress(twoLevelLowBattery);
             }
             sendSetBatteryWaring();
         });
     }
 
     private void sendSetBatteryWaring() {
-        baseViewModel.setLowBatteryWarningThreshold((byte) GlobalVariable.twoLevelLowBattery, (byte) GlobalVariable.oneLevelLowBattery);
+        baseViewModel.setLowBatteryWarningThreshold((byte) twoLevelLowBattery, (byte) oneLevelLowBattery);
     }
 
     public class CellAdapter extends RecyclerView.Adapter<CellAdapter.VH>{

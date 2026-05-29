@@ -33,6 +33,7 @@ import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.msdk.key.value.bean.ControlHand;
@@ -101,7 +102,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.sbpLowPowerAlarmPb.setMaxPb(50);
         mViewBinding.sbpLowPowerAlarmPb.setLowMinMaxValue(10, 45);
         mViewBinding.sbpLowPowerAlarmPb.setHeightMinMaxValue(20, 50);
-        mViewBinding.sbpLowPowerAlarmPb.setMinMarginPercent(GlobalVariable.BATTERY_MIN_INTERVAL);
+        mViewBinding.sbpLowPowerAlarmPb.setMinMarginPercent(DroneValueConstants.BATTERY_MIN_INTERVAL);
         mViewBinding.sbpLowPowerAlarmPb.setShowScale(true);
         ViewUtils.setViewShowOrInVisible(mViewBinding.sbpLowPowerAlarmPb, IGduDroneDevice.get().isConnected());
 

@@ -313,9 +313,9 @@ public class PreFlightInspectionViewModel extends ViewModel {
         } catch (Exception ignore) {
         }
         bean.setContent(renameBattery + "% " + realTemp + "℃");
-        if (renameBattery > GlobalVariable.twoLevelLowBattery) {
+        if (renameBattery > DroneUtils.getTwoLevelLowBattery()) {
             bean.setContentSelect(true);
-        } else if (renameBattery > GlobalVariable.oneLevelLowBattery && powerRc <= GlobalVariable.twoLevelLowBattery) {
+        } else if (renameBattery > DroneUtils.getOneLevelLowBattery() && powerRc <= DroneUtils.getTwoLevelLowBattery()) {
             bean.setContentTextColor(R.color.color_FFCC00);
         } else {
             bean.setContentEnable(false);
