@@ -20,12 +20,20 @@ object DroneUtils {
     @JvmStatic
     val planeHadLock: Boolean
         get() {
-            return IFlightController.get.fcInfo1.value?.planeHadLock?: true
+            return fcInfo1?.planeHadLock?: true
         }
 
     @JvmStatic
     val droneFlyState: DroneFlyState
-        get() = IFlightController.get.fcInfo1.value?.droneFlyState?: DroneFlyState.GROUND
+        get() = fcInfo1?.droneFlyState?: DroneFlyState.GROUND
+
+    @JvmStatic
+    val droneGpsLat: Double
+        get() = fcInfo1?.latitude?: (-1).toDouble()
+
+    @JvmStatic
+    val droneGpsLon: Double
+        get() = fcInfo1?.longitude?: (-1).toDouble()
 
     @JvmStatic
     val isGround: Boolean
@@ -48,7 +56,7 @@ object DroneUtils {
 
     @JvmStatic
     val flyModel: FlyMode
-        get() = IFlightController.get.fcInfo1.value?.flyModel?: FlyMode.ATTITUDE
+        get() = fcInfo1?.flyModel?: FlyMode.ATTITUDE
 
     @JvmStatic
     val battery1InfoZ4C: CycleBatteryInfo?

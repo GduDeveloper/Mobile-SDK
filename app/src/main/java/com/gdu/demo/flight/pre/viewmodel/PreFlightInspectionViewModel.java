@@ -824,7 +824,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         }
 //        boolean isVerify = lat < 90 && lat > -90 && lng < 180 && lng > -180;
         com.amap.api.maps.model.LatLng homeLatLng = new com.amap.api.maps.model.LatLng(lat, lng);
-        com.amap.api.maps.model.LatLng currentLatLng = new com.amap.api.maps.model.LatLng(GlobalVariable.GPS_Lat, GlobalVariable.GPS_Lon);
+        com.amap.api.maps.model.LatLng currentLatLng = new com.amap.api.maps.model.LatLng(DroneUtils.getDroneGpsLat(), DroneUtils.getDroneGpsLon());
         float distance = AMapUtils.calculateLineDistance(homeLatLng, currentLatLng);
         XLogger.INSTANCE.getAPP().i("setHomePoint() distance = " + BigDecimal.valueOf(distance).setScale(2, RoundingMode.HALF_UP));
         if (distance > 2500) {

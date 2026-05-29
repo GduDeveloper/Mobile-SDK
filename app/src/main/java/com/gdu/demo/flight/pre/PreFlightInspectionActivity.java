@@ -515,7 +515,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         SingleClickUtil.onSingleClick(mViewBinding.preFlightHomePointUav,  false,
                 v -> {
                     if (uavUnConnect()) return;
-                    showBackHomePointConfirmDialog(0, GlobalVariable.GPS_Lat, GlobalVariable.GPS_Lon,
+                    showBackHomePointConfirmDialog(0, DroneUtils.getDroneGpsLat(), DroneUtils.getDroneGpsLon(),
                             GlobalVariable.ReturnHomeSettingType.PLANET);
                 });
 

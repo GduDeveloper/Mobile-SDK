@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.ViewRtkStateBinding;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
@@ -95,8 +96,8 @@ public class RTKStateView extends LinearLayout {
         }
 
         viewBinding.tvDroneRtkState.setText(GlobalVariable.rtk_model.getRtk1_status());
-        viewBinding.tvDroneLng.setText(new BigDecimal(GlobalVariable.GPS_Lon).setScale(8, RoundingMode.HALF_UP).toString());
-        viewBinding.tvDroneLat.setText(new BigDecimal(GlobalVariable.GPS_Lat).setScale(8, RoundingMode.HALF_UP).toString());
+        viewBinding.tvDroneLng.setText(new BigDecimal(DroneUtils.getDroneGpsLon()).setScale(8, RoundingMode.HALF_UP).toString());
+        viewBinding.tvDroneLat.setText(new BigDecimal(DroneUtils.getDroneGpsLat()).setScale(8, RoundingMode.HALF_UP).toString());
 
         String ellipsoidalHeight = UnitChnageUtils.getDecimalFormatUnit((float) (GlobalVariable.altitude_drone / 100.0), UnitChnageUtils.format_three);
         viewBinding.tvEllipsoidalHeight.setText(ellipsoidalHeight);
