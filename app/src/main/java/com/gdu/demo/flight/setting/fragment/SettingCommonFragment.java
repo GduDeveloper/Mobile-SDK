@@ -26,11 +26,13 @@ import com.gdu.demo.flight.setting.bean.GetAiModelResponse;
 import com.gdu.demo.flight.setting.bean.TargetDetectLabel;
 import com.gdu.demo.flight.setting.bean.TargetDetectModel;
 import com.gdu.demo.utils.AnimationUtils;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.widget.GduSpinner;
 import com.gdu.demo.widget.NorthPointerView;
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.StringUtils;
+import com.gdu.lib.util.TimeUtil;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
@@ -344,10 +346,15 @@ public class SettingCommonFragment extends Fragment {
             String rcSn = SdkDemoApplication.getAircraftInstance().getRemoteController().getRCSN();
             mViewBinding.tvSnRC.setText(rcSn);
         }
-        if (GlobalVariableTest.AllFlyTime == 0) {
+        long allFlyTime = 0L;
+        try {
+            allFlyTime = DroneUtils.getFcInfo1().getTotalFlyTimeInMin();
+        } catch (Exception ignore) {
+        }
+        if (allFlyTime == 0) {
             mViewBinding.tvTotalFlyTime.setText(GduEnvConfig.application.getString(R.string.Label_TextView_NA));
         } else {
-            mViewBinding.tvTotalFlyTime.setText((TimeUtil.getHourAndMinute(GlobalVariableTest.AllFlyTime * 1000 * 60)) + " ");
+            mViewBinding.tvTotalFlyTime.setText((TimeUtil.getHourAndMinute(allFlyTime * 1000 * 60)) + " ");
         }
 
     }
