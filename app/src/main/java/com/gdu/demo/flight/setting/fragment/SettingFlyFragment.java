@@ -121,12 +121,12 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         preHeightLimit = baseViewModel.getDefaultLimitHeight(getContext());
         mViewBinding.sbLimitHeight.setProgress(preHeightLimit);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mViewBinding.sbLimitHeight.setMin(MyConstants.LIMIT_HEIGHT_MIN);
+            mViewBinding.sbLimitHeight.setMin(DroneValueConstants.LIMIT_HEIGHT_MIN);
         }
-        mViewBinding.sbLimitHeight.setMax(MyConstants.LIMIT_HEIGHT_MAX);
+        mViewBinding.sbLimitHeight.setMax(DroneValueConstants.getLIMIT_HEIGHT_MAX());
         mViewBinding.etHeightLimit.setText(String.valueOf(preHeightLimit));
-        mUnitChnageUtils.showUnit(MyConstants.LIMIT_HEIGHT_MIN, mViewBinding.tvLimitHeightMin);
-        mUnitChnageUtils.showUnit(MyConstants.LIMIT_HEIGHT_MAX, mViewBinding.tvLimitHeightMax);
+        mUnitChnageUtils.showUnit(DroneValueConstants.LIMIT_HEIGHT_MIN, mViewBinding.tvLimitHeightMin);
+        mUnitChnageUtils.showUnit(DroneValueConstants.getLIMIT_HEIGHT_MAX(), mViewBinding.tvLimitHeightMax);
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etHeightLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitHeight.getProgress())));
         } else {
@@ -148,7 +148,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                 mViewBinding.sbLimitHeight.setEnabled(data.isOpen());
                 mViewBinding.etHeightLimit.setEnabled(data.isOpen());
             }
-            if (data.isOpen() || (data.getHeight() >= MyConstants.LIMIT_HEIGHT_MIN && data.getHeight() <= MyConstants.LIMIT_HEIGHT_MAX)) {
+            if (data.isOpen() || (data.getHeight() >= DroneValueConstants.LIMIT_HEIGHT_MIN && data.getHeight() <= DroneValueConstants.getLIMIT_HEIGHT_MAX())) {
                 mViewBinding.sbLimitHeight.setProgress(data.getHeight());
                 String limitHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getHeight()));
                 mViewBinding.etHeightLimit.setText(limitHeightStr);
@@ -188,12 +188,12 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     return;
                 }
                 int valueInt = UnitChnageUtils.inch2m(Integer.parseInt(value));
-                if (valueInt < MyConstants.LIMIT_HEIGHT_MIN || valueInt > MyConstants.LIMIT_HEIGHT_MAX) {
+                if (valueInt < DroneValueConstants.LIMIT_HEIGHT_MIN || valueInt > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
                     Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     setHeightFailHandle();
                     return;
                 }
-                if (mViewBinding.ivSwitchLimitHeight.isSelected() && valueInt > MyConstants.LIMIT_HEIGHT_DEFAULT && preHeightLimit <= MyConstants.LIMIT_HEIGHT_DEFAULT) {
+                if (mViewBinding.ivSwitchLimitHeight.isSelected() && valueInt > DroneValueConstants.LIMIT_HEIGHT_DEFAULT && preHeightLimit <= DroneValueConstants.LIMIT_HEIGHT_DEFAULT) {
                     showLimitHeightDialog(valueInt);
                 } else {
                     baseViewModel.setLimitHeight(mViewBinding.ivSwitchLimitHeight.isSelected(), valueInt);
@@ -646,7 +646,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     private void switchLimitHeight() {
-        if (mViewBinding.ivSwitchLimitHeight.isSelected() || preHeightLimit > MyConstants.LIMIT_HEIGHT_DEFAULT) {
+        if (mViewBinding.ivSwitchLimitHeight.isSelected() || preHeightLimit > DroneValueConstants.LIMIT_HEIGHT_DEFAULT) {
             new CommonDialog.Builder(getChildFragmentManager())
                     .setTitle(getResources().getString(R.string.Toast_planset_fly_pager_limit_height_statement))
                     .setContent(getResources().getString(R.string.limit_height_statement_content))
@@ -745,9 +745,9 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private final SeekBar.OnSeekBarChangeListener limitHeightListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (progress < MyConstants.LIMIT_HEIGHT_MIN) {
-                mViewBinding.sbLimitHeight.setProgress(MyConstants.LIMIT_HEIGHT_MIN);
-                progress = MyConstants.LIMIT_HEIGHT_MIN;
+            if (progress < DroneValueConstants.LIMIT_HEIGHT_MIN) {
+                mViewBinding.sbLimitHeight.setProgress(DroneValueConstants.LIMIT_HEIGHT_MIN);
+                progress = DroneValueConstants.LIMIT_HEIGHT_MIN;
             }
             if (mViewBinding.sbLimitHeight.isEnabled()) {
                 mViewBinding.etHeightLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(progress)));
@@ -780,7 +780,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                 return;
             }
             //设置高度限制大于120需要免责声明  余浩
-            if (mViewBinding.ivSwitchLimitHeight.isSelected() && limitHeight > MyConstants.LIMIT_HEIGHT_DEFAULT && preHeightLimit <= MyConstants.LIMIT_HEIGHT_DEFAULT) {
+            if (mViewBinding.ivSwitchLimitHeight.isSelected() && limitHeight > DroneValueConstants.LIMIT_HEIGHT_DEFAULT && preHeightLimit <= DroneValueConstants.LIMIT_HEIGHT_DEFAULT) {
                 new CommonDialog.Builder(getChildFragmentManager())
                         .setTitle(getResources().getString(R.string.Toast_planset_fly_pager_limit_height_statement))
                         .setContent(getResources().getString(R.string.limit_height_statement_content))

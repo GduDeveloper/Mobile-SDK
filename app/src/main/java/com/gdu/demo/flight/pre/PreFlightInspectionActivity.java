@@ -34,6 +34,7 @@ import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
+import com.gdu.msdk.device.component.interfaces.IFlightController;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.msdk.key.value.bean.ControlHand;
@@ -68,27 +69,18 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         viewModel = new ViewModelProvider(this).get(PreFlightInspectionViewModel.class);
         viewModel.init(this);
 
-        final int mLimitHeightValue = SPUtils.getInstance().getInt(SPUtils.LAST_LIMIT_HEIGHT);
-        final int mLimitDistanceValue = SPUtils.getInstance().getInt(SPUtils.LAST_LIMIT_DISTANCE);
+        final int mLimitHeightValue = IFlightController.get().getFlightLimitHeight();
         if (mLimitHeightValue == 0) {
-            preLimitHeightValue = MyConstants.LIMIT_HEIGHT_DEFAULT;
-        } else if (mLimitHeightValue < MyConstants.LIMIT_HEIGHT_MIN) {
-            preLimitHeightValue = MyConstants.LIMIT_HEIGHT_MIN;
-        } else if (mLimitHeightValue > MyConstants.LIMIT_HEIGHT_MAX) {
-            preLimitHeightValue = MyConstants.LIMIT_HEIGHT_MAX;
+            preLimitHeightValue = DroneValueConstants.LIMIT_HEIGHT_DEFAULT;
+        } else if (mLimitHeightValue < DroneValueConstants.LIMIT_HEIGHT_MIN) {
+            preLimitHeightValue = DroneValueConstants.LIMIT_HEIGHT_MIN;
+        } else if (mLimitHeightValue > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
+            preLimitHeightValue = DroneValueConstants.getLIMIT_HEIGHT_MAX();
         } else {
             preLimitHeightValue = mLimitHeightValue;
         }
 
-        if (mLimitDistanceValue == 0) {
-            preLimitDistanceValue = MyConstants.LIMIT_DISTANCE_DEFAULT;
-        } else if (mLimitDistanceValue < MyConstants.LIMIT_DISTANCE_MIN) {
-            preLimitDistanceValue = MyConstants.LIMIT_DISTANCE_MIN;
-        } else if (mLimitDistanceValue > MyConstants.LIMIT_DISTANCE_MAX) {
-            preLimitDistanceValue = MyConstants.LIMIT_DISTANCE_MAX;
-        } else {
-            preLimitDistanceValue = mLimitDistanceValue;
-        }
+        preLimitDistanceValue = IFlightController.get().getDefaultLimitDistance();
 
         initViews();
         initListener();
@@ -459,11 +451,11 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.preFlightLimitHeightEdit.setText("--");
         mViewBinding.preFlightLimitHeightEdit.setEnabled(false);
 
-        String heightLimitTipStr = UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_HEIGHT_MIN) + "-"
-                + UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_HEIGHT_MAX) + UnitChnageUtils.getUnit();
+        String heightLimitTipStr = UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_HEIGHT_MIN) + "-"
+                + UnitChnageUtils.getUnitValue(DroneValueConstants.getLIMIT_HEIGHT_MAX()) + UnitChnageUtils.getUnit();
         mViewBinding.preFlightLimitHeightValue.setText(heightLimitTipStr);
         //根据英寸单位换算的最大数值长度，设置输入框的最大可输入范围
-        mViewBinding.preFlightLimitHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_HEIGHT_MAX)).length())});
+        mViewBinding.preFlightLimitHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(DroneValueConstants.getLIMIT_HEIGHT_MAX())).length())});
         viewModel.getLimitHeightLiveData().observe(this, data -> {
             if (data.getHeight() == -1) {
                 mViewBinding.preFlightLimitHeightEdit.setText("INF");
@@ -493,7 +485,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 return false;
             }
             mViewBinding.preFlightLimitHeightEdit.clearFocus();
-            if (mLimitHeight > MyConstants.LIMIT_HEIGHT_DEFAULT && preLimitHeightValue <= MyConstants.LIMIT_HEIGHT_DEFAULT) {
+            if (mLimitHeight > DroneValueConstants.LIMIT_HEIGHT_DEFAULT && preLimitHeightValue <= DroneValueConstants.LIMIT_HEIGHT_DEFAULT) {
                 showLimitHeightDialog(mLimitHeight);
             } else {
                 viewModel.setLimitHeight(true, mLimitHeight);
@@ -673,7 +665,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                         viewModel.setLimitHeight(false, 0);
                     }).build().show();
         } else {
-            final int value = preLimitHeightValue == 0 ? com.gdu.util.MyConstants.LIMIT_HEIGHT_DEFAULT : preLimitHeightValue;
+            final int value = preLimitHeightValue == 0 ? DroneValueConstants.LIMIT_HEIGHT_DEFAULT : preLimitHeightValue;
             viewModel.setLimitHeight(true, value);
             viewModel.setGoHomeHeight(value);
 
