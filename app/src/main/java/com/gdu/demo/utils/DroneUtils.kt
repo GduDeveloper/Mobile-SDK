@@ -38,6 +38,10 @@ object DroneUtils {
     @JvmField
     val isNewHeightLimitStrategy = true
 
+    /** 当前是否系留模式*/
+    @JvmField
+    val isTetherModel: Boolean = false
+
     @JvmStatic
     val controlHand: ControlHand
         get() = IGduRCDevice.get.rcControlHand.value?.controlHand?: ControlHand.HAND_AMERICA

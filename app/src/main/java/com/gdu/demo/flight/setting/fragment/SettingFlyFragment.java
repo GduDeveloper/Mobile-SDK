@@ -94,7 +94,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.ivNoFlyBackSwitch.setSelected(GlobalVariable.noFlyAreBackAction == 1);
 
 
-        if (GlobalVariable.isTetherModel) {
+        if (DroneUtils.isTetherModel) {
             mViewBinding.sbLimitDistance.setEnabled(false);
             mViewBinding.sbLimitHeight.setEnabled(false);
             mViewBinding.etDistanceLimit.setEnabled(false);
@@ -583,7 +583,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                         return;
                     }
                 }
-                if (GlobalVariable.isTetherModel) {
+                if (DroneUtils.isTetherModel) {
                     Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -597,7 +597,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                 if (!flyViewModel.connStateToast()) {
                     return;
                 }
-                if (GlobalVariable.isTetherModel) {
+                if (DroneUtils.isTetherModel) {
                     Toast.makeText(getContext(), R.string.string_tether_can_not_set, Toast.LENGTH_SHORT).show();
                     return;
                 }
