@@ -220,11 +220,11 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.etDistanceLimit.setText(String.valueOf(preDistanceLimit));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mViewBinding.sbLimitDistance.setMin(MyConstants.LIMIT_DISTANCE_MIN);
+            mViewBinding.sbLimitDistance.setMin(DroneValueConstants.LIMIT_DISTANCE_MIN);
         }
-        mViewBinding.sbLimitDistance.setMax(MyConstants.LIMIT_DISTANCE_MAX);
-        mUnitChnageUtils.showUnit(MyConstants.LIMIT_DISTANCE_MIN, mViewBinding.tvLimitDistanceMin);
-        mUnitChnageUtils.showUnit(MyConstants.LIMIT_DISTANCE_MAX, mViewBinding.tvLimitDistanceMax);
+        mViewBinding.sbLimitDistance.setMax(DroneValueConstants.LIMIT_DISTANCE_MAX);
+        mUnitChnageUtils.showUnit(DroneValueConstants.LIMIT_DISTANCE_MIN, mViewBinding.tvLimitDistanceMin);
+        mUnitChnageUtils.showUnit(DroneValueConstants.LIMIT_DISTANCE_MAX, mViewBinding.tvLimitDistanceMax);
 
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etDistanceLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitDistance.getProgress())));
@@ -250,7 +250,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     return;
                 }
                 int valueInt = UnitChnageUtils.inch2m(Integer.parseInt(value));
-                if (valueInt < MyConstants.LIMIT_DISTANCE_MIN || valueInt > MyConstants.LIMIT_DISTANCE_MAX) {
+                if (valueInt < DroneValueConstants.LIMIT_DISTANCE_MIN || valueInt > DroneValueConstants.LIMIT_DISTANCE_MAX) {
                     Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     setDistanceFailHandle();
                     return;
@@ -269,7 +269,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             updateLimitDistanceView(data.isOpen());
             mViewBinding.sbLimitDistance.setEnabled(data.isOpen());
             mViewBinding.etDistanceLimit.setEnabled(data.isOpen());
-            if (data.isOpen() || (data.getDistance() >= MyConstants.LIMIT_DISTANCE_MIN && data.getDistance() <= MyConstants.LIMIT_DISTANCE_MAX)) {
+            if (data.isOpen() || (data.getDistance() >= DroneValueConstants.LIMIT_DISTANCE_MIN && data.getDistance() <= DroneValueConstants.LIMIT_DISTANCE_MAX)) {
                 mViewBinding.sbLimitDistance.setProgress(data.getDistance());
                 String limitDisStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getDistance()));
                 mViewBinding.etDistanceLimit.setText(limitDisStr);
@@ -808,9 +808,9 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private final SeekBar.OnSeekBarChangeListener limitDistanceListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (progress < MyConstants.LIMIT_DISTANCE_MIN) {
-                mViewBinding.sbLimitDistance.setProgress(MyConstants.LIMIT_DISTANCE_MIN);
-                progress = MyConstants.LIMIT_DISTANCE_MIN;
+            if (progress < DroneValueConstants.LIMIT_DISTANCE_MIN) {
+                mViewBinding.sbLimitDistance.setProgress(DroneValueConstants.LIMIT_DISTANCE_MIN);
+                progress = DroneValueConstants.LIMIT_DISTANCE_MIN;
             }
             if (mViewBinding.sbLimitDistance.isEnabled()) {
                 mViewBinding.etDistanceLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(progress)));

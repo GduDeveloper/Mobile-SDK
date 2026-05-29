@@ -536,12 +536,12 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.preFlightLimitDistanceSwitch.setSelected(false);
         mViewBinding.preFlightLimitDistanceEdit.setText("--");
         mViewBinding.preFlightLimitDistanceEdit.setEnabled(false);
-        String distanceLimitTipStr = UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_DISTANCE_MIN)
-                + "-" + UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_DISTANCE_MAX)
+        String distanceLimitTipStr = UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_DISTANCE_MIN)
+                + "-" + UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_DISTANCE_MAX)
                 + UnitChnageUtils.getUnit();
         mViewBinding.preFlightLimitDistanceValue.setText(distanceLimitTipStr);
         //根据英寸单位换算的最大数值长度，设置输入框的最大可输入范围
-        mViewBinding.preFlightLimitDistanceEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(com.gdu.util.MyConstants.LIMIT_DISTANCE_MAX)).length())});
+        mViewBinding.preFlightLimitDistanceEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_DISTANCE_MAX)).length())});
 
         viewModel.getLimitDistanceLiveData().observe(this, data->{
             if (data.getDistance() == -1) {
@@ -559,7 +559,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             if (!IGduDroneDevice.get().isConnected()) {
                 return;
             }
-            final int value = preLimitDistanceValue == 0 ? MyConstants.LIMIT_DISTANCE_DEFAULT : preLimitDistanceValue;
+            final int value = preLimitDistanceValue == 0 ? DroneValueConstants.LIMIT_DISTANCE_DEFAULT : preLimitDistanceValue;
             viewModel.setLimitDistance(!mViewBinding.preFlightLimitDistanceSwitch.isSelected(), mViewBinding.preFlightLimitDistanceSwitch.isSelected() ? 0 : value);
             mViewBinding.preFlightLimitDistanceEdit.clearFocus();
         });
