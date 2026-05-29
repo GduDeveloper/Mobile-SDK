@@ -399,12 +399,12 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
     /** 返航高度 */
     private void initBackHomeHeight(){
-        String goHomeTipStr = UnitChnageUtils.getUnitValue(MyConstants.GO_HOME_HEIGHT_MIN) + "-"
-                + UnitChnageUtils.getUnitValue(MyConstants.GO_HOME_HEIGHT_MAX)
+        String goHomeTipStr = UnitChnageUtils.getUnitValue(DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK) + "-"
+                + UnitChnageUtils.getUnitValue(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK)
                 + UnitChnageUtils.getUnit();
         mViewBinding.preFlightHomeHeightValue.setText(goHomeTipStr);
         //根据英寸单位换算的最大数值长度，设置输入框的最大可输入范围
-        mViewBinding.preFlightHomeHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(MyConstants.GO_HOME_HEIGHT_MAX)).length())});
+        mViewBinding.preFlightHomeHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK)).length())});
         mViewBinding.preFlightHomeHeightEdit.setText("INF");
         mViewBinding.preFlightLimitHeightSwitch.setSelected(false);
 

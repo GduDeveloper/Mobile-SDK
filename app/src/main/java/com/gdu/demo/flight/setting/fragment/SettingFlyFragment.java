@@ -33,6 +33,7 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
+import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.PlanType;
 
@@ -155,9 +156,9 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             }
             if (data.isOpen()) {
                 // 返航高度相关判断
-                if (preHeightLimit > MyConstants.GO_HOME_HEIGHT_MAX || preHeightLimit <= 0) {
-                    mViewBinding.sbBackHeight.setMax(MyConstants.GO_HOME_HEIGHT_MAX);
-                    mUnitChnageUtils.showUnit(MyConstants.GO_HOME_HEIGHT_MAX, mViewBinding.tvMaxBackHeight);
+                if (preHeightLimit > DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK || preHeightLimit <= 0) {
+                    mViewBinding.sbBackHeight.setMax(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK);
+                    mUnitChnageUtils.showUnit(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK, mViewBinding.tvMaxBackHeight);
                 } else if (preBackHeight > data.getHeight()) {
                     preBackHeight = data.getHeight();
                     mViewBinding.sbBackHeight.setMax(preBackHeight);
@@ -169,8 +170,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     mUnitChnageUtils.showUnit(preHeightLimit, mViewBinding.tvMaxBackHeight);
                 }
             } else {
-                mViewBinding.sbBackHeight.setMax(MyConstants.GO_HOME_HEIGHT_MAX);
-                mUnitChnageUtils.showUnit(MyConstants.GO_HOME_HEIGHT_MAX, mViewBinding.tvMaxBackHeight);
+                mViewBinding.sbBackHeight.setMax(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK);
+                mUnitChnageUtils.showUnit(DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK, mViewBinding.tvMaxBackHeight);
             }
         });
         mViewBinding.etHeightLimit.setOnFocusChangeListener((v, hasFocus) -> {
@@ -282,12 +283,12 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
      * 返航高度
      */
     private void initBackHomeHeight() {
-        mUnitChnageUtils.showUnit(MyConstants.GO_HOME_HEIGHT_MIN, mViewBinding.tvMinBackHeight);
+        mUnitChnageUtils.showUnit(DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK, mViewBinding.tvMinBackHeight);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mViewBinding.sbBackHeight.setMin(MyConstants.GO_HOME_HEIGHT_MIN);
+            mViewBinding.sbBackHeight.setMin(DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK);
         }
-        mViewBinding.sbBackHeight.setMax(isOpenLimitHeight ? preHeightLimit : MyConstants.GO_HOME_HEIGHT_MAX);
-        mUnitChnageUtils.showUnit(isOpenLimitHeight ? preHeightLimit : MyConstants.GO_HOME_HEIGHT_MAX, mViewBinding.tvMaxBackHeight);
+        mViewBinding.sbBackHeight.setMax(isOpenLimitHeight ? preHeightLimit : DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK);
+        mUnitChnageUtils.showUnit(isOpenLimitHeight ? preHeightLimit : DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK, mViewBinding.tvMaxBackHeight);
 
         if (GlobalVariable.backHeight > 0) {
             preBackHeight = GlobalVariable.backHeight / 10;
@@ -712,9 +713,9 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private final SeekBar.OnSeekBarChangeListener backHeightListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (progress < MyConstants.GO_HOME_HEIGHT_MIN) {
-                mViewBinding.sbBackHeight.setProgress(MyConstants.GO_HOME_HEIGHT_MIN);
-                progress = MyConstants.GO_HOME_HEIGHT_MIN;
+            if (progress < DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK) {
+                mViewBinding.sbBackHeight.setProgress(DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK);
+                progress = DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK;
             }
             //显示当前调节的高度---ron
             String goHomeHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(progress));

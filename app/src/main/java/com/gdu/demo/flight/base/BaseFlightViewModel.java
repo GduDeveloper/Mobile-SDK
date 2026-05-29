@@ -180,7 +180,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             return;
         }
 
-        if (height < MyConstants.GO_HOME_HEIGHT_MIN || height > MyConstants.GO_HOME_HEIGHT_MAX) {
+        if (height < DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK || height > DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK) {
             WarnTipBean warnTipBean = new WarnTipBean();
             warnTipBean.setType(3);
             warnTipBean.setWarnType(4);
@@ -427,10 +427,10 @@ public class BaseFlightViewModel extends BaseViewModel {
     }
 
     private int checkAndSaveGoHomeHeightData(int value) {
-        if (value < MyConstants.GO_HOME_HEIGHT_MIN) {
-            value = MyConstants.GO_HOME_HEIGHT_MIN;
-        } else if (value > MyConstants.GO_HOME_HEIGHT_MAX) {
-            value = MyConstants.GO_HOME_HEIGHT_MAX;
+        if (value < DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK) {
+            value = DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK;
+        } else if (value > DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK) {
+            value = DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK;
         }
         return value;
     }

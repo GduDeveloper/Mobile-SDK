@@ -15,6 +15,7 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
+import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.DroneFlyState;
 import com.gdu.sdk.flightcontroller.FlightController;
@@ -107,7 +108,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             return;
         }
 
-        if (height < MyConstants.GO_HOME_HEIGHT_MIN || height > MyConstants.GO_HOME_HEIGHT_MAX) {
+        if (height < DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK || height > DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK) {
             ErrTipBean tipBean = new ErrTipBean();
             tipBean.setSetType(3);
             tipBean.setType(4);
@@ -131,10 +132,10 @@ public class SettingFlyViewModel extends BaseViewModel {
     }
 
     private int checkAndSaveGoHomeHeightData(int value) {
-        if (value < MyConstants.GO_HOME_HEIGHT_MIN) {
-            value = MyConstants.GO_HOME_HEIGHT_MIN;
-        } else if (value > MyConstants.GO_HOME_HEIGHT_MAX) {
-            value = MyConstants.GO_HOME_HEIGHT_MAX;
+        if (value < DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK) {
+            value = DroneValueConstants.GO_HOME_HEIGHT_MIN_SDK;
+        } else if (value > DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK) {
+            value = DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK;
         }
         return value;
     }
