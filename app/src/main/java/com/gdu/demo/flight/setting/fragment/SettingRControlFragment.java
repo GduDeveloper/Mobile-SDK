@@ -15,6 +15,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentRcControlBinding;
 import com.gdu.demo.utils.AnimationUtils;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.GeneralDialog;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
@@ -141,7 +142,7 @@ public class SettingRControlFragment extends Fragment {
                     break;
                 case R.id.tv_networking_model:
                 case R.id.tv_networking_label:
-                    if (GlobalVariable.droneFlyState == 1) {
+                    if (DroneUtils.isGround()) {
                         setSecondLevelView(mViewBinding.advancedNetworkingView, true, getString(R.string.advanced_networking_mode));
                         currentSecondLevelType = 1;
                     } else {
@@ -220,7 +221,7 @@ public class SettingRControlFragment extends Fragment {
     }
 
     private void rcMatch() {
-        if (GlobalVariable.droneFlyState != 1 && SdkDemoApplication.getAircraftInstance().isConnected()) {
+        if (!DroneUtils.isGround() && SdkDemoApplication.getAircraftInstance().isConnected()) {
             Toast.makeText(getContext(), R.string.Label_CannotMatchRc, Toast.LENGTH_SHORT).show();
             return;
         }

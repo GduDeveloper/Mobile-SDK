@@ -21,6 +21,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
 import com.gdu.demo.flight.setting.viewmodel.SettingSDRViewModel;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.AirlinkType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
@@ -135,7 +136,7 @@ public class SettingImageChannelFragment extends Fragment {
                 Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (GlobalVariable.droneFlyState != 1) {
+            if (!DroneUtils.isGround()) {
                 Toast.makeText(getContext(), R.string.string_in_flight_not_change_channel, Toast.LENGTH_SHORT).show();
             } else if(NetworkingHelper.isNetworkingMode()){
                 Toast.makeText(getContext(), R.string.string_not_change_in_group, Toast.LENGTH_SHORT).show();

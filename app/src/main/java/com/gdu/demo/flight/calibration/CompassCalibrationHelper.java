@@ -17,8 +17,8 @@ public class CompassCalibrationHelper {
     public static void jumpMagnetometerActivity(Context context) {
         // 飞机解锁或不在地面上都不能进行校磁
         XLogger.INSTANCE.getAPP().i("jumpMagnetometerActivity() planeHadLock = " + DroneUtils.getPlaneHadLock()
-                + "; droneFlyState = " + GlobalVariable.droneFlyState);
-        if (!DroneUtils.getPlaneHadLock() || GlobalVariable.droneFlyState != 1) {
+                + "; droneFlyState = " + DroneUtils.getDroneFlyState());
+        if (!DroneUtils.getPlaneHadLock() || !DroneUtils.isGround()) {
             return;
         }
         Intent intent = getRectifyMagnetomterIntent(context);

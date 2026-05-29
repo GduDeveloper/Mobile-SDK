@@ -19,6 +19,7 @@ import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.SPUtils;
@@ -527,7 +528,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         // 飞行中未fixed不能连接rtk
-        if ( GlobalVariable.droneFlyState != 1 && GlobalVariable.rtkIsLoading == 1) {
+        if (!DroneUtils.isGround() && GlobalVariable.rtkIsLoading == 1) {
             Toast.makeText(getContext(), R.string.string_not_allow_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }

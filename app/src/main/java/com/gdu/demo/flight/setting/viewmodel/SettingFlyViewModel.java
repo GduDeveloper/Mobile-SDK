@@ -10,11 +10,13 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
 import com.gdu.demo.flight.base.ErrTipBean;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.bean.DroneFlyState;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -97,7 +99,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             errTipBeanLiveData.postValue(tipBean);
             return;
         }
-        if (GlobalVariable.droneFlyState == 3 || GlobalVariable.backState == 2) {
+        if (DroneUtils.getDroneFlyState() == DroneFlyState.LAND || DroneUtils.getDroneFlyState() == DroneFlyState.TAKE_OFF) {
             ErrTipBean tipBean = new ErrTipBean();
             tipBean.setSetType(3);
             tipBean.setType(3);
@@ -297,7 +299,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             toastLiveData.setValue(R.string.DeviceNoConn);
             return false;
         }
-        if (GlobalVariable.droneFlyState != 1) {
+        if (!DroneUtils.isGround()) {
             toastLiveData.setValue(R.string.string_flying_forbid);
             return false;
         }
@@ -406,7 +408,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             toastLiveData.setValue(R.string.DeviceNoConn);
             return false;
         }
-        if (GlobalVariable.droneFlyState != 1 && GlobalVariable.droneFlyState != 4) {
+        if (!DroneUtils.isGround() && DroneUtils.getDroneFlyState() != DroneFlyState.HOVER) {
             toastLiveData.setValue(R.string.string_flying_forbid);
             return false;
         }
@@ -433,7 +435,7 @@ public class SettingFlyViewModel extends BaseViewModel {
 
             @Override
             public void onFailure(Error error) {
-                if (GlobalVariable.droneFlyState == 1 || GlobalVariable.droneFlyState == 4) {
+                if (DroneUtils.isGround() || DroneUtils.getDroneFlyState() == DroneFlyState.HOVER) {
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 } else {
                     toastLiveData.postValue(R.string.string_flying_forbid);

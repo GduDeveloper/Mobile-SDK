@@ -490,7 +490,7 @@ public class SettingBatteryFragment extends Fragment {
         if (flyTime < 0) {
             flyTime += 65535;
         }
-        if (GlobalVariable.droneFlyState == 1 || !SdkDemoApplication.getAircraftInstance().isConnected()) {
+        if (DroneUtils.isGround() || !SdkDemoApplication.getAircraftInstance().isConnected()) {
             flyTime = 0;
         }
         String time = TimeUtil.getTime(flyTime * 1000 - 8 * 3600 * 1000, "HH:mm:ss");

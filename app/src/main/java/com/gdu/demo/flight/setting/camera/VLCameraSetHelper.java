@@ -17,6 +17,7 @@ import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
@@ -486,7 +487,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 showToast(R.string.Label_NoHolder);
                 return;
             }
-            if (GlobalVariable.droneFlyState == 1) {
+            if (DroneUtils.isGround()) {
                 new CommonDialog.Builder(mActivity.getSupportFragmentManager())
                         .setContent(mActivity.getString(R.string.dialog_clound_check_content))
                         .setCancel(mActivity.getString(R.string.Label_cancel))

@@ -8,6 +8,7 @@ import com.gdu.msdk.key.value.CycleFCInfo1
 import com.gdu.msdk.key.value.CycleRCBatteryInfo
 import com.gdu.msdk.key.value.CycleRCInfo
 import com.gdu.msdk.key.value.bean.ControlHand
+import com.gdu.msdk.key.value.bean.DroneFlyState
 import com.gdu.msdk.key.value.bean.FlyMode
 
 object DroneUtils {
@@ -21,6 +22,14 @@ object DroneUtils {
         get() {
             return IFlightController.get.fcInfo1.value?.planeHadLock?: true
         }
+
+    @JvmStatic
+    val droneFlyState: DroneFlyState
+        get() = IFlightController.get.fcInfo1.value?.droneFlyState?: DroneFlyState.GROUND
+
+    @JvmStatic
+    val isGround: Boolean
+        get() = droneFlyState.isGround()
 
     @JvmField
     val isOpenTextEnvironment = false

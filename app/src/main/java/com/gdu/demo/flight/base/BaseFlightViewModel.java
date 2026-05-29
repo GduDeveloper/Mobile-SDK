@@ -17,6 +17,7 @@ import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.component.interfaces.IFlightController;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleFCInfo1;
+import com.gdu.msdk.key.value.bean.DroneFlyState;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -170,7 +171,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             warnTipBeanLiveData.postValue(warnTipBean);
             return;
         }
-        if (GlobalVariable.droneFlyState == 3 || GlobalVariable.backState == 2) {
+        if (DroneUtils.getDroneFlyState() == DroneFlyState.LAND || DroneUtils.getDroneFlyState() == DroneFlyState.TAKE_OFF) {
             WarnTipBean warnTipBean = new WarnTipBean();
             warnTipBean.setType(3);
             warnTipBean.setWarnType(3);
@@ -378,7 +379,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                 errTipBeanLiveData.postValue(tipBean);
                 return;
             }
-            if (GlobalVariable.droneFlyState != 1) {
+            if (!DroneUtils.isGround()) {
                 Point returnPoint = new Point(GlobalVariable.backHomeLan, GlobalVariable.backHomeLon, SpatialReference.WGS84);
                 Point drone = new Point(GlobalVariable.GPS_Lat, GlobalVariable.GPS_Lon, SpatialReference.WGS84);
                 final double distanceValue = JTSUtils.INSTANCE.calPointsDistance(returnPoint, drone);

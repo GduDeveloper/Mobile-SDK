@@ -151,7 +151,7 @@ public class MsgBoxManager {
             mCallback.updateWarnList(mWarnTable);
         } else {
             final StringBuilder sb = new StringBuilder();
-            if (GlobalVariable.droneFlyState == 1) {
+            if (DroneUtils.isGround()) {
                 sb.append(mActivity.getString(R.string.Label_Good2Go));
             } else if (!DroneUtils.getPlaneHadLock()) { //bug-3911-shang-20171111 室内未解锁，状态栏显示“正常飞行中”
                 sb.append(mImportType == 2 ? mActivity.getString(R.string.Label_InFlight_Task) : mActivity.getString(R.string.Label_InFlight_Manual));
