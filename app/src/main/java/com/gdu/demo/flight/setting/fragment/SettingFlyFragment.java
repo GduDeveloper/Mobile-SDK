@@ -439,7 +439,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
      * 是否允许切换飞行模式
      */
     private void initFlyModeState() {
-        setSwitchFlyModeView(GlobalVariable.enableSwitchFlyMode == GlobalVariable.FlyModeSwitchModeStatus.ON);
+        setSwitchFlyModeView(DroneUtils.getEnableSwitchFlyMode());
         String[] array = getResources().getStringArray(R.array.array_fly_model);
         mViewBinding.tabFlyModel.setTabData(array);
 
