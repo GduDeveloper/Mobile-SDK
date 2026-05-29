@@ -307,10 +307,15 @@ public class PreFlightInspectionViewModel extends ViewModel {
             realTemp = (batteryTemp - 2731) / 10f;
         }
 
+        int powerRc = 0;
+        try {
+            powerRc = DroneUtils.getRcInfo().getRcPower();
+        } catch (Exception ignore) {
+        }
         bean.setContent(renameBattery + "% " + realTemp + "℃");
         if (renameBattery > GlobalVariable.twoLevelLowBattery) {
             bean.setContentSelect(true);
-        } else if (renameBattery > GlobalVariable.oneLevelLowBattery && GlobalVariable.power_rc <= GlobalVariable.twoLevelLowBattery) {
+        } else if (renameBattery > GlobalVariable.oneLevelLowBattery && powerRc <= GlobalVariable.twoLevelLowBattery) {
             bean.setContentTextColor(R.color.color_FFCC00);
         } else {
             bean.setContentEnable(false);
@@ -327,10 +332,15 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RC_BATTERY);
         if (null == bean) return;
         String batteryStr = bean.getContent();
-        bean.setContent(GlobalVariable.power_rc >= 0 ? GlobalVariable.power_rc + "%" : "--");
-        if (GlobalVariable.power_rc > 20) {
+        int powerRc = 0;
+        try {
+            powerRc = DroneUtils.getRcInfo().getRcPower();
+        } catch (Exception ignore) {
+        }
+        bean.setContent(powerRc >= 0 ? powerRc + "%" : "--");
+        if (powerRc > 20) {
             bean.setContentSelect(true);
-        } else if (GlobalVariable.power_rc > 0) {
+        } else if (powerRc > 0) {
             bean.setContentTextColor(R.color.color_FFCC00);
         } else {
             bean.setContentEnable(false);

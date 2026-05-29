@@ -1,6 +1,7 @@
 package com.gdu.demo.widgetlist.battery
 
 import com.gdu.config.GlobalVariable
+import com.gdu.demo.utils.DroneUtils
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.battery.bean.BatteryState
@@ -25,7 +26,7 @@ class TerminalBatteryWidgetModel: WidgetModel() {
     private fun updateState() {
 
         var status = BatteryStatus.DEFAULT
-        val battery = GlobalVariable.power_rc
+        val battery = DroneUtils.rcInfo?.rcPower?: -1
         if (battery < 0) {
             val data = BatteryState.SingleBatteryState(0, 0f, status)
             notify(data)
