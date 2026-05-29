@@ -457,7 +457,11 @@ public class SettingBatteryFragment extends Fragment {
      * 更新飞行时间
      */
     private void updateFlightDuration() {
-        long flyTime = GlobalVariableTest.FlyTimeOnSky;
+        long flyTime = 0;
+        try {
+            flyTime = DroneUtils.getFcInfo1().getFlyTimeOnSky();
+        } catch (Exception e) {
+        }
         if (flyTime < 0) {
             flyTime += 65535;
         }

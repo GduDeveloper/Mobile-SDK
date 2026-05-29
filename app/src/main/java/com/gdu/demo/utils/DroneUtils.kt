@@ -4,10 +4,15 @@ import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.interfaces.IGduRCDevice
 import com.gdu.msdk.key.value.CycleBatteryInfo
+import com.gdu.msdk.key.value.CycleFCInfo1
 import com.gdu.msdk.key.value.bean.ControlHand
 import com.gdu.msdk.key.value.bean.FlyMode
 
 object DroneUtils {
+
+    @JvmStatic
+    val fcInfo1: CycleFCInfo1?
+        get() = IFlightController.get.fcInfo1.value
 
     @JvmStatic
     val planeHadLock: Boolean
