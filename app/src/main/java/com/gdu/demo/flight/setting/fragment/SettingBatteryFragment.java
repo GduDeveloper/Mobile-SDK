@@ -33,6 +33,7 @@ import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
+import com.gdu.msdk.key.value.CycleRCBatteryInfo;
 import com.gdu.msdk.key.value.bean.PlanType;
 import com.rxjava.rxlife.RxLife;
 
@@ -290,12 +291,23 @@ public class SettingBatteryFragment extends Fragment {
 
 
     private void setRCBatteryData() {
-        if (GlobalVariable.mainLevel != -1) {
+        int mainLevel = -1;
+        try {
+            mainLevel = DroneUtils.getRcBatteryInfo().getMainLevel();
+        } catch (Exception ignore) {
+        }
+        int subLevel = -1;
+        try {
+            subLevel = DroneUtils.getRcBatteryInfo().getSubLevel();
+        } catch (Exception ignore) {
+        }
+
+        if (mainLevel != -1) {
             updateRcBattery1UI();
         } else {
             resetBattery1();
         }
-        if (GlobalVariable.subLevel != -1) {
+        if (subLevel != -1) {
             updateRcBattery2UI();
         } else {
             downCellDatas.clear();
@@ -399,9 +411,13 @@ public class SettingBatteryFragment extends Fragment {
     //刷新并显示当前遥控器电池2信息界面
     private void updateRcBattery1UI() {
         XLogger.INSTANCE.getAPP().i("updateRcBattery1UI()");
+        CycleRCBatteryInfo rcBatteryInfo = DroneUtils.getRcBatteryInfo();
+        if (rcBatteryInfo == null) {
+            return;
+        }
         mViewBinding.incBatteryLayout2.tvBatteryState.setText(getString(R.string.state_normal));
         mViewBinding.battery1.setVisibility(View.VISIBLE);
-        int upBatteryProgress = GlobalVariable.mainLevel;
+        int upBatteryProgress = rcBatteryInfo.getMainLevel();
         mViewBinding.incBatteryLayout1.batteryUpPb.setProgress(upBatteryProgress);
         if (upBatteryProgress >= 40) {
             mViewBinding.incBatteryLayout1.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main_progress_vertical_green));
@@ -410,30 +426,34 @@ public class SettingBatteryFragment extends Fragment {
         } else {
             mViewBinding.incBatteryLayout1.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main_progress_vertical_red));
         }
-        String vlotage = df.format(GlobalVariable.mainVolt / 1000.0f);
-        mViewBinding.incBatteryLayout1.tvTempContent.setText(GlobalVariable.mainTemp + "℃");
-        mViewBinding.incBatteryLayout1.tvBatteryPercent.setText(GlobalVariable.mainLevel + "%");
+        String vlotage = df.format(rcBatteryInfo.getMainVolt() / 1000.0f);
+        mViewBinding.incBatteryLayout1.tvTempContent.setText(rcBatteryInfo.getMainTemp() + "℃");
+        mViewBinding.incBatteryLayout1.tvBatteryPercent.setText(rcBatteryInfo.getMainLevel() + "%");
         mViewBinding.incBatteryLayout1.tvBatteryPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.color_05C336));
         mViewBinding.incBatteryLayout1.tvBatteryVoltage.setText(vlotage + "V");
-        mViewBinding.incBatteryLayout1.tvBatteryCapacity.setText(GlobalVariable.mainCapacity + "mAH");
-        mViewBinding.incBatteryLayout1.tvChargeNumContent.setText(String.valueOf(GlobalVariable.mainCycleCount));
+        mViewBinding.incBatteryLayout1.tvBatteryCapacity.setText(rcBatteryInfo.getMainCapacity() + "mAH");
+        mViewBinding.incBatteryLayout1.tvChargeNumContent.setText(String.valueOf(rcBatteryInfo.getMainCycleCount()));
 
-        mViewBinding.incBatteryLayout1.tvCurElectricContent.setText(Math.abs(GlobalVariable.mainCurrent) + "mA");
-        String voltDif = df3.format(Math.abs(GlobalVariable.mainCell1 - GlobalVariable.mainCell2) / 1000.0f);
+        mViewBinding.incBatteryLayout1.tvCurElectricContent.setText(Math.abs(rcBatteryInfo.getMainCurrent()) + "mA");
+        String voltDif = df3.format(Math.abs(rcBatteryInfo.getMainCell1() - rcBatteryInfo.getMainCell2()) / 1000.0f);
 
         mViewBinding.incBatteryLayout1.tvVoltageDifferential.setText("0" + voltDif + "V");
         upCellDatas.clear();
-        upCellDatas.addAll(Arrays.asList(GlobalVariable.mainCell1, GlobalVariable.mainCell1, GlobalVariable.mainCell2, GlobalVariable.mainCell2));
+        upCellDatas.addAll(Arrays.asList(rcBatteryInfo.getMainCell1(), rcBatteryInfo.getMainCell1(), rcBatteryInfo.getMainCell2(), rcBatteryInfo.getMainCell2()));
         upCellAdapter.notifyDataSetChanged();
     }
 
     //刷新并显示当前遥控器电池2信息界面
     private void updateRcBattery2UI() {
+        CycleRCBatteryInfo rcBatteryInfo = DroneUtils.getRcBatteryInfo();
+        if (rcBatteryInfo == null) {
+            return;
+        }
         XLogger.INSTANCE.getAPP().i("updateRcBattery2UI()");
         mViewBinding.incBatteryLayout2.tvBatteryState.setText(getString(R.string.state_normal));
         mViewBinding.battery2.setVisibility(View.VISIBLE);
         mViewBinding.incBatteryLayout2.z4bBatterySub.setVisibility(View.VISIBLE);
-        int downBatteryProgress = GlobalVariable.subLevel;
+        int downBatteryProgress = rcBatteryInfo.getSubLevel();
         mViewBinding.incBatteryLayout2.batteryUpPb.setProgress(downBatteryProgress);
         if (downBatteryProgress >= 40) {
             mViewBinding.incBatteryLayout2.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main_progress_vertical_green));
@@ -442,17 +462,17 @@ public class SettingBatteryFragment extends Fragment {
         } else {
             mViewBinding.incBatteryLayout2.batteryUpPb.setProgressDrawable(ContextCompat.getDrawable(getContext(), R.drawable.main_progress_vertical_red));
         }
-        mViewBinding.incBatteryLayout2.tvTempContent.setText(GlobalVariable.subTemp + "℃");
-        mViewBinding.incBatteryLayout2.tvBatteryPercent.setText(GlobalVariable.subLevel + "%");
+        mViewBinding.incBatteryLayout2.tvTempContent.setText(rcBatteryInfo.getSubTemp() + "℃");
+        mViewBinding.incBatteryLayout2.tvBatteryPercent.setText(rcBatteryInfo.getSubLevel() + "%");
         mViewBinding.incBatteryLayout2.tvBatteryPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.color_05C336));
-        mViewBinding.incBatteryLayout2.tvBatteryVoltage.setText(df.format(GlobalVariable.subVolt / 1000.0f) + "V");
-        mViewBinding.incBatteryLayout2.tvBatteryCapacity.setText(GlobalVariable.subCapacity + "mAH");
-        mViewBinding.incBatteryLayout2.tvChargeNumContent.setText(String.valueOf(GlobalVariable.subCycleCount));
-        mViewBinding.incBatteryLayout2.tvCurElectricContent.setText(Math.abs(GlobalVariable.subCurrent) + "mA");
-        String voltDif1 = df3.format(Math.abs(GlobalVariable.subCell1 - GlobalVariable.subCell2) / 1000.0f);
+        mViewBinding.incBatteryLayout2.tvBatteryVoltage.setText(df.format(rcBatteryInfo.getSubVolt() / 1000.0f) + "V");
+        mViewBinding.incBatteryLayout2.tvBatteryCapacity.setText(rcBatteryInfo.getSubCapacity() + "mAH");
+        mViewBinding.incBatteryLayout2.tvChargeNumContent.setText(String.valueOf(rcBatteryInfo.getSubCycleCount()));
+        mViewBinding.incBatteryLayout2.tvCurElectricContent.setText(Math.abs(rcBatteryInfo.getSubCurrent()) + "mA");
+        String voltDif1 = df3.format(Math.abs(rcBatteryInfo.getSubCell1() - rcBatteryInfo.getSubCell2()) / 1000.0f);
         mViewBinding.incBatteryLayout2.tvVoltageDifferential.setText("0" + voltDif1 + "V");
         downCellDatas.clear();
-        downCellDatas.addAll(Arrays.asList(GlobalVariable.subCell1, GlobalVariable.subCell1, GlobalVariable.subCell2, GlobalVariable.subCell2));
+        downCellDatas.addAll(Arrays.asList(rcBatteryInfo.getSubCell1(), rcBatteryInfo.getSubCell1(), rcBatteryInfo.getSubCell2(), rcBatteryInfo.getSubCell2()));
         downCellAdapter.notifyDataSetChanged();
     }
 
