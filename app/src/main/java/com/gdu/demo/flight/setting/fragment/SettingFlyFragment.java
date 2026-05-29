@@ -332,11 +332,11 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private void initBackHomeSpeed() {
         //设置返航速度默认值
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mViewBinding.sbBackSpeed.setMin(MyConstants.GO_HOME_SPEED_MIN);
+            mViewBinding.sbBackSpeed.setMin(DroneValueConstants.GO_HOME_SPEED_MIN);
         }
-        mViewBinding.sbBackSpeed.setMax(MyConstants.GO_HOME_SPEED_MAX);
-        mViewBinding.tvMinSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(MyConstants.GO_HOME_SPEED_MIN));
-        mViewBinding.tvMaxSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(MyConstants.GO_HOME_SPEED_MAX));
+        mViewBinding.sbBackSpeed.setMax(DroneValueConstants.GO_HOME_SPEED_MAX);
+        mViewBinding.tvMinSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(DroneValueConstants.GO_HOME_SPEED_MIN));
+        mViewBinding.tvMaxSpeedLabel.setText(mUnitChnageUtils.getUnitSpeedString(DroneValueConstants.GO_HOME_SPEED_MAX));
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etBackSpeed.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbBackSpeed.getProgress())));
             mViewBinding.etBackSpeed.setEnabled(true);
@@ -687,9 +687,9 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     private final SeekBar.OnSeekBarChangeListener backSpeedListener = new SeekBar.OnSeekBarChangeListener() {
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (progress < MyConstants.GO_HOME_SPEED_MIN) {
-                mViewBinding.sbBackSpeed.setProgress(MyConstants.GO_HOME_SPEED_MIN);
-                progress = MyConstants.GO_HOME_SPEED_MIN;
+            if (progress < DroneValueConstants.GO_HOME_SPEED_MIN) {
+                mViewBinding.sbBackSpeed.setProgress(DroneValueConstants.GO_HOME_SPEED_MIN);
+                progress = DroneValueConstants.GO_HOME_SPEED_MIN;
             }
             //显示当前调节的高度
             mViewBinding.etBackSpeed.setText(String.valueOf(UnitChnageUtils.getUnitValue(progress)));

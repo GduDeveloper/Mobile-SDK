@@ -147,7 +147,7 @@ public class SettingFlyViewModel extends BaseViewModel {
         mGDUFlightController.getDroneBackInfo(new CommonCallbacks.CompletionCallbackWith<DroneBackInfo>() {
             @Override
             public void onSuccess(DroneBackInfo droneBackInfo) {
-                int goHomeSpeedMin = MyConstants.GO_HOME_SPEED_MIN * 100;
+                int goHomeSpeedMin = DroneValueConstants.GO_HOME_SPEED_MIN * 100;
                 if (droneBackInfo.getSpeed() < goHomeSpeedMin) {
                     droneBackInfo.setSpeed(goHomeSpeedMin);
                 }
@@ -185,7 +185,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             return;
         }
         int valueInt = UnitChnageUtils.inch2m(Integer.parseInt(value));
-        if (valueInt < MyConstants.GO_HOME_SPEED_MIN || valueInt > MyConstants.GO_HOME_SPEED_MAX) {
+        if (valueInt < DroneValueConstants.GO_HOME_SPEED_MIN || valueInt > DroneValueConstants.GO_HOME_SPEED_MAX) {
             backHomeSpeedLiveData.setValue(preBackSpeed);
             toastLiveData.setValue(R.string.input_error);
             return;
