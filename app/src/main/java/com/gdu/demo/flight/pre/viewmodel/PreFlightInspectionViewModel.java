@@ -564,8 +564,8 @@ public class PreFlightInspectionViewModel extends ViewModel {
      * */
     private void getHomeBackHeight(){
         if (SdkDemoApplication.getAircraftInstance().isConnected()){
-            if (GlobalVariable.backHeight > 0) {
-                preGoHomeHeight = GlobalVariable.backHeight / 10;
+            if (DroneUtils.getBackHeight() > 0) {
+                preGoHomeHeight = DroneUtils.getBackHeight() / 10;
                 goHomeHeightLiveData.postValue(String.valueOf(UnitChnageUtils.getUnitValue(preGoHomeHeight)));
             } else {
                 preGoHomeHeight = -1;

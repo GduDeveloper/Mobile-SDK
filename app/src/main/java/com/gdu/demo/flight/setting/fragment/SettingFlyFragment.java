@@ -290,8 +290,8 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mViewBinding.sbBackHeight.setMax(isOpenLimitHeight ? preHeightLimit : DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK);
         mUnitChnageUtils.showUnit(isOpenLimitHeight ? preHeightLimit : DroneValueConstants.GO_HOME_HEIGHT_MAX_SDK, mViewBinding.tvMaxBackHeight);
 
-        if (GlobalVariable.backHeight > 0) {
-            preBackHeight = GlobalVariable.backHeight / 10;
+        if (DroneUtils.getBackHeight() > 0) {
+            preBackHeight = DroneUtils.getBackHeight() / 10;
             mViewBinding.sbBackHeight.setProgress(preBackHeight);
             String goHomeHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(preBackHeight));
             mViewBinding.etHeight.setText(goHomeHeightStr);
