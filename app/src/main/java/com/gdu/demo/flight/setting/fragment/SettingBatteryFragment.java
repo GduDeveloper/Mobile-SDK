@@ -28,6 +28,7 @@ import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
 import com.gdu.demo.utils.DroneUtils;
+import com.gdu.lib.util.FormatConfig;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;

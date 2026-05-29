@@ -3,7 +3,7 @@ package com.gdu.demo.utils;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.gdu.util.FormatConfig;
+import com.gdu.lib.util.FormatConfig;
 
 import java.text.DecimalFormat;
 

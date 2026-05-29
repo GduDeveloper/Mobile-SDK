@@ -24,6 +24,7 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.drone.SwitchType;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.FormatConfig;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
