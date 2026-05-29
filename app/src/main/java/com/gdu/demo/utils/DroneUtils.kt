@@ -1,7 +1,9 @@
 package com.gdu.demo.utils
 
+import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.interfaces.IGduRCDevice
+import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.bean.ControlHand
 import com.gdu.msdk.key.value.bean.FlyMode
 
@@ -27,5 +29,9 @@ object DroneUtils {
     @JvmStatic
     val flyModel: FlyMode
         get() = IFlightController.get.fcInfo1.value?.flyModel?: FlyMode.ATTITUDE
+
+    @JvmStatic
+    val battery1InfoZ4C: CycleBatteryInfo?
+        get() = IBattery.get.droneBatteryInfo.value
 
 }

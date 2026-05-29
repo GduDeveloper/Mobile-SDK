@@ -22,19 +22,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gdu.GlobalVariableTest;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingBatteryBinding;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.setting.viewmodel.SettingBatteryViewModel;
 import com.gdu.demo.utils.BatteryUtil;
-import com.gdu.drone.BatteryInfoZ4C;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.bean.PlanType;
-import com.gdu.util.FormatConfig;
-import com.gdu.util.TimeUtil;
 import com.rxjava.rxlife.RxLife;
 
 import java.text.DecimalFormat;
@@ -58,7 +56,7 @@ public class SettingBatteryFragment extends Fragment {
     private SettingBatteryViewModel batteryViewModel;
     private FragmentActivity mActivity;
 
-    private BatteryInfoZ4C mBatteryNo1;
+    private CycleBatteryInfo mBatteryNo1;
 
     private CellAdapter upCellAdapter, downCellAdapter;
     private List<Integer> upCellDatas = new ArrayList<Integer>(Arrays.asList(0,0,0,0,0,0));
@@ -191,7 +189,7 @@ public class SettingBatteryFragment extends Fragment {
         if (selectTable == 1){
             updateSelectTab(mViewBinding.flightBattery);
             updateFlBatteryView();
-            if (GlobalVariable.sBattery1InfoZ4C != null ){
+            if (DroneUtils.getBattery1InfoZ4C() != null ){
                 setFlBatteryData();
             }else {
                 resetBatteryInfoOnce();
@@ -305,7 +303,7 @@ public class SettingBatteryFragment extends Fragment {
         //1、更新飞行时长，飞机电池界面可见，遥控器电池界面隐藏
         updateFlightDuration();
         //2、更新UI可见组件：飞机电池界面，第二个电池隐藏；遥控器电池界面，根据电池数量显示
-        mBatteryNo1 = GlobalVariable.sBattery1InfoZ4C;
+        mBatteryNo1 = DroneUtils.getBattery1InfoZ4C();
         if (mBatteryNo1 == null) {
             resetBatteryInfoOnce();
             return;
@@ -380,16 +378,16 @@ public class SettingBatteryFragment extends Fragment {
         mViewBinding.incBatteryLayout1.tvBatteryPercent.setText(mBatteryNo1.getPower() + "%");
         mViewBinding.incBatteryLayout1.tvBatteryPercent.setTextColor(ContextCompat.getColor(getContext(), R.color.color_05C336));
         mViewBinding.incBatteryLayout1.tvBatteryVoltage.setText(vlotage + "V");
-        mViewBinding.incBatteryLayout1.tvBatteryCapacity.setText(mBatteryNo1.getBattery_capacity_left() + "mAH");
+        mViewBinding.incBatteryLayout1.tvBatteryCapacity.setText(mBatteryNo1.getCapacityLeft() + "mAH");
         mViewBinding.incBatteryLayout1.tvChargeNumContent.setText(String.valueOf(mBatteryNo1.getInflationNumber()));
         final int electricValue = Math.abs(mBatteryNo1.getCurrentElectricity()) * 2;
         mViewBinding.incBatteryLayout1.tvCurElectricContent.setText(electricValue + "mA");
-        mViewBinding.incBatteryLayout1.tvVoltageDifferential.setText("0" + df3.format(mBatteryNo1.getBattery_max_dropout_voltage() /1000.0f) + "V");
-        if(mBatteryNo1.getAfe_temp() != BatteryInfoZ4C.LOWEST_TEMP) {
-            mViewBinding.valueBmsTemp.setText((mBatteryNo1.getAfe_temp() - 2731) / 10 + "℃");
+        mViewBinding.incBatteryLayout1.tvVoltageDifferential.setText("0" + df3.format(mBatteryNo1.getMaxDropoutVoltage() /1000.0f) + "V");
+        if(mBatteryNo1.getAfeTemp() != CycleBatteryInfo.LOWEST_TEMP) {
+            mViewBinding.valueBmsTemp.setText((mBatteryNo1.getAfeTemp() - 2731) / 10 + "℃");
         }
         upCellDatas.clear();
-        upCellDatas.addAll(mBatteryNo1.getBatteryCellList());
+        upCellDatas.addAll(mBatteryNo1.getCellList());
         upCellAdapter.notifyDataSetChanged();
     }
 

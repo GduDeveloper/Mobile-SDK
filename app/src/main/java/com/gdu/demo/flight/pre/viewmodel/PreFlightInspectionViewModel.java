@@ -28,6 +28,7 @@ import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.remotecontroller.AircraftMappingStyle;
@@ -271,7 +272,8 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_FLY_BATTERY);
         if (null == bean) return;
         String batteryStr = bean.getContent();
-        if (GlobalVariable.sBattery1InfoZ4C == null || !IGduDroneDevice.get().isConnected()) {
+        CycleBatteryInfo battery1Info = DroneUtils.getBattery1InfoZ4C();
+        if (battery1Info == null || !IGduDroneDevice.get().isConnected()) {
             bean.setContent("--");
             bean.setContentEnable(false);
             if (!TextUtils.equals(bean.getContent(), batteryStr)) {
@@ -279,8 +281,8 @@ public class PreFlightInspectionViewModel extends ViewModel {
             }
             return;
         }
-        final int renameBattery = GlobalVariable.sBattery1InfoZ4C.getPower();
-        final int batteryTemp = GlobalVariable.sBattery1InfoZ4C.getTemp();
+        final int renameBattery = battery1Info.getPower();
+        final int batteryTemp = battery1Info.getTemp();
         float realTemp = batteryTemp / 10f;
         PlanType planType = IGduDroneDevice.get().getPlanType().getValue();
         if (planType == PlanType.MGP12
