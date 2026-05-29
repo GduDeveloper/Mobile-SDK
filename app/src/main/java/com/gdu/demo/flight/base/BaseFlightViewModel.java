@@ -486,7 +486,6 @@ public class BaseFlightViewModel extends BaseViewModel {
             public void onResult(Error error) {
                 if (error == null) {
 //                    CommonUtils.stopAllHomePointMusic();
-                    GlobalVariable.returnHomeSettingType = type;
 //                    CommonUtils.playHomePointByReturnType();
                     homeLocationBeanLiveData.postValue(true);
 //                    showToast(getString(R.string.home_point_set_successfully));

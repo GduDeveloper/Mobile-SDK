@@ -28,6 +28,7 @@ import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.demo.widget.DoubleDragThumbSeekBar2;
+import com.gdu.drone.ReturnHomeSettingType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.ViewUtils;
@@ -516,7 +517,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
                 v -> {
                     if (uavUnConnect()) return;
                     showBackHomePointConfirmDialog(0, DroneUtils.getDroneGpsLat(), DroneUtils.getDroneGpsLon(),
-                            GlobalVariable.ReturnHomeSettingType.PLANET);
+                            ReturnHomeSettingType.PLANET);
                 });
 
         SingleClickUtil.onSingleClick(mViewBinding.preFlightHomePointRc, false,
@@ -525,7 +526,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
 
                     double rcLat = 0;
                     double rcLng = 0;
-                    showBackHomePointConfirmDialog(1, rcLat, rcLng, GlobalVariable.ReturnHomeSettingType.CONTROL);
+                    showBackHomePointConfirmDialog(1, rcLat, rcLng, ReturnHomeSettingType.CONTROL);
                 });
     }
 
