@@ -2,6 +2,7 @@ package com.gdu.demo.utils
 
 import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.IFlightController
+import com.gdu.msdk.device.component.interfaces.IRTK
 import com.gdu.msdk.device.interfaces.IGduRCDevice
 import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.CycleFCInfo1
@@ -90,6 +91,10 @@ object DroneUtils {
     @JvmField
     val isDahuaBDS: Boolean = false
 
+    /** 单北斗定位系统状态  false：四系统； true：开启单北斗 */
+    @JvmStatic
+    val isBDSOpen: Boolean
+        get() = IRTK.get.fcCoprocessorRtk?.isBDSOpen?: false
 
     /**------------------------ 遥控器 ----------------------------------*/
 

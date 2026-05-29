@@ -324,8 +324,6 @@ public class SettingFlyViewModel extends BaseViewModel {
         }
         // 大华渠道S200系列软件支持单北斗模式(目前会切换失败 但是需要返回成功，做个假的支持)
         if ((DroneUtils.isDahua || DroneUtils.isDahuaBDS) && IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
-            GlobalVariable.sGNSSType = isOpen;
-            SPUtils.getInstance().put("sGNSSType", (int) isOpen);
             toastLiveData.setValue(R.string.string_set_success);
             gnssLiveData.setValue(position);
         } else {

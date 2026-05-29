@@ -523,7 +523,7 @@ public class SettingRtkFragment extends Fragment {
             Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && DroneUtils.isBDSOpen()) {//北斗模式下无法连接RTK
             Toast.makeText(getContext(), R.string.Msg_bds_connot_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -618,7 +618,7 @@ public class SettingRtkFragment extends Fragment {
     }
 
     public void updateBDTips() {
-        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.sGNSSType == 6) {//北斗模式下无法连接RTK
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && DroneUtils.isBDSOpen()) {//北斗模式下无法连接RTK
             binding.tvGnssHint.setVisibility(View.VISIBLE);
         } else {
             binding.tvGnssHint.setVisibility(View.GONE);

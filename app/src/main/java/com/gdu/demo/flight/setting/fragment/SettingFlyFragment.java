@@ -411,11 +411,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             mViewBinding.groupBds.setVisibility(View.VISIBLE);
         }
 
-        // dh大华的先默认BDS
-        if (DroneUtils.isDahua || DroneUtils.isDahuaBDS) {
-            GlobalVariable.sGNSSType = (byte) SPUtils.getInstance().getInt("sGNSSType", 6);
-        }
-        if (GlobalVariable.sGNSSType == 6) {
+        if (DroneUtils.isBDSOpen()) {
             mViewBinding.ovGnss.setIndex(1);
         } else {
             mViewBinding.ovGnss.setIndex(0);
