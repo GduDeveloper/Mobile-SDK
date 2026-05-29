@@ -405,13 +405,13 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
             mViewBinding.groupGnss.setVisibility(View.VISIBLE);
         }
         // dhBDS不允许切换GNSS，直接显示BDS
-        else if (ChannelUtils.isDahuaBDS(getContext())) {
+        else if (DroneUtils.isDahuaBDS) {
             mViewBinding.groupGnss.setVisibility(View.GONE);
             mViewBinding.groupBds.setVisibility(View.VISIBLE);
         }
 
         // dh大华的先默认BDS
-        if (ChannelUtils.isDahua(getContext()) || ChannelUtils.isDahuaBDS(getContext())) {
+        if (DroneUtils.isDahua || DroneUtils.isDahuaBDS) {
             GlobalVariable.sGNSSType = (byte) SPUtils.getInstance().getInt("sGNSSType", 6);
         }
         if (GlobalVariable.sGNSSType == 6) {

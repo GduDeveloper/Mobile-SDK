@@ -58,6 +58,11 @@ object DroneUtils {
     val twoLevelLowBattery: Int
         get() = IFlightController.get.currLowerBatteryWaring.twoLevel
 
+    @JvmField
+    val isDahua: Boolean = false
+
+    @JvmField
+    val isDahuaBDS: Boolean = false
 
 
     /**------------------------ 遥控器 ----------------------------------*/
