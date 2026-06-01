@@ -361,7 +361,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
         final boolean rtkConnected = (DroneUtils.getRtkType() == 1 && connectStatus)
                 || (DroneUtils.getRtkType() == 2 && GlobalVariable.sBSRTKStatus == 1)
-                || (DroneUtils.getRtkType() == 3 && GlobalVariable.onDroneRtkState == 2)
+                || (DroneUtils.getRtkType() == 3 && DroneUtils.getOnboardRTKConnectState() == 2)
                 || (DroneUtils.getRtkType() == 5 && QxSdkManager.getInstance().isConnect());
         if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.RTKOnline == 1) {
             bean.setContentStrId(R.string.string_not_insert);

@@ -121,6 +121,11 @@ object DroneUtils {
     val rtkType: Int
         get() = IRTK.get.onboardRTKInfo.value?.rtkType?.toInt()?: 0
 
+    /** 机载rtk状态 0 未连接  1 连接中 2 已连接 */
+    @JvmStatic
+    val onboardRTKConnectState: Int
+        get() = IRTK.get.onDroneRtkState.value
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

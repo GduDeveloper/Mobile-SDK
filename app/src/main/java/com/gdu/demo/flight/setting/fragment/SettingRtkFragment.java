@@ -344,9 +344,9 @@ public class SettingRtkFragment extends Fragment {
 
     private void showOnboardRtkConnect() {
         if (mLastRTKType == 3) {
-            if (GlobalVariable.onDroneRtkState == 2) {
+            if (DroneUtils.getOnboardRTKConnectState() == 2) {
                 showConnectedView();
-            } else if (GlobalVariable.onDroneRtkState == 1) {
+            } else if (DroneUtils.getOnboardRTKConnectState() == 1) {
                 showConnectingView();
             } else {
                 showNotConnectedStatus();
