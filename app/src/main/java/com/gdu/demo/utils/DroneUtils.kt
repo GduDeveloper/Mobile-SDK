@@ -1,5 +1,6 @@
 package com.gdu.demo.utils
 
+import com.gdu.msdk.device.component.interfaces.IAirLink
 import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.component.interfaces.IRTK
@@ -133,6 +134,10 @@ object DroneUtils {
     @JvmStatic
     val rtkOnline: Boolean
         get() = fcInfo3?.rtkOnline?: false
+
+    @JvmStatic
+    val isUseBackupsAirlink: Boolean
+        get() = IAirLink.get.lteSdrStatus.value?.isUseBackupsAirlink?: false
 
     /**------------------------ 遥控器 ----------------------------------*/
 

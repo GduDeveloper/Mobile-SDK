@@ -115,7 +115,7 @@ public class SettingImageChannelFragment extends Fragment {
             mViewBinding.groupHdmi.setVisibility(View.VISIBLE);
         }
 
-        if (GlobalVariable.isUseBackupsAirlink) {
+        if (DroneUtils.isUseBackupsAirlink()) {
             mViewBinding.layoutStream.setVisibility(View.VISIBLE);
             sdrViewModel.getVisibleLightStreamLiveData().observe(mActivity, data->{
                 mHandler.post(() -> mViewBinding.ovSelectedStream.setIndex(data));
@@ -220,7 +220,7 @@ public class SettingImageChannelFragment extends Fragment {
         sdrViewModel.getOutputStreamLiveData().observe(mActivity, data->{
             if (data) {
                 mViewBinding.ovSelectedStream.setIndex(position);
-                if (GlobalVariable.isUseBackupsAirlink) {
+                if (DroneUtils.isUseBackupsAirlink()) {
                     mViewBinding.layoutStream.setVisibility(View.VISIBLE);
                 } else {
                     mViewBinding.layoutStream.setVisibility(View.GONE);
@@ -265,7 +265,7 @@ public class SettingImageChannelFragment extends Fragment {
     }
 
     public void showCurrentAirlinkType(){
-        if (GlobalVariable.isUseBackupsAirlink) {
+        if (DroneUtils.isUseBackupsAirlink()) {
             if(!isShowPushType) {
                 if(GlobalVariable.sFourthGStatus != null && GlobalVariable.sFourthGStatus.pushStreamType != 0) {
                     showPushTypeView();

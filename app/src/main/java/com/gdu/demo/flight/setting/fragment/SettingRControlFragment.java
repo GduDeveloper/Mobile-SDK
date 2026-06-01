@@ -226,7 +226,7 @@ public class SettingRControlFragment extends Fragment {
             return;
         }
 
-        if (SdkDemoApplication.getAircraftInstance().isConnected() && GlobalVariable.isUseBackupsAirlink) {
+        if (SdkDemoApplication.getAircraftInstance().isConnected() && DroneUtils.isUseBackupsAirlink()) {
             Toast.makeText(getContext(), R.string.string_plz_switch_image_transmission_match, Toast.LENGTH_SHORT).show();
             return;
         }

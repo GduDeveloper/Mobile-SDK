@@ -498,7 +498,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDR);
         if (null == bean) return;
         int preSDRId = bean.getContentStrId();
-        if (GlobalVariable.isUseBackupsAirlink) {
+        if (DroneUtils.isUseBackupsAirlink()) {
             bean.setContentStrId(R.string.string_link_type_let);
         } else {
             bean.setContentStrId(R.string.string_link_type_image_transmission);

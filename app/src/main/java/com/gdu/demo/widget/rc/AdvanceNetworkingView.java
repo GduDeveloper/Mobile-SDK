@@ -164,7 +164,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
                 return;
             }
 
-            if (GlobalVariable.isUseBackupsAirlink) {
+            if (DroneUtils.isUseBackupsAirlink()) {
                 Toast.makeText(mContext, R.string.string_not_change, Toast.LENGTH_SHORT).show();
                 return;
             }
