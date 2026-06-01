@@ -19,6 +19,7 @@ import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
@@ -186,7 +187,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 //视频是主界面时，在视频上画框
                 if (isSuccess && targetModes != null && !targetModes.isEmpty()) {
                     XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
-                    GlobalVariable.isTargetDetectMode = true;
+                    DroneUtils.setTargetDetectMode(true);
                     mTargetDetectHelper.startShowTarget();
                     ThreadHelper.runOnUiThread(() -> Toast.makeText(FlightActivity.this, "识别到"+targetModes.size()+"个", Toast.LENGTH_SHORT).show());
                 } else if (targetModes == null) {
@@ -199,9 +200,9 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
                 if (isSuccess) {
                     GlobalVariable.discernIsOpen = true;
-                    GlobalVariable.isTargetDetectMode = true;
+                    DroneUtils.setTargetDetectMode(true);
                 } else {
-                    GlobalVariable.isTargetDetectMode = false;
+                    DroneUtils.setTargetDetectMode(false);
                 }
             }
 

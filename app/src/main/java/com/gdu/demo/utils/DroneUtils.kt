@@ -142,6 +142,9 @@ object DroneUtils {
     @JvmStatic // 是否有控制权，NetworkingHelper.isRCHasControlPower()
     val isRCHasControlPower: Boolean = true
 
+    @JvmStatic
+    var isTargetDetectMode: Boolean = false
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

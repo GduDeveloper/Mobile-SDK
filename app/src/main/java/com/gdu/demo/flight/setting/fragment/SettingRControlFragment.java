@@ -21,6 +21,7 @@ import com.gdu.lib.util.RCUtils;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.key.value.bean.ControlHand;
 import com.gdu.remotecontroller.AircraftMappingStyle;
+import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.gdu.sdk.remotecontroller.RemoteController;
 
 import org.greenrobot.eventbus.Subscribe;

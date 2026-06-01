@@ -10,15 +10,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.widget.GduSpinner;
+import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.remotecontroller.IMChildPointInfo;
+import com.gdu.msdk.key.value.bean.IMChildPointInfo;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
-import com.gdu.util.CollectionUtils;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;

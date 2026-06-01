@@ -27,6 +27,7 @@ import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;

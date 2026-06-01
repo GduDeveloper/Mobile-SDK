@@ -100,10 +100,10 @@ public class FlightViewModel extends ViewModel {
                     XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
                     if (gduError == null) {
                         GlobalVariable.discernIsOpen = true;
-                        GlobalVariable.isTargetDetectMode = true;
+                        DroneUtils.setTargetDetectMode(true);
                         toastLiveData.postValue(R.string.ai_box_open_success);
                     }else {
-                        GlobalVariable.isTargetDetectMode = false;
+                        DroneUtils.setTargetDetectMode(false);
                         toastLiveData.postValue(R.string.ai_box_open_fail);
                     }
                 });
@@ -156,12 +156,12 @@ public class FlightViewModel extends ViewModel {
                 if (null == gduError){
                     if (detectType == 0x01) {
                         GlobalVariable.discernIsOpen = true;
-                        GlobalVariable.isTargetDetectMode = true;
+                        DroneUtils.setTargetDetectMode(true);
                     }else {
                     }
                 }else {
                     if (detectType == 0x01) {
-                        GlobalVariable.isTargetDetectMode = false;
+                        DroneUtils.setTargetDetectMode(false);
                     }
                 }
             });
@@ -170,12 +170,12 @@ public class FlightViewModel extends ViewModel {
                 if (null == gduError){
                     if (detectType == 0x01) {
                         GlobalVariable.discernIsOpen = true;
-                        GlobalVariable.isTargetDetectMode = true;
+                        DroneUtils.setTargetDetectMode(true);
                     }else {
                     }
                 }else {
                     if (detectType == 0x01) {
-                        GlobalVariable.isTargetDetectMode = false;
+                        DroneUtils.setTargetDetectMode(false);
                     }
                 }
             });

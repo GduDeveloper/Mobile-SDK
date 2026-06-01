@@ -608,7 +608,7 @@ public class SettingCommonFragment extends Fragment {
             resetAiRecognitionSwitch();
             return;
         }
-        if (!GlobalVariable.isTargetDetectMode) {
+        if (!DroneUtils.isTargetDetectMode()) {
             Toast.makeText(requireContext(), R.string.Msg_AI_Recoginition_Warn, Toast.LENGTH_SHORT).show();
             resetAiRecognitionSwitch();
             return;
