@@ -90,9 +90,11 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         mUnitChnageUtils = new UnitChnageUtils();
         setListener();
 
-
-        mViewBinding.ivNoFlyBackSwitch.setSelected(GlobalVariable.noFlyAreBackAction == 1);
-
+        boolean noFlyAreBackAction = false;
+        if (DroneUtils.getFcInfo3() != null) {
+            noFlyAreBackAction = DroneUtils.getFcInfo3().getNoFlyAreBackAction();
+        }
+        mViewBinding.ivNoFlyBackSwitch.setSelected(noFlyAreBackAction);
 
         if (DroneUtils.isTetherModel) {
             mViewBinding.sbLimitDistance.setEnabled(false);

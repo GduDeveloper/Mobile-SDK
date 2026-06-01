@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.api.GduRtkManager;
+import com.gdu.api.RtkManager;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
@@ -559,7 +559,7 @@ public class SettingRtkFragment extends Fragment {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
 
-        rtk.connectRtk(stationSource, null, new GduRtkManager.OnRtkConnectListener() {
+        rtk.connectRtk(stationSource, null, new RtkManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {

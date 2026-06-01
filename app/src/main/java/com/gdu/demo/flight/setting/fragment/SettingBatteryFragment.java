@@ -33,6 +33,7 @@ import com.gdu.lib.util.TimeUtil;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.device.interfaces.IGduRCDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.CycleRCBatteryInfo;
 import com.gdu.msdk.key.value.bean.PlanType;
@@ -204,7 +205,7 @@ public class SettingBatteryFragment extends Fragment {
             updateSelectTab(mViewBinding.rcBattery);
             updateRcBatteryView();
             resetBatteryStateView(mViewBinding.incBatteryLayout1.tvBatteryState);
-            if (GlobalVariable.subLevel > -1){
+            if (IGduRCDevice.get().getRcBatteryInfo().getValue().getSubLevel() > -1){
                 resetBatteryStateView(mViewBinding.incBatteryLayout2.tvBatteryState);
             }
             setRCBatteryData();
@@ -224,7 +225,7 @@ public class SettingBatteryFragment extends Fragment {
 
     //2：显示电池1，显示电池2（如果有），（隐藏时长，隐藏sn、隐藏控制组件，显示内外置标题）
     private void updateRcBatteryView() {
-        if (GlobalVariable.subLevel > -1){
+        if (IGduRCDevice.get().getRcBatteryInfo().getValue().getSubLevel() > -1){
             mViewBinding.incBatteryLayout2.z4bBatterySub.setVisibility(View.VISIBLE);
             mViewBinding.battery2.setVisibility(View.VISIBLE);
         }else {
