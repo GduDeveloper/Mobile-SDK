@@ -145,6 +145,10 @@ object DroneUtils {
     @JvmStatic
     var isTargetDetectMode: Boolean = false
 
+    /** 算法检测的开关是否已经打开 */
+    @JvmStatic
+    var discernIsOpen: Boolean = false
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

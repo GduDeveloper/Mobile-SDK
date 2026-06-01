@@ -99,7 +99,7 @@ public class FlightViewModel extends ViewModel {
         SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType.getKey(), gduError -> {
                     XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
                     if (gduError == null) {
-                        GlobalVariable.discernIsOpen = true;
+                        DroneUtils.setDiscernIsOpen(true);
                         DroneUtils.setTargetDetectMode(true);
                         toastLiveData.postValue(R.string.ai_box_open_success);
                     }else {
@@ -155,7 +155,7 @@ public class FlightViewModel extends ViewModel {
             SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
                 if (null == gduError){
                     if (detectType == 0x01) {
-                        GlobalVariable.discernIsOpen = true;
+                        DroneUtils.setDiscernIsOpen(true);
                         DroneUtils.setTargetDetectMode(true);
                     }else {
                     }
@@ -169,7 +169,7 @@ public class FlightViewModel extends ViewModel {
             SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, detectType, (short) 3, typeArray, gduError -> {
                 if (null == gduError){
                     if (detectType == 0x01) {
-                        GlobalVariable.discernIsOpen = true;
+                        DroneUtils.setDiscernIsOpen(true);
                         DroneUtils.setTargetDetectMode(true);
                     }else {
                     }

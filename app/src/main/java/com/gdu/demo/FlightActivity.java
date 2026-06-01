@@ -199,7 +199,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             public void onTargetDetectSend(boolean isSuccess) {
                 XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
                 if (isSuccess) {
-                    GlobalVariable.discernIsOpen = true;
+                    DroneUtils.setDiscernIsOpen(true);
                     DroneUtils.setTargetDetectMode(true);
                 } else {
                     DroneUtils.setTargetDetectMode(false);
