@@ -7,7 +7,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.gdu.demo.R;
-import com.gdu.util.LanguageUtil;
+import com.gdu.lib.util.LanguageUtil;
 
 /**
  * @Author: lixiqiang

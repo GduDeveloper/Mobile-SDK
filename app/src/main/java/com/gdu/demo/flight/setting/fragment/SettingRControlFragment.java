@@ -190,7 +190,6 @@ public class SettingRControlFragment extends Fragment {
             GlobalEventBus.getBus().post(new GimbalEvent(IGimbal.get().getGimbalType()));
             GlobalEventBus.getBus().post(new EventMessage(MyConstants.GET_CONTROL_PERMISSION_SUC));
 //            uiThreadHandle(() -> showToast(R.string.match_success));
-//            AirlinkUtils.getUnique();
         }
     }
 
