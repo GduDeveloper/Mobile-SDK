@@ -32,9 +32,9 @@ class FlyStateModel : WidgetModel() {
             headAngel = headAngel + 360
         }
         // 椭球高
-        val ellipsoid_height = GlobalVariable.altitude_drone
+        val ellipsoid_height = DroneUtils.ellipsoidHeight
         // 海拔高
-        val alt = GlobalVariable.asl_drone
+        val alt = DroneUtils.altitudeHeight
 
         notify(FlyStateValue(distance, height, hs, vs, headAngel, ellipsoid_height, alt))
     }

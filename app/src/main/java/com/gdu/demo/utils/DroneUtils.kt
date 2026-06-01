@@ -46,6 +46,14 @@ object DroneUtils {
     val backHeight: Int
         get() = fcInfo1?.backHeight?: 0
 
+    @JvmStatic // 海拔高度
+    val altitudeHeight: Int
+        get() = fcInfo1?.altitudeHeight?: 0
+
+    @JvmStatic // 椭球高度
+    val ellipsoidHeight: Int
+        get() = fcInfo1?.ellipsoidHeight?: 0
+
     @JvmStatic
     val droneGpsLon: Double
         get() = fcInfo1?.longitude?: (-1).toDouble()

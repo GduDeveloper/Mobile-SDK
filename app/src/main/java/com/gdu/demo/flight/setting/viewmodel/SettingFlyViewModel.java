@@ -16,8 +16,10 @@ import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.msdk.config.DroneValueConstants;
+import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.bean.DroneFlyState;
+import com.gdu.msdk.key.value.bean.RTKModel;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.flightcontroller.bean.DroneBackInfo;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -304,8 +306,9 @@ public class SettingFlyViewModel extends BaseViewModel {
             toastLiveData.setValue(R.string.string_flying_forbid);
             return false;
         }
-        String rtkStatus = GlobalVariable.rtk_model.getRtk1_status();
-        if (rtkStatus.equals("Fixed") || rtkStatus.equals("Float")) {
+        RTKModel rtkModel = IRTK.get().getRtkFcInfo().getRtkModel();
+        String rtkStatus = rtkModel.getRtk1State().getState();
+        if ("Fixed".equals(rtkStatus) || "Float".equals(rtkStatus)) {
             toastLiveData.setValue(R.string.gnss_exit_rtk);
             return false;
         }

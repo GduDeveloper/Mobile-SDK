@@ -14,7 +14,10 @@ import com.gdu.demo.databinding.ViewRtkStateBinding;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.CycleFcGNSSInfo;
+import com.gdu.msdk.key.value.bean.RTKModel;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
@@ -87,7 +90,8 @@ public class RTKStateView extends LinearLayout {
      * 更新RTK相关数据
      */
     public void updateRTKInfo(){
-        if (GlobalVariable.rtk_model.isPpsSignalIsNormal()) {
+        RTKModel rtkModel = IRTK.get().getRtkFcInfo().getRtkModel();
+        if (rtkModel != null && rtkModel.getPpsSignalIsNormal()) {
             viewBinding.tvPPSStatusContent.setText(mContext.getString(R.string.flight_connect));
             viewBinding.tvPPSStatusContent.setTextColor(ContextCompat.getColor(mContext, R.color.color_0BE25C));
         } else {
@@ -95,20 +99,21 @@ public class RTKStateView extends LinearLayout {
             viewBinding.tvPPSStatusContent.setTextColor(ContextCompat.getColor(mContext, R.color.color_EB4242));
         }
 
-        viewBinding.tvDroneRtkState.setText(GlobalVariable.rtk_model.getRtk1_status());
+        viewBinding.tvDroneRtkState.setText(rtkModel.getRtk1State().getState());
         viewBinding.tvDroneLng.setText(new BigDecimal(DroneUtils.getDroneGpsLon()).setScale(8, RoundingMode.HALF_UP).toString());
         viewBinding.tvDroneLat.setText(new BigDecimal(DroneUtils.getDroneGpsLat()).setScale(8, RoundingMode.HALF_UP).toString());
 
-        String ellipsoidalHeight = UnitChnageUtils.getDecimalFormatUnit((float) (GlobalVariable.altitude_drone / 100.0), UnitChnageUtils.format_three);
+        String ellipsoidalHeight = UnitChnageUtils.getDecimalFormatUnit((float) (DroneUtils.getEllipsoidHeight() / 100.0), UnitChnageUtils.format_three);
         viewBinding.tvEllipsoidalHeight.setText(ellipsoidalHeight);
-        String altitude = UnitChnageUtils.getDecimalFormatUnit((float) (GlobalVariable.asl_drone / 100.0), UnitChnageUtils.format_three);
+        String altitude = UnitChnageUtils.getDecimalFormatUnit((float) (DroneUtils.getAltitudeHeight() / 100.0), UnitChnageUtils.format_three);
         viewBinding.tvAltitude.setText(altitude);
 
-        viewBinding.tvDroneStationNum.setText(GlobalVariable.satellite_drone + "");
-        viewBinding.tvBdNum.setText(GlobalVariable.bdsNum + "");
-        viewBinding.tvGpsNum.setText(GlobalVariable.gpsNum + "");
-        viewBinding.tvGalileoNum.setText(GlobalVariable.galileoNum + "");
-        viewBinding.tvGlonassNum.setText(GlobalVariable.glonaNum + "");
+        CycleFcGNSSInfo gnssInfo = IRTK.get().getGnssInfo();
+        viewBinding.tvDroneStationNum.setText(gnssInfo == null? "" : gnssInfo.getMainSatelliteDrone() + "");
+        viewBinding.tvBdNum.setText(gnssInfo == null? "" : gnssInfo.getMainBdSatellite() + "");
+        viewBinding.tvGpsNum.setText(gnssInfo == null? "" : gnssInfo.getMainGpsSatellite() + "");
+        viewBinding.tvGalileoNum.setText(gnssInfo == null? "" : gnssInfo.getMainGalileoSatellite() + "");
+        viewBinding.tvGlonassNum.setText(gnssInfo == null? "" : gnssInfo.getMainGlonassSatellite() + "");
 
         // 基站RTK
         if (GlobalVariable.sRTKType == 2) {

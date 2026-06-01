@@ -1,10 +1,10 @@
 package com.gdu.demo.widgetlist.rtk
 
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import com.gdu.msdk.device.component.interfaces.IRTK
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 
@@ -22,8 +22,8 @@ class RTKStateModel : WidgetModel() {
             notify(RTKStateValue(-1, ""))
             return;
         }
-        val currentSatellite = GlobalVariable.satellite_drone
-        val tkStatus = GlobalVariable.rtk_model.rtk1_status ?: ""
+        val currentSatellite = IRTK.get.gnssInfo?.mainSatelliteDrone?: 0
+        val tkStatus = IRTK.get.rtkFcInfo.rtkModel?.rtk1State?.state ?: ""
         notify(RTKStateValue(currentSatellite, tkStatus))
     }
 }
