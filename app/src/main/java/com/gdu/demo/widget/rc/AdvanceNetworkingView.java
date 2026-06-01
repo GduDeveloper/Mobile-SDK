@@ -153,7 +153,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
                 return;
             }
 
-            if (!NetworkingHelper.isRCHasControlPower()) {
+            if (!DroneUtils.isRCHasControlPower()) {
                 Toast.makeText(mContext, R.string.string_rc_has_no_control, Toast.LENGTH_SHORT).show();
                 return;
             }

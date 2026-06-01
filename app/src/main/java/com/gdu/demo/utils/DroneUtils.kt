@@ -139,6 +139,9 @@ object DroneUtils {
     val isUseBackupsAirlink: Boolean
         get() = IAirLink.get.lteSdrStatus.value?.isUseBackupsAirlink?: false
 
+    @JvmStatic // 是否有控制权，NetworkingHelper.isRCHasControlPower()
+    val isRCHasControlPower: Boolean = true
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

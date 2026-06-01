@@ -481,7 +481,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RC_CONTROL);
         if (null == bean) return;
         int preRCId = bean.getContentStrId();
-        if (NetworkingHelper.isRCHasControlPower()) {
+        if (DroneUtils.isRCHasControlPower()) {
             bean.setContentStrId(R.string.Label_MasterRemoteControl);
         } else {
             bean.setContentStrId(R.string.Label_SubRemoteControl);
