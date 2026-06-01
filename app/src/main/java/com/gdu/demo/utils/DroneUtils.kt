@@ -109,6 +109,18 @@ object DroneUtils {
     val isBDSOpen: Boolean
         get() = IRTK.get.fcCoprocessorRtk?.isBDSOpen?: false
 
+    /**
+     * RTK 类型
+     * 0：无效值
+     * 1: 手机版网络RTK
+     * 2: 基站版RTK
+     * 3: 飞机板网络RTK
+     * 5: 千寻SDK RTK
+     */
+    @JvmStatic
+    val rtkType: Int
+        get() = IRTK.get.onboardRTKInfo.value?.rtkType?.toInt()?: 0
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

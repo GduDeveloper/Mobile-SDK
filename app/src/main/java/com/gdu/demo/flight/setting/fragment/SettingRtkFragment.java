@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.gdu.api.RtkManager;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
@@ -186,12 +185,6 @@ public class SettingRtkFragment extends Fragment {
 
     private void initData() {
         XLogger.INSTANCE.getAPP().i("initData()");
-        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            GlobalVariable.sRTKType = 1;
-            GlobalVariable.sDroneRTKStatus = 0;
-            GlobalVariable.sPhoneRTKStatus = 0;
-            GlobalVariable.sBSRTKStatus = 0;
-        }
         mRTKServiceList = getResources().getStringArray(R.array.rtk_service_array_onboard);
         boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
         if (isOpen) {
@@ -206,7 +199,7 @@ public class SettingRtkFragment extends Fragment {
             binding.rtkParamLayout.setVisibility(View.GONE);
         }
         binding.rtkServiceView.setData(mRTKServiceList);
-        mLastRTKType = GlobalVariable.sRTKType;
+        mLastRTKType = DroneUtils.getRtkType();
         if (isOpen) {
             setRTKTypeView((byte) mLastRTKType);
             switch (mLastRTKType) {
@@ -304,7 +297,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         XLogger.INSTANCE.getAPP().i("showConnectedView()");
-        if (GlobalVariable.sRTKType == 1 && GlobalVariable.rtkIsLoading == 1) {
+        if (DroneUtils.getRtkType() == 1 && GlobalVariable.rtkIsLoading == 1) {
             binding.tvConnectState.setText(getString(R.string.string_converging));
         } else {
             binding.tvConnectState.setText(getString(R.string.connect_succeed));

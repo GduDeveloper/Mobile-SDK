@@ -116,7 +116,7 @@ public class RTKStateView extends LinearLayout {
         viewBinding.tvGlonassNum.setText(gnssInfo == null? "" : gnssInfo.getMainGlonassSatellite() + "");
 
         // 基站RTK
-        if (GlobalVariable.sRTKType == 2) {
+        if (DroneUtils.getRtkType() == 2) {
             if (GlobalVariable.drtkInformation != null) {
 
                 String drtkState = "";
