@@ -26,8 +26,10 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
+import com.gdu.msdk.key.value.CycleOnboardRTKInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
 import com.gdu.msdk.manager.rtk.qianxun.QXRTKManager;
@@ -359,8 +361,13 @@ public class PreFlightInspectionViewModel extends ViewModel {
         int rtkStatus = bean.getContentStrId();
         final boolean connectStatus = RtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
 
+        CycleOnboardRTKInfo onboardRTKInfo = IRTK.get().getOnboardRTKInfo().getValue();
+        boolean bsRTKStatus = false;
+        if (onboardRTKInfo != null) {
+            bsRTKStatus = onboardRTKInfo.getBsRtkStatus();
+        }
         final boolean rtkConnected = (DroneUtils.getRtkType() == 1 && connectStatus)
-                || (DroneUtils.getRtkType() == 2 && GlobalVariable.sBSRTKStatus == 1)
+                || (DroneUtils.getRtkType() == 2 && bsRTKStatus)
                 || (DroneUtils.getRtkType() == 3 && DroneUtils.getOnboardRTKConnectState() == 2)
                 || (DroneUtils.getRtkType() == 5 && QXRTKManager.Companion.getInstance().isConnect());
         if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtils.getRtkOnline()) {
