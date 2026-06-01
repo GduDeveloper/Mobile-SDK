@@ -78,6 +78,10 @@ object DroneUtils {
     @JvmField
     val isTetherModel: Boolean = false
 
+    /** 是否有虚拟按键*/
+    @JvmField
+    val isHasNavigationBar: Boolean = false
+
     @JvmStatic
     val controlHand: ControlHand
         get() = IGduRCDevice.get.rcControlHand.value?.controlHand?: ControlHand.HAND_AMERICA

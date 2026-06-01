@@ -8,9 +8,9 @@ import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.CommonDialog;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.ToolManager;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
@@ -107,8 +107,8 @@ public class RectifyMagnetometerActivityNew extends FragmentActivity {
      * 解决虚拟按键事件
      */
     private void solveNavigationBar() {
-        XLogger.INSTANCE.getAPP().i("solveNavigationBar() isHasNavigationBar = " + UavStaticVar.isHasNavigationBar);
-        if (UavStaticVar.isHasNavigationBar) {
+        XLogger.INSTANCE.getAPP().i("solveNavigationBar() isHasNavigationBar = " + DroneUtils.isHasNavigationBar);
+        if (DroneUtils.isHasNavigationBar) {
             ToolManager.hideNavigationBar(getWindow());
         }
     }
