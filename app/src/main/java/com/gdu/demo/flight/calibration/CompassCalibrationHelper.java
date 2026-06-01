@@ -3,7 +3,6 @@ package com.gdu.demo.flight.calibration;
 import android.content.Context;
 import android.content.Intent;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;

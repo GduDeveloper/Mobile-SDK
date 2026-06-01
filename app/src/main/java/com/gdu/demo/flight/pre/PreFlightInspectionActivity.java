@@ -833,8 +833,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
     private void closeOrShowRadar(boolean isShow) {
-        GlobalVariable.hadShowObstacle = isShow;
-        SPUtils.getInstance().put(GduConfig.ISSHOWROCKER, isShow);
+//        GlobalVariable.hadShowObstacle = isShow;
+//        SPUtils.getInstance().put(GduConfig.ISSHOWROCKER, isShow);
     }
 
     private void switchVisionObstacle(boolean isOn) {

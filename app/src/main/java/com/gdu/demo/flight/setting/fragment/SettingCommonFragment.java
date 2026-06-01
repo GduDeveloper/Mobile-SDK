@@ -115,7 +115,7 @@ public class SettingCommonFragment extends Fragment {
         mViewBinding.fcCoprocessorVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.fly_control_coprocessor_version));
         mViewBinding.fifthGenerationVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.five_g_version));
 
-        ViewUtils.setViewShowOrHide(mViewBinding.vvRtkVersionView, GlobalVariable.RTKOnline == 0);
+        ViewUtils.setViewShowOrHide(mViewBinding.vvRtkVersionView, DroneUtils.getRtkOnline());
         mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
         ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, GlobalVariable.ads_b_state == 1);
 

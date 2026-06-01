@@ -10,8 +10,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.amap.api.maps.AMapUtils;
-import com.gdu.api.GduRtkManager;
-import com.gdu.api.rtk.QxSdkManager;
+import com.gdu.api.RtkManager;
 import com.gdu.beans.WarnBean;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
@@ -31,6 +30,7 @@ import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
+import com.gdu.msdk.manager.rtk.qianxun.QXRTKManager;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
@@ -357,13 +357,13 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RTK);
         if (null == bean) return;
         int rtkStatus = bean.getContentStrId();
-        final boolean connectStatus = GduRtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
+        final boolean connectStatus = RtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
 
         final boolean rtkConnected = (DroneUtils.getRtkType() == 1 && connectStatus)
                 || (DroneUtils.getRtkType() == 2 && GlobalVariable.sBSRTKStatus == 1)
                 || (DroneUtils.getRtkType() == 3 && DroneUtils.getOnboardRTKConnectState() == 2)
-                || (DroneUtils.getRtkType() == 5 && QxSdkManager.getInstance().isConnect());
-        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && GlobalVariable.RTKOnline == 1) {
+                || (DroneUtils.getRtkType() == 5 && QXRTKManager.Companion.getInstance().isConnect());
+        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtils.getRtkOnline()) {
             bean.setContentStrId(R.string.string_not_insert);
             bean.setContentTextColor(R.color.color_FF5800);
             bean.setContentEnable(false);

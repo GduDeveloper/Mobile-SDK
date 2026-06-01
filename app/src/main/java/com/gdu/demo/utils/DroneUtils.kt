@@ -130,6 +130,10 @@ object DroneUtils {
     val onboardRTKConnectState: Int
         get() = IRTK.get.onDroneRtkState.value
 
+    @JvmStatic
+    val rtkOnline: Boolean
+        get() = fcInfo3?.rtkOnline?: false
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic
