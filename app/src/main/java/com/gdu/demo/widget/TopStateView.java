@@ -95,8 +95,8 @@ public class TopStateView  extends ConstraintLayout {
         //  需要显示避障的模式
         boolean isShowRadarModel = (DroneUtils.getFlyModel().isGpsMode() && DroneUtils.getFlyModel() == FlyMode.GPS_NORMAL)
                 || DroneUtils.getFlyModel() == FlyMode.VISION || DroneUtils.getFlyModel() == FlyMode.TRIPOD
-                || DroneUtils.getBackState() || GlobalVariable.backObstacleState == 1
-                || GlobalVariable.backObstacleState == 2;
+                || DroneUtils.getBackState() || DroneUtils.getBackObstacleState() == 1
+                || DroneUtils.getBackObstacleState() == 2;
         boolean isDroneAttitudeModel = DroneUtils.getFlyModel() == FlyMode.ATTITUDE;//是否是姿态模式
         isShowRadarModel = isShowRadarModel && !isDroneAttitudeModel;
         if (isShowRadarModel) {

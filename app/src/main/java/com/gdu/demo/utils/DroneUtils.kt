@@ -6,6 +6,7 @@ import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.ICamera
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.component.interfaces.IRTK
+import com.gdu.msdk.device.component.interfaces.IVision
 import com.gdu.msdk.device.interfaces.IGduRCDevice
 import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.CycleFCInfo1
@@ -210,6 +211,11 @@ object DroneUtils {
     @JvmStatic
     val aiBoxOnline: Boolean
         get() = IAi.get.aiBoxOnline.value?: false
+
+    /** 返航避障状态 0：未调用 1：检测到前方障碍物 2：绕行返航中 */
+    @JvmStatic
+    val backObstacleState: Int
+        get() = IVision.get.radarInfo.value?.backObstacleState?.toInt()?: 0
 
     /**------------------------ 遥控器 ----------------------------------*/
 
