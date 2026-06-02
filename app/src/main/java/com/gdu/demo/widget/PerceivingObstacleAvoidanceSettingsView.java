@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.gdu.demo.R;
-import com.gdu.demo.flight.event.ChangeUnitEvent;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
@@ -479,14 +478,14 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
         }
     }
 
-    @Subscribe
-    public void onEventMainThread(ChangeUnitEvent event) {
-        //动态变化参数单位需要
-        if (mPerceivingSettingsView != null) {
-            mPerceivingSettingsView.changeUnit();
-        }
-        changeUnit();
-    }
+//    @Subscribe
+//    public void onEventMainThread(ChangeUnitEvent event) {
+//        //动态变化参数单位需要
+//        if (mPerceivingSettingsView != null) {
+//            mPerceivingSettingsView.changeUnit();
+//        }
+//        changeUnit();
+//    }
 
     private void changeUnit() {
         mPerceivingSettingsView.setBrakeDistanceHint(getResValue(1), 1);

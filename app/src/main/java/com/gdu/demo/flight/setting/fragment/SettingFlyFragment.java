@@ -23,8 +23,6 @@ import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSetingFlyBinding;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
-import com.gdu.demo.flight.event.ChangeUnitEvent;
-import com.gdu.demo.flight.event.EventConnState;
 import com.gdu.demo.flight.setting.viewmodel.SettingFlyViewModel;
 import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.CommonDialog;
@@ -836,10 +834,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     };
 
 
-    @Subscribe
-    public void onEventMainThread(ChangeUnitEvent event) {
-        initData();//动态变化参数单位需要
-    }
+//    @Subscribe
+//    public void onEventMainThread(ChangeUnitEvent event) {
+//        initData();//动态变化参数单位需要
+//    }
 
     @Override
     public void onDestroy() {
@@ -891,12 +889,12 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void connDrone(EventConnState connEvent) {
-        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            initData();
-        }
-    }
+//    @Subscribe(threadMode = ThreadMode.MAIN)
+//    public void connDrone(EventConnState connEvent) {
+//        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
+//            initData();
+//        }
+//    }
 
     private void showModeTipsDialog(){
         new CommonDialog.Builder(getChildFragmentManager())
