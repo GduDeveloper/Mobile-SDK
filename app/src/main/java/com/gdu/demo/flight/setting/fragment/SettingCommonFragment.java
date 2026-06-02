@@ -537,7 +537,7 @@ public class SettingCommonFragment extends Fragment {
     private void initTargetDetectView() {
         initTargetDetectType();
 
-        if (GlobalVariable.otherCompId == GduSocketConfig3.AI_BOX) {
+        if (DroneUtils.getAiBoxOnline()) {
             mViewBinding.clBoxModels.setVisibility(View.VISIBLE);
             mViewBinding.tvAiBox.setVisibility(View.VISIBLE);
             mViewBinding.line13.setVisibility(View.VISIBLE);

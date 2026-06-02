@@ -1,5 +1,6 @@
 package com.gdu.demo.utils
 
+import com.gdu.msdk.device.component.interfaces.IAi
 import com.gdu.msdk.device.component.interfaces.IAirLink
 import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.ICamera
@@ -186,6 +187,10 @@ object DroneUtils {
     @JvmStatic
     val isPhoto: Boolean
         get() = ICamera.get.currentCameraStatus.isPhotoMode.value
+
+    @JvmStatic
+    val aiBoxOnline: Boolean
+        get() = IAi.get.aiBoxOnline.value?: false
 
     /**------------------------ 遥控器 ----------------------------------*/
 

@@ -1,25 +1,16 @@
 package com.gdu.demo.viewmodel;
 
-import android.os.Message;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gdu.AlgorithmMark;
-import com.gdu.camera.LightType;
 import com.gdu.common.error.Error;
-import com.gdu.config.GduConfig;
-import com.gdu.config.GlobalVariable;
-import com.gdu.config.UavStaticVar;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
-import com.gdu.detect.AIModelState;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.socketmodel.GduSocketConfig3;
 
 /**
  * @author wuqb
@@ -68,7 +59,7 @@ public class FlightViewModel extends ViewModel {
         boolean isCustomSupportAiRecognizeGimbal5 = (gimbalType == GimbalType.GIMBAL_PDL_S200 || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640)
                 && (lightType == 0x05 || lightType == 0x06);
 
-        boolean hasAiBox = GlobalVariable.otherCompId == GduSocketConfig3.AI_BOX;
+        boolean hasAiBox = DroneUtils.getAiBoxOnline();
         // 支持AI识别云台
         final boolean isSupportAiRecognizeGimbal = isCustomSupportAiRecognizeGimbal1
                 || isCustomSupportAiRecognizeGimbal2
@@ -122,7 +113,7 @@ public class FlightViewModel extends ViewModel {
     public void stopTarget(byte stopType, int lightType) {
         XLogger.INSTANCE.getAPP().i("stopTarget() stopType = " + stopType + "; lightType = " + lightType);
         setTargetDetect((byte) 0x00);
-        if (GlobalVariable.otherCompId != GduSocketConfig3.AI_BOX) {
+        if (!DroneUtils.getAiBoxOnline()) {
             return;
         }
         SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType, new CommonCallbacks.CompletionCallback() {
