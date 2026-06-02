@@ -43,6 +43,11 @@ object DroneUtils {
     val droneFlyState: DroneFlyState
         get() = fcInfo1?.droneFlyState?: DroneFlyState.GROUND
 
+    /** 是否返航中 */
+    @JvmStatic
+    val backState: Boolean
+        get() = fcInfo1?.backState?: false
+
     @JvmStatic
     val droneGpsLat: Double
         get() = fcInfo1?.latitude?: (-1).toDouble()

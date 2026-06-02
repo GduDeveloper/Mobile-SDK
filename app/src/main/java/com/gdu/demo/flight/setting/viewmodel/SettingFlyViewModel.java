@@ -153,8 +153,6 @@ public class SettingFlyViewModel extends BaseViewModel {
                 if (droneBackInfo.getSpeed() < goHomeSpeedMin) {
                     droneBackInfo.setSpeed(goHomeSpeedMin);
                 }
-                GlobalVariable.sBackSpeed = (short) droneBackInfo.getSpeed();
-
                 preBackSpeed = droneBackInfo.getSpeed();
                 backHomeSpeedLiveData.postValue(droneBackInfo.getSpeed());
             }
@@ -175,7 +173,7 @@ public class SettingFlyViewModel extends BaseViewModel {
             return;
         }
 
-        if (GlobalVariable.backState == 2) {//返航中不允许设置返航速度
+        if (DroneUtils.getBackState()) {//返航中不允许设置返航速度
             backHomeSpeedLiveData.setValue(preBackSpeed);
             toastLiveData.setValue(R.string.string_returning_cannot_set_back_speed);
             return;
