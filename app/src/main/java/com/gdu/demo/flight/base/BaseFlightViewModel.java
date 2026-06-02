@@ -222,7 +222,7 @@ public class BaseFlightViewModel extends BaseViewModel {
             if (DroneUtils.isNewHeightLimitStrategy) {
 
                 if (isOpen) {
-                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.LIMIT_HEIGHT_MAX) {
+                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
                         tipBean.setType(4);
@@ -262,7 +262,7 @@ public class BaseFlightViewModel extends BaseViewModel {
                 }
 
                 if (isOpen) {
-                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.LIMIT_HEIGHT_MAX) {
+                    if (limitHeight < DroneValueConstants.LIMIT_HEIGHT_MIN || limitHeight > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
                         ErrTipBean tipBean = new ErrTipBean();
                         tipBean.setSetType(1);
                         tipBean.setType(4);
@@ -441,8 +441,8 @@ public class BaseFlightViewModel extends BaseViewModel {
         }
         if (value < DroneValueConstants.LIMIT_HEIGHT_MIN) {
             value = DroneValueConstants.LIMIT_HEIGHT_MIN;
-        } else if (value > DroneValueConstants.LIMIT_HEIGHT_MAX) {
-            value = DroneValueConstants.LIMIT_HEIGHT_MAX;
+        } else if (value > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
+            value = DroneValueConstants.getLIMIT_HEIGHT_MAX();
         }
         return value;
     }
