@@ -2,6 +2,7 @@ package com.gdu.demo.widgetlist.camerapara
 
 import com.gdu.config.GlobalVariable
 import com.gdu.demo.utils.CameraUtil
+import com.gdu.demo.utils.DroneUtils
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
@@ -41,11 +42,11 @@ class CameraParaModel: WidgetModel() {
 
         notify(CameraParaValue(
                 GlobalVariable.isAutoMode,
-                GlobalVariable.lightISOValue,
-                GlobalVariable.lightESValue,
-                GlobalVariable.lightEvValue,
+                DroneUtils.lightISOValue,
+                DroneUtils.lightESValue,
+                DroneUtils.lightEvValue,
                 sdCardState,
-                GlobalVariable.lightAELockValue
+                DroneUtils.lightAELockValue
             )
         )
     }

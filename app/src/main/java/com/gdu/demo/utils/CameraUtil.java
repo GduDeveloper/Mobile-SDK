@@ -299,10 +299,10 @@ public class CameraUtil {
             XLogger.INSTANCE.getAPP().i("getISODisplayByValue() isEmptyData");
             return isoDisplay;
         }
-        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() lightISOValue = " + GlobalVariable.lightISOValue);
+        XLogger.INSTANCE.getAPP().i("getISODisplayByValue() lightISOValue = " + DroneUtils.getLightISOValue());
         int pos = -1;
         for (int i = 0; i < gimbalISOSet.length; i++) {
-            if (GlobalVariable.lightISOValue == gimbalISOSet[i]) {
+            if (DroneUtils.getLightISOValue() == gimbalISOSet[i]) {
                 pos = i;
                 break;
             }

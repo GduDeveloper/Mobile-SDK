@@ -2,7 +2,6 @@ package com.gdu.demo.widgetlist.camerapara
 
 import android.content.Context
 import android.util.AttributeSet
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutCameraParaBinding
@@ -97,10 +96,10 @@ class CameraParaView @JvmOverloads constructor(
                 binding.tvIsoSetContent.text = CameraUtil.getISODisplayByValue(context)
 
                 //快门
-                val esStr = CameraUtil.getESNameByValue(gimbalType, GlobalVariable.lightESValue, true);
+                val esStr = CameraUtil.getESNameByValue(gimbalType, DroneUtils.lightESValue, true);
                 binding.tvShutterSetContent.text = esStr
 
-                val ev = CameraUtil.getEVNameByValue(context, gimbalType, GlobalVariable.lightEvValue)
+                val ev = CameraUtil.getEVNameByValue(context, gimbalType, DroneUtils.lightEvValue)
                 binding.tvEvSetContent.text = ev
 
                 binding.ivAELockBtn.isSelected = data.aeLockValue != 1
@@ -198,14 +197,14 @@ class CameraParaView @JvmOverloads constructor(
         when (type) {
             1 -> {
                 val isoData = getISOData()
-                selectIndex = CameraUtil.getISONameIndexByValue(gimbalType, GlobalVariable.lightISOValue.toString())
+                selectIndex = CameraUtil.getISONameIndexByValue(gimbalType, DroneUtils.lightISOValue.toString())
                 popWindow.updateData(isoData, selectIndex)
                 popWindow.showAsDropDown(binding.viewISOOver, 0, 0)
             }
 
             2 -> {
                 val mShutterData = getShutterData()
-                val esStr = CameraUtil.getESNameByValue(gimbalType, GlobalVariable.lightESValue, true)
+                val esStr = CameraUtil.getESNameByValue(gimbalType, DroneUtils.lightESValue, true)
                 selectIndex = CameraUtil.getESNameIndexByValue(gimbalType, esStr)
                 popWindow.updateData(mShutterData, selectIndex)
                 popWindow.showAsDropDown(binding.viewShutterOver, 0, 0)
@@ -213,7 +212,7 @@ class CameraParaView @JvmOverloads constructor(
 
             3 -> {
                 val evData = getEvData()
-                selectIndex = CameraUtil.getEVValueIndexByValue(gimbalType, GlobalVariable.lightEvValue)
+                selectIndex = CameraUtil.getEVValueIndexByValue(gimbalType, DroneUtils.lightEvValue)
                 popWindow.updateData(evData, selectIndex)
                 popWindow.showAsDropDown(binding.viewEVOver, 0, 0)
             }

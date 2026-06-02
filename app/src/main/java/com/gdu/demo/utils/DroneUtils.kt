@@ -12,6 +12,7 @@ import com.gdu.msdk.key.value.CycleFCInfo2
 import com.gdu.msdk.key.value.CycleFCInfo3
 import com.gdu.msdk.key.value.CycleRCBatteryInfo
 import com.gdu.msdk.key.value.CycleRCInfo
+import com.gdu.msdk.key.value.CycleVisibleCameraStatus
 import com.gdu.msdk.key.value.bean.ControlHand
 import com.gdu.msdk.key.value.bean.DroneFlyState
 import com.gdu.msdk.key.value.bean.FlyMode
@@ -155,6 +156,26 @@ object DroneUtils {
     @JvmStatic
     val lightType: Int
         get() = ICamera.get.lightType.value.toInt()
+
+    @JvmStatic
+    val visibleCameraStatus: CycleVisibleCameraStatus?
+        get() = ICamera.get.currentCameraStatus.visibleCameraStatus.value
+
+    @JvmStatic
+    val lightESValue: Int
+        get() = visibleCameraStatus?.lightESValue?: 0
+
+    @JvmStatic
+    val lightEvValue: Int
+        get() = visibleCameraStatus?.lightEvValue?.toInt()?: 0
+
+    @JvmStatic
+    val lightISOValue: Int
+        get() = visibleCameraStatus?.lightISOValue?: 0
+
+    @JvmStatic
+    val lightAELockValue: Int
+        get() = if (visibleCameraStatus?.lightAELockValueEnable?: false) 1 else 2
 
     /**------------------------ 遥控器 ----------------------------------*/
 
