@@ -11,6 +11,7 @@ import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.CycleFCInfo1
 import com.gdu.msdk.key.value.CycleFCInfo2
 import com.gdu.msdk.key.value.CycleFCInfo3
+import com.gdu.msdk.key.value.CycleInfraredCameraStatus
 import com.gdu.msdk.key.value.CycleRCBatteryInfo
 import com.gdu.msdk.key.value.CycleRCInfo
 import com.gdu.msdk.key.value.CycleVisibleCameraStatus
@@ -161,6 +162,19 @@ object DroneUtils {
     @JvmStatic
     val visibleCameraStatus: CycleVisibleCameraStatus?
         get() = ICamera.get.currentCameraStatus.visibleCameraStatus.value
+
+    @JvmStatic
+    val infraredCameraStatus: CycleInfraredCameraStatus?
+        get() = ICamera.get.currentCameraStatus.flowInfraredCameraStatus.value
+
+    /** 可见光SD卡状态  0：正常卡；1：异常卡；2：当前卡读写速度慢；3：未插入SD卡；4：SD卡已满; 5: SD卡格式错误(目前仅四光有) */
+    @JvmStatic
+    val lightSDCardStatus: Int
+        get() = visibleCameraStatus?.sdcardStatus?.toInt()?: 0
+
+    @JvmStatic
+    val irSDCardStatus: Int
+        get() = infraredCameraStatus?.sdcardStatus?.toInt()?: 0
 
     @JvmStatic
     val lightESValue: Int

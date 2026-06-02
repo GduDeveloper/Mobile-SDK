@@ -11,8 +11,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.amap.api.maps.AMapUtils;
 import com.gdu.api.RtkManager;
-import com.gdu.beans.WarnBean;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseFlightAssistantViewModel;
@@ -26,6 +24,7 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.component.pod.utils.GimbalUtil;
 import com.gdu.msdk.device.component.pod.utils.SDCardManager;
@@ -400,7 +399,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         final String irSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_IRSDCard);
         String sdCardTip = "";
         if (GimbalUtil.INSTANCE.isMultiCardStatusGimbal()) {
-            if (GlobalVariable.lightSDCardStatus == 3 && GlobalVariable.IRSDCardStatus == 3) {
+            if (DroneUtils.getLightSDCardStatus() == 3 && DroneUtils.getIrSDCardStatus() == 3) {
                 sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
             } else {
                 String lightErrStr = CommonUtils.getSDCardDetailErrTip(context, 2);
@@ -416,7 +415,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                     sdCardTip = context.getString(com.gdu.api.R.string.Label_CardInserted);
                 }
             }
-        } else if (GlobalVariable.getMainGimbalSupportFun().enableMultiSDCard) {
+        } else if (ICamera.get().getSupportFun().getEnableMultiSDCard()) {
             String lightStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), lightSdCardName);
             String irStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), irSdCardName);
             if (SDCardManager.Companion.getInstance().isLightMemoryFull()) {
