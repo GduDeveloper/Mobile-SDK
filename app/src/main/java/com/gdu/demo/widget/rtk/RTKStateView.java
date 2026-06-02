@@ -160,8 +160,8 @@ public class RTKStateView extends LinearLayout {
             }
         } else {
             viewBinding.tvStateRtkStatus.setText("");
-            viewBinding.tvStationLng.setText(String.valueOf(GlobalVariable.sStationLng));
-            viewBinding.tvStationLat.setText(String.valueOf(GlobalVariable.sStationLat));
+            viewBinding.tvStationLng.setText(String.valueOf(DroneUtils.getStationLng()));
+            viewBinding.tvStationLat.setText(String.valueOf(DroneUtils.getStationLat()));
         }
 
     }

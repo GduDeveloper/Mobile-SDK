@@ -110,7 +110,7 @@ public class SettingImageChannelFragment extends Fragment {
         }
         mViewBinding.ovSwitchImgChannel.setData(channelNames);
 
-        if (GlobalVariable.isRCSEE) {
+        if (RCUtils.INSTANCE.isRCSEE()) {
             mViewBinding.groupHdmi.setVisibility(View.GONE);
         } else {
             mViewBinding.groupHdmi.setVisibility(View.VISIBLE);

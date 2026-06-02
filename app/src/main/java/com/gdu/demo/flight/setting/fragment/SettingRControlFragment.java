@@ -130,7 +130,7 @@ public class SettingRControlFragment extends Fragment {
                     break;
                 case R.id.tv_rc_custom_key_view:
 
-                    if (GlobalVariable.isRCSEE) {
+                    if (RCUtils.INSTANCE.isRCSEE()) {
                         setSecondLevelView(mViewBinding.rcCustomKeyNewView, true, getString(R.string.rc_custom_key));
                         currentSecondLevelType = 4;
                     } else {

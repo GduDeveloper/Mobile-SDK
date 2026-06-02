@@ -136,6 +136,14 @@ object DroneUtils {
     val rtkType: Int
         get() = IRTK.get.onboardRTKInfo.value?.rtkType?.toInt()?: 0
 
+    @JvmStatic // 基站的经度
+    val stationLng: Double
+        get() = IRTK.get.onboardRTKInfo.value?.stationLng?: 0.0
+
+    @JvmStatic // 基站的纬度
+    val stationLat: Double
+        get() = IRTK.get.onboardRTKInfo.value?.stationLat?: 0.0
+
     /** 机载rtk状态 0 未连接  1 连接中 2 已连接 */
     @JvmStatic
     val onboardRTKConnectState: Int
