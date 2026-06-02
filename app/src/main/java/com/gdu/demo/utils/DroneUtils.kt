@@ -182,6 +182,11 @@ object DroneUtils {
     val isAutoMode: Boolean
         get() = visibleCameraStatus?.isAutoMode?: false
 
+    /** 可见光拍照/视频模式状态  true:0-拍照模式； false: 1-视频模式 */
+    @JvmStatic
+    val isPhoto: Boolean
+        get() = ICamera.get.currentCameraStatus.isPhotoMode.value
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

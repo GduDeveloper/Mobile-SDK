@@ -418,7 +418,7 @@ public class CameraUtil {
         switch (gimbalType) {
             case ByrdT_4k:
             case ByrdT_4kc:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(m4KC_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(m4KC_Video_ESValues, value);
@@ -428,7 +428,7 @@ public class CameraUtil {
             case ByrdT_30X_Zoom:
             case ByrdT_30X_Zoom_NEW:
             case ByrdT_35X_Zoom:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(m30XNew_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(m30XNew_Video_ESValues, value);
@@ -438,7 +438,7 @@ public class CameraUtil {
             case ByrT_IR_1K:
             case Small_Double_Light:
             case GIMBAL_PDL_300C:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(m1k_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(m1k_Video_ESValues, value);
@@ -447,7 +447,7 @@ public class CameraUtil {
 
             case GIMBAL_FOUR_LIGHT:
             case GIMBAL_FOUR_LIGHT_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(mFourLight_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(mFourLight_Video_ESValues, value);
@@ -463,7 +463,7 @@ public class CameraUtil {
             case GIMBAL_PDL_S200_IR640:
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(mS220_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(mS220_Video_ESValues, value);
@@ -471,7 +471,7 @@ public class CameraUtil {
                 break;
 
             case GIMBAL_PWG01:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getIntArrayValueIndexByValue(mPWG01_Photo_ESValues, value);
                 } else {
                     index = getIntArrayValueIndexByValue(mS220_Video_ESValues, value);
@@ -486,11 +486,11 @@ public class CameraUtil {
     }
 
     public static String[] getESNamesByGimbalType(GimbalType gimbalType) {
-//        XLogger.INSTANCE.getAPP().i("getESNamesByGimbalType() isPhoto = " + GlobalVariable.isPhoto);
+//        XLogger.INSTANCE.getAPP().i("getESNamesByGimbalType() isPhoto = " + DroneUtils.isPhoto());
         String[] names;
         switch (gimbalType) {
             case ByrdT_4kc:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = m4KCESStrArray;
                 } else {
                     names = m4KCESStrArrayVideo;
@@ -502,7 +502,7 @@ public class CameraUtil {
             case ByrT_6k:
             case GIMBAL_8KC:
             case GIMBAL_PDL_300C:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = m6KCameraESStrArray;
                 } else {
                     names = m6KRecordESStrArray;
@@ -511,7 +511,7 @@ public class CameraUtil {
 
             case GIMBAL_FOUR_LIGHT:
             case GIMBAL_FOUR_LIGHT_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = m4LightPhotoESStrArray;
                 } else {
                     names = m4LightRecordESStrArray;
@@ -519,7 +519,7 @@ public class CameraUtil {
                 break;
 
             case ByrdT_30X_Zoom_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = m30XNewtPhotoESStrArray;
                 } else {
                     names = m30XNewRecordESStrArray;
@@ -535,7 +535,7 @@ public class CameraUtil {
             case GIMBAL_PDL_S200_IR640:
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = mS220CameraPhotoESStrArray;
                 } else {
                     names = mS220CameraVideoESStrArray;
@@ -543,7 +543,7 @@ public class CameraUtil {
                 break;
 
             case GIMBAL_PWG01:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = mPWG01PhotoESStrArray;
                 } else {
                     names = mS220CameraVideoESStrArray;
@@ -749,7 +749,7 @@ public class CameraUtil {
 
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = mMicroFourLightPhoto_ISOValues;
                 } else {
                     values = mMicroFourLightVideo_ISOValues;
@@ -811,7 +811,7 @@ public class CameraUtil {
 
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     names = mMicroFourLightPhotoISOArray;
                 } else {
                     names = mMicroFourLightVideoISOArray;
@@ -863,7 +863,7 @@ public class CameraUtil {
 
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(mMicroFourLightPhotoISOArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(mMicroFourLightVideoISOArray, value);
@@ -892,7 +892,7 @@ public class CameraUtil {
         switch (gimbalType) {
             case ByrdT_4k:
             case ByrdT_4kc:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = m4KC_Photo_ESValues;
                 } else {
                     values = m4KC_Video_ESValues;
@@ -902,7 +902,7 @@ public class CameraUtil {
             case ByrdT_30X_Zoom:
             case ByrdT_30X_Zoom_NEW:
             case ByrdT_35X_Zoom:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = m30XNew_Photo_ESValues;
                 } else {
                     values = m30XNew_Video_ESValues;
@@ -912,7 +912,7 @@ public class CameraUtil {
             case ByrT_IR_1K:
             case Small_Double_Light:
             case GIMBAL_PDL_300C:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = m1k_Photo_ESValues;
                 } else {
                     values = m1k_Video_ESValues;
@@ -921,7 +921,7 @@ public class CameraUtil {
 
             case GIMBAL_FOUR_LIGHT:
             case GIMBAL_FOUR_LIGHT_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = mFourLight_Photo_ESValues;
                 } else {
                     values = mFourLight_Video_ESValues;
@@ -937,7 +937,7 @@ public class CameraUtil {
             case GIMBAL_PDL_S200_IR640:
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = mS220_Photo_ESValues;
                 } else {
                     values = mS220_Video_ESValues;
@@ -945,7 +945,7 @@ public class CameraUtil {
                 break;
 
             case GIMBAL_PWG01:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     values = mPWG01_Photo_ESValues;
                 } else {
                     values = mS220_Video_ESValues;
@@ -970,7 +970,7 @@ public class CameraUtil {
         int index;
         switch (gimbalType) {
             case ByrdT_4kc:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(m4KCESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(m4KCESStrArrayVideo, value);
@@ -982,7 +982,7 @@ public class CameraUtil {
             case ByrT_6k:
             case GIMBAL_8KC:
             case GIMBAL_PDL_300C:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(m6KCameraESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(m6KRecordESStrArray, value);
@@ -991,7 +991,7 @@ public class CameraUtil {
 
             case GIMBAL_FOUR_LIGHT:
             case GIMBAL_FOUR_LIGHT_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(m4LightPhotoESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(m4LightRecordESStrArray, value);
@@ -999,7 +999,7 @@ public class CameraUtil {
                 break;
 
             case ByrdT_30X_Zoom_NEW:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(m30XNewtPhotoESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(m30XNewRecordESStrArray, value);
@@ -1015,7 +1015,7 @@ public class CameraUtil {
             case GIMBAL_PDL_S200_IR640:
             case GIMBAL_MICRO_FOUR_LIGHT:
             case GIMBAL_PQL02_SE:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(mS220CameraPhotoESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(mS220CameraVideoESStrArray, value);
@@ -1023,7 +1023,7 @@ public class CameraUtil {
                 break;
 
             case GIMBAL_PWG01:
-                if (GlobalVariable.isPhoto) {
+                if (DroneUtils.isPhoto()) {
                     index = getStringArrayValueIndexByValue(mPWG01PhotoESStrArray, value);
                 } else {
                     index = getStringArrayValueIndexByValue(mS220CameraVideoESStrArray, value);
