@@ -34,6 +34,7 @@ import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.TimeUtil;
 import com.gdu.lib.util.ViewUtils;
+import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
@@ -697,7 +698,7 @@ public class SettingCommonFragment extends Fragment {
                     String labelName = "";
                     TargetLabel targetLabel = TargetLabel.get(labelId);
                     if (targetLabel != null) {
-                        labelName = ResourceUtil.getStringById(targetLabel.getValue());
+                        labelName = ResourceUtils.getString(targetLabel.getValue());
                     }
                     XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "transModelData labelId = " + labelId + ", labelName = " + labelName);
                     labels.add(new TargetDetectLabel(j, String.valueOf(labelId), labelName, getDetectLabelState(aiModel.getId(), j)));

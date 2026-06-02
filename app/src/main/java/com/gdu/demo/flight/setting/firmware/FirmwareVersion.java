@@ -774,7 +774,7 @@ public class FirmwareVersion implements IFirmwareVersion {
     private Completable getGimbalVisionVersion() {
         return Completable.fromAction(() -> {
             mCounter.incrementAndGet();
-            boolean isUnSupportGimbal = GimbalUtil.isUnImagingGimbal();
+            boolean isUnSupportGimbal = GimbalUtil.INSTANCE.isUnImagingGimbal();
             printLog("getGimbalVisionVersion() sCameraIsStart = " + GlobalVariable.sCameraIsStart
                     + "; isUnSupportGimbal = " + isUnSupportGimbal);
             if (!GlobalVariable.sCameraIsStart || isUnSupportGimbal) {
@@ -1439,14 +1439,14 @@ public class FirmwareVersion implements IFirmwareVersion {
         }
         String hexStr = DataUtil.bytes2HexAddPlaceHolder(bean.frameContent);
         printLog("parseGimbalVersion() hexStr = " + hexStr);
-        boolean isNewGimbal = GimbalUtil.isNewCmdGetVersionGimbal();
+        boolean isNewGimbal = GimbalUtil.INSTANCE.isNewCmdGetVersionGimbal();
         printLog("parseGimbalVersion() isNewGimbal = " + isNewGimbal);
         if (!isNewGimbal) {
             GlobalVariable.gimbelVersion = bean.frameContent[2] / 100.0;
             addNewFirmwareTypeAndVersion(gimbalType.getValue(), String.valueOf(GlobalVariable.gimbelVersion));
             cacheGimbalVersionOld(gimbalType);
         }
-        if (!GimbalUtil.isUseGetSNNewCmdGimbal()) {
+        if (!GimbalUtil.INSTANCE.isUseGetSNNewCmdGimbal()) {
 //            GlobalVariable.sGimbalSN = CommonUtils.getGimbalSN(GlobalVariable.gimbalType, bean.frameContent[4],
 //                    ByteUtilsLowBefore.byte2short(bean.frameContent, 5));
         }

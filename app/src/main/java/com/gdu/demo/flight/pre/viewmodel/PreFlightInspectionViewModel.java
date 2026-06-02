@@ -27,6 +27,8 @@ import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IRTK;
+import com.gdu.msdk.device.component.pod.utils.GimbalUtil;
+import com.gdu.msdk.device.component.pod.utils.SDCardManager;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.CycleOnboardRTKInfo;
@@ -397,7 +399,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
         final String lightSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_VisibleLightSDCard);
         final String irSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_IRSDCard);
         String sdCardTip = "";
-        if (GimbalUtil.isMultiCardStatusGimbal()) {
+        if (GimbalUtil.INSTANCE.isMultiCardStatusGimbal()) {
             if (GlobalVariable.lightSDCardStatus == 3 && GlobalVariable.IRSDCardStatus == 3) {
                 sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
             } else {
@@ -417,16 +419,16 @@ public class PreFlightInspectionViewModel extends ViewModel {
         } else if (GlobalVariable.getMainGimbalSupportFun().enableMultiSDCard) {
             String lightStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), lightSdCardName);
             String irStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), irSdCardName);
-            if (GimbalUtil.isLightMemoryFull()) {
+            if (SDCardManager.Companion.getInstance().isLightMemoryFull()) {
                 sdCardTip = lightStorageFull;
             }
 
-            if (TextUtils.isEmpty(sdCardTip) && GimbalUtil.isIRMemoryIsFull()) {
+            if (TextUtils.isEmpty(sdCardTip) && SDCardManager.Companion.getInstance().isIRMemoryIsFull()) {
                 sdCardTip = irStorageFull;
             }
 
             if (TextUtils.isEmpty(sdCardTip)) {
-                int sdInsertStatus = GimbalUtil.checkTMSSDCard();
+                int sdInsertStatus = SDCardManager.Companion.getInstance().checkTMSSDCard();
                 switch (sdInsertStatus) {
                     // 2张卡都已插入
                     case 0:
@@ -449,18 +451,18 @@ public class PreFlightInspectionViewModel extends ViewModel {
                         break;
                 }
             }
-        } else if (GimbalUtil.isSingleSDReportGimbal()) {
+        } else if (GimbalUtil.INSTANCE.isSingleSDReportGimbal()) {
             sdCardTip = CommonUtils.getSDCardDetailErrTip(context, 3);
             if (TextUtils.isEmpty(sdCardTip)) {
                 sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
             }
         } else {
-            if (GimbalUtil.isMemoryFull()) {
+            if (SDCardManager.Companion.getInstance().isMemoryFull()) {
                 sdCardTip = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), "");
             }
 
             if (TextUtils.isEmpty(sdCardTip)) {
-                if (GimbalUtil.isInsertSDCard()) {
+                if (SDCardManager.Companion.getInstance().isInsertSDCard(0)) {
                     sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
                 } else {
                     sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);

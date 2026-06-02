@@ -9,7 +9,7 @@ import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.gdu.demo.R
 import com.gdu.demo.flight.setting.bean.TargetDetectLabel
 import com.gdu.demo.flight.setting.bean.TargetDetectModel
-import com.gdu.util.ResourceUtil
+import com.gdu.lib.util.core.ResourceUtils
 
 class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseQuickAdapter<TargetDetectModel, BaseViewHolder>(
     R.layout.target_detect_model_list_item) {
@@ -26,9 +26,9 @@ class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseQu
     }
 
     override fun convert(holder: BaseViewHolder, item: TargetDetectModel) {
-            holder.setText(R.id.modelName, "${ResourceUtil.getStringById(R.string.target_detect_model)}${item.id}")
+            holder.setText(R.id.modelName, "${ResourceUtils.getString(R.string.target_detect_model)}${item.id}")
             var count = getCheckedCount(item.labels)
-            holder.setText(R.id.modelUseState, "${ResourceUtil.getStringById(R.string.target_detect_using)}$count")
+            holder.setText(R.id.modelUseState, "${ResourceUtils.getString(R.string.target_detect_using)}$count")
             if (count == 0) {
                 holder.setVisible(R.id.modelUseState, false)
             } else {
@@ -37,7 +37,7 @@ class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseQu
             labelAdapter = TargetDetectLabelAdapter(object : ITargetLabelCheckCallback {
                 override fun onCheckChange(data: TargetDetectModel?) {
                     count = getCheckedCount(item.labels)
-                    holder.setText(R.id.modelUseState, "${ResourceUtil.getStringById(R.string.target_detect_using)}$count")
+                    holder.setText(R.id.modelUseState, "${ResourceUtils.getString(R.string.target_detect_using)}$count")
                     if (count == 0) {
                         holder.setVisible(R.id.modelUseState, false)
                     } else {
