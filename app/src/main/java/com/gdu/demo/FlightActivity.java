@@ -412,6 +412,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onStop() {
         super.onStop();
-        viewModel.stopTarget((byte) 0x02, GlobalVariable.mCurrentLightType);
+        viewModel.stopTarget((byte) 0x02, DroneUtils.getLightType());
     }
 }

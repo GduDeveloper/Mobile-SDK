@@ -2,6 +2,7 @@ package com.gdu.demo.utils
 
 import com.gdu.msdk.device.component.interfaces.IAirLink
 import com.gdu.msdk.device.component.interfaces.IBattery
+import com.gdu.msdk.device.component.interfaces.ICamera
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.component.interfaces.IRTK
 import com.gdu.msdk.device.interfaces.IGduRCDevice
@@ -148,6 +149,12 @@ object DroneUtils {
     /** 算法检测的开关是否已经打开 */
     @JvmStatic
     var discernIsOpen: Boolean = false
+
+    /** 光类型 0x00：红外图像； 0x01：红外画中画； 0x02：可见光图像；  0x03：可见光画中画； 0x04：融合默认；0x05：广角可见光；
+     * 0x06：变焦可见光；0x07：分屏显示； 0x08：可见光为主融合； 0x09：红外为主融合； 0x0A：融合关； 0xff：步进切换 */
+    @JvmStatic
+    val lightType: Int
+        get() = ICamera.get.lightType.value.toInt()
 
     /**------------------------ 遥控器 ----------------------------------*/
 

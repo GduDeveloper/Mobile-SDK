@@ -21,8 +21,6 @@ import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.socketmodel.GduSocketConfig3;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
 /**
  * @author wuqb
  * @date 2025/3/12
@@ -33,6 +31,7 @@ public class FlightViewModel extends ViewModel {
 
     public boolean isShowAiBox(){
         GimbalType gimbalType = IGimbal.get().getGimbalType();
+        int lightType = DroneUtils.getLightType();
         // 仅可见光支持Ai识别的云台
         boolean isCustomSupportAiRecognizeGimbal1 = gimbalType == GimbalType.ByrdT_30X_Zoom
                 || gimbalType == GimbalType.ByrdT_10X_Zoom
@@ -55,8 +54,7 @@ public class FlightViewModel extends ViewModel {
                 || gimbalType == GimbalType.GIMBAL_PDL_300C
                 || gimbalType == GimbalType.GIMBAL_IR_1KG
                 || gimbalType == GimbalType.GIMBAL_PWG01)
-                && (GlobalVariable.sCameraLightType == 0x00 || GlobalVariable.sCameraLightType == 0x02
-                || GlobalVariable.sCameraLightType == 0x06)
+                && (lightType == 0x00 || lightType == 0x02 || lightType == 0x06)
                 && DroneUtils.isOpenTextEnvironment;
         // 支持Ai识别的多光云台
         boolean isCustomSupportAiRecognizeGimbal4 = (gimbalType == GimbalType.GIMBAL_PDL_S220
@@ -65,14 +63,10 @@ public class FlightViewModel extends ViewModel {
                 || gimbalType == GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
                 || gimbalType == GimbalType.GIMBAL_PTL_S220_IR640
                 || gimbalType == GimbalType.GIMBAL_PDL_10X)
-                && (GlobalVariable.sCameraLightType == 0x00
-                || GlobalVariable.sCameraLightType == 0x02
-                || GlobalVariable.sCameraLightType == 0x05
-                || GlobalVariable.sCameraLightType == 0x06);
+                && (lightType == 0x00 || lightType == 0x02 || lightType == 0x05 || lightType == 0x06);
         // 支持Ai识别的广角变焦双光云台(无红外)
         boolean isCustomSupportAiRecognizeGimbal5 = (gimbalType == GimbalType.GIMBAL_PDL_S200 || gimbalType == GimbalType.GIMBAL_PDL_S200_IR640)
-                && (GlobalVariable.sCameraLightType == 0x05
-                || GlobalVariable.sCameraLightType == 0x06);
+                && (lightType == 0x05 || lightType == 0x06);
 
         boolean hasAiBox = GlobalVariable.otherCompId == GduSocketConfig3.AI_BOX;
         // 支持AI识别云台
@@ -85,18 +79,18 @@ public class FlightViewModel extends ViewModel {
         return !GlobalVariable.isOpenFlightRoutePlan && isSupportAiRecognizeGimbal;
     }
 
-    public void switchAIRecognize(){
-        startTargetDetect(GlobalVariable.mCurrentLightType);
+    public void switchAIRecognize() {
+        startTargetDetect(DroneUtils.getLightType());
     }
 
     /**
      * 开始目标识别
      * @param lightType
      */
-    public void startTargetDetect(LightType lightType) {
+    public void startTargetDetect(int lightType) {
         XLogger.INSTANCE.getAPP().i("startTargetDetect() lightType = " + lightType);
         setAIBoxTargetDetect((byte) 0x01);
-        SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType.getKey(), gduError -> {
+        SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType, gduError -> {
                     XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
                     if (gduError == null) {
                         DroneUtils.setDiscernIsOpen(true);
@@ -125,13 +119,13 @@ public class FlightViewModel extends ViewModel {
 //        }
     }
 
-    public void stopTarget(byte stopType, LightType lightType) {
+    public void stopTarget(byte stopType, int lightType) {
         XLogger.INSTANCE.getAPP().i("stopTarget() stopType = " + stopType + "; lightType = " + lightType);
         setTargetDetect((byte) 0x00);
         if (GlobalVariable.otherCompId != GduSocketConfig3.AI_BOX) {
             return;
         }
-        SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType.getKey(), new CommonCallbacks.CompletionCallback() {
+        SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
                 if (error == null){

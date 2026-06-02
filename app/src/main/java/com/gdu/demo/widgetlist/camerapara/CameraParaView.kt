@@ -7,6 +7,7 @@ import com.gdu.demo.R
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.databinding.LayoutCameraParaBinding
 import com.gdu.demo.utils.CameraUtil
+import com.gdu.demo.utils.DroneUtils
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.msdk.device.component.interfaces.IGimbal
@@ -73,7 +74,8 @@ class CameraParaView @JvmOverloads constructor(
             is CameraParaValue ->{
 
                 val gimbalType = IGimbal.get.gimbalType
-                if (GlobalVariable.sCameraLightType.toInt() == 2 || GlobalVariable.sCameraLightType.toInt() == 5 || GlobalVariable.sCameraLightType.toInt() == 6) {
+                val lightType = DroneUtils.lightType
+                if (lightType == 2 || lightType == 5 || lightType == 6) {
                     binding.viewEVGroup.visibility = VISIBLE
                     binding.viewISOGroup.visibility =
                         if (CameraUtil.isSupportISOGimbal(gimbalType)) VISIBLE else GONE

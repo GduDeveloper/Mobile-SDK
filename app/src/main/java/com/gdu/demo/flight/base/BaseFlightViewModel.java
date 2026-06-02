@@ -379,8 +379,8 @@ public class BaseFlightViewModel extends BaseViewModel {
                 errTipBeanLiveData.postValue(tipBean);
                 return;
             }
-            if (!DroneUtils.isGround()) {
-                Point returnPoint = new Point(GlobalVariable.backHomeLan, GlobalVariable.backHomeLon, SpatialReference.WGS84);
+            if (!DroneUtils.isGround() && fcInfo1 != null) {
+                Point returnPoint = new Point(fcInfo1.getHomePointLat(), fcInfo1.getHomePointLon(), SpatialReference.WGS84);
                 Point drone = new Point(DroneUtils.getDroneGpsLat(), DroneUtils.getDroneGpsLon(), SpatialReference.WGS84);
                 final double distanceValue = JTSUtils.INSTANCE.calPointsDistance(returnPoint, drone);
                 if (distanceValue > distance) {
