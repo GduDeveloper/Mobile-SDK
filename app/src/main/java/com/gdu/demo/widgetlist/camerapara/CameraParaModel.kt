@@ -7,6 +7,7 @@ import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
 import com.gdu.msdk.device.component.interfaces.IGimbal
+import com.gdu.msdk.device.component.pod.utils.GimbalUtil
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class CameraParaModel: WidgetModel() {
@@ -41,7 +42,7 @@ class CameraParaModel: WidgetModel() {
         }
 
         notify(CameraParaValue(
-                GlobalVariable.isAutoMode,
+                DroneUtils.isAutoMode,
                 DroneUtils.lightISOValue,
                 DroneUtils.lightESValue,
                 DroneUtils.lightEvValue,

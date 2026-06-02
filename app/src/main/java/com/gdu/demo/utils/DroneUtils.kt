@@ -177,6 +177,11 @@ object DroneUtils {
     val lightAELockValue: Int
         get() = if (visibleCameraStatus?.lightAELockValueEnable?: false) 1 else 2
 
+    /** 可见光手/自动模式上报 0:自动模式； 1:手动模式 */
+    @JvmStatic
+    val isAutoMode: Boolean
+        get() = visibleCameraStatus?.isAutoMode?: false
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

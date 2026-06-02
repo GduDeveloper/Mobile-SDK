@@ -41,7 +41,6 @@ class CameraParaView @JvmOverloads constructor(
             mGDUCamera?.setAutoOrManualMode(setAutoMode){ error ->
                 if (error == null) {
                     binding.ivAutoSwitchBtn.isSelected = setAutoMode == 0
-                    GlobalVariable.isAutoMode = setAutoMode == 1
                 }
             }
         }
