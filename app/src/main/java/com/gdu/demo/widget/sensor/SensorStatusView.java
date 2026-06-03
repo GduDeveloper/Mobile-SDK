@@ -20,13 +20,13 @@ import androidx.appcompat.widget.AppCompatButton;
 
 import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.OnTabSelectListener;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.calibration.CompassCalibrationHelper;
 import com.gdu.demo.flight.calibration.IMUCalibrationActivity;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.key.value.CycleFCInfo2;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.concurrent.TimeUnit;
@@ -156,14 +156,18 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
      */
     @SuppressLint("DefaultLocale")
     private void setIMUValue() {
-        mTvImu1AccelerometerValue.setText(String.format("%.3f", GlobalVariable.imu1Accelerometer));
-        mTvImu2AccelerometerValue.setText(String.format("%.3f", GlobalVariable.imu2Accelerometer));
-        mTvImu1GyroValue.setText(String.format("%.3f", GlobalVariable.imu1Gyro));
-        mTvImu2GyroValue.setText(String.format("%.3f", GlobalVariable.imu2Gyro));
-        mPbImu1AccelerometerValue.setProgress((int) (GlobalVariable.imu1Accelerometer * 100));
-        mPbImu2AccelerometerValue.setProgress((int) (GlobalVariable.imu2Accelerometer * 100));
-        mPbImu1GyroValue.setProgress((int) (GlobalVariable.imu1Gyro * 100));
-        mPbImu2GyroValue.setProgress((int) (GlobalVariable.imu2Gyro * 100));
+        CycleFCInfo2 fcInfo2 = DroneUtils.getFcInfo2();
+        if (fcInfo2 == null) {
+            return;
+        }
+        mTvImu1AccelerometerValue.setText(String.format("%.3f", fcInfo2.getImu1Accelerometer()));
+        mTvImu2AccelerometerValue.setText(String.format("%.3f", fcInfo2.getImu2Accelerometer()));
+        mTvImu1GyroValue.setText(String.format("%.3f", fcInfo2.getImu1Gyro()));
+        mTvImu2GyroValue.setText(String.format("%.3f", fcInfo2.getImu2Gyro()));
+        mPbImu1AccelerometerValue.setProgress((int) (fcInfo2.getImu1Accelerometer() * 100));
+        mPbImu2AccelerometerValue.setProgress((int) (fcInfo2.getImu2Accelerometer() * 100));
+        mPbImu1GyroValue.setProgress((int) (fcInfo2.getImu1Gyro() * 100));
+        mPbImu2GyroValue.setProgress((int) (fcInfo2.getImu2Gyro() * 100));
 
         changeProgressColor(mPbImu1AccelerometerValue, mPbImu2AccelerometerValue, mPbImu1GyroValue, mPbImu2GyroValue);
     }
@@ -172,10 +176,14 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
      * 设置指南针的状态值
      */
     private void setCompassValue() {
-        mTvCompass1DisturbanceValue.setText(String.valueOf(GlobalVariable.compass1Disturbance));
-        mTvCompass2DisturbanceValue.setText(String.valueOf(GlobalVariable.compass2Disturbance));
-        mPbCompass1DisturbanceValue.setProgress(GlobalVariable.compass1Disturbance);
-        mPbCompass2DisturbanceValue.setProgress(GlobalVariable.compass2Disturbance);
+        CycleFCInfo2 fcInfo2 = DroneUtils.getFcInfo2();
+        if (fcInfo2 == null) {
+            return;
+        }
+        mTvCompass1DisturbanceValue.setText(String.valueOf(fcInfo2.getCompass1Disturbance()));
+        mTvCompass2DisturbanceValue.setText(String.valueOf(fcInfo2.getCompass2Disturbance()));
+        mPbCompass1DisturbanceValue.setProgress(fcInfo2.getCompass1Disturbance());
+        mPbCompass2DisturbanceValue.setProgress(fcInfo2.getCompass2Disturbance());
         changeProgressColor(mPbCompass1DisturbanceValue, mPbCompass2DisturbanceValue);
     }
 
