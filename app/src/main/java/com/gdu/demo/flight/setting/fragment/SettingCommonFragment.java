@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 
 import com.gdu.common.error.Error;
+import com.gdu.config.GduConfig;
 import com.gdu.demo.FlightActivity;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;

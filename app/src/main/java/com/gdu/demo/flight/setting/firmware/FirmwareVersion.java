@@ -6,7 +6,7 @@ import android.os.Message;
 
 import androidx.annotation.NonNull;
 
-import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.config.GduConfig;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.SPUtils;

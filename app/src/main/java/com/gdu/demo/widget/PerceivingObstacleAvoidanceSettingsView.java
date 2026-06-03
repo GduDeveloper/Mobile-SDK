@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.gdu.config.GduConfig;
 import com.gdu.demo.R;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;

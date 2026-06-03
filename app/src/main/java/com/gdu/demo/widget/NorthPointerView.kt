@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
+import com.gdu.config.GduConfig
 import com.gdu.demo.R
 import com.gdu.demo.utils.DroneUtils
 import com.gdu.lib.util.core.SPUtils
@@ -72,11 +73,14 @@ class NorthPointerView @JvmOverloads constructor(
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
+                        val fcInfo1 = DroneUtils.fcInfo1
+                        val fcInfo3 = DroneUtils.fcInfo3
+
                         // 磁力计异常不显示并toast提示
-                        val isMagneticAbnormal = GlobalVariable.sRemoteCalibration == 0
-                                && (GlobalVariable.magneticAbnormal.toInt() == 1
-                                || GlobalVariable.magneticAbnormal.toInt() == 2
-                                || GlobalVariable.sMagneticNotCalibration.toInt() == 1)
+                        val isMagneticAbnormal = !(fcInfo3?.remoteCalibration?: false)
+                                && (fcInfo1?.magneticAbnormal?.toInt() == 1
+                                || fcInfo1?.magneticAbnormal?.toInt() == 2
+                                || fcInfo1?.magneticNotCalibration?: false)
                         if (isMagneticAbnormal) {
                             if (visibility == VISIBLE) {
                                 visibility = GONE
