@@ -21,15 +21,13 @@ class FlyStateModel : WidgetModel() {
         val distance = IFlightController.get.fcInfo1.value?.flyDistance?: 0
         // 相对高度
 
-        val height = if (DroneUtils.isGround) 0 else GlobalVariable.height_drone
+        val height = DroneUtils.fcInfo1?.droneHeight?: 0
+        val hs = DroneUtils.fcInfo1?.xekfVelX?: 0
+        val vs = DroneUtils.fcInfo1?.verticalSpeed?.toInt()?: 0
 
-        val hs = if (DroneUtils.isGround) 0 else GlobalVariable.xekf_VelX.toInt()
-
-        val vs = if (DroneUtils.isGround) 0 else GlobalVariable.xekf_VelD.toInt()
-
-        var headAngel = GlobalVariable.planeAngle / 100.0f
+        var headAngel = (DroneUtils.fcInfo1?.planeAngle?: 0) / 100.0f
         if (headAngel < 0) {
-            headAngel = headAngel + 360
+            headAngel += 360
         }
         // 椭球高
         val ellipsoid_height = DroneUtils.ellipsoidHeight

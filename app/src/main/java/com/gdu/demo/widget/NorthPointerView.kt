@@ -7,7 +7,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.content.res.ResourcesCompat
 import com.gdu.demo.R
+import com.gdu.demo.utils.DroneUtils
 import com.gdu.lib.util.core.SPUtils
+import com.gdu.msdk.device.component.interfaces.IGimbal
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.Disposable
@@ -41,7 +43,8 @@ class NorthPointerView @JvmOverloads constructor(
      * android:rotation ="30" 航向角 GlobalVariable.planeAngle + GlobalVariable.HolderYAW    航向角为30度则相对角度为-30
      */
     fun update() {
-        val pitch = GlobalVariable.HolderPitch / 100f
+        val gimbalPosture = IGimbal.get.gimbalPosture.value
+        val pitch = (gimbalPosture?.holderPitch?.toFloat()?: 0f) / 100f
         if (pitch > 0) {
             if (curImg != imgInverse) {
                 curImg = imgInverse
@@ -54,7 +57,7 @@ class NorthPointerView @JvmOverloads constructor(
             }
         }
         rotationX = pitch + 90
-        rotation = -(GlobalVariable.planeAngle / 100f + GlobalVariable.HolderYAW / 100f)
+        rotation = -((DroneUtils.fcInfo1?.planeAngle?: 0) / 100f + (gimbalPosture?.holderYAW?.toFloat()?: 0f) / 100f)
     }
 
     /* 自动更新 */
