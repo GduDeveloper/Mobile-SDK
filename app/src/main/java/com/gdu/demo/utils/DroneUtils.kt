@@ -16,6 +16,8 @@ import com.gdu.msdk.key.value.CycleInfraredCameraStatus
 import com.gdu.msdk.key.value.CycleRCBatteryInfo
 import com.gdu.msdk.key.value.CycleRCInfo
 import com.gdu.msdk.key.value.CycleVisibleCameraStatus
+import com.gdu.msdk.key.value.InfraredCameraInfo
+import com.gdu.msdk.key.value.VisibleLightCameraInfo
 import com.gdu.msdk.key.value.bean.ControlHand
 import com.gdu.msdk.key.value.bean.DroneFlyState
 import com.gdu.msdk.key.value.bean.FlyMode
@@ -178,8 +180,16 @@ object DroneUtils {
         get() = ICamera.get.currentCameraStatus.visibleCameraStatus.value
 
     @JvmStatic
+    val vlCameraInfo: VisibleLightCameraInfo?
+        get() = ICamera.get.vlCameraInfo
+
+    @JvmStatic
     val infraredCameraStatus: CycleInfraredCameraStatus?
         get() = ICamera.get.currentCameraStatus.flowInfraredCameraStatus.value
+
+    @JvmStatic
+    val infraredCameraInfo: InfraredCameraInfo?
+        get() = ICamera.get.infraredCameraInfo
 
     /** 可见光SD卡状态  0：正常卡；1：异常卡；2：当前卡读写速度慢；3：未插入SD卡；4：SD卡已满; 5: SD卡格式错误(目前仅四光有) */
     @JvmStatic

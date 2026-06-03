@@ -28,16 +28,10 @@ class CameraParaModel: WidgetModel() {
         sdCardState.vlSDState = vlStatus
         sdCardState.irSDStatus = irState
         if (isMultiSDCard) {
-            GlobalVariable.reMainCardSum =
-                GlobalVariable.SdCardSum - GlobalVariable.SDCardUsedSizeIr
-            GlobalVariable.reMainSD2Sum =
-                GlobalVariable.Sd2CardSum - GlobalVariable.SDCardUsedSizeVisible
-            sdCardState.reMainCardSum = GlobalVariable.reMainCardSum
-            sdCardState.reMainCard2Sum = GlobalVariable.Sd2CardSum
+            sdCardState.reMainCardSum = DroneUtils.vlCameraInfo?.vlRemainTFAllByte?.toFloat()?: 0F
+            sdCardState.reMainCard2Sum = DroneUtils.infraredCameraInfo?.irRemainTFAllByte?.toFloat()?: 0f
         } else {
-            GlobalVariable.reMainCardSum =
-                GlobalVariable.SdCardSum - GlobalVariable.SDCardUsedSizeVisible
-            sdCardState.reMainCardSum = GlobalVariable.reMainCardSum
+            sdCardState.reMainCardSum = DroneUtils.vlCameraInfo?.vlRemainTFAllByte?.toFloat()?: 0F
         }
 
         notify(CameraParaValue(
