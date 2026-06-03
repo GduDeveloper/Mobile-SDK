@@ -234,11 +234,11 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
                 isBottomSwitchSelected = (byte) data.optInt("isBottomSwitchSelected");
 
                 //水平避障开关
-                GlobalVariable.isObsHorSwitchState = isHorSwitchSelected == 0;
+                boolean isObsHorSwitchState = isHorSwitchSelected == 0;
                 //上视避障开关
-                GlobalVariable.isObsTopSwitchState = isTopSwitchSelected == 0;
+                boolean isObsTopSwitchState = isTopSwitchSelected == 0;
                 //下视避障开关
-                GlobalVariable.isObsBottomSwitchState = isBottomSwitchSelected == 0;
+                boolean isObsBottomSwitchState = isBottomSwitchSelected == 0;
 
                 //水平避障刹停距离
                 horBrakeDistance =  data.optInt("horBrakeDistance");
@@ -254,18 +254,18 @@ public class BaseFlightAssistantViewModel extends BaseViewModel {
                 bottomWarnDistance = data.optInt("bottomWarnDistance");
 
                 ObstacleStatusBean horBean = new ObstacleStatusBean();
-                horBean.setSelect(GlobalVariable.isObsHorSwitchState);
-                horBean.setObsOpen(GlobalVariable.isObsHorSwitchState);
-                if (GlobalVariable.isObsHorSwitchState) {
+                horBean.setSelect(isObsHorSwitchState);
+                horBean.setObsOpen(isObsHorSwitchState);
+                if (isObsHorSwitchState) {
                     horBean.setStopValue(horBrakeDistance);
                     horBean.setAlarmValue(horWarnDistance);
                 }
                 obstacleHorLiveData.postValue(horBean);
 
                 ObstacleStatusBean topBean = new ObstacleStatusBean();
-                topBean.setSelect(GlobalVariable.isObsTopSwitchState);
-                topBean.setObsOpen(GlobalVariable.isObsTopSwitchState);
-                if (GlobalVariable.isObsTopSwitchState) {
+                topBean.setSelect(isObsTopSwitchState);
+                topBean.setObsOpen(isObsTopSwitchState);
+                if (isObsTopSwitchState) {
                     topBean.setStopValue(topBrakeDistance);
                     topBean.setAlarmValue(topWarnDistance);
                 }

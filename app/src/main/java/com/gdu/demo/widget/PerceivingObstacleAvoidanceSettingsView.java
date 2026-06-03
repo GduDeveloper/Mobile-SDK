@@ -6,7 +6,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -14,15 +13,18 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.gdu.common.error.Error;
 import com.gdu.config.GduConfig;
 import com.gdu.demo.R;
+import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.SettingDao;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.sdk.util.CommonCallbacks;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import org.json.JSONObject;
 
 /**
  * 感知避障设置
@@ -132,32 +134,24 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
     /** 获取避障子方向开关和距离*/
     private void getObstacleCallback() {
-        GduSocketManager.getInstance().getGduCommunication().getObstacleDirectionDistance((code, bean) -> {
-            XLogger.INSTANCE.getAPP().i("getObstacleCallback() code = " + code);
-            // 这里不去判断code的状态
-            if (bean != null && bean.frameContent != null) {
-                isHorSwitchSelected = bean.frameContent[0];
-                isTopSwitchSelected = bean.frameContent[5];
-                isBottomSwitchSelected = bean.frameContent[10];
+        SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant().getObstacleDirectionDistance(new CommonCallbacks.CompletionCallbackWith<JSONObject>() {
+            @Override
+            public void onSuccess(JSONObject jsonObject) {
 
-                GlobalVariable.isObsHorSwitchState = isHorSwitchSelected == 0;
-                GlobalVariable.isObsTopSwitchState = isTopSwitchSelected == 0;
-                GlobalVariable.isObsBottomSwitchState = isBottomSwitchSelected == 0;
+                isHorSwitchSelected = jsonObject.optInt("isHorSwitchSelected");
+                isTopSwitchSelected = jsonObject.optInt("isTopSwitchSelected");
+                isBottomSwitchSelected =  jsonObject.optInt("isBottomSwitchSelected");
+                horBrakeDistance =  jsonObject.optInt("horBrakeDistance");
+                horWarnDistance =  jsonObject.optInt("horWarnDistance");
+                topBrakeDistance =  jsonObject.optInt("topBrakeDistance");
+                topWarnDistance =  jsonObject.optInt("topWarnDistance");
+                bottomBrakeDistance =  jsonObject.optInt("bottomBrakeDistance");
+                bottomWarnDistance =  jsonObject.optInt("bottomWarnDistance");
+
                 mHandler.obtainMessage(GET_OBSTACLE_HORIZONTAL_OPEN,isHorSwitchSelected, 0).sendToTarget(); //水平避障开关
                 mHandler.obtainMessage(GET_OBSTACLE_TOP_OPEN,isTopSwitchSelected, 0).sendToTarget();        //上视避障开关
                 if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
                     mHandler.obtainMessage(GET_OBSTACLE_BOTTOM_OPEN, isBottomSwitchSelected, 0).sendToTarget();    //下视避障开关
-                }
-
-                horBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 1);                       //水平避障刹停距离
-                horWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 3);                        //水平避障告警距离
-                topBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 6);                       //上视避障刹停距离
-                topWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 8);                        //上视觉避告警距离
-                if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
-                    //下视避障刹停距离
-                    bottomBrakeDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 11);
-                    //下视避障告警距离
-                    bottomWarnDistance = ByteUtilsLowBefore.byte2short(bean.frameContent, 13);
                 }
 
                 mHandler.obtainMessage(GET_HOR_STOP_DISTANCE, horBrakeDistance, 0).sendToTarget();
@@ -178,6 +172,11 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
                 XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomOpen = " + (isBottomSwitchSelected));
                 XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomStop = " + bottomBrakeDistance);
                 XLogger.INSTANCE.getAPP().i("getObstacleCallback() bottomWarning = " + bottomWarnDistance);
+            }
+
+            @Override
+            public void onFailure(Error error) {
+
             }
         });
     }
@@ -273,7 +272,6 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
             @Override
             public void onSwitch(boolean isOpen) {
                 isHorSwitchSelected = isOpen ? 0 : 1;
-                GlobalVariable.isObsHorSwitchState = isOpen;
 
                 setObsSetting((byte) isHorSwitchSelected, horBrakeDistance,  horWarnDistance,
                         (byte) isTopSwitchSelected,  topBrakeDistance, topWarnDistance,
