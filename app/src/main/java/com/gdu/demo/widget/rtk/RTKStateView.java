@@ -16,6 +16,7 @@ import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.CycleDRTKStatus;
 import com.gdu.msdk.key.value.CycleFcGNSSInfo;
 import com.gdu.msdk.key.value.bean.RTKModel;
 import com.rxjava.rxlife.RxLife;
@@ -117,31 +118,33 @@ public class RTKStateView extends LinearLayout {
 
         // 基站RTK
         if (DroneUtils.getRtkType() == 2) {
-            if (GlobalVariable.drtkInformation != null) {
+            CycleDRTKStatus drtkInformation = IRTK.get().getDRtkStatus();
+
+            if (drtkInformation != null) {
 
                 String drtkState = "";
-                if (GlobalVariable.drtkInformation.positionState == 4) {
+                if (drtkInformation.getPositionState() == 4) {
                     drtkState = "fixed";
-                } else if (GlobalVariable.drtkInformation.positionState == 5) {
+                } else if (drtkInformation.getPositionState() == 5) {
                     drtkState = "Float";
                 } else {
-                    drtkState = GlobalVariable.drtkInformation.positionState + "";
+                    drtkState = drtkInformation.getPositionState() + "";
                 }
 
                 viewBinding.tvStateRtkStatus.setText(drtkState);
-                viewBinding.tvStationLng.setText(GlobalVariable.drtkInformation.lon + "");
-                viewBinding.tvStationLat.setText(GlobalVariable.drtkInformation.lat + "");
-                viewBinding.tvStationEllipsoidalHeight.setText(GlobalVariable.drtkInformation.ellipsoidHeight + "");
-                viewBinding.tvStationAltitude.setText(GlobalVariable.drtkInformation.altitudeHeight + "");
-                viewBinding.tvStationNum.setText(GlobalVariable.drtkInformation.satelliteNum + "");
-                viewBinding.tvStationBdNum.setText(GlobalVariable.drtkInformation.bdSatelliteNum + "");
-                viewBinding.tvStationGpsNum.setText(GlobalVariable.drtkInformation.gpsSatelliteNum + "");
-                viewBinding.tvStationGalileoNum.setText(GlobalVariable.drtkInformation.galileoSatelliteNum + "");
-                viewBinding.tvStationGlonassNum.setText(GlobalVariable.drtkInformation.glonassSatelliteNum + "");
-                viewBinding.tvStationQzssNum.setText(GlobalVariable.drtkInformation.qzssSatelliteNum + "");
-                viewBinding.tvStationLonDeviation.setText(GlobalVariable.drtkInformation.lonStandardDeviation + "");
-                viewBinding.tvStationLatDeviation.setText(GlobalVariable.drtkInformation.latStandardDeviation + "");
-                viewBinding.tvStationHeightDeviation.setText(GlobalVariable.drtkInformation.heightStandardDeviation + "");
+                viewBinding.tvStationLng.setText(drtkInformation.getLon() + "");
+                viewBinding.tvStationLat.setText(drtkInformation.getLat() + "");
+                viewBinding.tvStationEllipsoidalHeight.setText(drtkInformation.getEllipsoidHeight() + "");
+                viewBinding.tvStationAltitude.setText(drtkInformation.getAltitudeHeight() + "");
+                viewBinding.tvStationNum.setText(drtkInformation.getSatelliteNum() + "");
+                viewBinding.tvStationBdNum.setText(drtkInformation.getBdSatelliteNum() + "");
+                viewBinding.tvStationGpsNum.setText(drtkInformation.getGpsSatelliteNum() + "");
+                viewBinding.tvStationGalileoNum.setText(drtkInformation.getGalileoSatelliteNum() + "");
+                viewBinding.tvStationGlonassNum.setText(drtkInformation.getGlonassSatelliteNum() + "");
+                viewBinding.tvStationQzssNum.setText(drtkInformation.getQzssSatelliteNum() + "");
+                viewBinding.tvStationLonDeviation.setText(drtkInformation.getLonStandardDeviation() + "");
+                viewBinding.tvStationLatDeviation.setText(drtkInformation.getLatStandardDeviation() + "");
+                viewBinding.tvStationHeightDeviation.setText(drtkInformation.getHeightStandardDeviation() + "");
             } else {
                 viewBinding.tvStateRtkStatus.setText("N/A");
                 viewBinding.tvStationLng.setText("");
