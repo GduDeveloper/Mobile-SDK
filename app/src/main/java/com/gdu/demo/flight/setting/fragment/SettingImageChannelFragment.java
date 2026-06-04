@@ -56,6 +56,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class SettingImageChannelFragment extends Fragment {
 
+    /** 4G备份图传RTSP的地址 */
+    public static final String BACK_WIFI_CAST_POSITION = "BACK_WIFI_CAST_POSITION";
+    /** 4G备份图传RTSP的地址 */
+    public static final String BACK_HDMI_CAST_POSITION = "BACK_HDMI_CAST_POSITION";
     private FragmentActivity mActivity;
     private FragmentSettingImageChannelBinding mViewBinding;
     private SettingSDRViewModel sdrViewModel;
@@ -151,8 +155,8 @@ public class SettingImageChannelFragment extends Fragment {
             }
         });
 
-        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_HDMI_CAST_POSITION));
-        mViewBinding.selectWifiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_WIFI_CAST_POSITION));
+        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInstance().getInt(BACK_HDMI_CAST_POSITION));
+        mViewBinding.selectWifiCast.setIndex(SPUtils.getInstance().getInt(BACK_WIFI_CAST_POSITION));
 
         mViewBinding.selectHdmiCast.setOnOptionClickListener((parentId, view, position) -> {
             switchHdmiCastType(position);
@@ -181,7 +185,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchWifiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.getInstance().put(SPUtils.BACK_WIFI_CAST_POSITION,position);
+            SPUtils.getInstance().put(BACK_WIFI_CAST_POSITION,position);
             changeSelectIndex(WIFI_CAST,position);
         });
     }
@@ -200,7 +204,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchHdmiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.getInstance().put(SPUtils.BACK_HDMI_CAST_POSITION, position);
+            SPUtils.getInstance().put(BACK_HDMI_CAST_POSITION, position);
             changeSelectIndex(HDMI_CAST,position);
         });
     }
