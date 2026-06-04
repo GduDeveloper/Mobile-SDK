@@ -26,7 +26,10 @@ import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IAirLink;
 import com.gdu.msdk.key.value.Cycle5GSdrStatus;
+import com.gdu.msdk.key.value.airlink.CycleAirLinkBandwidth;
+import com.gdu.msdk.key.value.airlink.CycleAirLinkSignalInterference;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -207,7 +210,12 @@ public class SettingImageChannelFragment extends Fragment {
      *
      */
     private void changeOutStream(int position) {
-        if (GlobalVariable.sVariableBitstream == 1) {
+        boolean variableBitstream = false;
+        CycleAirLinkBandwidth bandwidth = IAirLink.get().getUnusedBandwidth().getValue();
+        if (bandwidth != null) {
+            variableBitstream = bandwidth.getVariableBitstream();
+        }
+        if (variableBitstream) {
             sdrViewModel.getSteamSwitchLiveData().observe(mActivity, data->{
                 setStreamValue(position);
             });
@@ -257,7 +265,10 @@ public class SettingImageChannelFragment extends Fragment {
                 .to(RxLife.to(this))
                 .subscribe(aLong -> {
                     showCurrentAirlinkType();
-                    generateChartData(GlobalVariable.combinedChartPoints, GlobalVariable.currentPoint);
+                    CycleAirLinkSignalInterference signalInterference = IAirLink.get().getAirLinkSignalInterference().getValue();
+                    if (signalInterference != null) {
+                        generateChartData(signalInterference.getCombinedChartPoints(), signalInterference.getCurrentPoint());
+                    }
                 });
     }
 
