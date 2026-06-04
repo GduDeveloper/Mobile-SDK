@@ -183,16 +183,17 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
 
     /** 设置避障子方向开关和距离*/
     private void setObsSetting(byte horOpen, int horStop, int horWarning, byte topOpen, int topStop, int topWarning, byte bottomOpen, int bottomStop, int bottomWarning) {
-        GduSocketManager.getInstance().getGduCommunication().setObstacleDirectionDistance(new SocketCallBack3() {
-            @Override
-            public void callBack(int code, GduFrame3 bean) {
-                if (code == GduConfig.OK) {
-                    mHandler.obtainMessage(SET_OBSTACLE_SUCCESS).sendToTarget();
-                } else {
-                    mHandler.obtainMessage(SET_OBSTACLE_FAIL).sendToTarget();
-                }
-            }
-        }, horOpen, (short) horStop, (short) horWarning, topOpen, (short) topStop, (short) topWarning, bottomOpen, (short) bottomStop, (short) bottomWarning);
+        SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant().setObsSetting(
+                horOpen, horStop, horWarning, topOpen, topStop, topWarning, bottomOpen, bottomStop, bottomWarning, new CommonCallbacks.CompletionCallback<Error>() {
+                    @Override
+                    public void onResult(Error error) {
+                        if (error == null) {
+                            mHandler.obtainMessage(SET_OBSTACLE_SUCCESS).sendToTarget();
+                        } else {
+                            mHandler.obtainMessage(SET_OBSTACLE_FAIL).sendToTarget();
+                        }
+                    }
+                });
     }
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -310,8 +311,6 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
             @Override
             public void onSwitch(boolean isOpen) {
                 isTopSwitchSelected = isOpen ? 0 : 1;
-                GlobalVariable.isObsTopSwitchState = isOpen;
-
                 setObsSetting((byte) isHorSwitchSelected, horBrakeDistance,  horWarnDistance,
                         (byte) isTopSwitchSelected,  topBrakeDistance, topWarnDistance,
                         (byte) isBottomSwitchSelected,  bottomBrakeDistance,  bottomWarnDistance);
@@ -346,7 +345,6 @@ public class PerceivingObstacleAvoidanceSettingsView extends LinearLayout {
             @Override
             public void onSwitch(boolean isOpen) {
                 isBottomSwitchSelected = isOpen ? 0 : 1;
-                GlobalVariable.isObsBottomSwitchState = isOpen;
 
                 setObsSetting((byte) isHorSwitchSelected, horBrakeDistance,  horWarnDistance,
                         (byte) isTopSwitchSelected,  topBrakeDistance, topWarnDistance,
