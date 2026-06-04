@@ -9,16 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.demo.R;
 import com.gdu.demo.databinding.FragmentSettingCameraBinding;
-import com.gdu.demo.flight.setting.camera.CameraSetHelper;
 import com.gdu.demo.flight.setting.camera.VLCameraSetHelper;
-import com.gdu.event.GimbalEvent;
-import com.lib.model.LiveType;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @Author: lixiqiang
@@ -74,15 +68,6 @@ public class SettingCameraFragment extends Fragment {
         return fragment;
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void connGimbal(GimbalEvent event) {
-        if (!isAdded()) {
-            return;
-        }
-        if(mCameraSetHelper!=null){
-            mCameraSetHelper.connGimbalListener(event);
-        }
-    }
 
     @Override
     public void onDestroyView() {

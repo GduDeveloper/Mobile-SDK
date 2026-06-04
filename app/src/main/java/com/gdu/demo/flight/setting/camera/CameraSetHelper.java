@@ -1,13 +1,9 @@
 package com.gdu.demo.flight.setting.camera;
 
-import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.fragment.app.FragmentActivity;
-
-import com.gdu.event.GimbalEvent;
-import com.lib.model.LiveType;
 
 
 /**
@@ -17,7 +13,7 @@ public class CameraSetHelper {
 
     protected View mView;
     protected FragmentActivity mActivity;
-    protected TxVideoLiveListener txVideoLiveListener;
+//    protected TxVideoLiveListener txVideoLiveListener;
 
     public CameraSetHelper() {
 
@@ -34,10 +30,6 @@ public class CameraSetHelper {
         mActivity = null;
     }
 
-    public void connGimbalListener(GimbalEvent event) {
-
-    }
-
     /**
      * 设置推流地址
      * @param url
@@ -46,12 +38,12 @@ public class CameraSetHelper {
 
     }
 
-    public interface TxVideoLiveListener {
-        void openTxVideoLive(LiveType liveType, String rtmpUrl);
-        void isliveUIShow( boolean isShow );
-
-        void openQRCode();
-    }
+//    public interface TxVideoLiveListener {
+//        void openTxVideoLive(LiveType liveType, String rtmpUrl);
+//        void isliveUIShow( boolean isShow );
+//
+//        void openQRCode();
+//    }
 
     public void showToast(int strId){
         if (mActivity == null) {

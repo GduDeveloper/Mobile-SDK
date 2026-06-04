@@ -28,8 +28,10 @@ import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.callback.MSdkCallback;
 import com.gdu.msdk.key.error.MError;
+import com.gdu.msdk.key.value.ParamGimbalSetting;
 import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.msdk.key.value.common.EmptyMsg;
+import com.gdu.msdk.util.KVObserver;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 
@@ -90,6 +92,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     public static byte spitchSlowSetting = 15;
     /** 方位缓启停设置 */
     public static byte yawSlowSetting = 15;
+    /** 方位最大波轮速度值 */
+    public static byte gimbalYawMaxSpeed = 40;
+    /** 俯仰最大波轮速度值 */
+    public static byte thumbWheelSpeed = 40;
 
     public VLCameraSetHelper() {
         super();
@@ -320,10 +326,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 根据周期反馈，更新进度值
      */
     protected void setPitchSpeed() {
-        XLogger.INSTANCE.getAPP().i("setPitchSpeed() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
+        XLogger.INSTANCE.getAPP().i("setPitchSpeed() thumbWheelSpeed = " + thumbWheelSpeed);
         if (sb_pitch_speed != null) {
-            if (GlobalVariable.thumbWheelSpeed >= 5) {
-                sb_pitch_speed.setProgress(GlobalVariable.thumbWheelSpeed - 5);
+            if (thumbWheelSpeed >= 5) {
+                sb_pitch_speed.setProgress(thumbWheelSpeed - 5);
             } else {
                 sb_pitch_speed.setProgress(0);
             }
@@ -335,28 +341,28 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * @param isRetry 是否手动刷新
      */
     protected void getGimbalCurrentSetting(boolean isRetry) {
-        GduSocketManager.getInstance().getGduCommunication().getGimbalSetting((code, bean) -> {
-            XLogger.INSTANCE.getAPP().i(TAG, "getGimbalSetting callback() code = " + code);
-            if (mHandler == null) {
-                return;
-            }
-            boolean isHaveData = code == GduConfig.OK && bean != null && bean.frameContent != null && bean.frameContent.length > 3;
-            XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() isHaveData = " + isHaveData);
-            if (isHaveData) {
-                GlobalVariable.thumbWheelSpeed = bean.frameContent[2];
-                XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
-                if (bean.frameContent.length > 6) {
-                    GlobalVariable.sGimbalYawMaxSpeed = bean.frameContent[3];
-                    spitchSlowSetting = bean.frameContent[4];
-                    yawSlowSetting = bean.frameContent[5];
-                    XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
-                            + "; spitchSlowSetting = " + bean.frameContent[4] + "; yawSlowSetting = " + bean.frameContent[5]);
+        IGimbal.get().getGimbalSetting(new MSdkCallback.ActionCallback<ParamGimbalSetting>() {
+            @Override
+            public void onSuccess(@Nullable ParamGimbalSetting bean) {
+                gimbalYawMaxSpeed = bean.getGimbalYawMaxSpeed();
+                spitchSlowSetting = bean.getPitchSlowSetting();
+                yawSlowSetting = bean.getYawSlowSetting();
+                XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() sGimbalYawMaxSpeed = " + gimbalYawMaxSpeed
+                        + "; spitchSlowSetting = " + spitchSlowSetting + "; yawSlowSetting = " + yawSlowSetting);
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
                 }
-                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
-            } else if (isRetry) {//手动刷新，不管成功失败，都展示
-                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
-            } else {
-                mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_FAILED, 500);
+            }
+
+            @Override
+            public void onFailure(@NonNull MError mError) {
+                if (mHandler != null) {
+                    if (isRetry) {//手动刷新，不管成功失败，都展示
+                        mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_SUCCEED, 500);
+                    } else {
+                        mHandler.sendEmptyMessageDelayed(GET_GIMBAL_CURRENT_SETTING_FAILED, 500);
+                    }
+                }
             }
         });
     }
@@ -393,10 +399,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台方位最大偏航速度
      */
     private void setYawSpeed(){
-        XLogger.INSTANCE.getAPP().i("setYawSpeed() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed);
+        XLogger.INSTANCE.getAPP().i("setYawSpeed() sGimbalYawMaxSpeed = " + gimbalYawMaxSpeed);
         if (sb_ptz_yaw_speed != null) {
-            if (GlobalVariable.sGimbalYawMaxSpeed >= 5) {
-                sb_ptz_yaw_speed.setProgress(GlobalVariable.sGimbalYawMaxSpeed - 5);
+            if (gimbalYawMaxSpeed >= 5) {
+                sb_ptz_yaw_speed.setProgress(gimbalYawMaxSpeed - 5);
             } else {
                 sb_ptz_yaw_speed.setProgress(0);
             }
@@ -412,7 +418,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 //                        return;
 //                    }
 //                    if (code == GduConfig.OK) {
-//                        GlobalVariable.sGimbalYawMaxSpeed = (byte) speed;
+//                        gimbalYawMaxSpeed = (byte) speed;
 //                        //                    handler.obtainMessage(SET_OK).sendToTarget();
 //                    } else {
 //                        mHandler.sendEmptyMessage(SET_GIMBAL_YAW_SPEED_FAILED);
@@ -445,7 +451,9 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             }
             @Override
             public void onFailure(@NonNull MError mError) {
-                mHandler.sendEmptyMessage(type == SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(type == SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
+                }
             }
         });
     }
@@ -454,6 +462,17 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         XLogger.INSTANCE.getAPP().i("initData()");
         initPTZSetting(mView);
     }
+
+    private KVObserver<GimbalType> observer = new KVObserver<GimbalType>() {
+        @Override
+        public void update(GimbalType gimbalType) {
+            if (gimbalType != GimbalType.ByrdT_None_Zoom) {//有云台
+                initPTZSetting(mView);
+            }else{//无云台
+                ViewUtils.setViewShowOrHide(mCameraMainLayout, false);
+            }
+        }
+    };
 
     public void initListener() {
         XLogger.INSTANCE.getAPP().i("initListener()");
@@ -472,22 +491,27 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             resetGimbalParamsConfirmDialog();
         });
 
+
+        IGimbal.get().getGimbalTypeFlow().register(observer);
+
     }
 
     protected void setPitchSpeed(int speed) {
         XLogger.INSTANCE.getAPP().i("setPitchSpeed() speed = " + speed);
-        GduSocketManager.getInstance().getGduCommunication().setThumbWheelSpeed((byte) speed, GlobalVariable.ThumbWheelSpeedType.PITCH,
-                (code, bean) -> {
-                    XLogger.INSTANCE.getAPP().i("setPitchSpeed callBack() code = " + code);
-                    if (mHandler == null) {
-                        return;
-                    }
-                    if (code == GduConfig.OK) {
-                        GlobalVariable.thumbWheelSpeed = (byte) speed;
-                    } else {
-                        mHandler.sendEmptyMessage(SET_GIMBAL_PITCH_FAILED);
-                    }
-                });
+
+        IGimbal.get().thumbWheelSpeed((byte)speed, (byte)255, new MSdkCallback.ActionCallback<EmptyMsg>() {
+            @Override
+            public void onSuccess(@Nullable EmptyMsg emptyMsg) {
+                thumbWheelSpeed = (byte) speed;
+            }
+
+            @Override
+            public void onFailure(@NonNull MError mError) {
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(SET_GIMBAL_PITCH_FAILED);
+                }
+            }
+        });
     }
 
 
@@ -628,6 +652,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             mHandler.removeCallbacksAndMessages(null);
             mHandler = null;
         }
+        IGimbal.get().getGimbalTypeFlow().unregister(observer);
 
         et_pitch_speed.setOnEditorActionListener(null);
         et_ptz_yaw_speed.setOnEditorActionListener(null);
@@ -640,7 +665,6 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         sb_yaw_slow_setting.setOnSeekBarChangeListener(null);
 
         closeListener = null;
-        txVideoLiveListener = null;
         mSeekBarPitchSlowSettingListener = null;
         mSeekBarYawSlowSettingListener = null;
         mSeekBarFourLightListener = null;
@@ -675,28 +699,18 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         this.closeListener = listener;
     }
 
-    @Override
-    public void connGimbalListener(GimbalEvent event) {
-        if (event.gimbalType != GimbalType.ByrdT_None_Zoom || GlobalVariable.sPSDKCompId != 0) {//有云台
-            initPTZSetting(mView);
-        }else{//无云台
-            ViewUtils.setViewShowOrHide(mCameraMainLayout, false);
-        }
-    }
-
-
     //恢复云台默认设置
     private void resetGimbalParams() {
-        GduSocketManager.getInstance().getGduCommunication().resetGimbalParams(new SocketCallBack3() {
+        IGimbal.get().resetGimbalParams(new MSdkCallback.ActionCallback<EmptyMsg>() {
             @Override
-            public void callBack(int code, GduFrame3 bean) {
-                if (mHandler == null) {
-                    return;
-                }
-                XLogger.INSTANCE.getAPP().i(TAG, "resetGimbalParams() code:" + code);
-                if (code == GduConfig.OK) {
+            public void onSuccess(@Nullable EmptyMsg emptyMsg) {
+                if (mHandler != null) {
                     mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_SUC);
-                } else {
+                }
+            }
+            @Override
+            public void onFailure(@NonNull MError mError) {
+                if (mHandler != null) {
                     mHandler.sendEmptyMessage(RESET_GIMBAL_PARAMS_FAILED);
                 }
             }
