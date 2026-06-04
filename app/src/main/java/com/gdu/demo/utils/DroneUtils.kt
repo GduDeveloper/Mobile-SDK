@@ -245,6 +245,10 @@ object DroneUtils {
     val lteSdrStatus: Cycle5GSdrStatus?
         get() = IAirLink.get.lteSdrStatus.value
 
+    @JvmStatic // 图传信道模式（0: 2.4G   1: 5.8G  2: AUTO）
+    val signalChannel: Int
+        get() = IAirLink.get.airLinkSignalInterference.value?.signalChannel?.toInt()?: 0
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

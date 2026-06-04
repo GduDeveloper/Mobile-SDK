@@ -142,7 +142,7 @@ public class SettingImageChannelFragment extends Fragment {
             } else if(NetworkingHelper.isNetworkingMode()){
                 Toast.makeText(getContext(), R.string.string_not_change_in_group, Toast.LENGTH_SHORT).show();
             } else {
-                if (getPositionFromChannel(GlobalVariable.singalChannel) != position) {
+                if (getPositionFromChannel(DroneUtils.getSignalChannel()) != position) {
                     sdrViewModel.setImageTransmissionInfo(position);
                 }
             }
@@ -400,12 +400,12 @@ public class SettingImageChannelFragment extends Fragment {
     private void generateChartData(List<Short> shortList, byte selectNum) {
         if (!sdrViewModel.isImgChannelSwitching()) {
             if (!RCUtils.INSTANCE.isS200RC()) {
-                setImgChannel(GlobalVariable.singalChannel);
+                setImgChannel(DroneUtils.getSignalChannel());
                 mViewBinding.tvCurrentChannel.setVisibility(View.GONE);
             }else {
                 mViewBinding.tvCurrentChannel.setVisibility(View.VISIBLE);
                 mViewBinding.tvCurrentChannel.setText(getString(R.string.current_channel_is,
-                        getString(GlobalVariable.singalChannel == 1?
+                        getString(DroneUtils.getSignalChannel() == 1?
                                 R.string.Label_channel_5_8:
                                 R.string.Label_channel_2_4)));
             }
