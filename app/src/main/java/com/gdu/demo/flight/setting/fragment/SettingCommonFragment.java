@@ -372,7 +372,7 @@ public class SettingCommonFragment extends Fragment {
 
         mViewBinding.opMapModel.setOnOptionClickListener((parentId, view, position) -> {
             XLogger.INSTANCE.getAPP().i("MapType  type = " + position);
-            if (GlobalVariable.isOpenFlightRoutePlan) {
+            if (DroneUtils.isOpenFlightRoutePlan()) {
                 Toast.makeText(requireContext(), R.string.please_exit_flight_route, Toast.LENGTH_SHORT).show();
                 return;
             }

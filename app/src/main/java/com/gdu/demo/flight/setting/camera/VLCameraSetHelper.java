@@ -595,7 +595,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     public boolean checkWaypointTaskRunning() {
         XLogger.INSTANCE.getAPP().i("checkWaypointTaskRunning()");
         boolean result;
-        if (GlobalVariable.isOpenFlightRoutePlan) {
+        if (DroneUtils.isOpenFlightRoutePlan()) {
             showToast(R.string.please_exit_flight_route);
             result = true;
         } else {

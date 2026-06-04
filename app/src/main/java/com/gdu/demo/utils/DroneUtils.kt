@@ -6,6 +6,7 @@ import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.ICamera
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.component.interfaces.IRTK
+import com.gdu.msdk.device.component.interfaces.IRoute
 import com.gdu.msdk.device.component.interfaces.IVision
 import com.gdu.msdk.device.interfaces.IGduRCDevice
 import com.gdu.msdk.key.value.CycleBatteryInfo
@@ -234,6 +235,10 @@ object DroneUtils {
     @JvmStatic
     val backObstacleState: Int
         get() = IVision.get.radarInfo.value?.backObstacleState?.toInt()?: 0
+
+    @JvmStatic // 是否正在执行航迹
+    val isOpenFlightRoutePlan: Boolean
+        get() = (IRoute.get.routeMissionStateInfo.value?.state?.toInt()?: 0) == 1
 
     /**------------------------ 遥控器 ----------------------------------*/
 
