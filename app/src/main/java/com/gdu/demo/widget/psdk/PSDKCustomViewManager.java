@@ -654,7 +654,7 @@ public class PSDKCustomViewManager {
         layoutParams.leftMargin = (int) context.getResources().getDimension(R.dimen.dp_60);
         layoutParams.topMargin = (int) context.getResources().getDimension(R.dimen.dp_80);
         floatWindowView.setLayoutParams(layoutParams);
-        floatWindowView.setVisibility(GlobalVariable.isShowCurrentData ? View.VISIBLE : View.GONE);
+        floatWindowView.setVisibility(CustomFloatWindow.isShowCurrentData ? View.VISIBLE : View.GONE);
         viewGroup.addView(floatWindowView);
 
     }

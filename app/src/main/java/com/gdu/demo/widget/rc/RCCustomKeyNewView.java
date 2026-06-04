@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.RcCustomKeyViewBinding;
 import com.gdu.demo.databinding.RcCustomKeyViewMenuPopBinding;
+import com.gdu.demo.utils.ScreenUtils;
 import com.gdu.sdk.customkey.RcCustomKeyBean;
 import com.gdu.sdk.customkey.RcCustomKeyDaoHelper;
 import com.orhanobut.logger.Logger;
@@ -121,7 +121,7 @@ public class RCCustomKeyNewView extends RelativeLayout {
         });
         mMenuPop = new PopupWindow(menuPopBinding.getRoot());
         mMenuPop.setWidth(getResources().getDimensionPixelSize(R.dimen.dp_230));
-        mMenuPop.setHeight(GlobalVariable.screenHeight - getResources().getDimensionPixelSize(R.dimen.dp_140));
+        mMenuPop.setHeight(ScreenUtils.getScreenHeight(getContext()) - getResources().getDimensionPixelSize(R.dimen.dp_140));
         mMenuPop.setBackgroundDrawable(new ColorDrawable(0x00000000));
         mMenuPop.setFocusable(false);
         mMenuPop.setOutsideTouchable(true);

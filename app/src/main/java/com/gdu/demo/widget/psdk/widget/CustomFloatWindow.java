@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.views.DragLayout;
+import com.gdu.msdk.device.component.interfaces.IPayload;
 
 
 /**
@@ -22,6 +23,7 @@ import com.gdu.demo.views.DragLayout;
  */
 public class CustomFloatWindow extends DragLayout {
 
+    public static boolean isShowCurrentData = true;
     private final Context context;
     public TextView tv_text;
     public TextView tv_title;
@@ -55,15 +57,16 @@ public class CustomFloatWindow extends DragLayout {
         close.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                GlobalVariable.isShowCurrentData = false;
+                isShowCurrentData = false;
                 setVisibility(GONE);
             }
         });
     }
 
     public void updateText(String string) {
-        if (!TextUtils.isEmpty(GlobalVariable.psdkName)) {
-            tv_title.setText(GlobalVariable.psdkName);
+        String psdkName = IPayload.get().getName();
+        if (!TextUtils.isEmpty(psdkName)) {
+            tv_title.setText(psdkName);
         }
 
 //        String syn = "";
