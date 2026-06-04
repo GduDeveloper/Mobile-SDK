@@ -24,6 +24,7 @@ import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.Cycle5GSdrStatus;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.rxjava.rxlife.RxLife;
@@ -356,7 +357,8 @@ public class SettingRtkFragment extends Fragment {
 
 
     public boolean aircraftIsConnectNet() {
-        return GlobalVariable.sFourthGStatus != null && GlobalVariable.sFourthGStatus._4g_net_status != 0;
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        return lteSdrStatus != null && lteSdrStatus.getNetStatus() != 0;
     }
 
 

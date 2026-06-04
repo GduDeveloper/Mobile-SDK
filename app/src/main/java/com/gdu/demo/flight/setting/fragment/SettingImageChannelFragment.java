@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
@@ -27,6 +26,7 @@ import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.key.value.Cycle5GSdrStatus;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -242,8 +242,9 @@ public class SettingImageChannelFragment extends Fragment {
             setImgChannel(data);
         });
         sdrViewModel.getImageTransmissionInfo((byte) 3);
-        if (GlobalVariable.sFourthGStatus != null) {
-            mLastAirlinkType = GlobalVariable.sFourthGStatus.airlink_type;
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        if (lteSdrStatus != null) {
+            mLastAirlinkType = lteSdrStatus.getAirlinkType();
             showPushTypeView();
         } else {
             mViewBinding.ovSwitchPushType.setIndex(0);
@@ -268,7 +269,8 @@ public class SettingImageChannelFragment extends Fragment {
     public void showCurrentAirlinkType(){
         if (DroneUtils.isUseBackupsAirlink()) {
             if(!isShowPushType) {
-                if(GlobalVariable.sFourthGStatus != null && GlobalVariable.sFourthGStatus.pushStreamType != 0) {
+                Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+                if(lteSdrStatus != null && lteSdrStatus.getPushStreamType() != 0) {
                     showPushTypeView();
                     isShowPushType = true;
                 }
@@ -328,13 +330,14 @@ public class SettingImageChannelFragment extends Fragment {
     }
 
     private void showPushTypeView() {
-        if (mViewBinding != null && GlobalVariable.sFourthGStatus != null) {
-            if (GlobalVariable.sFourthGStatus.pushStreamType == 1) {
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        if (mViewBinding != null && lteSdrStatus != null) {
+            if (lteSdrStatus.getPushStreamType() == 1) {
                 mViewBinding.ovSwitchPushType.setIndex(0);
-            } else if (GlobalVariable.sFourthGStatus.pushStreamType == 2) {
+            } else if (lteSdrStatus.getPushStreamType() == 2) {
                 mViewBinding.ovSwitchPushType.setIndex(1);
             } else {
-                XLogger.INSTANCE.getAPP().i("showPushTypeView = " + GlobalVariable.sFourthGStatus.pushStreamType);
+                XLogger.INSTANCE.getAPP().i("showPushTypeView = " + lteSdrStatus.getPushStreamType());
             }
         }
     }

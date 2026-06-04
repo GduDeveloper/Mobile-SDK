@@ -9,6 +9,7 @@ import com.gdu.msdk.device.component.interfaces.IRTK
 import com.gdu.msdk.device.component.interfaces.IRoute
 import com.gdu.msdk.device.component.interfaces.IVision
 import com.gdu.msdk.device.interfaces.IGduRCDevice
+import com.gdu.msdk.key.value.Cycle5GSdrStatus
 import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.CycleFCInfo1
 import com.gdu.msdk.key.value.CycleFCInfo2
@@ -239,6 +240,10 @@ object DroneUtils {
     @JvmStatic // 是否正在执行航迹
     val isOpenFlightRoutePlan: Boolean
         get() = (IRoute.get.routeMissionStateInfo.value?.state?.toInt()?: 0) == 1
+
+    @JvmStatic
+    val lteSdrStatus: Cycle5GSdrStatus?
+        get() = IAirLink.get.lteSdrStatus.value
 
     /**------------------------ 遥控器 ----------------------------------*/
 
