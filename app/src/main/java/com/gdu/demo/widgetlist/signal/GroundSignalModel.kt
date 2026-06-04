@@ -1,10 +1,10 @@
 package com.gdu.demo.widgetlist.signal
 
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.SdkDemoApplication
 import com.gdu.demo.utils.MultiTimerManager
 import com.gdu.demo.utils.MultiTimerManager.Companion.instance
 import com.gdu.demo.widgetlist.core.base.widget.WidgetModel
+import com.gdu.msdk.device.component.interfaces.IAirLink
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 
 class GroundSignalModel: WidgetModel() {
@@ -20,7 +20,7 @@ class GroundSignalModel: WidgetModel() {
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
             notify(GroundSignalValue(-1))
         } else {
-            notify(GroundSignalValue(GlobalVariable.arlink_grdMcs))
+            notify(GroundSignalValue(IAirLink.get.droneAirLinkInfo.value?.groundMcs?: 0))
         }
     }
 }

@@ -1,17 +1,12 @@
 package com.gdu.demo.widgetlist.core.base.widget
 
-import com.gdu.config.GlobalVariable
 import com.gdu.demo.SdkDemoApplication
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 
 
 /**

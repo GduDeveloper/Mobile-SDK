@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.UnitChnageUtils;

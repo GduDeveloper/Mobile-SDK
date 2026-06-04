@@ -15,10 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
 
 import com.gdu.demo.R;
-import com.gdu.demo.widget.psdk.adapter.ItemAdapter;
 import com.gdu.demo.widget.psdk.bean.ImageIconBean;
 import com.gdu.demo.widget.psdk.bean.PSdkCustomViewBean;
 import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
