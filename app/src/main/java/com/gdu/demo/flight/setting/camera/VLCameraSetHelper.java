@@ -11,6 +11,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.gdu.config.GduConfig;
@@ -25,7 +26,10 @@ import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.callback.MSdkCallback;
+import com.gdu.msdk.key.error.MError;
 import com.gdu.msdk.key.value.bean.GimbalType;
+import com.gdu.msdk.key.value.common.EmptyMsg;
 
 import cc.taylorzhang.singleclick.SingleClickUtil;
 
@@ -82,6 +86,11 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     protected View rl_check_clound;
     private TextView tv_reset_gimbal;
 
+    /** 俯仰缓启停设置 */
+    public static byte spitchSlowSetting = 15;
+    /** 方位缓启停设置 */
+    public static byte yawSlowSetting = 15;
+
     public VLCameraSetHelper() {
         super();
     }
@@ -115,10 +124,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
             ViewUtils.setViewShowOrHide(mViewGimbalPositionGroup, false);
         } else {
             LinearLayout llGimbalPitchStartAndStop = mView.findViewById(R.id.llGimbalPitchStartAndStop);
-            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePitchStartAndStop);
+            ViewUtils.setViewShowOrHide(llGimbalPitchStartAndStop, !IGimbal.get().getSupportFun().getDisablePitchStartAndStop());
 
             LinearLayout llGimbalPositionStartAndStop = mView.findViewById(R.id.llGimbalPositionStartAndStop);
-            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !GlobalVariable.getMainGimbalSupportFun().disablePositionStartAndStop);
+            ViewUtils.setViewShowOrHide(llGimbalPositionStartAndStop, !IGimbal.get().getSupportFun().getDisablePositionStartAndStop());
         }
     }
 
@@ -196,7 +205,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 return true;
             }
             sb_pitch_slow_setting.setProgress(valueInt);
-            setSlowSetting(valueInt, GlobalVariable.SlowSettingType.PITCH);
+            setSlowSetting(valueInt, SlowSettingType.PITCH);
             return false;
         });
 
@@ -217,7 +226,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 return true;
             }
             sb_yaw_slow_setting.setProgress(valueInt);
-            setSlowSetting(valueInt, GlobalVariable.SlowSettingType.PTZ_YAW);
+            setSlowSetting(valueInt, SlowSettingType.PTZ_YAW);
             return false;
         });
 
@@ -271,7 +280,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                setSlowSetting(seekBar.getProgress(), GlobalVariable.SlowSettingType.PITCH);
+                setSlowSetting(seekBar.getProgress(), SlowSettingType.PITCH);
             }
         };
 
@@ -289,7 +298,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                setSlowSetting(seekBar.getProgress(), GlobalVariable.SlowSettingType.PTZ_YAW);
+                setSlowSetting(seekBar.getProgress(), SlowSettingType.PTZ_YAW);
             }
         };
 
@@ -338,8 +347,8 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() thumbWheelSpeed = " + GlobalVariable.thumbWheelSpeed);
                 if (bean.frameContent.length > 6) {
                     GlobalVariable.sGimbalYawMaxSpeed = bean.frameContent[3];
-                    GlobalVariable.spitchSlowSetting = bean.frameContent[4];
-                    GlobalVariable.yawSlowSetting = bean.frameContent[5];
+                    spitchSlowSetting = bean.frameContent[4];
+                    yawSlowSetting = bean.frameContent[5];
                     XLogger.INSTANCE.getAPP().i("getGimbalSetting callback() sGimbalYawMaxSpeed = " + GlobalVariable.sGimbalYawMaxSpeed
                             + "; spitchSlowSetting = " + bean.frameContent[4] + "; yawSlowSetting = " + bean.frameContent[5]);
                 }
@@ -356,10 +365,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台俯仰缓启停设置
      */
     private void setPitchSlowSetting() {
-        XLogger.INSTANCE.getAPP().i("setPitchSlowSetting() spitchSlowSetting = " + GlobalVariable.spitchSlowSetting);
+        XLogger.INSTANCE.getAPP().i("setPitchSlowSetting() spitchSlowSetting = " + spitchSlowSetting);
         if (sb_pitch_slow_setting != null) {
-            if (GlobalVariable.spitchSlowSetting >= 0 && GlobalVariable.spitchSlowSetting <= 30) {
-                sb_pitch_slow_setting.setProgress(GlobalVariable.spitchSlowSetting);
+            if (spitchSlowSetting >= 0 && spitchSlowSetting <= 30) {
+                sb_pitch_slow_setting.setProgress(spitchSlowSetting);
             } else {
                 sb_pitch_slow_setting.setProgress(0);
             }
@@ -370,10 +379,10 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
      * 设置云台方位缓启停设置
      */
     private void setYawSlowSetting() {
-        XLogger.INSTANCE.getAPP().i("setYawSlowSetting() yawSlowSetting = " + GlobalVariable.yawSlowSetting);
+        XLogger.INSTANCE.getAPP().i("setYawSlowSetting() yawSlowSetting = " + yawSlowSetting);
         if (sb_yaw_slow_setting != null) {
-            if (GlobalVariable.yawSlowSetting >= 0 && GlobalVariable.yawSlowSetting <= 30) {
-                sb_yaw_slow_setting.setProgress(GlobalVariable.yawSlowSetting);
+            if (yawSlowSetting >= 0 && yawSlowSetting <= 30) {
+                sb_yaw_slow_setting.setProgress(yawSlowSetting);
             } else {
                 sb_yaw_slow_setting.setProgress(0);
             }
@@ -412,28 +421,33 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
     }
 
 
-
-    private void setSlowSetting(int set, GlobalVariable.SlowSettingType type) {
+    private void setSlowSetting(int set, SlowSettingType type) {
         XLogger.INSTANCE.getAPP().i("setSlowSetting() set = " + set + "; type = " + type);
         if (type == null) {
             return;
         }
-        GduSocketManager.getInstance().getGduCommunication().setSlowSetting((byte) set, type,
-                (code, bean) -> {
-                    XLogger.INSTANCE.getAPP().i("setSlowSetting callBack() code = " + code);
-                    if (mHandler == null) {
-                        return;
-                    }
-                    if (code == GduConfig.OK) {
-                        if (type == GlobalVariable.SlowSettingType.PITCH) {
-                            GlobalVariable.spitchSlowSetting = (byte) set;
-                        } else  if (type == GlobalVariable.SlowSettingType.PTZ_YAW) {
-                            GlobalVariable.yawSlowSetting = (byte) set;
-                        }
-                    } else {
-                        mHandler.sendEmptyMessage(type == GlobalVariable.SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
-                    }
-                });
+        byte pitchOffset = (byte) 255;
+        byte courseOffset = (byte) 255;
+        if (type == SlowSettingType.PITCH) {
+            pitchOffset = (byte) set;
+        } else if (type == SlowSettingType.PTZ_YAW) {
+            courseOffset = (byte) set;
+        }
+
+        IGimbal.get().slowOffset(pitchOffset, courseOffset, new MSdkCallback.ActionCallback<EmptyMsg>() {
+            @Override
+            public void onSuccess(@Nullable EmptyMsg emptyMsg) {
+                if (type == SlowSettingType.PITCH) {
+                    spitchSlowSetting = (byte) set;
+                } else  if (type == SlowSettingType.PTZ_YAW) {
+                    yawSlowSetting = (byte) set;
+                }
+            }
+            @Override
+            public void onFailure(@NonNull MError mError) {
+                mHandler.sendEmptyMessage(type == SlowSettingType.PITCH ? SET_GIMBAL_PITCH_SlOW_SETTING_FAILED : SET_GIMBAL_YAW_SLOW_SETTING_FAILED);
+            }
+        });
     }
 
     public void initData() {
@@ -701,5 +715,31 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
                 })
                 .build().show();
 
+    }
+
+    /************ron******************
+     * 缓启停类型
+     * PITCH 俯仰
+     * PTZ_YAW   偏航速度
+     *********************************/
+    public enum SlowSettingType {
+        /**
+         * 缓启停类型_俯仰
+         */
+        PITCH(0),
+        /**
+         * 缓启停类型_方向
+         */
+        PTZ_YAW(1);
+
+        public int index;
+
+        SlowSettingType(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return this.index;
+        }
     }
 }

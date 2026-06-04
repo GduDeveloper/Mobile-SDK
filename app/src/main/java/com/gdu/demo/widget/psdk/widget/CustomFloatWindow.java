@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.views.DragLayout;
 import com.gdu.msdk.device.component.interfaces.IPayload;
