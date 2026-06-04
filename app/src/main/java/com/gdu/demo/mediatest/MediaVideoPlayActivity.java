@@ -44,7 +44,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 
     private String path = "";
     private int type = 1;
-    private String duration;
+    private long duration;
 
     int length;
     VideoBackPlayState state;
@@ -71,21 +71,21 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     }
 
     private void initView() {
-        ImageView imageView = findViewById(R.id.iv_back);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
-        TextView textView = findViewById(R.id.tv_title);
+//        ImageView imageView = findViewById(R.id.iv_back);
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                finish();
+//            }
+//        });
+//        TextView textView = findViewById(R.id.tv_title);
 
         handler = new Handler();
         Intent intent = getIntent();
         if (intent != null) {
             path = intent.getStringExtra("path");
             type = intent.getIntExtra("type", 1);
-            duration = intent.getStringExtra("duration");
+            duration = intent.getLongExtra("duration", 0);
         }
         Log.d("MediaDetail", "path = " + path + ", type = " + type);
         viewBinding.tvPath.setText(path);

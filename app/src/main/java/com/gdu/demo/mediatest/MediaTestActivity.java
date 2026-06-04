@@ -31,6 +31,7 @@ import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileDownCallback;
 
 import java.util.List;
+import java.util.Map;
 
 public class MediaTestActivity extends Activity {
 
@@ -180,6 +181,11 @@ public class MediaTestActivity extends Activity {
                         }
                     });
                 }
+            }
+
+            @Override
+            public void onGetMediaWithFolder(Map<String, List<MediaFile>> map) {
+                Log.d("onGetMediaWithFolder", "onGetMediaWithFolder " + map.keySet());
             }
 
 
