@@ -268,7 +268,7 @@ public class SettingCommonFragment extends Fragment {
                 Toast.makeText(requireContext(), R.string.please_exit_flight_route, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (GlobalVariable.fcTask == 7) {
+            if (DroneUtils.getFcInfo2().getFcTask() == 7) {
                 Toast.makeText(requireContext(), R.string.please_exit_point_fly, Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -298,11 +298,9 @@ public class SettingCommonFragment extends Fragment {
                 int unit ;
                 if (position == 0) {
                     unit = SettingDao.Unit_Merch;
-                    GlobalVariable.showAsInch = false;
                     mSettingDao.saveIntValue(mSettingDao.Label_Unit, unit);
                 } else if (position == 1) {
                     unit = SettingDao.Unit_Inch;
-                    GlobalVariable.showAsInch = true;
                     mSettingDao.saveIntValue(mSettingDao.Label_Unit, unit);
                 }
                 mViewBinding.tvUnit.setIndex(position);
@@ -378,11 +376,9 @@ public class SettingCommonFragment extends Fragment {
                     if (mViewBinding.ivShowRouteHistorySwitchBtn.isSelected()) {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(false);
                         SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, false);
-                        GlobalVariable.showRouteHistory = false;
                     } else {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(true);
                         SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, true);
-                        GlobalVariable.showRouteHistory = true;
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
@@ -425,7 +421,7 @@ public class SettingCommonFragment extends Fragment {
         mViewBinding.ivPoseModeSwitchBtn.setSelected(isOpenPoseTip);
 
         final boolean isCompress = SPUtils.getInstance().getBoolean(GduConfig.Live_Compress);
-        ChannelUtils.setupSn(View.GONE, mViewBinding.rlSn, mViewBinding.rlSnRC, mViewBinding.gimbalSn, mViewBinding.batterySn);
+//        ChannelUtils.setupSn(View.GONE, mViewBinding.rlSn, mViewBinding.rlSnRC, mViewBinding.gimbalSn, mViewBinding.batterySn);
     }
 
     private void initTargetDetectView() {
@@ -589,10 +585,11 @@ public class SettingCommonFragment extends Fragment {
                         XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "transModelData " + aiModel.getLabels().get(j));
                     }
                     String labelName = "";
-                    TargetLabel targetLabel = TargetLabel.get(labelId);
-                    if (targetLabel != null) {
-                        labelName = ResourceUtils.getString(targetLabel.getValue());
-                    }
+                    // todo fuchi aibox待迁移
+//                    TargetLabel targetLabel = TargetLabel.get(labelId);
+//                    if (targetLabel != null) {
+//                        labelName = ResourceUtils.getString(targetLabel.getValue());
+//                    }
                     XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "transModelData labelId = " + labelId + ", labelName = " + labelName);
                     labels.add(new TargetDetectLabel(j, String.valueOf(labelId), labelName, getDetectLabelState(aiModel.getId(), j)));
                 } else { // 自定义模型
@@ -650,14 +647,6 @@ public class SettingCommonFragment extends Fragment {
         }
         return number;
     }
-
-    private boolean planeVersionJudge(FirmwareType firmwareType) {
-        if (firmwareType == FirmwareType.AP12_FIRMWARE) {
-            return ConnectUtil.getConnectType() == GlobalVariable.ConnType.MGP03_RC_USB;
-        }
-        return true;
-    }
-
 
 
     public static SettingCommonFragment newInstance() {
