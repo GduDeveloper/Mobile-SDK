@@ -187,7 +187,8 @@ public class SettingRtkFragment extends Fragment {
     private void initData() {
         XLogger.INSTANCE.getAPP().i("initData()");
         mRTKServiceList = getResources().getStringArray(R.array.rtk_service_array_onboard);
-        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
+//        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
+        boolean isOpen = false;   //TODO ZZL
         if (isOpen) {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -229,7 +230,7 @@ public class SettingRtkFragment extends Fragment {
                     break;
             }
         }
-        initParam();
+//        initParam();
         updateBDTips();
 
     }
@@ -298,7 +299,8 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         XLogger.INSTANCE.getAPP().i("showConnectedView()");
-        if (DroneUtils.getRtkType() == 1 && GlobalVariable.rtkIsLoading == 1) {
+//        if (DroneUtils.getRtkType() == 1 && GlobalVariable.rtkIsLoading == 1) { //TODO ZZL
+        if (DroneUtils.getRtkType() == 1 ) {
             binding.tvConnectState.setText(getString(R.string.string_converging));
         } else {
             binding.tvConnectState.setText(getString(R.string.connect_succeed));
@@ -311,37 +313,37 @@ public class SettingRtkFragment extends Fragment {
 
 
     /**
-     * 初始化登陆参数
+     * 初始化登陆参数   //TODO
      */
-    private void initParam() {
-        XLogger.INSTANCE.getAPP().i("initParam()");
-        String ip = SPUtils.getInstance().getString(SPUtils.RTK_IP);
-        if (!StringUtils.isEmptyString(ip)) {
-            binding.ipAddressEdit.setText(ip);
-        } else {
-            binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
-        }
-        String port = SPUtils.getInstance().getString(SPUtils.RTK_PORT);
-        if (!StringUtils.isEmptyString(port)) {
-            binding.portEdit.setText(port);
-        } else {
-            binding.portEdit.setText("8002");
-        }
-        String account = SPUtils.getInstance().getString(SPUtils.RTK_ACCOUNT);
-        if (!StringUtils.isEmptyString(account)) {
-            binding.accountEdit.setText(account);
-        }
-        String password = SPUtils.getInstance().getString(SPUtils.RTK_PASSWORD);
-        if (!StringUtils.isEmptyString(password)) {
-            binding.passwordEdit.setText(password);
-        }
-        String mp = SPUtils.getInstance().getString(SPUtils.RTK_MOUNT_POINT);
-        if (!StringUtils.isEmptyString(mp)) {
-            binding.mountPointEdit.setText(mp);
-        } else {
-            binding.mountPointEdit.setText("AUTO");
-        }
-    }
+//    private void initParam() {
+//        XLogger.INSTANCE.getAPP().i("initParam()");
+//        String ip = SPUtils.getInstance().getString(SPUtils.RTK_IP);
+//        if (!StringUtils.isEmptyString(ip)) {
+//            binding.ipAddressEdit.setText(ip);
+//        } else {
+//            binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
+//        }
+//        String port = SPUtils.getInstance().getString(SPUtils.RTK_PORT);
+//        if (!StringUtils.isEmptyString(port)) {
+//            binding.portEdit.setText(port);
+//        } else {
+//            binding.portEdit.setText("8002");
+//        }
+//        String account = SPUtils.getInstance().getString(SPUtils.RTK_ACCOUNT);
+//        if (!StringUtils.isEmptyString(account)) {
+//            binding.accountEdit.setText(account);
+//        }
+//        String password = SPUtils.getInstance().getString(SPUtils.RTK_PASSWORD);
+//        if (!StringUtils.isEmptyString(password)) {
+//            binding.passwordEdit.setText(password);
+//        }
+//        String mp = SPUtils.getInstance().getString(SPUtils.RTK_MOUNT_POINT);
+//        if (!StringUtils.isEmptyString(mp)) {
+//            binding.mountPointEdit.setText(mp);
+//        } else {
+//            binding.mountPointEdit.setText("AUTO");
+//        }
+//    }
 
     private void showOnboardRtkConnect() {
         if (mLastRTKType == 3) {
@@ -483,13 +485,14 @@ public class SettingRtkFragment extends Fragment {
 
     private void breakRTK() {
         rtk.disconnectRtk();
-        SPUtils.getInstance().put(SPUtils.RTK_CONNECT_STATE, false);
+//        SPUtils.getInstance().put(SPUtils.RTK_CONNECT_STATE, false);  //TODO ZZL
         lastChangeRtkTime = System.currentTimeMillis();
     }
 
     private void setRtkSwitch() {
 
-        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
+//        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true); //TODO ZZL
+        boolean isOpen = false;
         //当前开启则关闭
         if (isOpen) {
             binding.rtkSwitchView.setSelected(false);
@@ -497,7 +500,7 @@ public class SettingRtkFragment extends Fragment {
             binding.rtkStateView.setVisibility(View.GONE);
             binding.rtkParamLayout.setVisibility(View.GONE);
             closeRTK();
-            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, false);
+//            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, false);  //TODO ZZL
         } else {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -508,7 +511,7 @@ public class SettingRtkFragment extends Fragment {
             } else {
                 binding.rtkParamLayout.setVisibility(View.GONE);
             }
-            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, true);
+//            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, true);  //TODO ZZL
         }
     }
 
@@ -523,7 +526,8 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         // 飞行中未fixed不能连接rtk
-        if (!DroneUtils.isGround() && GlobalVariable.rtkIsLoading == 1) {
+//        if (!DroneUtils.isGround() && GlobalVariable.rtkIsLoading == 1) { //TODO ZZL
+        if (!DroneUtils.isGround() ) {
             Toast.makeText(getContext(), R.string.string_not_allow_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }
