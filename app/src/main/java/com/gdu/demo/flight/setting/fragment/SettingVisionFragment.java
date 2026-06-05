@@ -29,9 +29,11 @@ import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IFlightController;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleRadarInfo;
+import com.gdu.msdk.key.value.ac.CycleACInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FillLightMode;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
@@ -111,8 +113,12 @@ public class SettingVisionFragment extends Fragment {
         initSwitchBtn();
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         pre_switch_vision_obstacle = radarInfo != null && radarInfo.getObstacleIsOpen();
-        mVisionBinding.ivFillInLight.setSelected(GlobalVariable.sFillInLightOpen == 1);
-
+        boolean fillInLightOpen = false;
+        CycleACInfo acInfo = IFlightController.get().getAcInfo().getValue();
+        if (acInfo != null) {
+            fillInLightOpen = acInfo.getFillInLightOpen();
+        }
+        mVisionBinding.ivFillInLight.setSelected(fillInLightOpen);
 
         mVisionBinding.tvLandProtectHeightTip.setText(getString(R.string.Msg_LandProtectHeightTip1));
         mVisionBinding.tvLandProtectTip.setText(getString(R.string.Msg_LandProtectTip1));
@@ -595,7 +601,7 @@ public class SettingVisionFragment extends Fragment {
 
     private void initSwitchBtn() {
         //当视觉避障关闭时进入该界面雷达图关闭    余浩
-        mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && DroneUtils.getFlyModel() != FlyMode.ATTITUDE);
+        mVisionBinding.ivSwitchVisionObstacle.setSelected(IVision.get().getOverallObstacleAvoidance() && DroneUtils.getFlyModel() != FlyMode.ATTITUDE);
         changeObserveTipVisibility(mVisionBinding.ivSwitchVisionObstacle.isSelected());
     }
 
