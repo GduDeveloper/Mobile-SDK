@@ -60,6 +60,15 @@ import java.util.Locale;
  */
 public class SettingCommonFragment extends Fragment {
 
+    /** 是否开启ADS_B. */
+    public static final String IS_OPEN_ASD_B = "isOpenADS_B";
+    /** 显示飞行轨迹key */
+    public static final String SHOW_ROUTE_HISTORY = "ShowRouteHistory";
+    /** 记录DeviceFragment进入拍摄界面类型的key. */
+    public static final String IMPORT_TYPE_KEY = "importType";
+    /** 地图类型 */
+    public static final String MAP_TYPE = "mapType";
+
     private static final String TAG = SettingCommonFragment.class.getSimpleName();
     private FragmentSettingCommonBinding mViewBinding;
     private int currentSecondLevelType = 0;
@@ -128,11 +137,11 @@ public class SettingCommonFragment extends Fragment {
         mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
         ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, DroneUtils.getFcInfo1().getAdsBOnline());
 
-        final boolean isOpenADSB = SPUtils.getInstance().getBoolean(MyConstants.IS_OPEN_ASD_B);
+        final boolean isOpenADSB = SPUtils.getInstance().getBoolean(IS_OPEN_ASD_B);
         mViewBinding.ivSwitchADSBBtn.setSelected(isOpenADSB);
 
         boolean isShowActiveBtn = false;
-        String loginTypeStr = SPUtils.getInstance().getString(MyConstants.SAVE_LOGIN_TYPE);
+//        String loginTypeStr = SPUtils.getInstance().getString(MyConstants.SAVE_LOGIN_TYPE);
 //        if (LoginType.TYPE_PHONE.getValue().equals(loginTypeStr)) {
 //            final UserInfoBeanNew mLoginInfo = new Gson().fromJson(SPUtils.getString(requireContext(), MyConstants.SAVE_NEW_USER_INFO), UserInfoBeanNew.class);
 //            if (mLoginInfo != null && mLoginInfo.getData() != null && mLoginInfo.getData().getAdmin() != null) {
@@ -157,7 +166,7 @@ public class SettingCommonFragment extends Fragment {
         XLogger.INSTANCE.getAPP().i("initView() isOpenArmLamp = " + isOpenArmLamp + "; isOpenBatteryLight = "
                 + isOpenBatteryLight + "; flightArmLampStatus = " + flightArmLampStatus
                 + "; battery_silence_status = " + batterySilenceStatus);
-        final boolean showRouteHistory = SPUtils.getInstance().getBoolean(MyConstants.SHOW_ROUTE_HISTORY);
+        final boolean showRouteHistory = SPUtils.getInstance().getBoolean(SHOW_ROUTE_HISTORY);
         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(showRouteHistory);
     }
 
@@ -253,12 +262,12 @@ public class SettingCommonFragment extends Fragment {
 
     }
     private void initMapType() {
-        boolean isHideMapView = getArguments() != null && getArguments().getInt(MyConstants.IMPORT_TYPE_KEY, -1) == 2;
+        boolean isHideMapView = getArguments() != null && getArguments().getInt(IMPORT_TYPE_KEY, -1) == 2;
         ViewUtils.setViewShowOrHide(mViewBinding.tvMapModel, !isHideMapView);
         ViewUtils.setViewShowOrHide(mViewBinding.opMapModel, !isHideMapView);
         ViewUtils.setViewShowOrHide(mViewBinding.divMapType, !isHideMapView);
         // 默认0 自动
-        int type = SPUtils.getInstance().getInt(SPUtils.MAP_TYPE);
+        int type = SPUtils.getInstance().getInt(MAP_TYPE);
         mViewBinding.opMapModel.setIndex(type);
         XLogger.INSTANCE.getAPP().i("MapType  type = " + type);
 
@@ -272,11 +281,11 @@ public class SettingCommonFragment extends Fragment {
                 Toast.makeText(requireContext(), R.string.please_exit_point_fly, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (position == SPUtils.getInstance().getInt(SPUtils.MAP_TYPE)) {
+            if (position == SPUtils.getInstance().getInt(MAP_TYPE)) {
                 return;
             }
             mViewBinding.opMapModel.setIndex(position);
-            SPUtils.getInstance().put(SPUtils.MAP_TYPE, position);
+            SPUtils.getInstance().put(MAP_TYPE, position);
             // 切换地图
         });
 
@@ -368,17 +377,17 @@ public class SettingCommonFragment extends Fragment {
 
                 case R.id.iv_switchADSBBtn:
                     mViewBinding.ivSwitchADSBBtn.setSelected(!mViewBinding.ivSwitchADSBBtn.isSelected());
-                    SPUtils.getInstance().put(MyConstants.IS_OPEN_ASD_B, mViewBinding.ivSwitchADSBBtn.isSelected());
+                    SPUtils.getInstance().put(IS_OPEN_ASD_B, mViewBinding.ivSwitchADSBBtn.isSelected());
                     break;
 
                 // 显示飞行轨迹
                 case R.id.iv_ShowRouteHistorySwitchBtn:
                     if (mViewBinding.ivShowRouteHistorySwitchBtn.isSelected()) {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(false);
-                        SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, false);
+                        SPUtils.getInstance().put(SHOW_ROUTE_HISTORY, false);
                     } else {
                         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(true);
-                        SPUtils.getInstance().put(MyConstants.SHOW_ROUTE_HISTORY, true);
+                        SPUtils.getInstance().put(SHOW_ROUTE_HISTORY, true);
                     }
                     Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
                     break;
