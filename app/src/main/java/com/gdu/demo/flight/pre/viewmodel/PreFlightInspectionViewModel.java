@@ -381,7 +381,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
                 bean.setContentTextColor(R.color.color_5B5B5B);
                 bean.setContentEnable(true);
             } else {
-                bean.setContentStrId(com.gdu.api.R.string.flight_loast_connect);
+                bean.setContentStrId(R.string.flight_loast_connect);
                 bean.setContentTextColor(R.color.color_FF5800);
                 bean.setContentEnable(false);
             }
