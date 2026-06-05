@@ -3,7 +3,6 @@ package com.gdu.demo.flight.msgbox;
 import androidx.fragment.app.FragmentActivity;
 
 import com.gdu.beans.WarnBean;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
