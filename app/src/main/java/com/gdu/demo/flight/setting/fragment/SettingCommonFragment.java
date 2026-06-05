@@ -38,6 +38,9 @@ import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IBattery;
+import com.gdu.msdk.device.component.interfaces.IRTK;
+import com.gdu.msdk.device.component.interfaces.IVersion;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.lib.util.ThreadHelper;
@@ -86,7 +89,11 @@ public class SettingCommonFragment extends Fragment {
 
         initListener();
 
-        if (GlobalVariable.accompanyingModel == 1) {
+        boolean accompanyingModel = false;
+        if (IRTK.get().getFcCoprocessorRtk() != null) {
+            accompanyingModel = IRTK.get().getFcCoprocessorRtk().getAccompanyingModel() == 1;
+        }
+        if (accompanyingModel) {
             mViewBinding.tvAircraftMode.setText(R.string.string_car_model);
         } else {
             mViewBinding.tvAircraftMode.setText(R.string.ordinary_mode);
@@ -119,7 +126,7 @@ public class SettingCommonFragment extends Fragment {
 
         ViewUtils.setViewShowOrHide(mViewBinding.vvRtkVersionView, DroneUtils.getRtkOnline());
         mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
-        ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, GlobalVariable.ads_b_state == 1);
+        ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, DroneUtils.getFcInfo1().getAdsBOnline());
 
         final boolean isOpenADSB = SPUtils.getInstance().getBoolean(MyConstants.IS_OPEN_ASD_B);
         mViewBinding.ivSwitchADSBBtn.setSelected(isOpenADSB);
@@ -137,16 +144,21 @@ public class SettingCommonFragment extends Fragment {
         ViewUtils.setViewShowOrHide(mViewBinding.fcCoprocessorVersionView, !IGduDroneDevice.get().getPlanType().getValue().isS200Type());
         ViewUtils.setViewShowOrHide(mViewBinding.fifthGenerationVersionView, !IGduDroneDevice.get().getPlanType().getValue().isS200Type());
 
-        boolean isOpenArmLamp = GlobalVariable.flight_arm_lamp_status == 0;
-        boolean isOpenBatteryLight = GlobalVariable.battery_silence_status == 1;
+        int flightArmLampStatus = 0;
+        if (IRTK.get().getFcCoprocessorRtk() != null) {
+            flightArmLampStatus = IRTK.get().getFcCoprocessorRtk().getFlightArmLampStatus();
+        }
+        int batterySilenceStatus = 0;
+        if (IBattery.get().getDroneBatteryInfo().getValue() != null) {
+            batterySilenceStatus = IBattery.get().getDroneBatteryInfo().getValue().getSilenceStatus();
+        }
+        boolean isOpenArmLamp = flightArmLampStatus == 0;
+        boolean isOpenBatteryLight = batterySilenceStatus == 1;
         XLogger.INSTANCE.getAPP().i("initView() isOpenArmLamp = " + isOpenArmLamp + "; isOpenBatteryLight = "
-                + isOpenBatteryLight + "; flight_arm_lamp_status = "
-                + GlobalVariable.flight_arm_lamp_status
-                + "; battery_silence_status = "
-                + GlobalVariable.battery_silence_status);
+                + isOpenBatteryLight + "; flightArmLampStatus = " + flightArmLampStatus
+                + "; battery_silence_status = " + batterySilenceStatus);
         final boolean showRouteHistory = SPUtils.getInstance().getBoolean(MyConstants.SHOW_ROUTE_HISTORY);
         mViewBinding.ivShowRouteHistorySwitchBtn.setSelected(showRouteHistory);
-        final boolean showImageDebugText = SPUtils.getInstance().getBoolean(MyConstants.SHOW_IMAGE_DEBUG_TEXT, true);
     }
 
 
@@ -167,183 +179,63 @@ public class SettingCommonFragment extends Fragment {
                 }
             });
         }
+        IVersion version = IVersion.get();
+        String flyVersionStr = version.getFcVer().getValue() == null? "": version.getFcVer().getValue();
+        mViewBinding.tvCurrentVersionFly.setText(flyVersionStr);
+        String batteryVersion = version.getBatteryVersion().getValue() == null? "": version.getBatteryVersion().getValue();
+        mViewBinding.tvCurrentVersionBatter.setText(batteryVersion);
 
-        mViewBinding.tvCurrentVersionFly.setText(GlobalVariable.flyVersionStr);
-
-        GduSocketManager.getInstance().getGduCommunication().getBatterInfo((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String batteryVersion = bean.frameContent[0] + "." + bean.frameContent[1] + "." + (bean.frameContent[2] & 0xff);
-                        mViewBinding.tvCurrentVersionBatter.setText(batteryVersion);
-                    }
-                });
-            }
-        });
         if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
-            GduSocketManager.getInstance().getGduCommunication().getRTKVersionNew((code, bean) -> {
-                if (handler != null && isAdded()) {
-                    handler.post(() -> {
-                        if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                            final String rtkVersion = bean.frameContent[0] + "." + bean.frameContent[1] + "." +
-                                    ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 2);
-                            mViewBinding.vvRtkVersionView.setCurrentVersion(rtkVersion);
-                        }
-                    });
-                }
-            });
+            String rtkVersion = version.getRtkVersionNew().getValue() == null? "": version.getRtkVersionNew().getValue();
+            mViewBinding.vvRtkVersionView.setCurrentVersion(rtkVersion);
         } else {
-            if (!StringUtils.isEmptyString(GlobalVariable.rtkVersion + "")) {
-                mViewBinding.vvRtkVersionView.setCurrentVersion("V" + GlobalVariable.rtkVersion);
-            }
+            mViewBinding.vvRtkVersionView.setCurrentVersion(version.getRtkVersion());
         }
 
-
-        GduSocketManager.getInstance().getGduCommunication().getRTKVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String rtkVersion = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
-                        mViewBinding.rtcmVersionView.setCurrentVersion(rtkVersion);
-                    }
-                });
-            }
-        });
+        final String onboardRTKVersion = version.getOnboardRTKVersion().getValue() == null? "": version.getOnboardRTKVersion().getValue();
+        mViewBinding.rtcmVersionView.setCurrentVersion(onboardRTKVersion);
 
 
-        GduSocketManager.getInstance().getGduCommunication().getOTAVersions((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 5) {
-                        String otaVersion = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
-                        mViewBinding.tvCurrentVersionOta.setText(otaVersion);
-                        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
-                            String version = bean.frameContent[5] + "." + bean.frameContent[6] + "." + bean.frameContent[7];
-                            mViewBinding.upgradeVersionView.setCurrentVersion(version);
-                        }
-                    }
-                });
-            }
-        });
+        String otaVersion = version.getSystemVersion().getValue() == null? "": version.getSystemVersion().getValue();
+        mViewBinding.tvCurrentVersionOta.setText(otaVersion);
+
+        if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
+            String otaAppVersion = version.getSystemAppVersion().getValue() == null? "": version.getSystemAppVersion().getValue();
+            mViewBinding.upgradeVersionView.setCurrentVersion(otaAppVersion);
+        }
 
         if (IGduDroneDevice.get().getPlanType().getValue().isS200Type()) {
-            GduSocketManager.getInstance().getGduCommunication().getPicTransmissionApplicationVersion((code, bean) -> {
-                if (handler != null && isAdded()) {
-                    handler.post(() -> {
-                        if (bean != null && bean.frameContent != null && bean.frameContent.length >= 9) {
-                            final String itVersion = ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 2) + "."
-                                    + ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 4)
-                                    + "." + ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 6)
-                                    + "." + ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 8);
-                            mViewBinding.upgradeVersionView.setCurrentVersion(itVersion);
-                        }
-                    });
-                }
-            });
+            final String itVersion = version.getDroneSdrAppVersion().getValue() == null? "": version.getDroneSdrAppVersion().getValue();
+            mViewBinding.upgradeVersionView.setCurrentVersion(itVersion);
         }
 
-        GduSocketManager.getInstance().getGduCommunication().getPicTransmissionComponentsVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String itVersion = bean.frameContent[0] + "."
-                                + bean.frameContent[1] + "." + bean.frameContent[2];
-                        mViewBinding.itCompVersionView.setCurrentVersion(itVersion);
-                    }
-                });
-            }
-        });
+        String itVersion = version.getDroneSdrVersion().getValue() == null? "": version.getDroneSdrVersion().getValue();
+        mViewBinding.itCompVersionView.setCurrentVersion(itVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getOnboardITSystemVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 9) {
-                        String versionStr = ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 2)
-                                + "." + ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 4)
-                                + "." + ByteUtilsLowBefore.byte2UnsignedShort(bean.frameContent, 6);
-                        mViewBinding.vvPicTransFirmwareVersion.setCurrentVersion(versionStr);
-                    }
-                });
-            }
-        });
+        String sdrSysVersion = version.getDroneSdrSysVersion().getValue() == null? "": version.getDroneSdrSysVersion().getValue();
+        mViewBinding.vvPicTransFirmwareVersion.setCurrentVersion(sdrSysVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getGimbalVersionById(GlobalVariable.mGimbalCompId, ((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 5) {
-                        final String mountSnStr = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
-                        mViewBinding.gimbalVersionView.setCurrentVersion(mountSnStr);
-                    }
-                });
-            }
-        }));
+        final String gimbalVersion = version.getGimbalVersion().getValue() == null? "": version.getGimbalVersion().getValue();
+        mViewBinding.gimbalVersionView.setCurrentVersion(gimbalVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getCameraVersionByCompID(GlobalVariable.mGimbalCompId,(byte) 1, ((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 5) {
-                        final String mountSnStr = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
-                        mViewBinding.vlCameraVersionView.setCurrentVersion(mountSnStr);
-                    }
-                });
-            }
-        }));
+        final String vlCameraVersion = version.getVlCameraVersion().getValue() == null? "": version.getVlCameraVersion().getValue();
+        mViewBinding.vlCameraVersionView.setCurrentVersion(vlCameraVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getCameraVersionByCompID(GlobalVariable.mGimbalCompId,(byte) 0, ((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 5) {
-                        final String mountSnStr = bean.frameContent[2] + "." + bean.frameContent[3] + "." + bean.frameContent[4];
-                        mViewBinding.irCameraVersionView.setCurrentVersion(mountSnStr);
-                    }
-                });
-            }
-        }));
+        final String irCameraVersion = version.getIrCameraVersion().getValue() == null? "": version.getIrCameraVersion().getValue();
+        mViewBinding.irCameraVersionView.setCurrentVersion(irCameraVersion);
 
+        String acVersion = version.getAcVersion().getValue() == null? "": version.getAcVersion().getValue();
+        mViewBinding.acVersionView.setCurrentVersion(acVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getACVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        String versionStr =  bean.frameContent[0] + "." + bean.frameContent[1] + "." + bean.frameContent[2];
-                        mViewBinding.acVersionView.setCurrentVersion(versionStr);
-                    }
-                });
-            }
-        });
+        final String rcVersion = version.getRcVersion().getValue() == null? "": version.getRcVersion().getValue();
+        mViewBinding.tvCurrentVersionRCa.setText(rcVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getRCAVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String version = bean.frameContent[0] + "." + bean.frameContent[1] + "." + bean.frameContent[2];
-                        mViewBinding.tvCurrentVersionRCa.setText(version);
-                    }
-                });
-            }
-        });
+        final String visionVersion = version.getFlightAssistantVersion().getValue() == null? "": version.getFlightAssistantVersion().getValue();
+        mViewBinding.visionVersionView.setCurrentVersion(visionVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getVisionVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String version = bean.frameContent[0] + "." + bean.frameContent[1] + "." + bean.frameContent[2];
-                        mViewBinding.visionVersionView.setCurrentVersion(version);
-                    }
-                });
-            }
-        });
+        String rcSdrVersion = version.getRcSdrVersion().getValue() == null? "": version.getRcSdrVersion().getValue();
+        mViewBinding.tvAp12.setText(rcSdrVersion);
 
-        GduSocketManager.getInstance().getGduCommunication().getImageTransmissionRelayVersion((code, bean) -> {
-            if (handler != null && isAdded()) {
-                handler.post(() -> {
-                    if (bean != null && bean.frameContent != null && bean.frameContent.length >= 3) {
-                        final String version = bean.frameContent[0] + "." + bean.frameContent[1] + "." + bean.frameContent[2];
-                        mViewBinding.tvAp12.setText(version);
-                    }
-                });
-            }
-        });
         if (SdkDemoApplication.getAircraftInstance() != null && SdkDemoApplication.getAircraftInstance().getRemoteController() != null) {
             String rcSn = SdkDemoApplication.getAircraftInstance().getRemoteController().getRCSN();
             mViewBinding.tvSnRC.setText(rcSn);
