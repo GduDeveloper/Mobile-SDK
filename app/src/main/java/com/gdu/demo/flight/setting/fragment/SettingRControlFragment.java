@@ -109,8 +109,6 @@ public class SettingRControlFragment extends Fragment {
 
 
     public void initData() {
-        GlobalEventBus.getBus().register(this);
-
         mViewBinding.rcCustomKeyView.initC1C2Event();
         switchControlEnable();
     }
@@ -180,17 +178,6 @@ public class SettingRControlFragment extends Fragment {
 
     private void switchControlEnable() {
         mViewBinding.controlHandView.switchControlEnable();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void deviceConnChange(EventConnState event) {
-        switchControlEnable();
-        boolean isShow = isClickConnect && SdkDemoApplication.getAircraftInstance().isConnected();
-        if (isShow) {
-            GlobalEventBus.getBus().post(new GimbalEvent(IGimbal.get().getGimbalType()));
-            GlobalEventBus.getBus().post(new EventMessage(MyConstants.GET_CONTROL_PERMISSION_SUC));
-//            uiThreadHandle(() -> showToast(R.string.match_success));
-        }
     }
 
     private void updateBackView() {
@@ -267,7 +254,6 @@ public class SettingRControlFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        GlobalEventBus.getBus().unregister(this);
     }
 
     public static SettingRControlFragment newInstance() {
