@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.remotecontroller.IMChildPointInfo;
+import com.gdu.msdk.key.value.bean.IMChildPointInfo;
 
 import java.util.List;
 
@@ -65,16 +65,16 @@ public class NetworkingDroneAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
         IMChildPointInfo info = mIMChildPointInfoList.get(i);
-        if (info.id == 0) {
+        if (info.getId() == 0) {
             viewHolder.typeImageView.setImageResource(R.drawable.icon_ap);
         } else {
             viewHolder.typeImageView.setImageResource(R.drawable.icon_sta);
         }
         viewHolder.droneNameTextView.setText(mContext.getString(R.string.aircraft) + (i + 1));
-        if (info.connectStatus == 1) {
+        if (info.getConnectStatus() == 1) {
             viewHolder.droneLayout.setBackgroundResource(R.drawable.shape_networking_online);
             viewHolder.droneNameTextView.setTextColor(mContext.getColor(R.color.color_09C73A));
-        } else if(info.connectStatus == 0) {
+        } else if(info.getConnectStatus() == 0) {
             viewHolder.droneLayout.setBackgroundResource(R.drawable.shape_networking_offline);
             viewHolder.droneNameTextView.setTextColor(mContext.getColor(R.color.color_C8D2D6));
         } else {

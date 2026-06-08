@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaVideoBinding;
@@ -152,7 +151,6 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
                 if (state == VideoBackPlayState.VIDEO_PLAYING) {
                     if (null != codecManager) {
                         codecManager.sendDataToDecoder(bytes, size);
-                        Log.d("VideoFeeder", "length = " + size + ", " + GlobalVariable.sCodingFormat);
 //                    printData("VideoFeeder", bytes, size);
                     }
                 }

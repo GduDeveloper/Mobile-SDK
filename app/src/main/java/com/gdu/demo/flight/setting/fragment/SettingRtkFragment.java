@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.api.RtkManager;
+import com.gdu.api.RTKManager;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
@@ -24,6 +24,7 @@ import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.Cycle5GSdrStatus;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.rxjava.rxlife.RxLife;
@@ -42,6 +43,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class SettingRtkFragment extends Fragment {
 
+    /** rtk是否开启*/
+    public static final String RTK_SWITCH = "rtk_switch";
+    /** RTK IP */
+    public static final String RTK_IP = "rtkIp";
+    /** RTK Port */
+    public static final String RTK_PORT = "rtkPort";
+    /** RTK 端口 */
+    public static final String RTK_ACCOUNT = "rtkAccount";
+    /** RTK 密码 */
+    public static final String RTK_PASSWORD = "rtkPassword";
+    /** RTK 挂载点 */
+    public static final String RTK_MOUNT_POINT = "rtkMountPoint";
+    /** RTK是否连接成功  连接成功下次自动连接 */
+    public static final String RTK_CONNECT_STATE = "RTK_CONNECT_SUCC";
     /**
      * 当前显示二级页面类型
      */
@@ -186,7 +201,7 @@ public class SettingRtkFragment extends Fragment {
     private void initData() {
         XLogger.INSTANCE.getAPP().i("initData()");
         mRTKServiceList = getResources().getStringArray(R.array.rtk_service_array_onboard);
-        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
+        boolean isOpen = SPUtils.getInstance().getBoolean(RTK_SWITCH, true);
         if (isOpen) {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -297,7 +312,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         XLogger.INSTANCE.getAPP().i("showConnectedView()");
-        if (DroneUtils.getRtkType() == 1 && GlobalVariable.rtkIsLoading == 1) {
+        if (DroneUtils.getRtkType() == 1 && DroneUtils.getRtkIsLoading()) {
             binding.tvConnectState.setText(getString(R.string.string_converging));
         } else {
             binding.tvConnectState.setText(getString(R.string.connect_succeed));
@@ -314,27 +329,27 @@ public class SettingRtkFragment extends Fragment {
      */
     private void initParam() {
         XLogger.INSTANCE.getAPP().i("initParam()");
-        String ip = SPUtils.getInstance().getString(SPUtils.RTK_IP);
+        String ip = SPUtils.getInstance().getString(RTK_IP);
         if (!StringUtils.isEmptyString(ip)) {
             binding.ipAddressEdit.setText(ip);
         } else {
             binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
         }
-        String port = SPUtils.getInstance().getString(SPUtils.RTK_PORT);
+        String port = SPUtils.getInstance().getString(RTK_PORT);
         if (!StringUtils.isEmptyString(port)) {
             binding.portEdit.setText(port);
         } else {
             binding.portEdit.setText("8002");
         }
-        String account = SPUtils.getInstance().getString(SPUtils.RTK_ACCOUNT);
+        String account = SPUtils.getInstance().getString(RTK_ACCOUNT);
         if (!StringUtils.isEmptyString(account)) {
             binding.accountEdit.setText(account);
         }
-        String password = SPUtils.getInstance().getString(SPUtils.RTK_PASSWORD);
+        String password = SPUtils.getInstance().getString(RTK_PASSWORD);
         if (!StringUtils.isEmptyString(password)) {
             binding.passwordEdit.setText(password);
         }
-        String mp = SPUtils.getInstance().getString(SPUtils.RTK_MOUNT_POINT);
+        String mp = SPUtils.getInstance().getString(RTK_MOUNT_POINT);
         if (!StringUtils.isEmptyString(mp)) {
             binding.mountPointEdit.setText(mp);
         } else {
@@ -356,7 +371,8 @@ public class SettingRtkFragment extends Fragment {
 
 
     public boolean aircraftIsConnectNet() {
-        return GlobalVariable.sFourthGStatus != null && GlobalVariable.sFourthGStatus._4g_net_status != 0;
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        return lteSdrStatus != null && lteSdrStatus.getNetStatus() != 0;
     }
 
 
@@ -481,13 +497,13 @@ public class SettingRtkFragment extends Fragment {
 
     private void breakRTK() {
         rtk.disconnectRtk();
-        SPUtils.getInstance().put(SPUtils.RTK_CONNECT_STATE, false);
+        SPUtils.getInstance().put(RTK_CONNECT_STATE, false);
         lastChangeRtkTime = System.currentTimeMillis();
     }
 
     private void setRtkSwitch() {
 
-        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
+        boolean isOpen = SPUtils.getInstance().getBoolean(RTK_SWITCH, true);
         //当前开启则关闭
         if (isOpen) {
             binding.rtkSwitchView.setSelected(false);
@@ -495,7 +511,7 @@ public class SettingRtkFragment extends Fragment {
             binding.rtkStateView.setVisibility(View.GONE);
             binding.rtkParamLayout.setVisibility(View.GONE);
             closeRTK();
-            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, false);
+            SPUtils.getInstance().put(RTK_SWITCH, false);
         } else {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -506,7 +522,7 @@ public class SettingRtkFragment extends Fragment {
             } else {
                 binding.rtkParamLayout.setVisibility(View.GONE);
             }
-            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, true);
+            SPUtils.getInstance().put(RTK_SWITCH, true);
         }
     }
 
@@ -521,7 +537,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         // 飞行中未fixed不能连接rtk
-        if (!DroneUtils.isGround() && GlobalVariable.rtkIsLoading == 1) {
+        if (!DroneUtils.isGround() && DroneUtils.getRtkIsLoading()) {
             Toast.makeText(getContext(), R.string.string_not_allow_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -552,7 +568,7 @@ public class SettingRtkFragment extends Fragment {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
 
-        rtk.connectRtk(stationSource, null, new RtkManager.OnRtkConnectListener() {
+        rtk.connectRtk(stationSource, null, new RTKManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {

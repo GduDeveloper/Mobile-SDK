@@ -16,7 +16,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingImageChannelBinding;
@@ -27,6 +26,10 @@ import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IAirLink;
+import com.gdu.msdk.key.value.Cycle5GSdrStatus;
+import com.gdu.msdk.key.value.airlink.CycleAirLinkBandwidth;
+import com.gdu.msdk.key.value.airlink.CycleAirLinkSignalInterference;
 import com.gdu.sdk.remotecontroller.NetworkingHelper;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -53,6 +56,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class SettingImageChannelFragment extends Fragment {
 
+    /** 4G备份图传RTSP的地址 */
+    public static final String BACK_WIFI_CAST_POSITION = "BACK_WIFI_CAST_POSITION";
+    /** 4G备份图传RTSP的地址 */
+    public static final String BACK_HDMI_CAST_POSITION = "BACK_HDMI_CAST_POSITION";
     private FragmentActivity mActivity;
     private FragmentSettingImageChannelBinding mViewBinding;
     private SettingSDRViewModel sdrViewModel;
@@ -110,7 +117,7 @@ public class SettingImageChannelFragment extends Fragment {
         }
         mViewBinding.ovSwitchImgChannel.setData(channelNames);
 
-        if (GlobalVariable.isRCSEE) {
+        if (RCUtils.INSTANCE.isRCSEE()) {
             mViewBinding.groupHdmi.setVisibility(View.GONE);
         } else {
             mViewBinding.groupHdmi.setVisibility(View.VISIBLE);
@@ -142,14 +149,14 @@ public class SettingImageChannelFragment extends Fragment {
             } else if(NetworkingHelper.isNetworkingMode()){
                 Toast.makeText(getContext(), R.string.string_not_change_in_group, Toast.LENGTH_SHORT).show();
             } else {
-                if (getPositionFromChannel(GlobalVariable.singalChannel) != position) {
+                if (getPositionFromChannel(DroneUtils.getSignalChannel()) != position) {
                     sdrViewModel.setImageTransmissionInfo(position);
                 }
             }
         });
 
-        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_HDMI_CAST_POSITION));
-        mViewBinding.selectWifiCast.setIndex(SPUtils.getInstance().getInt(SPUtils.BACK_WIFI_CAST_POSITION));
+        mViewBinding.selectHdmiCast.setIndex(SPUtils.getInstance().getInt(BACK_HDMI_CAST_POSITION));
+        mViewBinding.selectWifiCast.setIndex(SPUtils.getInstance().getInt(BACK_WIFI_CAST_POSITION));
 
         mViewBinding.selectHdmiCast.setOnOptionClickListener((parentId, view, position) -> {
             switchHdmiCastType(position);
@@ -178,7 +185,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchWifiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.getInstance().put(SPUtils.BACK_WIFI_CAST_POSITION,position);
+            SPUtils.getInstance().put(BACK_WIFI_CAST_POSITION,position);
             changeSelectIndex(WIFI_CAST,position);
         });
     }
@@ -197,7 +204,7 @@ public class SettingImageChannelFragment extends Fragment {
 
     private void switchHdmiCastType(int position) {
         mHandler.post(() -> {
-            SPUtils.getInstance().put(SPUtils.BACK_HDMI_CAST_POSITION, position);
+            SPUtils.getInstance().put(BACK_HDMI_CAST_POSITION, position);
             changeSelectIndex(HDMI_CAST,position);
         });
     }
@@ -207,7 +214,12 @@ public class SettingImageChannelFragment extends Fragment {
      *
      */
     private void changeOutStream(int position) {
-        if (GlobalVariable.sVariableBitstream == 1) {
+        boolean variableBitstream = false;
+        CycleAirLinkBandwidth bandwidth = IAirLink.get().getUnusedBandwidth().getValue();
+        if (bandwidth != null) {
+            variableBitstream = bandwidth.getVariableBitstream();
+        }
+        if (variableBitstream) {
             sdrViewModel.getSteamSwitchLiveData().observe(mActivity, data->{
                 setStreamValue(position);
             });
@@ -242,8 +254,9 @@ public class SettingImageChannelFragment extends Fragment {
             setImgChannel(data);
         });
         sdrViewModel.getImageTransmissionInfo((byte) 3);
-        if (GlobalVariable.sFourthGStatus != null) {
-            mLastAirlinkType = GlobalVariable.sFourthGStatus.airlink_type;
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        if (lteSdrStatus != null) {
+            mLastAirlinkType = lteSdrStatus.getAirlinkType();
             showPushTypeView();
         } else {
             mViewBinding.ovSwitchPushType.setIndex(0);
@@ -256,7 +269,10 @@ public class SettingImageChannelFragment extends Fragment {
                 .to(RxLife.to(this))
                 .subscribe(aLong -> {
                     showCurrentAirlinkType();
-                    generateChartData(GlobalVariable.combinedChartPoints, GlobalVariable.currentPoint);
+                    CycleAirLinkSignalInterference signalInterference = IAirLink.get().getAirLinkSignalInterference().getValue();
+                    if (signalInterference != null) {
+                        generateChartData(signalInterference.getCombinedChartPoints(), signalInterference.getCurrentPoint());
+                    }
                 });
     }
 
@@ -268,7 +284,8 @@ public class SettingImageChannelFragment extends Fragment {
     public void showCurrentAirlinkType(){
         if (DroneUtils.isUseBackupsAirlink()) {
             if(!isShowPushType) {
-                if(GlobalVariable.sFourthGStatus != null && GlobalVariable.sFourthGStatus.pushStreamType != 0) {
+                Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+                if(lteSdrStatus != null && lteSdrStatus.getPushStreamType() != 0) {
                     showPushTypeView();
                     isShowPushType = true;
                 }
@@ -328,13 +345,14 @@ public class SettingImageChannelFragment extends Fragment {
     }
 
     private void showPushTypeView() {
-        if (mViewBinding != null && GlobalVariable.sFourthGStatus != null) {
-            if (GlobalVariable.sFourthGStatus.pushStreamType == 1) {
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        if (mViewBinding != null && lteSdrStatus != null) {
+            if (lteSdrStatus.getPushStreamType() == 1) {
                 mViewBinding.ovSwitchPushType.setIndex(0);
-            } else if (GlobalVariable.sFourthGStatus.pushStreamType == 2) {
+            } else if (lteSdrStatus.getPushStreamType() == 2) {
                 mViewBinding.ovSwitchPushType.setIndex(1);
             } else {
-                XLogger.INSTANCE.getAPP().i("showPushTypeView = " + GlobalVariable.sFourthGStatus.pushStreamType);
+                XLogger.INSTANCE.getAPP().i("showPushTypeView = " + lteSdrStatus.getPushStreamType());
             }
         }
     }
@@ -397,12 +415,12 @@ public class SettingImageChannelFragment extends Fragment {
     private void generateChartData(List<Short> shortList, byte selectNum) {
         if (!sdrViewModel.isImgChannelSwitching()) {
             if (!RCUtils.INSTANCE.isS200RC()) {
-                setImgChannel(GlobalVariable.singalChannel);
+                setImgChannel(DroneUtils.getSignalChannel());
                 mViewBinding.tvCurrentChannel.setVisibility(View.GONE);
             }else {
                 mViewBinding.tvCurrentChannel.setVisibility(View.VISIBLE);
                 mViewBinding.tvCurrentChannel.setText(getString(R.string.current_channel_is,
-                        getString(GlobalVariable.singalChannel == 1?
+                        getString(DroneUtils.getSignalChannel() == 1?
                                 R.string.Label_channel_5_8:
                                 R.string.Label_channel_2_4)));
             }

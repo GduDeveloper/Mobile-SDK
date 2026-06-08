@@ -15,10 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.gdu.common.error.Error;
-import com.gdu.config.GlobalVariable;
 
 import com.gdu.demo.R;
-import com.gdu.demo.widget.psdk.adapter.ItemAdapter;
 import com.gdu.demo.widget.psdk.bean.ImageIconBean;
 import com.gdu.demo.widget.psdk.bean.PSdkCustomViewBean;
 import com.gdu.demo.widget.psdk.bean.WidgetItemBean;
@@ -656,7 +654,7 @@ public class PSDKCustomViewManager {
         layoutParams.leftMargin = (int) context.getResources().getDimension(R.dimen.dp_60);
         layoutParams.topMargin = (int) context.getResources().getDimension(R.dimen.dp_80);
         floatWindowView.setLayoutParams(layoutParams);
-        floatWindowView.setVisibility(GlobalVariable.isShowCurrentData ? View.VISIBLE : View.GONE);
+        floatWindowView.setVisibility(CustomFloatWindow.isShowCurrentData ? View.VISIBLE : View.GONE);
         viewGroup.addView(floatWindowView);
 
     }

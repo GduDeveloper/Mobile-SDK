@@ -67,7 +67,7 @@ public class FlightViewModel extends ViewModel {
                 || isCustomSupportAiRecognizeGimbal4
                 || isCustomSupportAiRecognizeGimbal5
                 || hasAiBox;
-        return !GlobalVariable.isOpenFlightRoutePlan && isSupportAiRecognizeGimbal;
+        return !DroneUtils.isOpenFlightRoutePlan() && isSupportAiRecognizeGimbal;
     }
 
     public void switchAIRecognize() {

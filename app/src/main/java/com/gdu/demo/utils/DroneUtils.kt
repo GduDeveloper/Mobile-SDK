@@ -6,8 +6,10 @@ import com.gdu.msdk.device.component.interfaces.IBattery
 import com.gdu.msdk.device.component.interfaces.ICamera
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.component.interfaces.IRTK
+import com.gdu.msdk.device.component.interfaces.IRoute
 import com.gdu.msdk.device.component.interfaces.IVision
 import com.gdu.msdk.device.interfaces.IGduRCDevice
+import com.gdu.msdk.key.value.Cycle5GSdrStatus
 import com.gdu.msdk.key.value.CycleBatteryInfo
 import com.gdu.msdk.key.value.CycleFCInfo1
 import com.gdu.msdk.key.value.CycleFCInfo2
@@ -16,6 +18,8 @@ import com.gdu.msdk.key.value.CycleInfraredCameraStatus
 import com.gdu.msdk.key.value.CycleRCBatteryInfo
 import com.gdu.msdk.key.value.CycleRCInfo
 import com.gdu.msdk.key.value.CycleVisibleCameraStatus
+import com.gdu.msdk.key.value.InfraredCameraInfo
+import com.gdu.msdk.key.value.VisibleLightCameraInfo
 import com.gdu.msdk.key.value.bean.ControlHand
 import com.gdu.msdk.key.value.bean.DroneFlyState
 import com.gdu.msdk.key.value.bean.FlyMode
@@ -136,6 +140,14 @@ object DroneUtils {
     val rtkType: Int
         get() = IRTK.get.onboardRTKInfo.value?.rtkType?.toInt()?: 0
 
+    @JvmStatic // 基站的经度
+    val stationLng: Double
+        get() = IRTK.get.onboardRTKInfo.value?.stationLng?: 0.0
+
+    @JvmStatic // 基站的纬度
+    val stationLat: Double
+        get() = IRTK.get.onboardRTKInfo.value?.stationLat?: 0.0
+
     /** 机载rtk状态 0 未连接  1 连接中 2 已连接 */
     @JvmStatic
     val onboardRTKConnectState: Int
@@ -170,8 +182,16 @@ object DroneUtils {
         get() = ICamera.get.currentCameraStatus.visibleCameraStatus.value
 
     @JvmStatic
+    val vlCameraInfo: VisibleLightCameraInfo?
+        get() = ICamera.get.vlCameraInfo
+
+    @JvmStatic
     val infraredCameraStatus: CycleInfraredCameraStatus?
         get() = ICamera.get.currentCameraStatus.flowInfraredCameraStatus.value
+
+    @JvmStatic
+    val infraredCameraInfo: InfraredCameraInfo?
+        get() = ICamera.get.infraredCameraInfo
 
     /** 可见光SD卡状态  0：正常卡；1：异常卡；2：当前卡读写速度慢；3：未插入SD卡；4：SD卡已满; 5: SD卡格式错误(目前仅四光有) */
     @JvmStatic
@@ -216,6 +236,22 @@ object DroneUtils {
     @JvmStatic
     val backObstacleState: Int
         get() = IVision.get.radarInfo.value?.backObstacleState?.toInt()?: 0
+
+    @JvmStatic // 是否正在执行航迹
+    val isOpenFlightRoutePlan: Boolean
+        get() = (IRoute.get.routeMissionStateInfo.value?.state?.toInt()?: 0) == 1
+
+    @JvmStatic
+    val lteSdrStatus: Cycle5GSdrStatus?
+        get() = IAirLink.get.lteSdrStatus.value
+
+    @JvmStatic // 图传信道模式（0: 2.4G   1: 5.8G  2: AUTO）
+    val signalChannel: Int
+        get() = IAirLink.get.airLinkSignalInterference.value?.signalChannel?.toInt()?: 0
+
+    @JvmStatic
+    val rtkIsLoading: Boolean
+        get() = IRTK.get.fcCoprocessorRtk?.rtkIsLoading == 1
 
     /**------------------------ 遥控器 ----------------------------------*/
 

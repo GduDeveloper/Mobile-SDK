@@ -1,17 +1,17 @@
 package com.gdu.demo.flight.setting.viewmodel;
 
-import android.widget.Toast;
-
 import androidx.lifecycle.MutableLiveData;
 
 import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseViewModel;
-import com.gdu.lib.base.GduEnvConfig;
+import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.RCUtils;
 import com.gdu.lib.util.core.SPUtils;
+import com.gdu.msdk.key.value.Cycle5GSdrStatus;
 import com.gdu.sdk.airlink.AirLink;
+import com.gdu.sdk.airlink.FrequencyBandwidth;
 import com.gdu.sdk.util.CommonCallbacks;
 
 import java.nio.charset.StandardCharsets;
@@ -23,6 +23,9 @@ import java.nio.charset.StandardCharsets;
  */
 public class SettingSDRViewModel extends BaseViewModel {
 
+    /** 4G备份图传MQTT的地址 */
+    public static final String BACK_AIR_LINK_URL = "backAirLinkUrl";
+    private String backAirLinkUrl = "";
     private AirLink mGDUAirLink;
     private final MutableLiveData<Integer> visibleLightStreamLiveData;  //获取可见光视频码流设置反馈
     private final MutableLiveData<Byte> steamSwitchLiveData;  //设置码流变换开关
@@ -128,14 +131,14 @@ public class SettingSDRViewModel extends BaseViewModel {
             mGDUAirLink.set4GServiceIp(bytes, new CommonCallbacks.CompletionCallbackWith<Boolean>() {
                 @Override
                 public void onSuccess(Boolean aBoolean) {
-                    GlobalVariable.BackAirLinkUrl = setIp;
-                    SPUtils.getInstance().put(SPUtils.BACK_AIR_LINK_URL,  GlobalVariable.BackAirLinkUrl);
+                    backAirLinkUrl = setIp;
+                    SPUtils.getInstance().put(BACK_AIR_LINK_URL,  backAirLinkUrl);
                     toastLiveData.postValue(R.string.string_set_success);
                 }
 
                 @Override
                 public void onFailure(Error error) {
-                    serviceIpLiveData.postValue(GlobalVariable.BackAirLinkUrl);
+                    serviceIpLiveData.postValue(backAirLinkUrl);
                     toastLiveData.postValue(R.string.Label_SettingFail);
                 }
             });
@@ -233,7 +236,7 @@ public class SettingSDRViewModel extends BaseViewModel {
         mGDUAirLink.getITFrequencyBandwidth(new CommonCallbacks.CompletionCallbackWith<Byte>() {
             @Override
             public void onSuccess(Byte aByte) {
-                frequencyBandwidthLiveData.postValue(FrequencyBandwidth.get(aByte).getValue());
+                frequencyBandwidthLiveData.postValue(FrequencyBandwidth.Companion.get(aByte).getValue());
             }
 
             @Override
@@ -253,18 +256,19 @@ public class SettingSDRViewModel extends BaseViewModel {
             ltePushStreamTypeLiveData.postValue(true);
             return;
         }
-        if (GlobalVariable.sFourthGStatus == null) {
+        Cycle5GSdrStatus lteSdrStatus = DroneUtils.getLteSdrStatus();
+        if (lteSdrStatus == null) {
             toastLiveData.setValue(R.string.string_5g_info_not_obtained);
             return;
         }
-        if (type == GlobalVariable.sFourthGStatus.pushStreamType) {
+        if (type == lteSdrStatus.getPushStreamType()) {
             toastLiveData.setValue(R.string.string_config_not_changed);
             return;
         }
         mGDUAirLink.setLTEPushStreamType(type, new CommonCallbacks.CompletionCallbackWith<Byte>() {
             @Override
             public void onSuccess(Byte aByte) {
-                GlobalVariable.sFourthGStatus.pushStreamType = type;
+                lteSdrStatus.setPushStreamType(type);
                 toastLiveData.postValue(R.string.string_set_success);
                 ltePushStreamTypeLiveData.postValue(true);
             }
