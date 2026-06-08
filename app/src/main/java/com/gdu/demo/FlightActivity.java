@@ -55,8 +55,8 @@ import java.util.Map;
 public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
 
     private ActivityFlightBinding viewBinding;
-    private GDUCodecManager codecManager;
-    private VideoFeeder.VideoDataListener videoDataListener ;
+//    private GDUCodecManager codecManager;
+//    private VideoFeeder.VideoDataListener videoDataListener ;
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
@@ -156,14 +156,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
         });
         viewBinding.textureView.setSurfaceTextureListener(this);
-        videoDataListener = new VideoFeeder.VideoDataListener() {
-            @Override
-            public void onReceive(byte[] bytes, int size) {
-                if (null != codecManager) {
-                    codecManager.sendDataToDecoder(bytes, size);
-                }
-            }
-        };
+//        videoDataListener = new VideoFeeder.VideoDataListener() {
+//            @Override
+//            public void onReceive(byte[] bytes, int size) {
+//                if (null != codecManager) {
+//                    codecManager.sendDataToDecoder(bytes, size);
+//                }
+//            }
+//        };
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
         viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
@@ -231,7 +231,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private void initData() {
         new MsgBoxManager(this, 1,this);
-        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+//        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
     }
 
 
@@ -276,34 +276,34 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onResume() {
         super.onResume();
-        if (codecManager != null) {
-            codecManager.onResume();
-        }
+//        if (codecManager != null) {
+//            codecManager.onResume();
+//        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (codecManager != null) {
-            codecManager.onPause();
-        }
+//        if (codecManager != null) {
+//            codecManager.onPause();
+//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (codecManager != null) {
-            codecManager.onDestroy();
-        }
+//        if (codecManager != null) {
+//            codecManager.onDestroy();
+//        }
         if (mCustomSizeFocusHelper != null) {
             mCustomSizeFocusHelper.onDestroy();
         }
     }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (codecManager == null) {
-            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
-        }
+//        if (codecManager == null) {
+//            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
+//        }
     }
 
     @Override
