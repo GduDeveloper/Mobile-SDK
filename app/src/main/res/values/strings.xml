@@ -847,5 +847,6 @@
     <!-- SocketSdk中的文案 -->
     <string name="state_normal">Normal</string>
     <string name="flight_loast_connect">No connection</string>
+    <string name="gyroscope">Gyroscope zero bias</string>
 
 </resources>
