@@ -34,6 +34,7 @@ import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
+import com.gdu.msdk.hms.bean.WarnBean;
 import com.gdu.msdk.key.value.CycleFCInfo1;
 import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.msdk.key.value.ai.TargetMode;

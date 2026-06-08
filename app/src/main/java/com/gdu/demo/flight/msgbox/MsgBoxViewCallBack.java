@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.msgbox;
 
-import com.gdu.beans.WarnBean;
+
+import com.gdu.msdk.hms.bean.WarnBean;
 
 import java.util.HashMap;
 

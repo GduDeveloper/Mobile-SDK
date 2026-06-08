@@ -2,14 +2,12 @@ package com.gdu.demo.flight.msgbox;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.beans.WarnBean;
-import com.gdu.config.GlobalVariable;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.sdk.util.CommonUtils;
+import com.gdu.msdk.hms.bean.WarnBean;
 import com.rxjava.rxlife.RxLife;
 
 import java.util.ArrayList;
@@ -66,8 +64,8 @@ public class MsgBoxManager {
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mNewWarnBeans.clear();
             mWarnTable = null;
-            mWarnTable = CommonUtils.initWarnTable(mActivity);//初始化警告列表集合
-            CommonUtils.updateWarnList(mActivity, mWarnTable);
+//            mWarnTable = CommonUtils.initWarnTable(mActivity);//初始化警告列表集合
+//            CommonUtils.updateWarnList(mActivity, mWarnTable);
 
             //将异常信息集合添加到mNewWarnBeans中
             for (Map.Entry<Long, WarnBean> mEntry : mWarnTable.entrySet()) {
@@ -119,7 +117,7 @@ public class MsgBoxManager {
                 XLogger.INSTANCE.getAPP().i("getAlarmData() mViewCallBack is null");
                 return;
             }
-            if (errId == WarnBean.NEARNOFLY || errId == WarnBean.GPS) {
+            if (errId == WarnBean.NEARNOFLY /*|| errId == WarnBean.GPS*/) {
                 mCallback.updateTitleTVColor(R.color.white);
                 if (mWarnTable.containsKey(errId)) {
                     mCallback.updateTitleTvTxt(Objects.requireNonNull(mWarnTable.get(errId)).warnStr);

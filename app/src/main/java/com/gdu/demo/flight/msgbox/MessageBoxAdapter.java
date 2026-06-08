@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 import com.gdu.demo.R;
-import com.gdu.errreport.ErrCodeGrade;
+import com.gdu.msdk.hms.bean.ErrCodeGrade;
 
 public class MessageBoxAdapter extends BaseQuickAdapter<MsgBoxBean, BaseViewHolder> {
 

@@ -1,6 +1,7 @@
 package com.gdu.demo.flight.msgbox;
 
-import com.gdu.errreport.ErrCodeGrade;
+
+import com.gdu.msdk.hms.bean.ErrCodeGrade;
 
 public class MsgBoxBean {
     private String msgContent;

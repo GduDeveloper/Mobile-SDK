@@ -22,7 +22,6 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityPreFligthInspectionBinding;
 import com.gdu.demo.databinding.DialogLayoutBackHomePointBinding;
 import com.gdu.demo.flight.pre.adapter.PreFlightStatusAdapter;
-import com.gdu.demo.flight.pre.adapter.TextAdapter;
 import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
@@ -57,8 +56,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private PreFlightInspectionViewModel viewModel;
     private int preLimitHeightValue;
     private int preLimitDistanceValue;
-    private TextAdapter mTextAdapter;
-    private final List<MessageBean> bannerData = new ArrayList<>();
+//    private TextAdapter mTextAdapter;
+//    private final List<MessageBean> bannerData = new ArrayList<>();
     private PreFlightStatusAdapter mStatusAdapter;
 
     @Override
@@ -88,8 +87,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
         private void initViews() {
-        mTextAdapter = new TextAdapter(this, bannerData);
-        mViewBinding.viewFlightStatusTip.setAdapter(mTextAdapter).addBannerLifecycleObserver(this);
+//        mTextAdapter = new TextAdapter(this, bannerData);
+//        mViewBinding.viewFlightStatusTip.setAdapter(mTextAdapter).addBannerLifecycleObserver(this);
         mViewBinding.btnNextStep.setVisibility(View.GONE);
 
         mViewBinding.sbpLowPowerAlarmPb.setMaxPb(50);
@@ -164,14 +163,14 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             mViewBinding.tvFlightStatus.setTextColor(ContextCompat.getColor(this, data.getFlightStatusColor()));
             mViewBinding.ivMore.setImageResource(data.getMoreRes());
         });
-        viewModel.getErrMsgLiveData().observe(this, bean -> {
-            if (null == bean) {
-                bannerData.clear();
-            } else {
-                CollectionUtils.listAddAllAvoidNPE(bannerData, bean);
-            }
-            mTextAdapter.notifyDataSetChanged();
-        });
+//        viewModel.getErrMsgLiveData().observe(this, bean -> {
+//            if (null == bean) {
+//                bannerData.clear();
+//            } else {
+//                CollectionUtils.listAddAllAvoidNPE(bannerData, bean);
+//            }
+//            mTextAdapter.notifyDataSetChanged();
+//        });
         viewModel.getBaseFlightViewModel().getWarnTipBeanLiveData().observe(this, data->{
             showErrTip(data.getType(), data.getWarnType());
         });
@@ -208,7 +207,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         });
 
         //检查飞行错误状态
-        viewModel.checkAlarmData(this);
+//        viewModel.checkAlarmData(this);
         //检查飞行参数状态
         viewModel.checkFlightStatus(this);
     }
@@ -791,16 +790,16 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private void switchVisionObstacleClickHandle() {
         if (uavUnConnect()) return;
         // 视觉避障异常时无法开启
-        if (!mViewBinding.ivVisionObstacleSwitch.isSelected()
-                && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
-            String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(this));
-            new CommonDialog.Builder(getSupportFragmentManager()).setTitle(getString(R.string.string_vision_error))
-                    .setContent(errStr)
-                    .setCancelVisible(false)
-                    .setCancelableOutside(false)
-                    .setSure(getString(R.string.Label_Sure)).build().show();
-            return;
-        }
+//        if (!mViewBinding.ivVisionObstacleSwitch.isSelected()
+//                && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
+//            String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(this));
+//            new CommonDialog.Builder(getSupportFragmentManager()).setTitle(getString(R.string.string_vision_error))
+//                    .setContent(errStr)
+//                    .setCancelVisible(false)
+//                    .setCancelableOutside(false)
+//                    .setSure(getString(R.string.Label_Sure)).build().show();
+//            return;
+//        }
 
 
         if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mViewBinding.ivVisionObstacleSwitch.isSelected()) {
@@ -842,16 +841,16 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         viewModel.getBaseFlightAssistantViewModel().setVisionSensingEnabled(isOn);
     }
 
-    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
-        StringBuilder error = new StringBuilder();
-        for (int i = 0; i < errList.size(); i++) {
-            error.append(errList.get(i).getWarStr());
-            if (i != errList.size() - 1) {
-                error.append("; ");
-            }
-        }
-        return error.toString();
-    }
+//    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
+//        StringBuilder error = new StringBuilder();
+//        for (int i = 0; i < errList.size(); i++) {
+//            error.append(errList.get(i).getWarStr());
+//            if (i != errList.size() - 1) {
+//                error.append("; ");
+//            }
+//        }
+//        return error.toString();
+//    }
 
     /**
      * 无人机未连接判断

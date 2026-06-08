@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.amap.api.maps.AMapUtils;
-import com.gdu.api.RtkManager;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseFlightAssistantViewModel;
@@ -29,6 +28,7 @@ import com.gdu.msdk.device.component.interfaces.IRTK;
 import com.gdu.msdk.device.component.pod.utils.GimbalUtil;
 import com.gdu.msdk.device.component.pod.utils.SDCardManager;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.hms.bean.WarnBean;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.CycleOnboardRTKInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
@@ -65,7 +65,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private BaseFlightAssistantViewModel baseFlightAssistantViewModel;
 
     private final MutableLiveData<Integer> toastLiveData;
-    private final MutableLiveData<ArrayList<MessageBean>> mErrMsgLiveData;
+//    private final MutableLiveData<ArrayList<MessageBean>> mErrMsgLiveData;
     //飞行系统状态监听
     private final MutableLiveData<BaseSysStatusBean> sysStatusLiveData;
     //飞行状态数据检测
@@ -113,7 +113,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
     public PreFlightInspectionViewModel() {
         toastLiveData = new MutableLiveData<>();
-        mErrMsgLiveData = new MutableLiveData<>();
+//        mErrMsgLiveData = new MutableLiveData<>();
         sysStatusLiveData = new MutableLiveData<>();
         flyInitStatusData = new MutableLiveData<>();
         flyStatusData = new MutableLiveData<>();
@@ -143,20 +143,20 @@ public class PreFlightInspectionViewModel extends ViewModel {
     /**
      * 健康检测
      * */
-    public void checkAlarmData(FragmentActivity activity){
-        //设置初始状态
-        ArrayList<MessageBean> messageBeans = new ArrayList<>();
-        final MessageBean mBean = new MessageBean();
-        mBean.setMsg(activity.getString(R.string.Msg_PreCheckDefaultAlarm));
-        mBean.setAlarmLevel(2);
-        messageBeans.add(mBean);
-        mErrMsgLiveData.setValue(messageBeans);
-        warnTable = CommonUtils.initWarnTable(activity);
-        //定时器检测错误码
-        Observable.interval(0, 3, TimeUnit.SECONDS)
-                .to(RxLife.toMain(activity))
-                .subscribe(l -> judgeHaveAlarm(activity), throwable -> throwable.printStackTrace());
-    }
+//    public void checkAlarmData(FragmentActivity activity){
+//        //设置初始状态
+//        ArrayList<MessageBean> messageBeans = new ArrayList<>();
+//        final MessageBean mBean = new MessageBean();
+//        mBean.setMsg(activity.getString(R.string.Msg_PreCheckDefaultAlarm));
+//        mBean.setAlarmLevel(2);
+//        messageBeans.add(mBean);
+//        mErrMsgLiveData.setValue(messageBeans);
+//        warnTable = CommonUtils.initWarnTable(activity);
+//        //定时器检测错误码
+//        Observable.interval(0, 3, TimeUnit.SECONDS)
+//                .to(RxLife.toMain(activity))
+//                .subscribe(l -> judgeHaveAlarm(activity), throwable -> throwable.printStackTrace());
+//    }
 
     /**
      * 检查页面内容
@@ -200,18 +200,18 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private void getFlightStatus(){
         BaseSysStatusBean bean = new BaseSysStatusBean();
         if(SdkDemoApplication.getAircraftInstance().isConnected()) {
-            ArrayList<MessageBean> warnErrorList = getWarnErrorList();
-            boolean isHaveAbnormal = !warnErrorList.isEmpty();
+//            ArrayList<MessageBean> warnErrorList = getWarnErrorList();
+//            boolean isHaveAbnormal = !warnErrorList.isEmpty();
 
             bean.setStatusTitleColor(R.color.white);
             bean.setFlightStatusColor(R.color.white);
-            if (isHaveAbnormal) {
-                bean.setFlightStatusStr(R.string.Label_AircraftStatusAbnormal);
-                bean.setStatusBg(R.drawable.shape_gradient_ff6c00_ffa96b);
-            } else {
-                bean.setFlightStatusStr(R.string.Label_AircraftStatusNormal);
-                bean.setStatusBg(R.drawable.shape_gradient_11cf42_6ce377);
-            }
+//            if (isHaveAbnormal) {
+//                bean.setFlightStatusStr(R.string.Label_AircraftStatusAbnormal);
+//                bean.setStatusBg(R.drawable.shape_gradient_ff6c00_ffa96b);
+//            } else {
+//                bean.setFlightStatusStr(R.string.Label_AircraftStatusNormal);
+//                bean.setStatusBg(R.drawable.shape_gradient_11cf42_6ce377);
+//            }
             bean.setMoreRes(R.drawable.icon_right_enter_white);
         } else {
             bean.setStatusTitleColor(R.color.color_535658);
@@ -360,119 +360,119 @@ public class PreFlightInspectionViewModel extends ViewModel {
         BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_RTK);
         if (null == bean) return;
         int rtkStatus = bean.getContentStrId();
-        final boolean connectStatus = RtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
+//        final boolean connectStatus = RtkManager.getInstance().getConnectStatus() == RTKNetConnectStatus.SERVER_COMMUNICATE;
 
         CycleOnboardRTKInfo onboardRTKInfo = IRTK.get().getOnboardRTKInfo().getValue();
         boolean bsRTKStatus = false;
         if (onboardRTKInfo != null) {
             bsRTKStatus = onboardRTKInfo.getBsRtkStatus();
         }
-        final boolean rtkConnected = (DroneUtils.getRtkType() == 1 && connectStatus)
-                || (DroneUtils.getRtkType() == 2 && bsRTKStatus)
-                || (DroneUtils.getRtkType() == 3 && DroneUtils.getOnboardRTKConnectState() == 2)
-                || (DroneUtils.getRtkType() == 5 && QXRTKManager.Companion.getInstance().isConnect());
-        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtils.getRtkOnline()) {
-            bean.setContentStrId(R.string.string_not_insert);
-            bean.setContentTextColor(R.color.color_FF5800);
-            bean.setContentEnable(false);
-        } else {
-            if (SdkDemoApplication.getAircraftInstance().isConnected() && rtkConnected) {
-                bean.setContentStrId(R.string.flight_connect);
-                bean.setContentTextColor(R.color.color_5B5B5B);
-                bean.setContentEnable(true);
-            } else {
-                bean.setContentStrId(com.gdu.api.R.string.flight_loast_connect);
-                bean.setContentTextColor(R.color.color_FF5800);
-                bean.setContentEnable(false);
-            }
-        }
+//        final boolean rtkConnected = (DroneUtils.getRtkType() == 1 && connectStatus)
+//                || (DroneUtils.getRtkType() == 2 && bsRTKStatus)
+//                || (DroneUtils.getRtkType() == 3 && DroneUtils.getOnboardRTKConnectState() == 2)
+//                || (DroneUtils.getRtkType() == 5 && QXRTKManager.Companion.getInstance().isConnect());
+//        if (IGduDroneDevice.get().getPlanType().getValue().isS200Type() && !DroneUtils.getRtkOnline()) {
+//            bean.setContentStrId(R.string.string_not_insert);
+//            bean.setContentTextColor(R.color.color_FF5800);
+//            bean.setContentEnable(false);
+//        } else {
+//            if (SdkDemoApplication.getAircraftInstance().isConnected() && rtkConnected) {
+//                bean.setContentStrId(R.string.flight_connect);
+//                bean.setContentTextColor(R.color.color_5B5B5B);
+//                bean.setContentEnable(true);
+//            } else {
+//                bean.setContentStrId(R.string.flight_loast_connect);
+//                bean.setContentTextColor(R.color.color_FF5800);
+//                bean.setContentEnable(false);
+//            }
+//        }
         if (bean.getContentStrId()!=rtkStatus) {
             flyStatusData.setValue(bean);
         }
     }
 
     private void getSDCardStatus(Context context) {
-        BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDCARD);
-        if (null == bean) return;
-        String sdCardStatusStr = bean.getContent();
-        final String lightSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_VisibleLightSDCard);
-        final String irSdCardName = context.getResources().getString(com.gdu.api.R.string.Label_IRSDCard);
-        String sdCardTip = "";
-        if (GimbalUtil.INSTANCE.isMultiCardStatusGimbal()) {
-            if (DroneUtils.getLightSDCardStatus() == 3 && DroneUtils.getIrSDCardStatus() == 3) {
-                sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-            } else {
-                String lightErrStr = CommonUtils.getSDCardDetailErrTip(context, 2);
-                if (!TextUtils.isEmpty(lightErrStr)) {
-                    sdCardTip = lightErrStr;
-                }
-                String irErrStr = CommonUtils.getSDCardDetailErrTip(context, 1);
-                if (TextUtils.isEmpty(sdCardTip) && !TextUtils.isEmpty(irErrStr)) {
-                    sdCardTip = irErrStr;
-                }
-
-                if (TextUtils.isEmpty(sdCardTip)) {
-                    sdCardTip = context.getString(com.gdu.api.R.string.Label_CardInserted);
-                }
-            }
-        } else if (ICamera.get().getSupportFun().getEnableMultiSDCard()) {
-            String lightStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), lightSdCardName);
-            String irStorageFull = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), irSdCardName);
-            if (SDCardManager.Companion.getInstance().isLightMemoryFull()) {
-                sdCardTip = lightStorageFull;
-            }
-
-            if (TextUtils.isEmpty(sdCardTip) && SDCardManager.Companion.getInstance().isIRMemoryIsFull()) {
-                sdCardTip = irStorageFull;
-            }
-
-            if (TextUtils.isEmpty(sdCardTip)) {
-                int sdInsertStatus = SDCardManager.Companion.getInstance().checkTMSSDCard();
-                switch (sdInsertStatus) {
-                    // 2张卡都已插入
-                    case 0:
-                        sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
-                        break;
-                    // sd1(红外未插卡)
-                    case 1:
-                        sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_IRNoCardInserted);
-                        break;
-                    // sd2(可见光未插卡)
-                    case 2:
-                        sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_VisibleLightNoCardInserted);
-                        break;
-                    // 3 两张卡均未插
-                    case 3:
-                        sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        } else if (GimbalUtil.INSTANCE.isSingleSDReportGimbal()) {
-            sdCardTip = CommonUtils.getSDCardDetailErrTip(context, 3);
-            if (TextUtils.isEmpty(sdCardTip)) {
-                sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
-            }
-        } else {
-            if (SDCardManager.Companion.getInstance().isMemoryFull()) {
-                sdCardTip = String.format(context.getResources().getString(com.gdu.api.R.string.Label_SdISFULL_Compatible), "");
-            }
-
-            if (TextUtils.isEmpty(sdCardTip)) {
-                if (SDCardManager.Companion.getInstance().isInsertSDCard(0)) {
-                    sdCardTip = context.getResources().getString(com.gdu.api.R.string.Label_CardInserted);
-                } else {
-                    sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-                }
-            }
-        }
-        bean.setContent(sdCardTip);
-        bean.setContentEnable(context.getResources().getString(com.gdu.api.R.string.Label_CardInserted).equals(sdCardTip));
-        if (!TextUtils.equals(bean.getContent(), sdCardStatusStr)) {
-            flyStatusData.setValue(bean);
-        }
+//        BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDCARD);
+//        if (null == bean) return;
+//        String sdCardStatusStr = bean.getContent();
+//        final String lightSdCardName = context.getResources().getString(R.string.Label_VisibleLightSDCard);
+//        final String irSdCardName = context.getResources().getString(R.string.Label_IRSDCard);
+//        String sdCardTip = "";
+//        if (GimbalUtil.INSTANCE.isMultiCardStatusGimbal()) {
+//            if (DroneUtils.getLightSDCardStatus() == 3 && DroneUtils.getIrSDCardStatus() == 3) {
+//                sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
+//            } else {
+//                String lightErrStr = CommonUtils.getSDCardDetailErrTip(context, 2);
+//                if (!TextUtils.isEmpty(lightErrStr)) {
+//                    sdCardTip = lightErrStr;
+//                }
+//                String irErrStr = CommonUtils.getSDCardDetailErrTip(context, 1);
+//                if (TextUtils.isEmpty(sdCardTip) && !TextUtils.isEmpty(irErrStr)) {
+//                    sdCardTip = irErrStr;
+//                }
+//
+//                if (TextUtils.isEmpty(sdCardTip)) {
+//                    sdCardTip = context.getString(com.gdu.api.R.string.Label_CardInserted);
+//                }
+//            }
+//        } else if (ICamera.get().getSupportFun().getEnableMultiSDCard()) {
+//            String lightStorageFull = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), lightSdCardName);
+//            String irStorageFull = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), irSdCardName);
+//            if (SDCardManager.Companion.getInstance().isLightMemoryFull()) {
+//                sdCardTip = lightStorageFull;
+//            }
+//
+//            if (TextUtils.isEmpty(sdCardTip) && SDCardManager.Companion.getInstance().isIRMemoryIsFull()) {
+//                sdCardTip = irStorageFull;
+//            }
+//
+//            if (TextUtils.isEmpty(sdCardTip)) {
+//                int sdInsertStatus = SDCardManager.Companion.getInstance().checkTMSSDCard();
+//                switch (sdInsertStatus) {
+//                    // 2张卡都已插入
+//                    case 0:
+//                        sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
+//                        break;
+//                    // sd1(红外未插卡)
+//                    case 1:
+//                        sdCardTip = context.getResources().getString(R.string.Label_IRNoCardInserted);
+//                        break;
+//                    // sd2(可见光未插卡)
+//                    case 2:
+//                        sdCardTip = context.getResources().getString(R.string.Label_VisibleLightNoCardInserted);
+//                        break;
+//                    // 3 两张卡均未插
+//                    case 3:
+//                        sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
+//                        break;
+//
+//                    default:
+//                        break;
+//                }
+//            }
+//        } else if (GimbalUtil.INSTANCE.isSingleSDReportGimbal()) {
+//            sdCardTip = CommonUtils.getSDCardDetailErrTip(context, 3);
+//            if (TextUtils.isEmpty(sdCardTip)) {
+//                sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
+//            }
+//        } else {
+//            if (SDCardManager.Companion.getInstance().isMemoryFull()) {
+//                sdCardTip = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), "");
+//            }
+//
+//            if (TextUtils.isEmpty(sdCardTip)) {
+//                if (SDCardManager.Companion.getInstance().isInsertSDCard(0)) {
+//                    sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
+//                } else {
+//                    sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
+//                }
+//            }
+//        }
+//        bean.setContent(sdCardTip);
+//        bean.setContentEnable(context.getResources().getString(R.string.Label_CardInserted).equals(sdCardTip));
+//        if (!TextUtils.equals(bean.getContent(), sdCardStatusStr)) {
+//            flyStatusData.setValue(bean);
+//        }
     }
 
     /**
@@ -526,34 +526,34 @@ public class PreFlightInspectionViewModel extends ViewModel {
     }
 
     private void getAlarmData(Context context) {
-        CommonUtils.updateWarnList(context, warnTable);
-        ArrayList<MessageBean> warnErrorList = getWarnErrorList();
-        hadErr = !warnErrorList.isEmpty();
-        if (hadErr) {
-            mErrMsgLiveData.setValue(null);
-            mErrMsgLiveData.setValue(warnErrorList);
-        }
+//        CommonUtils.updateWarnList(context, warnTable);
+//        ArrayList<MessageBean> warnErrorList = getWarnErrorList();
+//        hadErr = !warnErrorList.isEmpty();
+//        if (hadErr) {
+//            mErrMsgLiveData.setValue(null);
+//            mErrMsgLiveData.setValue(warnErrorList);
+//        }
     }
 
-    private ArrayList<MessageBean> getWarnErrorList() {
-        ArrayList<MessageBean> msgBeanList = new ArrayList<>();
-        for (Map.Entry<Long, WarnBean> mEntry : warnTable.entrySet()) {
-            if (mEntry.getValue().isErr) {
-                MessageBean msgBean = new MessageBean();
-                msgBean.setMsg(mEntry.getValue().warnStr);
-                if (ErrCodeGrade.ErrCodeGrade_1 == mEntry.getValue().getWarnLevel()) {
-                    msgBean.setAlarmLevel(2);
-                } else if (ErrCodeGrade.ErrCodeGrade_2 == mEntry.getValue().getWarnLevel()) {
-                    msgBean.setAlarmLevel(1);
-                } else {
-                    msgBean.setAlarmLevel(3);
-                }
-
-                msgBeanList.add(msgBean);
-            }
-        }
-        return msgBeanList;
-    }
+//    private ArrayList<MessageBean> getWarnErrorList() {
+//        ArrayList<MessageBean> msgBeanList = new ArrayList<>();
+//        for (Map.Entry<Long, WarnBean> mEntry : warnTable.entrySet()) {
+//            if (mEntry.getValue().isErr) {
+//                MessageBean msgBean = new MessageBean();
+//                msgBean.setMsg(mEntry.getValue().warnStr);
+//                if (ErrCodeGrade.ErrCodeGrade_1 == mEntry.getValue().getWarnLevel()) {
+//                    msgBean.setAlarmLevel(2);
+//                } else if (ErrCodeGrade.ErrCodeGrade_2 == mEntry.getValue().getWarnLevel()) {
+//                    msgBean.setAlarmLevel(1);
+//                } else {
+//                    msgBean.setAlarmLevel(3);
+//                }
+//
+//                msgBeanList.add(msgBean);
+//            }
+//        }
+//        return msgBeanList;
+//    }
 
     private void sendCmdHandle() {
         baseViewModel.getLowBatteryWarningThreshold();
@@ -594,9 +594,9 @@ public class PreFlightInspectionViewModel extends ViewModel {
         return toastLiveData;
     }
 
-    public MutableLiveData<ArrayList<MessageBean>> getErrMsgLiveData() {
-        return mErrMsgLiveData;
-    }
+//    public MutableLiveData<ArrayList<MessageBean>> getErrMsgLiveData() {
+//        return mErrMsgLiveData;
+//    }
 
     public MutableLiveData<BaseSysStatusBean> getSysStatusLiveData() {
         return sysStatusLiveData;

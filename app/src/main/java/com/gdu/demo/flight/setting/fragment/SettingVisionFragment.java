@@ -111,7 +111,7 @@ public class SettingVisionFragment extends Fragment {
         initSwitchBtn();
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         pre_switch_vision_obstacle = radarInfo != null && radarInfo.getObstacleIsOpen();
-        mVisionBinding.ivFillInLight.setSelected(GlobalVariable.sFillInLightOpen == 1);
+//        mVisionBinding.ivFillInLight.setSelected(GlobalVariable.sFillInLightOpen == 1);
 
 
         mVisionBinding.tvLandProtectHeightTip.setText(getString(R.string.Msg_LandProtectHeightTip1));
@@ -257,12 +257,12 @@ public class SettingVisionFragment extends Fragment {
                     }
 
                     // 视觉避障异常时无法开启
-                    if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
-                            && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
-                        String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
-                        Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+//                    if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
+//                            && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
+//                        String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
+//                        Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
 
                     if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
                         Toast.makeText(requireContext(), R.string.Label_AttitudeModel_obstaticIsOff, Toast.LENGTH_SHORT).show();
@@ -337,16 +337,16 @@ public class SettingVisionFragment extends Fragment {
         }
     };
 
-    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
-        StringBuilder error = new StringBuilder();
-        for (int i = 0; i < errList.size(); i++) {
-            error.append(errList.get(i).getWarStr());
-            if (i != errList.size() - 1) {
-                error.append("; ");
-            }
-        }
-        return error.toString();
-    }
+//    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
+//        StringBuilder error = new StringBuilder();
+//        for (int i = 0; i < errList.size(); i++) {
+//            error.append(errList.get(i).getWarStr());
+//            if (i != errList.size() - 1) {
+//                error.append("; ");
+//            }
+//        }
+//        return error.toString();
+//    }
 
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -595,7 +595,7 @@ public class SettingVisionFragment extends Fragment {
 
     private void initSwitchBtn() {
         //当视觉避障关闭时进入该界面雷达图关闭    余浩
-        mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && DroneUtils.getFlyModel() != FlyMode.ATTITUDE);
+//        mVisionBinding.ivSwitchVisionObstacle.setSelected(AlgorithmMark.getSingleton().ObStacle && DroneUtils.getFlyModel() != FlyMode.ATTITUDE);
         changeObserveTipVisibility(mVisionBinding.ivSwitchVisionObstacle.isSelected());
     }
 
