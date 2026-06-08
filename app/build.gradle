@@ -97,4 +97,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    implementation 'com.tencent:mmkv:2.0.2'
 }
