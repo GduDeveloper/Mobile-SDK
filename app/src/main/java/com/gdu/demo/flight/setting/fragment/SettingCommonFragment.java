@@ -459,8 +459,8 @@ public class SettingCommonFragment extends Fragment {
                     }
                     byte detectType = 0x00;
                     if (hasChecked) detectType = 0x01;
-                    SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(data.getId(), detectType, (short) data.getLabels().size(), typeArray,
-                            error -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
+//                    SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(data.getId(), detectType, (short) data.getLabels().size(), typeArray,
+//                            error -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
                 }
             });
             DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
@@ -479,26 +479,26 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void initTargetDetectType() {
-        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
-            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
-            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
-            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
-        }
+//        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
+//            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
+//            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
+//            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
+//        }
         mViewBinding.cbPerson.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
         mViewBinding.cbCar.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
         mViewBinding.cbShip.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType());
     }
 
     private void resetAiRecognitionSwitch() {
-        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
-            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
-            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
-            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
-        } else {
-            mViewBinding.cbPerson.setChecked(false);
-            mViewBinding.cbCar.setChecked(false);
-            mViewBinding.cbShip.setChecked(false);
-        }
+//        if (GlobalVariable.aiRecognitionSwitch.second != null && GlobalVariable.aiRecognitionSwitch.second.length == 3) {
+//            mViewBinding.cbPerson.setChecked(GlobalVariable.aiRecognitionSwitch.second[0] == 0x01);
+//            mViewBinding.cbCar.setChecked(GlobalVariable.aiRecognitionSwitch.second[1] == 0x01);
+//            mViewBinding.cbShip.setChecked(GlobalVariable.aiRecognitionSwitch.second[2] == 0x01);
+//        } else {
+//            mViewBinding.cbPerson.setChecked(false);
+//            mViewBinding.cbCar.setChecked(false);
+//            mViewBinding.cbShip.setChecked(false);
+//        }
     }
 
     private void setTargetType() {
@@ -512,23 +512,23 @@ public class SettingCommonFragment extends Fragment {
             resetAiRecognitionSwitch();
             return;
         }
-        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
-            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
-                if (gduError == null){
-                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else {
-            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
-                if (gduError == null){
-                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+//        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
+//            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
+//                if (gduError == null){
+//                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        } else {
+//            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, (byte) 0x01, (short) 3, getCheckedState(), gduError -> {
+//                if (gduError == null){
+//                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        }
     }
 
     private byte[] getCheckedState() {
@@ -551,15 +551,15 @@ public class SettingCommonFragment extends Fragment {
             cancelLoadingAnimator();
             return;
         }
-        SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectModelsListener(sJson -> {
-            if (StringUtils.isEmptyString(sJson)) return;
-            GetAiModelResponse response = new Gson().fromJson(sJson, GetAiModelResponse.class);
-            ThreadHelper.runOnUiThread(() -> {
-                cancelLoadingAnimator();
-                transModelData(response.getModels());
-            });
-        });
-        SdkDemoApplication.getAircraftInstance().getGduVision().getTargetDetectModels(gduError -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "getTargetDetectModels callBack() code = " + gduError));
+//        SdkDemoApplication.getAircraftInstance().getGduVision().setOnTargetDetectModelsListener(sJson -> {
+//            if (StringUtils.isEmptyString(sJson)) return;
+//            GetAiModelResponse response = new Gson().fromJson(sJson, GetAiModelResponse.class);
+//            ThreadHelper.runOnUiThread(() -> {
+//                cancelLoadingAnimator();
+//                transModelData(response.getModels());
+//            });
+//        });
+//        SdkDemoApplication.getAircraftInstance().getGduVision().getTargetDetectModels(gduError -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "getTargetDetectModels callBack() code = " + gduError));
     }
 
     private void cancelLoadingAnimator() {
