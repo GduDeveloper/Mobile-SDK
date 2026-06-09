@@ -82,6 +82,7 @@ dependencies {
     api 'com.amap.api:3dmap:7.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
     // 替换Shape的背景库: https://github.com/JavaNoober/BackgroundLibrary
     implementation 'com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.5'
     // https://github.com/youth5201314/banner
