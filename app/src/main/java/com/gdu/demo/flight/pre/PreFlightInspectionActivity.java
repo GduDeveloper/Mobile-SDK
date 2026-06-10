@@ -22,6 +22,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityPreFligthInspectionBinding;
 import com.gdu.demo.databinding.DialogLayoutBackHomePointBinding;
 import com.gdu.demo.flight.pre.adapter.PreFlightStatusAdapter;
+import com.gdu.demo.flight.pre.adapter.TextAdapter;
 import com.gdu.demo.flight.pre.viewmodel.PreFlightInspectionViewModel;
 import com.gdu.demo.utils.CommonDialog;
 import com.gdu.demo.utils.DroneUtils;
@@ -39,6 +40,7 @@ import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.msdk.key.value.bean.ControlHand;
 import com.gdu.msdk.key.value.bean.FlyMode;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +58,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private PreFlightInspectionViewModel viewModel;
     private int preLimitHeightValue;
     private int preLimitDistanceValue;
-//    private TextAdapter mTextAdapter;
-//    private final List<MessageBean> bannerData = new ArrayList<>();
+    private TextAdapter mTextAdapter;
+    private final List<Diagnostics> bannerData = new ArrayList<>();
     private PreFlightStatusAdapter mStatusAdapter;
 
     @Override
@@ -87,8 +89,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     }
 
         private void initViews() {
-//        mTextAdapter = new TextAdapter(this, bannerData);
-//        mViewBinding.viewFlightStatusTip.setAdapter(mTextAdapter).addBannerLifecycleObserver(this);
+        mTextAdapter = new TextAdapter(this, bannerData);
+        mViewBinding.viewFlightStatusTip.setAdapter(mTextAdapter).addBannerLifecycleObserver(this);
         mViewBinding.btnNextStep.setVisibility(View.GONE);
 
         mViewBinding.sbpLowPowerAlarmPb.setMaxPb(50);
@@ -163,14 +165,14 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             mViewBinding.tvFlightStatus.setTextColor(ContextCompat.getColor(this, data.getFlightStatusColor()));
             mViewBinding.ivMore.setImageResource(data.getMoreRes());
         });
-//        viewModel.getErrMsgLiveData().observe(this, bean -> {
-//            if (null == bean) {
-//                bannerData.clear();
-//            } else {
-//                CollectionUtils.listAddAllAvoidNPE(bannerData, bean);
-//            }
-//            mTextAdapter.notifyDataSetChanged();
-//        });
+        viewModel.getErrMsgLiveData().observe(this, bean -> {
+            if (null == bean) {
+                bannerData.clear();
+            } else {
+                CollectionUtils.listAddAllAvoidNPE(bannerData, bean);
+            }
+            mTextAdapter.notifyDataSetChanged();
+        });
         viewModel.getBaseFlightViewModel().getWarnTipBeanLiveData().observe(this, data->{
             showErrTip(data.getType(), data.getWarnType());
         });

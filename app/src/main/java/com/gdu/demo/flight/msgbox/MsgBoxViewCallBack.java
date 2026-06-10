@@ -1,7 +1,6 @@
 package com.gdu.demo.flight.msgbox;
 
-
-import com.gdu.msdk.hms.bean.WarnBean;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.HashMap;
 
@@ -18,5 +17,5 @@ public interface MsgBoxViewCallBack {
 
     void updateHeadViewBg(int resId);
 
-    void updateWarnList(HashMap<Long, WarnBean> warnList);
+    void updateWarnList(HashMap<Long, Diagnostics> warnList);
 }

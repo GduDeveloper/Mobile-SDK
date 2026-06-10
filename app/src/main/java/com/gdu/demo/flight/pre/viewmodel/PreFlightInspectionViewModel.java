@@ -20,25 +20,22 @@ import com.gdu.demo.flight.pre.bean.BaseSysStatusBean;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
-import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.lib.util.StringUtils;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.msdk.device.component.interfaces.IRTK;
-import com.gdu.msdk.device.component.pod.utils.GimbalUtil;
-import com.gdu.msdk.device.component.pod.utils.SDCardManager;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
-import com.gdu.msdk.hms.bean.WarnBean;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.CycleOnboardRTKInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
-import com.gdu.msdk.manager.rtk.qianxun.QXRTKManager;
 import com.gdu.remotecontroller.AircraftMappingStyle;
+import com.gdu.sdk.base.Diagnostics;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
+import com.gdu.sdk.manager.SDKManager;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
@@ -56,7 +53,7 @@ import io.reactivex.rxjava3.core.Observable;
  * @date 2025/1/10
  * @description TODO
  */
-public class PreFlightInspectionViewModel extends ViewModel {
+public class PreFlightInspectionViewModel extends ViewModel implements Diagnostics.DiagnosticsInformationCallback {
 
     private BaseFlightViewModel baseViewModel;
 
@@ -65,7 +62,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
     private BaseFlightAssistantViewModel baseFlightAssistantViewModel;
 
     private final MutableLiveData<Integer> toastLiveData;
-//    private final MutableLiveData<ArrayList<MessageBean>> mErrMsgLiveData;
+    private final MutableLiveData<List<Diagnostics>> mErrMsgLiveData;
     //飞行系统状态监听
     private final MutableLiveData<BaseSysStatusBean> sysStatusLiveData;
     //飞行状态数据检测
@@ -102,9 +99,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
     private final FlightAssistant mFlightAssistant;
 
-    private HashMap<Long, WarnBean> warnTable;
-    private boolean hadErr;
-
     
     /**
      * 返航高度
@@ -113,7 +107,7 @@ public class PreFlightInspectionViewModel extends ViewModel {
 
     public PreFlightInspectionViewModel() {
         toastLiveData = new MutableLiveData<>();
-//        mErrMsgLiveData = new MutableLiveData<>();
+        mErrMsgLiveData = new MutableLiveData<>();
         sysStatusLiveData = new MutableLiveData<>();
         flyInitStatusData = new MutableLiveData<>();
         flyStatusData = new MutableLiveData<>();
@@ -128,6 +122,8 @@ public class PreFlightInspectionViewModel extends ViewModel {
         lowBatteryWarningLiveData = new MutableLiveData<>();
 
         mFlightAssistant = SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant();
+
+        SDKManager.getInstance().getProduct().setDiagnosticsInformationCallback(this);
     }
 
     public void init(FragmentActivity context){
@@ -171,7 +167,6 @@ public class PreFlightInspectionViewModel extends ViewModel {
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .to(RxLife.toMain(activity))
                 .subscribe(l ->{
-                            getFlightStatus(); //飞机状态信息
                             getFlyMode(activity);
                             getFlightBatteryAndTemp(); //获取飞行器电量
                             getRCBattery(); //获取遥控器电量
@@ -197,21 +192,20 @@ public class PreFlightInspectionViewModel extends ViewModel {
     /**
      * 获取飞机状态信息
      * */
-    private void getFlightStatus(){
+    private void getFlightStatus(List<Diagnostics> list){
         BaseSysStatusBean bean = new BaseSysStatusBean();
-        if(SdkDemoApplication.getAircraftInstance().isConnected()) {
-//            ArrayList<MessageBean> warnErrorList = getWarnErrorList();
-//            boolean isHaveAbnormal = !warnErrorList.isEmpty();
-
+        if(IGduDroneDevice.get().isConnected()) {
+            boolean isHaveAbnormal = !list.isEmpty();
             bean.setStatusTitleColor(R.color.white);
             bean.setFlightStatusColor(R.color.white);
-//            if (isHaveAbnormal) {
-//                bean.setFlightStatusStr(R.string.Label_AircraftStatusAbnormal);
-//                bean.setStatusBg(R.drawable.shape_gradient_ff6c00_ffa96b);
-//            } else {
-//                bean.setFlightStatusStr(R.string.Label_AircraftStatusNormal);
-//                bean.setStatusBg(R.drawable.shape_gradient_11cf42_6ce377);
-//            }
+            if (isHaveAbnormal) {
+                bean.setFlightStatusStr(R.string.Label_AircraftStatusAbnormal);
+                bean.setStatusBg(R.drawable.shape_gradient_ff6c00_ffa96b);
+                mErrMsgLiveData.postValue(list);
+            } else {
+                bean.setFlightStatusStr(R.string.Label_AircraftStatusNormal);
+                bean.setStatusBg(R.drawable.shape_gradient_11cf42_6ce377);
+            }
             bean.setMoreRes(R.drawable.icon_right_enter_white);
         } else {
             bean.setStatusTitleColor(R.color.color_535658);
@@ -594,9 +588,9 @@ public class PreFlightInspectionViewModel extends ViewModel {
         return toastLiveData;
     }
 
-//    public MutableLiveData<ArrayList<MessageBean>> getErrMsgLiveData() {
-//        return mErrMsgLiveData;
-//    }
+    public MutableLiveData<List<Diagnostics>> getErrMsgLiveData() {
+        return mErrMsgLiveData;
+    }
 
     public MutableLiveData<BaseSysStatusBean> getSysStatusLiveData() {
         return sysStatusLiveData;
@@ -841,5 +835,12 @@ public class PreFlightInspectionViewModel extends ViewModel {
             return;
         }
         baseViewModel.setHomePoint(lat, lng, (byte) 0);
+    }
+
+    @Override
+    public void onUpdate(List<Diagnostics> list) {
+        ThreadHelper.runOnUiThread(() -> {
+            getFlightStatus(list); //飞机状态信息
+        });
     }
 }

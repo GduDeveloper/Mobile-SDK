@@ -11,6 +11,7 @@ import com.gdu.demo.R;
 import com.gdu.demo.databinding.LayoutMessageBoxListBinding;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class MsgBoxPopView extends PopupWindow {
     //弹窗布局Binding
     private LayoutMessageBoxListBinding mViewBinding;
 
-    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private final List<Diagnostics> msgData = new ArrayList<>();
     private MessageBoxAdapter mBoxAdapter;
 
     public MsgBoxPopView(Context context, View view) {
@@ -52,7 +53,7 @@ public class MsgBoxPopView extends PopupWindow {
         mViewBinding.rvMsgBoxContent.setAdapter(mBoxAdapter);
     }
 
-    public void updateMsgData(List<MsgBoxBean> data) {
+    public void updateMsgData(List<Diagnostics> data) {
         XLogger.INSTANCE.getAPP().i("updateMsgData() dataSize = " + data.size());
         msgData.clear();
         CollectionUtils.listAddAllAvoidNPE(msgData, data);

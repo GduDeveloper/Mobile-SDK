@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.gdu.common.error.Error;
 import com.gdu.demo.databinding.ActivityFlightBinding;
 import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
-import com.gdu.demo.flight.msgbox.MsgBoxBean;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
@@ -34,12 +33,12 @@ import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
-import com.gdu.msdk.hms.bean.WarnBean;
 import com.gdu.msdk.key.value.CycleFCInfo1;
 import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.msdk.key.value.ai.TargetMode;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
+import com.gdu.sdk.base.Diagnostics;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
@@ -321,10 +320,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
     }
-    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private final List<Diagnostics> msgData = new ArrayList<>();
     private MsgBoxPopView mMsgBoxPopWin;
 
-    private void showMsgBoxPopWindow(List<MsgBoxBean> data) {
+    private void showMsgBoxPopWindow(List<Diagnostics> data) {
         if (mMsgBoxPopWin == null) {
             mMsgBoxPopWin = new MsgBoxPopView(this, viewBinding.ivMsgBoxLabel);
         }
@@ -375,7 +374,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     }
 
     @Override
-    public void updateWarnList(HashMap<Long, WarnBean> warnList) {
+    public void updateWarnList(HashMap<Long, Diagnostics> warnList) {
         if (!SdkDemoApplication.getAircraftInstance().isConnected() || warnList.isEmpty()) {
             msgData.clear();
             ThreadHelper.runOnUiThread(() -> {
@@ -385,14 +384,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             return;
         }
         msgData.clear();
-        for (Map.Entry<Long, WarnBean> warnBeanEntry : warnList.entrySet()) {
-            if (!warnBeanEntry.getValue().isErr) {
-                continue;
-            }
-            final MsgBoxBean bean = new MsgBoxBean();
-            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
-            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
-            CollectionUtils.listAddAvoidNull(msgData, bean);
+        for (Map.Entry<Long, Diagnostics> warnBeanEntry : warnList.entrySet()) {
+//            if (!warnBeanEntry.getValue().isErr) {
+//                continue;
+//            }
+//            final MsgBoxBean bean = new MsgBoxBean();
+//            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
+//            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
+//            CollectionUtils.listAddAvoidNull(msgData, bean);
         }
         ThreadHelper.runOnUiThread(() -> {
             if (!CollectionUtils.isEmptyList(msgData)) {
