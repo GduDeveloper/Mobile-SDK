@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.gdu.common.error.Error;
 import com.gdu.demo.databinding.ActivityFlightBinding;
 import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
-import com.gdu.demo.flight.msgbox.MsgBoxBean;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
@@ -39,6 +38,7 @@ import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.msdk.key.value.ai.TargetMode;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
+import com.gdu.sdk.base.Diagnostics;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
@@ -55,8 +55,8 @@ import java.util.Map;
 public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
 
     private ActivityFlightBinding viewBinding;
-    private GDUCodecManager codecManager;
-    private VideoFeeder.VideoDataListener videoDataListener ;
+//    private GDUCodecManager codecManager;
+//    private VideoFeeder.VideoDataListener videoDataListener ;
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
@@ -156,14 +156,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
         });
         viewBinding.textureView.setSurfaceTextureListener(this);
-        videoDataListener = new VideoFeeder.VideoDataListener() {
-            @Override
-            public void onReceive(byte[] bytes, int size) {
-                if (null != codecManager) {
-                    codecManager.sendDataToDecoder(bytes, size);
-                }
-            }
-        };
+//        videoDataListener = new VideoFeeder.VideoDataListener() {
+//            @Override
+//            public void onReceive(byte[] bytes, int size) {
+//                if (null != codecManager) {
+//                    codecManager.sendDataToDecoder(bytes, size);
+//                }
+//            }
+//        };
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
         viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
@@ -231,7 +231,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private void initData() {
         new MsgBoxManager(this, 1,this);
-        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+//        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
     }
 
 
@@ -276,34 +276,34 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onResume() {
         super.onResume();
-        if (codecManager != null) {
-            codecManager.onResume();
-        }
+//        if (codecManager != null) {
+//            codecManager.onResume();
+//        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (codecManager != null) {
-            codecManager.onPause();
-        }
+//        if (codecManager != null) {
+//            codecManager.onPause();
+//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (codecManager != null) {
-            codecManager.onDestroy();
-        }
+//        if (codecManager != null) {
+//            codecManager.onDestroy();
+//        }
         if (mCustomSizeFocusHelper != null) {
             mCustomSizeFocusHelper.onDestroy();
         }
     }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (codecManager == null) {
-            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
-        }
+//        if (codecManager == null) {
+//            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
+//        }
     }
 
     @Override
@@ -320,10 +320,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
     }
-    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private final List<Diagnostics> msgData = new ArrayList<>();
     private MsgBoxPopView mMsgBoxPopWin;
 
-    private void showMsgBoxPopWindow(List<MsgBoxBean> data) {
+    private void showMsgBoxPopWindow(List<Diagnostics> data) {
         if (mMsgBoxPopWin == null) {
             mMsgBoxPopWin = new MsgBoxPopView(this, viewBinding.ivMsgBoxLabel);
         }
@@ -374,7 +374,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     }
 
     @Override
-    public void updateWarnList(HashMap<Long, WarnBean> warnList) {
+    public void updateWarnList(HashMap<Long, Diagnostics> warnList) {
         if (!SdkDemoApplication.getAircraftInstance().isConnected() || warnList.isEmpty()) {
             msgData.clear();
             ThreadHelper.runOnUiThread(() -> {
@@ -384,14 +384,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             return;
         }
         msgData.clear();
-        for (Map.Entry<Long, WarnBean> warnBeanEntry : warnList.entrySet()) {
-            if (!warnBeanEntry.getValue().isErr) {
-                continue;
-            }
-            final MsgBoxBean bean = new MsgBoxBean();
-            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
-            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
-            CollectionUtils.listAddAvoidNull(msgData, bean);
+        for (Map.Entry<Long, Diagnostics> warnBeanEntry : warnList.entrySet()) {
+//            if (!warnBeanEntry.getValue().isErr) {
+//                continue;
+//            }
+//            final MsgBoxBean bean = new MsgBoxBean();
+//            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
+//            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
+//            CollectionUtils.listAddAvoidNull(msgData, bean);
         }
         ThreadHelper.runOnUiThread(() -> {
             if (!CollectionUtils.isEmptyList(msgData)) {

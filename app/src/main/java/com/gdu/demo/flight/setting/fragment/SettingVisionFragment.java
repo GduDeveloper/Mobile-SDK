@@ -263,12 +263,12 @@ public class SettingVisionFragment extends Fragment {
                     }
 
                     // 视觉避障异常时无法开启
-                    if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
-                            && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
-                        String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
-                        Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+//                    if (!mVisionBinding.ivSwitchVisionObstacle.isSelected()
+//                            && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(requireContext()))) {
+//                        String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(requireContext()));
+//                        Toast.makeText(requireContext(), "视觉避障异常 无法开启", Toast.LENGTH_SHORT).show();
+//                        return;
+//                    }
 
                     if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mVisionBinding.ivSwitchVisionObstacle.isSelected()) {
                         Toast.makeText(requireContext(), R.string.Label_AttitudeModel_obstaticIsOff, Toast.LENGTH_SHORT).show();
@@ -343,16 +343,16 @@ public class SettingVisionFragment extends Fragment {
         }
     };
 
-    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
-        StringBuilder error = new StringBuilder();
-        for (int i = 0; i < errList.size(); i++) {
-            error.append(errList.get(i).getWarStr());
-            if (i != errList.size() - 1) {
-                error.append("; ");
-            }
-        }
-        return error.toString();
-    }
+//    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
+//        StringBuilder error = new StringBuilder();
+//        for (int i = 0; i < errList.size(); i++) {
+//            error.append(errList.get(i).getWarStr());
+//            if (i != errList.size() - 1) {
+//                error.append("; ");
+//            }
+//        }
+//        return error.toString();
+//    }
 
 
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {

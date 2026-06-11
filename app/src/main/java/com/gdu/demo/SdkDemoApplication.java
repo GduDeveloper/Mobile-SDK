@@ -19,6 +19,7 @@ public class SdkDemoApplication extends Application {
         super.onCreate();
         gduApplication = this;
         GduEnvConfig.application = gduApplication;
+        GduEnvConfig.FLAVOR = "MobileSdkV4";
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
         NoHttp.initialize(this);

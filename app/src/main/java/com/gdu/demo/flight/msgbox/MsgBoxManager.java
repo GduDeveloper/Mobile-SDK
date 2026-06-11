@@ -2,38 +2,31 @@ package com.gdu.demo.flight.msgbox;
 
 import androidx.fragment.app.FragmentActivity;
 
-import com.gdu.beans.WarnBean;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.core.XLogger;
-import com.gdu.sdk.util.CommonUtils;
-import com.rxjava.rxlife.RxLife;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.sdk.base.Diagnostics;
+import com.gdu.sdk.manager.SDKManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.disposables.Disposable;
 
 /**
  * @author wuqb
  * @date 2025/1/21
  * @Description 消息盒子内容管理
  */
-public class MsgBoxManager {
+public class MsgBoxManager implements Diagnostics.DiagnosticsInformationCallback {
 
     private final FragmentActivity mActivity;
     private final MsgBoxViewCallBack mCallback;
-    private Disposable getAlarmDispose = null;
-    private final List<WarnBean> mOldWarnBeans = new ArrayList<>();
-    private final List<WarnBean> mNewWarnBeans = new ArrayList<>();//获取当前最新警告信息列表
-    private HashMap<Long, WarnBean> mWarnTable;
+    private final List<Diagnostics> mOldWarnBeans = new ArrayList<>();
+    private final List<Diagnostics> mNewWarnBeans = new ArrayList<>();//获取当前最新警告信息列表
+    private HashMap<Long, Diagnostics> mWarnTable;
     /** 当前语音提示byte对应值 */
     private byte currentShowIndex = -1;
     /** 当前任务类型 */
@@ -43,18 +36,8 @@ public class MsgBoxManager {
         this.mActivity = activity;
         this.mCallback = callBack;
         this.mImportType = importType;
-        initAlarmObservable();
-    }
-
-    /**
-     * 初始化getAlarmData观察者
-     */
-    public void initAlarmObservable() {
-        if (getAlarmDispose == null || getAlarmDispose.isDisposed()) {
-            getAlarmDispose = Observable.interval(0, 3000, TimeUnit.MILLISECONDS)
-                    .to(RxLife.to(mActivity))
-                    .subscribe(l -> getAlarmData(), throwable -> XLogger.INSTANCE.getAPP().e("获取告警信息出错", throwable));
-        }
+        if (SDKManager.getInstance().getProduct() != null)
+            SDKManager.getInstance().getProduct().setDiagnosticsInformationCallback(this);
     }
 
     /**
@@ -62,77 +45,77 @@ public class MsgBoxManager {
      */
     private void getAlarmData() {
         boolean hadErr;
-        if (SdkDemoApplication.getAircraftInstance().isConnected()) {
+        if (IGduDroneDevice.get().isConnected()) {
             mNewWarnBeans.clear();
             mWarnTable = null;
-            mWarnTable = CommonUtils.initWarnTable(mActivity);//初始化警告列表集合
-            CommonUtils.updateWarnList(mActivity, mWarnTable);
+//            mWarnTable = CommonUtils.initWarnTable(mActivity);//初始化警告列表集合
+//            CommonUtils.updateWarnList(mActivity, mWarnTable);
 
             //将异常信息集合添加到mNewWarnBeans中
-            for (Map.Entry<Long, WarnBean> mEntry : mWarnTable.entrySet()) {
-                WarnBean mWarnBean = mEntry.getValue();
-                if (mWarnBean.isErr) {
-                    CollectionUtils.listAddAvoidNull(mNewWarnBeans, mWarnBean);
-                }
-            }
+//            for (Map.Entry<Long, Diagnostics> mEntry : mWarnTable.entrySet()) {
+//                Diagnostics mWarnBean = mEntry.getValue();
+//                if (mWarnBean.isErr) {
+//                    CollectionUtils.listAddAvoidNull(mNewWarnBeans, mWarnBean);
+//                }
+//            }
             if (CollectionUtils.isEmptyList(mOldWarnBeans)) {//如果展示的警告列表为空，将mNewWarnBeans添加到列表中
                 currentShowIndex = 0;
                 CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
             } else {
-                if (mOldWarnBeans.size() == mNewWarnBeans.size()) {//新老列表长度一样
-                    for (int k = 0; k < mNewWarnBeans.size(); k++) {
-                        WarnBean newWarnBean = mNewWarnBeans.get(k);
-                        boolean isHaveWarn = false;
-                        for (WarnBean mBean : mOldWarnBeans) {
-                            if (newWarnBean.warnId == mBean.warnId) {
-                                isHaveWarn = true;
-                                mBean.warnStr = newWarnBean.warnStr;
-                                break;
-                            }
-                        }
-                        if (!isHaveWarn) {
-                            currentShowIndex = 0;
-                            mOldWarnBeans.clear();
-                            CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
-                            break;
-                        }
-                    }
-                } else {//新老列表长度不一样
-                    currentShowIndex = 0;
-                    mOldWarnBeans.clear();
-                    CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
-                }
+//                if (mOldWarnBeans.size() == mNewWarnBeans.size()) {//新老列表长度一样
+//                    for (int k = 0; k < mNewWarnBeans.size(); k++) {
+//                        WarnBean newWarnBean = mNewWarnBeans.get(k);
+//                        boolean isHaveWarn = false;
+//                        for (WarnBean mBean : mOldWarnBeans) {
+//                            if (newWarnBean.warnId == mBean.warnId) {
+//                                isHaveWarn = true;
+//                                mBean.warnStr = newWarnBean.warnStr;
+//                                break;
+//                            }
+//                        }
+//                        if (!isHaveWarn) {
+//                            currentShowIndex = 0;
+//                            mOldWarnBeans.clear();
+//                            CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
+//                            break;
+//                        }
+//                    }
+//                } else {//新老列表长度不一样
+//                    currentShowIndex = 0;
+//                    mOldWarnBeans.clear();
+//                    CollectionUtils.listAddAllAvoidNPE(mOldWarnBeans, mNewWarnBeans);
+//                }
             }
             hadErr = !CollectionUtils.isEmptyList(mOldWarnBeans);
         } else {//飞行器未连接，认为没有警告信息，不展示警告
             hadErr = false;
         }
         if (hadErr) {
-            WarnBean showWarnBean = mOldWarnBeans.get(currentShowIndex++);
+            Diagnostics showWarnBean = mOldWarnBeans.get(currentShowIndex++);
             if (currentShowIndex >= mOldWarnBeans.size()) {
                 currentShowIndex = 0;
             }
-            long errId = showWarnBean.warnId;
+//            long errId = showWarnBean.warnId;
             // 是否是警告类异常提示(靠近禁飞区 和 GPS>8&&<12的时候)
             if (mCallback == null) {
                 XLogger.INSTANCE.getAPP().i("getAlarmData() mViewCallBack is null");
                 return;
             }
-            if (errId == WarnBean.NEARNOFLY || errId == WarnBean.GPS) {
-                mCallback.updateTitleTVColor(R.color.white);
-                if (mWarnTable.containsKey(errId)) {
-                    mCallback.updateTitleTvTxt(Objects.requireNonNull(mWarnTable.get(errId)).warnStr);
-                }
-                mCallback.updateHeadViewBg(R.drawable.shape_bg_f69d00_r2);
-                mCallback.updateWarnList(mWarnTable);
-            } else {
-                mCallback.updateTitleTVColor(R.color.white);
-                if (mWarnTable.containsKey(errId)) {
-                    mCallback.updateTitleTvTxt(Objects.requireNonNull(mWarnTable.get(errId)).warnStr);
-                }
-                mCallback.updateHeadViewBg(R.drawable.shape_bg_ff0000_r2);
-                mCallback.updateWarnList(mWarnTable);
-            }
+//            if (errId == WarnBean.NEARNOFLY /*|| errId == WarnBean.GPS*/) {
+//                mCallback.updateTitleTVColor(R.color.white);
+//                if (mWarnTable.containsKey(errId)) {
+//                    mCallback.updateTitleTvTxt(Objects.requireNonNull(mWarnTable.get(errId)).warnStr);
+//                }
+//                mCallback.updateHeadViewBg(R.drawable.shape_bg_f69d00_r2);
+//                mCallback.updateWarnList(mWarnTable);
+//            } else {
+//                mCallback.updateTitleTVColor(R.color.white);
+//                if (mWarnTable.containsKey(errId)) {
+//                    mCallback.updateTitleTvTxt(Objects.requireNonNull(mWarnTable.get(errId)).warnStr);
+//                }
+//                mCallback.updateHeadViewBg(R.drawable.shape_bg_ff0000_r2);
+//                mCallback.updateWarnList(mWarnTable);
+//            }
         } else {
             noErrHandle();
         }
@@ -161,5 +144,10 @@ public class MsgBoxManager {
             mCallback.updateWarnList(mWarnTable);
             mCallback.updateHeadViewBg(android.R.color.transparent);
         }
+    }
+
+    @Override
+    public void onUpdate(List<Diagnostics> list) {
+
     }
 }
