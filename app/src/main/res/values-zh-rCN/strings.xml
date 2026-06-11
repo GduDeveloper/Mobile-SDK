@@ -731,6 +731,7 @@
     <string name="Label_NoControlPermissionTip">遥控器没有控制权限，请获取控制权限后再试</string>
     <string name="please_exit_point_fly">请先结束指点飞行</string>
     <string name="Msg_AI_Recoginition_Warn">目标识别未开启</string>
+    <string name="Msg_no_ai_models_warn">当前无识别算法</string>
     <string name="target_detect_model">模型</string>
     <string name="target_detect_using">使用中</string>
     <string name="Label_ResetDroneFail">飞机重置失败</string>

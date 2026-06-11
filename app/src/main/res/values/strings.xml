@@ -741,6 +741,7 @@
     <string name="Label_NoControlPermissionTip">The remote control does not have control permission, please obtain control permission and try again</string>
     <string name="please_exit_point_fly">Please finish the pointing flight</string>
     <string name="Msg_AI_Recoginition_Warn">Target recognition is not enabled</string>
+    <string name="Msg_no_ai_models_warn">No recognition algorithm currently</string>
     <string name="target_detect_model">Model</string>
     <string name="target_detect_using">In use</string>
     <string name="Label_ResetDroneFail">Drone reset failed</string>
