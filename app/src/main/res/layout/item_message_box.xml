@@ -2,7 +2,7 @@
 <com.noober.background.view.BLConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="@dimen/dp_174"
+    android:layout_width="@dimen/dp_197"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     app:bl_corners_radius="@dimen/dp_2"
@@ -40,5 +40,7 @@
         android:textStyle="normal"
         app:layout_constraintLeft_toRightOf="@+id/tipIcon"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:paddingEnd="@dimen/dp_4"
         tools:text="测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子测试消息盒子..." />
 </com.noober.background.view.BLConstraintLayout>

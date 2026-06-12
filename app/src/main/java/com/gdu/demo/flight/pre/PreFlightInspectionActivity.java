@@ -32,7 +32,6 @@ import com.gdu.drone.ReturnHomeSettingType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.ViewUtils;
-import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.component.interfaces.IFlightController;

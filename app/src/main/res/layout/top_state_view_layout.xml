@@ -29,6 +29,8 @@
         android:gravity="center_vertical"
         android:maxWidth="@dimen/dp_165"
         android:minWidth="@dimen/dp_100"
+        android:visibility="gone"
+        android:background="@color/color_666666"
         app:layout_constraintLeft_toRightOf="@id/iv_back"
         app:layout_constraintTop_toTopOf="@id/iv_back"
         app:layout_constraintBottom_toBottomOf="@id/iv_back"

@@ -76,6 +76,7 @@ dependencies {
     api "com.google.code.gson:gson:2.10.1"
 //    api  files('libs/GduLibrary-2.0.77.aar')
     api  files('libs/msdk-3.0.0.aar')
+    api  files('libs/GduSdkSoundEngine-release.aar')
 
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.yolanda.nohttp:nohttp:1.0.3'

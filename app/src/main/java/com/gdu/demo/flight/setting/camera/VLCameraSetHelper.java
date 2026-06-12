@@ -559,7 +559,7 @@ public class VLCameraSetHelper extends CameraSetHelper implements View.OnClickLi
         XLogger.INSTANCE.getAPP().i("checkDroneConnState()");
         boolean result = false;
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            showToast(R.string.fly_no_conn);
+            showToast(R.string.aircraft_not_connect);
             result = false;
         } else {
             result = true;
