@@ -588,7 +588,7 @@ public class SettingVisionFragment extends Fragment {
 
     private boolean connStateToast() {
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            Toast.makeText(requireContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

@@ -39,7 +39,7 @@ public class TextAdapter extends BannerAdapter<Diagnostics, TextAdapter.ViewHold
 
     @Override
     public void onBindView(ViewHolder holder, Diagnostics data, int position, int size) {
-        holder.contentTv.setText(data.getCode()+"");
+        holder.contentTv.setText(data.getReason());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

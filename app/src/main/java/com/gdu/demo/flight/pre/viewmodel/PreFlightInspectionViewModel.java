@@ -15,6 +15,7 @@ import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.flight.base.BaseFlightAssistantViewModel;
 import com.gdu.demo.flight.base.BaseFlightViewModel;
 import com.gdu.demo.flight.base.BaseRCViewModel;
+import com.gdu.demo.flight.msgbox.ErrCodeGetStringUtils;
 import com.gdu.demo.flight.pre.bean.BaseFlightStatusBean;
 import com.gdu.demo.flight.pre.bean.BaseSysStatusBean;
 import com.gdu.demo.flight.pre.bean.ObstacleStatusBean;
@@ -22,28 +23,31 @@ import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.UnitChnageUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ThreadHelper;
+import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.interfaces.IHms;
 import com.gdu.msdk.device.component.interfaces.IRTK;
+import com.gdu.msdk.device.component.pod.utils.SDCardStatus;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.CycleBatteryInfo;
 import com.gdu.msdk.key.value.CycleOnboardRTKInfo;
 import com.gdu.msdk.key.value.bean.FlyMode;
 import com.gdu.msdk.key.value.bean.PlanType;
+import com.gdu.msdk.util.KVObserver;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.sdk.base.Diagnostics;
 import com.gdu.sdk.flightcontroller.bean.LimitDistanceInfo;
 import com.gdu.sdk.flightcontroller.bean.LimitHeightInfo;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.flightcontroller.flightassistant.FlightAssistant;
+import com.gdu.sdk.hms.WarningLevel;
 import com.gdu.sdk.manager.SDKManager;
 import com.rxjava.rxlife.RxLife;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.rxjava3.core.Observable;
@@ -105,6 +109,13 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
      */
     private int preGoHomeHeight = -1;
 
+    private final KVObserver<SDCardStatus> sdCardObserver = new KVObserver<SDCardStatus>() {
+        @Override
+        public void update(SDCardStatus sdCardStatus) {
+            getSDCardStatus();
+        }
+    };
+
     public PreFlightInspectionViewModel() {
         toastLiveData = new MutableLiveData<>();
         mErrMsgLiveData = new MutableLiveData<>();
@@ -124,6 +135,8 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
         mFlightAssistant = SdkDemoApplication.getAircraftInstance().getFlightController().getFlightAssistant();
 
         SDKManager.getInstance().getProduct().setDiagnosticsInformationCallback(this);
+
+        IHms.get().getSdCardStatus().register(sdCardObserver);
     }
 
     public void init(FragmentActivity context){
@@ -135,24 +148,6 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
     public BaseFlightViewModel getBaseFlightViewModel(){
         return baseViewModel;
     }
-
-    /**
-     * 健康检测
-     * */
-//    public void checkAlarmData(FragmentActivity activity){
-//        //设置初始状态
-//        ArrayList<MessageBean> messageBeans = new ArrayList<>();
-//        final MessageBean mBean = new MessageBean();
-//        mBean.setMsg(activity.getString(R.string.Msg_PreCheckDefaultAlarm));
-//        mBean.setAlarmLevel(2);
-//        messageBeans.add(mBean);
-//        mErrMsgLiveData.setValue(messageBeans);
-//        warnTable = CommonUtils.initWarnTable(activity);
-//        //定时器检测错误码
-//        Observable.interval(0, 3, TimeUnit.SECONDS)
-//                .to(RxLife.toMain(activity))
-//                .subscribe(l -> judgeHaveAlarm(activity), throwable -> throwable.printStackTrace());
-//    }
 
     /**
      * 检查页面内容
@@ -171,10 +166,11 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
                             getFlightBatteryAndTemp(); //获取飞行器电量
                             getRCBattery(); //获取遥控器电量
                             getRTKStatus(); //获取RTK状态
-                            getSDCardStatus(activity); //获取SD卡状态
                             getCurrRC(); //获取当前遥控器控制
                             getSDRStatus(); //获取当前图传状态
                         }, throwable -> Log.e("更新界面状态出错", throwable.getMessage()));
+        //获取SD卡状态
+        getSDCardStatus();
     }
 
     private void initFlightStatus(){
@@ -201,6 +197,11 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
             if (isHaveAbnormal) {
                 bean.setFlightStatusStr(R.string.Label_AircraftStatusAbnormal);
                 bean.setStatusBg(R.drawable.shape_gradient_ff6c00_ffa96b);
+
+                for (Diagnostics diagnostics : list) {
+                    int warnResId = ErrCodeGetStringUtils.getErrCodeStringResId(diagnostics.getHealthInformation().getComponentId(), diagnostics.getHealthInformation().getFunctionId(), diagnostics.getCode());
+                    diagnostics.setReason(ResourceUtils.getString(warnResId));
+                }
                 mErrMsgLiveData.postValue(list);
             } else {
                 bean.setFlightStatusStr(R.string.Label_AircraftStatusNormal);
@@ -385,88 +386,36 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
         }
     }
 
-    private void getSDCardStatus(Context context) {
-//        BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDCARD);
-//        if (null == bean) return;
-//        String sdCardStatusStr = bean.getContent();
-//        final String lightSdCardName = context.getResources().getString(R.string.Label_VisibleLightSDCard);
-//        final String irSdCardName = context.getResources().getString(R.string.Label_IRSDCard);
-//        String sdCardTip = "";
-//        if (GimbalUtil.INSTANCE.isMultiCardStatusGimbal()) {
-//            if (DroneUtils.getLightSDCardStatus() == 3 && DroneUtils.getIrSDCardStatus() == 3) {
-//                sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-//            } else {
-//                String lightErrStr = CommonUtils.getSDCardDetailErrTip(context, 2);
-//                if (!TextUtils.isEmpty(lightErrStr)) {
-//                    sdCardTip = lightErrStr;
-//                }
-//                String irErrStr = CommonUtils.getSDCardDetailErrTip(context, 1);
-//                if (TextUtils.isEmpty(sdCardTip) && !TextUtils.isEmpty(irErrStr)) {
-//                    sdCardTip = irErrStr;
-//                }
-//
-//                if (TextUtils.isEmpty(sdCardTip)) {
-//                    sdCardTip = context.getString(com.gdu.api.R.string.Label_CardInserted);
-//                }
-//            }
-//        } else if (ICamera.get().getSupportFun().getEnableMultiSDCard()) {
-//            String lightStorageFull = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), lightSdCardName);
-//            String irStorageFull = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), irSdCardName);
-//            if (SDCardManager.Companion.getInstance().isLightMemoryFull()) {
-//                sdCardTip = lightStorageFull;
-//            }
-//
-//            if (TextUtils.isEmpty(sdCardTip) && SDCardManager.Companion.getInstance().isIRMemoryIsFull()) {
-//                sdCardTip = irStorageFull;
-//            }
-//
-//            if (TextUtils.isEmpty(sdCardTip)) {
-//                int sdInsertStatus = SDCardManager.Companion.getInstance().checkTMSSDCard();
-//                switch (sdInsertStatus) {
-//                    // 2张卡都已插入
-//                    case 0:
-//                        sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
-//                        break;
-//                    // sd1(红外未插卡)
-//                    case 1:
-//                        sdCardTip = context.getResources().getString(R.string.Label_IRNoCardInserted);
-//                        break;
-//                    // sd2(可见光未插卡)
-//                    case 2:
-//                        sdCardTip = context.getResources().getString(R.string.Label_VisibleLightNoCardInserted);
-//                        break;
-//                    // 3 两张卡均未插
-//                    case 3:
-//                        sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-//                        break;
-//
-//                    default:
-//                        break;
-//                }
-//            }
-//        } else if (GimbalUtil.INSTANCE.isSingleSDReportGimbal()) {
-//            sdCardTip = CommonUtils.getSDCardDetailErrTip(context, 3);
-//            if (TextUtils.isEmpty(sdCardTip)) {
-//                sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
-//            }
-//        } else {
-//            if (SDCardManager.Companion.getInstance().isMemoryFull()) {
-//                sdCardTip = String.format(context.getResources().getString(R.string.Label_SdISFULL_Compatible), "");
-//            }
-//
-//            if (TextUtils.isEmpty(sdCardTip)) {
-//                if (SDCardManager.Companion.getInstance().isInsertSDCard(0)) {
-//                    sdCardTip = context.getResources().getString(R.string.Label_CardInserted);
-//                } else {
-//                    sdCardTip = context.getResources().getString(R.string.Label_NoCardInserted);
-//                }
-//            }
-//        }
-//        bean.setContent(sdCardTip);
-//        bean.setContentEnable(context.getResources().getString(R.string.Label_CardInserted).equals(sdCardTip));
-//        if (!TextUtils.equals(bean.getContent(), sdCardStatusStr)) {
-//            flyStatusData.setValue(bean);
-//        }
+    private void getSDCardStatus() {
+        BaseFlightStatusBean bean =  getFlightStatusBean(BaseFlightStatusBean.STATUS_TYPE_SDCARD);
+        if (null == bean) return;
+        String sdCardStatusStr = bean.getContent();
+        String sdCardTip = "";
+        SDCardStatus status = IHms.get().getSdCardStatus().getValue();
+        if (status == SDCardStatus.NORMAL) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_CardInserted);
+        } else if (status == SDCardStatus.CARD_ERROR) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_AbnormalSDCard);
+        } else if (status == SDCardStatus.CARD_FULL) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_SdISFULL);
+        } else if (status == SDCardStatus.NO_CARD) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_NoCardInserted);
+        } else if (status == SDCardStatus.LOW_SPEED_CARD) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_LowSpeedSDCard);
+        } else if (status == SDCardStatus.FORMAT_ERROR) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_SdFormatErr);
+        } else if (status == SDCardStatus.EXTERNAL_CARD_FORMAT_ERROR) {
+            sdCardTip = ResourceUtils.getString(R.string.Label_SdFormatErr);
+        }
+
+        bean.setContent(sdCardTip);
+        bean.setContentEnable(ResourceUtils.getString(R.string.Label_CardInserted).equals(sdCardTip));
+        XLogger.APP.i("SDCardStatus:"+status+",sdCardTip:"+sdCardTip);
+        if (!TextUtils.equals(bean.getContent(), sdCardStatusStr)) {
+            ThreadHelper.runOnUiThread(() -> {
+                flyStatusData.setValue(bean);
+            });
+        }
     }
 
     /**
@@ -511,43 +460,12 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
 
 
 
-    private void judgeHaveAlarm(Context context) {
+    private void judgeHaveAlarm() {
         //已连接的才需处理
-        if(SdkDemoApplication.getAircraftInstance().isConnected()) {
-            getAlarmData(context);
+        if(IGduDroneDevice.get().isConnected()) {
             sendCmdHandle();
         }
     }
-
-    private void getAlarmData(Context context) {
-//        CommonUtils.updateWarnList(context, warnTable);
-//        ArrayList<MessageBean> warnErrorList = getWarnErrorList();
-//        hadErr = !warnErrorList.isEmpty();
-//        if (hadErr) {
-//            mErrMsgLiveData.setValue(null);
-//            mErrMsgLiveData.setValue(warnErrorList);
-//        }
-    }
-
-//    private ArrayList<MessageBean> getWarnErrorList() {
-//        ArrayList<MessageBean> msgBeanList = new ArrayList<>();
-//        for (Map.Entry<Long, WarnBean> mEntry : warnTable.entrySet()) {
-//            if (mEntry.getValue().isErr) {
-//                MessageBean msgBean = new MessageBean();
-//                msgBean.setMsg(mEntry.getValue().warnStr);
-//                if (ErrCodeGrade.ErrCodeGrade_1 == mEntry.getValue().getWarnLevel()) {
-//                    msgBean.setAlarmLevel(2);
-//                } else if (ErrCodeGrade.ErrCodeGrade_2 == mEntry.getValue().getWarnLevel()) {
-//                    msgBean.setAlarmLevel(1);
-//                } else {
-//                    msgBean.setAlarmLevel(3);
-//                }
-//
-//                msgBeanList.add(msgBean);
-//            }
-//        }
-//        return msgBeanList;
-//    }
 
     private void sendCmdHandle() {
         baseViewModel.getLowBatteryWarningThreshold();
@@ -565,7 +483,7 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
      * 返航高度获取
      * */
     private void getHomeBackHeight(){
-        if (SdkDemoApplication.getAircraftInstance().isConnected()){
+        if (IGduDroneDevice.get().isConnected()){
             if (DroneUtils.getBackHeight() > 0) {
                 preGoHomeHeight = DroneUtils.getBackHeight() / 10;
                 goHomeHeightLiveData.postValue(String.valueOf(UnitChnageUtils.getUnitValue(preGoHomeHeight)));
@@ -841,6 +759,13 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
     public void onUpdate(List<Diagnostics> list) {
         ThreadHelper.runOnUiThread(() -> {
             getFlightStatus(list); //飞机状态信息
+            judgeHaveAlarm();
         });
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        IHms.get().getSdCardStatus().unregister(sdCardObserver);
     }
 }

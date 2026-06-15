@@ -248,7 +248,7 @@ public class SensorStatusView extends FrameLayout implements View.OnClickListene
     private boolean connStateToast() {
         XLogger.INSTANCE.getAPP().i("connStateToast()");
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            Toast.makeText(mContext, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

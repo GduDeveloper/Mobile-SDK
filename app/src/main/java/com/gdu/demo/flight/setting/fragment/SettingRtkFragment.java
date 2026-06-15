@@ -143,7 +143,7 @@ public class SettingRtkFragment extends Fragment {
 
         binding.rtkServiceView.setOnOptionClickListener((parentId, view, position) -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
             ReferenceStationSource stationSource = ReferenceStationSource.CUSTOM_NETWORK_SERVICE;
@@ -529,7 +529,7 @@ public class SettingRtkFragment extends Fragment {
 
     private void confirmRTK() {
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
-            Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && DroneUtils.isBDSOpen()) {//北斗模式下无法连接RTK

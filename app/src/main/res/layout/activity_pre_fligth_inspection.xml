@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_17"
                     android:gravity="center_vertical"
-                    android:text="@string/fly_no_conn"
+                    android:text="@string/aircraft_not_connect"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_12"
                     android:textStyle="bold"

@@ -4,6 +4,7 @@ import static com.gdu.demo.utils.MultiTimerManager.NORMAL_TIMER;
 import static com.gdu.demo.utils.MultiTimerManager.QUICK_TIMER;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -149,12 +150,21 @@ public class TopStateView  extends ConstraintLayout {
         binding.statusBarTitle.setText(title);
     }
 
+    public void setStatusVisible(int visibility){
+        binding.statusBarTitle.setVisibility(visibility);
+    }
+
+    public int getStatusVisible(){
+        return binding.statusBarTitle.getVisibility();
+    }
+
     public void setStatusTextColor(int txtColor){
         binding.statusBarTitle.setTextColor(getResources().getColor(txtColor));
     }
 
-    public void setStatusTextBackground(int resId){
-        binding.statusBarTitle.setBackgroundResource(resId);
+
+    public void setStatusBackgroundTintList(ColorStateList colorStateList){
+        binding.statusBarTitle.setBackgroundTintList(colorStateList);
     }
 
     public void setViewClickListener(OnClickCallBack listener) {

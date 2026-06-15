@@ -114,7 +114,7 @@ public class SettingSDRViewModel extends BaseViewModel {
      * */
     public void set4GServiceIp(String setIp){
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            toastLiveData.setValue(R.string.fly_no_conn);
+            toastLiveData.setValue(R.string.aircraft_not_connect);
             return;
         }
         try {
@@ -252,7 +252,7 @@ public class SettingSDRViewModel extends BaseViewModel {
      * */
     public void setLTEPushStreamType(byte type){
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            toastLiveData.setValue(R.string.fly_no_conn);
+            toastLiveData.setValue(R.string.aircraft_not_connect);
             ltePushStreamTypeLiveData.postValue(true);
             return;
         }

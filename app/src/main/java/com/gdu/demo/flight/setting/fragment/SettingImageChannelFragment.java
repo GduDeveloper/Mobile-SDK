@@ -141,7 +141,7 @@ public class SettingImageChannelFragment extends Fragment {
     private void setListener() {
         mViewBinding.ovSwitchImgChannel.setOnOptionClickListener((parentId, view, position) -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
             if (!DroneUtils.isGround()) {

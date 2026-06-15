@@ -192,7 +192,7 @@ public class IMUCalibrationActivity extends FragmentActivity implements View.OnC
      */
     private void switchCalibration(byte status) {
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            Toast.makeText(this, R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!DroneUtils.getPlaneHadLock()) {
