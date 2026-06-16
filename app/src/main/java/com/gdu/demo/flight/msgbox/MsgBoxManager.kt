@@ -106,6 +106,10 @@ class MsgBoxManager: Diagnostics.DiagnosticsInformationCallback{
             val errCode = mCodeBean.code
             val warnLevel = mCodeBean.healthInformation.warningLevel
             val warnResId = ErrCodeGetStringUtils.getErrCodeStringResId(mCodeBean.healthInformation.componentId, mCodeBean.healthInformation.functionId, errCode)
+            if (warnResId == 0){
+                println("未适配的错误码，componentId:"+mCodeBean.healthInformation.componentId+", functionId:"+mCodeBean.healthInformation.functionId+", errCode:"+errCode)
+                continue
+            }
             mCodeBean.reason = ResourceUtils.getString(warnResId)
             println("warnLevel:"+warnLevel+", errCode:"+errCode+",reason:"+mCodeBean.reason)
             //判断是否是消息盒子
