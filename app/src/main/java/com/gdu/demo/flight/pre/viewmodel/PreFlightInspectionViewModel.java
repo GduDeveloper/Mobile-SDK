@@ -200,7 +200,9 @@ public class PreFlightInspectionViewModel extends ViewModel implements Diagnosti
 
                 for (Diagnostics diagnostics : list) {
                     int warnResId = ErrCodeGetStringUtils.getErrCodeStringResId(diagnostics.getHealthInformation().getComponentId(), diagnostics.getHealthInformation().getFunctionId(), diagnostics.getCode());
-                    diagnostics.setReason(ResourceUtils.getString(warnResId));
+                    if (warnResId != 0) {
+                        diagnostics.setReason(ResourceUtils.getString(warnResId));
+                    }
                 }
                 mErrMsgLiveData.postValue(list);
             } else {
