@@ -249,6 +249,10 @@ object DroneUtils {
     val signalChannel: Int
         get() = IAirLink.get.airLinkSignalInterference.value?.signalChannel?.toInt()?: 0
 
+    @JvmStatic
+    val rtkIsLoading: Boolean
+        get() = IRTK.get.fcCoprocessorRtk?.rtkIsLoading == 1
+
     /**------------------------ 遥控器 ----------------------------------*/
 
     @JvmStatic

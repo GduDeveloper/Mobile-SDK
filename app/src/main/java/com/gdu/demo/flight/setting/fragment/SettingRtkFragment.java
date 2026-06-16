@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.gdu.api.RtkManager;
+import com.gdu.api.RTKManager;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.FragmentSettingRtkBinding;
@@ -43,6 +43,20 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class SettingRtkFragment extends Fragment {
 
+    /** rtk是否开启*/
+    public static final String RTK_SWITCH = "rtk_switch";
+    /** RTK IP */
+    public static final String RTK_IP = "rtkIp";
+    /** RTK Port */
+    public static final String RTK_PORT = "rtkPort";
+    /** RTK 端口 */
+    public static final String RTK_ACCOUNT = "rtkAccount";
+    /** RTK 密码 */
+    public static final String RTK_PASSWORD = "rtkPassword";
+    /** RTK 挂载点 */
+    public static final String RTK_MOUNT_POINT = "rtkMountPoint";
+    /** RTK是否连接成功  连接成功下次自动连接 */
+    public static final String RTK_CONNECT_STATE = "RTK_CONNECT_SUCC";
     /**
      * 当前显示二级页面类型
      */
@@ -129,7 +143,7 @@ public class SettingRtkFragment extends Fragment {
 
         binding.rtkServiceView.setOnOptionClickListener((parentId, view, position) -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
             ReferenceStationSource stationSource = ReferenceStationSource.CUSTOM_NETWORK_SERVICE;
@@ -187,8 +201,7 @@ public class SettingRtkFragment extends Fragment {
     private void initData() {
         XLogger.INSTANCE.getAPP().i("initData()");
         mRTKServiceList = getResources().getStringArray(R.array.rtk_service_array_onboard);
-//        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true);
-        boolean isOpen = false;   //TODO ZZL
+        boolean isOpen = SPUtils.getInstance().getBoolean(RTK_SWITCH, true);
         if (isOpen) {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -299,8 +312,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         XLogger.INSTANCE.getAPP().i("showConnectedView()");
-//        if (DroneUtils.getRtkType() == 1 && GlobalVariable.rtkIsLoading == 1) { //TODO ZZL
-        if (DroneUtils.getRtkType() == 1 ) {
+        if (DroneUtils.getRtkType() == 1 && DroneUtils.getRtkIsLoading()) {
             binding.tvConnectState.setText(getString(R.string.string_converging));
         } else {
             binding.tvConnectState.setText(getString(R.string.connect_succeed));
@@ -344,6 +356,35 @@ public class SettingRtkFragment extends Fragment {
 //            binding.mountPointEdit.setText("AUTO");
 //        }
 //    }
+    private void initParam() {
+        XLogger.INSTANCE.getAPP().i("initParam()");
+        String ip = SPUtils.getInstance().getString(RTK_IP);
+        if (!StringUtils.isEmptyString(ip)) {
+            binding.ipAddressEdit.setText(ip);
+        } else {
+            binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
+        }
+        String port = SPUtils.getInstance().getString(RTK_PORT);
+        if (!StringUtils.isEmptyString(port)) {
+            binding.portEdit.setText(port);
+        } else {
+            binding.portEdit.setText("8002");
+        }
+        String account = SPUtils.getInstance().getString(RTK_ACCOUNT);
+        if (!StringUtils.isEmptyString(account)) {
+            binding.accountEdit.setText(account);
+        }
+        String password = SPUtils.getInstance().getString(RTK_PASSWORD);
+        if (!StringUtils.isEmptyString(password)) {
+            binding.passwordEdit.setText(password);
+        }
+        String mp = SPUtils.getInstance().getString(RTK_MOUNT_POINT);
+        if (!StringUtils.isEmptyString(mp)) {
+            binding.mountPointEdit.setText(mp);
+        } else {
+            binding.mountPointEdit.setText("AUTO");
+        }
+    }
 
     private void showOnboardRtkConnect() {
         if (mLastRTKType == 3) {
@@ -485,14 +526,12 @@ public class SettingRtkFragment extends Fragment {
 
     private void breakRTK() {
         rtk.disconnectRtk();
-//        SPUtils.getInstance().put(SPUtils.RTK_CONNECT_STATE, false);  //TODO ZZL
+        SPUtils.getInstance().put(RTK_CONNECT_STATE, false);
         lastChangeRtkTime = System.currentTimeMillis();
     }
 
     private void setRtkSwitch() {
-
-//        boolean isOpen = SPUtils.getInstance().getBoolean(SPUtils.RTK_SWITCH, true); //TODO ZZL
-        boolean isOpen = false;
+        boolean isOpen = SPUtils.getInstance().getBoolean(RTK_SWITCH, true);
         //当前开启则关闭
         if (isOpen) {
             binding.rtkSwitchView.setSelected(false);
@@ -500,7 +539,7 @@ public class SettingRtkFragment extends Fragment {
             binding.rtkStateView.setVisibility(View.GONE);
             binding.rtkParamLayout.setVisibility(View.GONE);
             closeRTK();
-//            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, false);  //TODO ZZL
+            SPUtils.getInstance().put(RTK_SWITCH, false);
         } else {
             binding.rtkSwitchView.setSelected(true);
             binding.rlSelectRtkType.setVisibility(View.VISIBLE);
@@ -511,14 +550,14 @@ public class SettingRtkFragment extends Fragment {
             } else {
                 binding.rtkParamLayout.setVisibility(View.GONE);
             }
-//            SPUtils.getInstance().put(SPUtils.RTK_SWITCH, true);  //TODO ZZL
+            SPUtils.getInstance().put(RTK_SWITCH, true);
         }
     }
 
 
     private void confirmRTK() {
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {   //未连接飞机
-            Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!IGduDroneDevice.get().getPlanType().getValue().isS200Type() && DroneUtils.isBDSOpen()) {//北斗模式下无法连接RTK
@@ -526,8 +565,7 @@ public class SettingRtkFragment extends Fragment {
             return;
         }
         // 飞行中未fixed不能连接rtk
-//        if (!DroneUtils.isGround() && GlobalVariable.rtkIsLoading == 1) { //TODO ZZL
-        if (!DroneUtils.isGround() ) {
+        if (!DroneUtils.isGround() && DroneUtils.getRtkIsLoading()) {
             Toast.makeText(getContext(), R.string.string_not_allow_connect_rtk, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -558,7 +596,7 @@ public class SettingRtkFragment extends Fragment {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
 
-        rtk.connectRtk(stationSource, null, new RtkManager.OnRtkConnectListener() {
+        rtk.connectRtk(stationSource, null, new RTKManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {

@@ -10,23 +10,23 @@ import android.widget.PopupWindow;
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.LayoutMessageBoxListBinding;
 import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.component.hms.bean.ErrorCodeDisplayForm;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.ArrayList;
 import java.util.List;
-/**
- * 消息盒子弹窗
- * */
+
 public class MsgBoxPopView extends PopupWindow {
-    //弹窗所在Activity上下文
     private Context mContext;
-    //弹窗布局Binding
     private LayoutMessageBoxListBinding mViewBinding;
 
-    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private final List<Diagnostics> msgData = new ArrayList<>();
     private MessageBoxAdapter mBoxAdapter;
+    private final int maxHeight = (int) ResourceUtils.getDimension(R.dimen.dp_127);
 
-    public MsgBoxPopView(Context context, View view) {
+    public MsgBoxPopView(Context context) {
         super(context);
         init(context);
     }
@@ -40,8 +40,7 @@ public class MsgBoxPopView extends PopupWindow {
     private void initView() {
         mViewBinding = LayoutMessageBoxListBinding.inflate(LayoutInflater.from(mContext));
         setContentView(mViewBinding.getRoot());
-        setWidth((int) mContext.getResources().getDimension(R.dimen.dp_188));
-        setHeight((int) mContext.getResources().getDimension(R.dimen.dp_127));
+        setWidth((int) mContext.getResources().getDimension(R.dimen.dp_213));
         setOutsideTouchable(true);
         setFocusable(true);
         setBackgroundDrawable(new BitmapDrawable(null, (Bitmap) null));
@@ -52,13 +51,53 @@ public class MsgBoxPopView extends PopupWindow {
         mViewBinding.rvMsgBoxContent.setAdapter(mBoxAdapter);
     }
 
-    public void updateMsgData(List<MsgBoxBean> data) {
-        XLogger.INSTANCE.getAPP().i("updateMsgData() dataSize = " + data.size());
-        msgData.clear();
-        CollectionUtils.listAddAllAvoidNPE(msgData, data);
-        if (mBoxAdapter == null) {
+    public void updateMsgData(List<Diagnostics> data) {
+        if (mBoxAdapter == null || data.isEmpty()) {
+            dismiss();
             return;
         }
-        mBoxAdapter.setNewInstance(msgData);
+        onUpdateRecycler(data, false);
+    }
+
+    /**
+     * 更新数据
+     * */
+    private void onUpdateRecycler(List<Diagnostics> data, Boolean showAdjust){
+        boolean adjustHeight = msgData.size() != data.size();
+        XLogger.APP.i("updateMsgData() dataSize = " + data.size()+",adjustHeight="+adjustHeight);
+        msgData.clear();
+        CollectionUtils.listAddAllAvoidNPE(msgData, data);
+        mBoxAdapter.setList(msgData);
+        if (adjustHeight) {
+            adjustHeight(showAdjust);
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+    }
+
+
+
+    /**
+     * 动态调整高度
+     */
+    private void adjustHeight(Boolean showAdjust) {
+        // 测量内容实际需要的高度
+        mViewBinding.rvMsgBoxContent.measure(
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        );
+        int contentHeight = mViewBinding.rvMsgBoxContent.getMeasuredHeight();
+        // 超过最大高度，设置为最大高度，并确保内容可滚动
+        // 未超过最大高度，使用实际高度
+        int finalHeight = Math.min(contentHeight, maxHeight);
+        if (showAdjust){
+            // 更新PopupWindow高度
+            update(getWidth(), finalHeight);
+        }else {
+            setHeight(finalHeight);
+        }
     }
 }

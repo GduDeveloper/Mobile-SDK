@@ -81,17 +81,17 @@ public class FlightViewModel extends ViewModel {
     public void startTargetDetect(int lightType) {
         XLogger.INSTANCE.getAPP().i("startTargetDetect() lightType = " + lightType);
         setAIBoxTargetDetect((byte) 0x01);
-        SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType, gduError -> {
-                    XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
-                    if (gduError == null) {
-                        DroneUtils.setDiscernIsOpen(true);
-                        DroneUtils.setTargetDetectMode(true);
-                        toastLiveData.postValue(R.string.ai_box_open_success);
-                    }else {
-                        DroneUtils.setTargetDetectMode(false);
-                        toastLiveData.postValue(R.string.ai_box_open_fail);
-                    }
-                });
+//        SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType, gduError -> {
+//                    XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
+//                    if (gduError == null) {
+//                        DroneUtils.setDiscernIsOpen(true);
+//                        DroneUtils.setTargetDetectMode(true);
+//                        toastLiveData.postValue(R.string.ai_box_open_success);
+//                    }else {
+//                        DroneUtils.setTargetDetectMode(false);
+//                        toastLiveData.postValue(R.string.ai_box_open_fail);
+//                    }
+//                });
     }
 
     /**
@@ -116,13 +116,13 @@ public class FlightViewModel extends ViewModel {
         if (!DroneUtils.getAiBoxOnline()) {
             return;
         }
-        SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType, new CommonCallbacks.CompletionCallback() {
-            @Override
-            public void onResult(Error error) {
-                if (error == null){
-                }
-            }
-        });
+//        SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType, new CommonCallbacks.CompletionCallback() {
+//            @Override
+//            public void onResult(Error error) {
+//                if (error == null){
+//                }
+//            }
+//        });
     }
 
     private void setTargetDetect(byte detectType) {
@@ -135,36 +135,36 @@ public class FlightViewModel extends ViewModel {
         } else {
             typeArray = new byte[3];
         }
-        XLogger.INSTANCE.getAPP().i("TargetDetectHelper", "setTargetDetect aiRecognitionSwitch.first = " + GlobalVariable.aiRecognitionSwitch.first);
-        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
-            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
-                if (null == gduError){
-                    if (detectType == 0x01) {
-                        DroneUtils.setDiscernIsOpen(true);
-                        DroneUtils.setTargetDetectMode(true);
-                    }else {
-                    }
-                }else {
-                    if (detectType == 0x01) {
-                        DroneUtils.setTargetDetectMode(false);
-                    }
-                }
-            });
-        } else {
-            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, detectType, (short) 3, typeArray, gduError -> {
-                if (null == gduError){
-                    if (detectType == 0x01) {
-                        DroneUtils.setDiscernIsOpen(true);
-                        DroneUtils.setTargetDetectMode(true);
-                    }else {
-                    }
-                }else {
-                    if (detectType == 0x01) {
-                        DroneUtils.setTargetDetectMode(false);
-                    }
-                }
-            });
-        }
+//        XLogger.INSTANCE.getAPP().i("TargetDetectHelper", "setTargetDetect aiRecognitionSwitch.first = " + GlobalVariable.aiRecognitionSwitch.first);
+//        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
+//            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
+//                if (null == gduError){
+//                    if (detectType == 0x01) {
+//                        DroneUtils.setDiscernIsOpen(true);
+//                        DroneUtils.setTargetDetectMode(true);
+//                    }else {
+//                    }
+//                }else {
+//                    if (detectType == 0x01) {
+//                        DroneUtils.setTargetDetectMode(false);
+//                    }
+//                }
+//            });
+//        } else {
+//            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, detectType, (short) 3, typeArray, gduError -> {
+//                if (null == gduError){
+//                    if (detectType == 0x01) {
+//                        DroneUtils.setDiscernIsOpen(true);
+//                        DroneUtils.setTargetDetectMode(true);
+//                    }else {
+//                    }
+//                }else {
+//                    if (detectType == 0x01) {
+//                        DroneUtils.setTargetDetectMode(false);
+//                    }
+//                }
+//            });
+//        }
     }
 
     public MutableLiveData<Integer> getToastLiveData() {

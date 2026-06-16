@@ -182,14 +182,14 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 
         mDroneListView.setOnItemClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mDroneInfoList.get(position);
-            XLogger.INSTANCE.getAPP().i("test updateStatus Match mac " + info.mac);
-            if (!SdkDemoApplication.getAircraftInstance().isConnected() || info.mac == null) {
+            XLogger.INSTANCE.getAPP().i("test updateStatus Match mac " + info.getMac());
+            if (!SdkDemoApplication.getAircraftInstance().isConnected() || info.getMac() == null) {
                 Toast.makeText(mContext, R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (info.connectStatus == 0) {
+            if (info.getConnectStatus() == 0) {
                 showMatchDialog(info);
-                XLogger.INSTANCE.getAPP().i("test updateStatus Match " + info.id);
+                XLogger.INSTANCE.getAPP().i("test updateStatus Match " + info.getId());
 //                GduApplication.getSingleApp().gduCommunication.setNetworking((byte)0x03, (byte) info.id, new SocketCallBack3() {
 //                    @Override
 //                    public void callBack(int code, GduFrame3 bean) {
@@ -202,11 +202,11 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 
         mRCListView.setOnItemClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mRCInfoList.get(position);
-            if (info.mac == null) {
+            if (info.getMac() == null) {
                 Toast.makeText(mContext, R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
                 return;
             }
-            if (info.connectStatus == 0) {
+            if (info.getConnectStatus() == 0) {
                 showMatchDialog(info);
 //                GduApplication.getSingleApp().gduCommunication.setNetworking((byte)0x03, (byte) info.id, new SocketCallBack3() {
 //                    @Override
@@ -219,7 +219,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 
         mRCListView.setOnItemLongClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mRCInfoList.get(position);
-            if (info.id != 0) {
+            if (info.getId() != 0) {
                 showDeletePointDialog(info);
             }
             return true;
@@ -227,7 +227,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
 
         mDroneListView.setOnItemLongClickListener((parent, view, position, id) -> {
             IMChildPointInfo info = mDroneInfoList.get(position);
-            if (info.id != 0) {
+            if (info.getId() != 0) {
                 showDeletePointDialog(info);
             }
             return true;
@@ -277,7 +277,7 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
         int online = 0;
         for (List<IMChildPointInfo> list : lists) {
             for (IMChildPointInfo info : list) {
-                if (info.connectStatus == 1) {
+                if (info.getConnectStatus() == 1) {
                     online++;
                 }
             }
@@ -294,15 +294,15 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
         mNetInfoList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             IMChildPointInfo droneInfo = new IMChildPointInfo();
-            droneInfo.id = i;
+            droneInfo.setId(i);
 //            droneInfo.pairId = i;
-            droneInfo.connectStatus = 0;
+            droneInfo.setConnectStatus(0);
             mDroneInfoList.add(droneInfo);
             IMChildPointInfo rcInfo = new IMChildPointInfo();
-            rcInfo.connectStatus = 0;
+            rcInfo.setConnectStatus(0);
             mRCInfoList.add(rcInfo);
             IMChildPointInfo netInfo = new IMChildPointInfo();
-            netInfo.connectStatus = 0;
+            netInfo.setConnectStatus(0);
             mNetInfoList.add(netInfo);
         }
     }
@@ -336,10 +336,10 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
             for (int i = 0; i < droneNum; i++) {
                 IMChildPointInfo tmpInfo = mCurrentDroneInfoList.get(i);
                 IMChildPointInfo info = mDroneInfoList.get(i);
-                info.id = tmpInfo.id;
-                info.connectStatus = tmpInfo.connectStatus;
-                info.type = tmpInfo.type;
-                info.mac = tmpInfo.mac;
+                info.setId(tmpInfo.getId());
+                info.setConnectStatus(tmpInfo.getConnectStatus());
+                info.setType(tmpInfo.getType());
+                info.setMac(tmpInfo.getMac());
             }
         }
         int rcNum = mCurrentRCInfoList.size();
@@ -348,10 +348,10 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
             for (int i = 0; i < rcNum; i++) {
                 IMChildPointInfo tmpRCInfo = mCurrentRCInfoList.get(i);
                 IMChildPointInfo info = mRCInfoList.get(i);
-                info.mac = tmpRCInfo.mac;
-                info.type = tmpRCInfo.type;
-                info.connectStatus = tmpRCInfo.connectStatus;
-                info.id = tmpRCInfo.id;
+                info.setMac(tmpRCInfo.getMac());
+                info.setType(tmpRCInfo.getType());
+                info.setConnectStatus(tmpRCInfo.getConnectStatus());
+                info.setId(tmpRCInfo.getId());
                 if (i == 0) {
 //                    if (rcInfo.connectStatus == 1) {
 //                        mRC1Layout.setBackgroundResource(R.drawable.shape_networking_online);
@@ -369,10 +369,10 @@ public class AdvanceNetworkingView extends RelativeLayout implements View.OnClic
      */
     private void sortDroneList(){
         Collections.sort(mCurrentDroneInfoList, (t1, t2) -> {
-            if (t1.id == 0) {
+            if (t1.getId() == 0) {
                 return -1;
             } else {
-                if (t1.connectStatus > t2.connectStatus) {
+                if (t1.getConnectStatus() > t2.getConnectStatus()) {
                     return -1;
                 } else {
                     return 1;

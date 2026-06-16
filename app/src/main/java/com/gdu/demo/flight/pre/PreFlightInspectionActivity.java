@@ -32,7 +32,6 @@ import com.gdu.drone.ReturnHomeSettingType;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.NumberUtils;
 import com.gdu.lib.util.ViewUtils;
-import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.config.DroneValueConstants;
 import com.gdu.msdk.device.component.interfaces.IFlightController;
@@ -40,6 +39,7 @@ import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.msdk.key.value.bean.ControlHand;
 import com.gdu.msdk.key.value.bean.FlyMode;
+import com.gdu.sdk.base.Diagnostics;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +58,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private int preLimitHeightValue;
     private int preLimitDistanceValue;
     private TextAdapter mTextAdapter;
-    private final List<MessageBean> bannerData = new ArrayList<>();
+    private final List<Diagnostics> bannerData = new ArrayList<>();
     private PreFlightStatusAdapter mStatusAdapter;
 
     @Override
@@ -208,7 +208,7 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         });
 
         //检查飞行错误状态
-        viewModel.checkAlarmData(this);
+//        viewModel.checkAlarmData(this);
         //检查飞行参数状态
         viewModel.checkFlightStatus(this);
     }
@@ -791,16 +791,16 @@ public class PreFlightInspectionActivity extends FragmentActivity {
     private void switchVisionObstacleClickHandle() {
         if (uavUnConnect()) return;
         // 视觉避障异常时无法开启
-        if (!mViewBinding.ivVisionObstacleSwitch.isSelected()
-                && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
-            String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(this));
-            new CommonDialog.Builder(getSupportFragmentManager()).setTitle(getString(R.string.string_vision_error))
-                    .setContent(errStr)
-                    .setCancelVisible(false)
-                    .setCancelableOutside(false)
-                    .setSure(getString(R.string.Label_Sure)).build().show();
-            return;
-        }
+//        if (!mViewBinding.ivVisionObstacleSwitch.isSelected()
+//                && !CollectionUtils.isEmptyList(CommonUtils.allowOpenObstacle(this))) {
+//            String errStr = getVisionObstacleErrContent(CommonUtils.allowOpenObstacle(this));
+//            new CommonDialog.Builder(getSupportFragmentManager()).setTitle(getString(R.string.string_vision_error))
+//                    .setContent(errStr)
+//                    .setCancelVisible(false)
+//                    .setCancelableOutside(false)
+//                    .setSure(getString(R.string.Label_Sure)).build().show();
+//            return;
+//        }
 
 
         if (DroneUtils.getFlyModel() == FlyMode.ATTITUDE && !mViewBinding.ivVisionObstacleSwitch.isSelected()) {
@@ -842,16 +842,16 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         viewModel.getBaseFlightAssistantViewModel().setVisionSensingEnabled(isOn);
     }
 
-    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
-        StringBuilder error = new StringBuilder();
-        for (int i = 0; i < errList.size(); i++) {
-            error.append(errList.get(i).getWarStr());
-            if (i != errList.size() - 1) {
-                error.append("; ");
-            }
-        }
-        return error.toString();
-    }
+//    private String getVisionObstacleErrContent(List<FlightHealthStatusDetailBean> errList) {
+//        StringBuilder error = new StringBuilder();
+//        for (int i = 0; i < errList.size(); i++) {
+//            error.append(errList.get(i).getWarStr());
+//            if (i != errList.size() - 1) {
+//                error.append("; ");
+//            }
+//        }
+//        return error.toString();
+//    }
 
     /**
      * 无人机未连接判断

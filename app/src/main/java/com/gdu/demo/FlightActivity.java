@@ -1,5 +1,6 @@
 package com.gdu.demo;
 
+import android.content.res.ColorStateList;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -14,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider;
 import com.gdu.common.error.Error;
 import com.gdu.demo.databinding.ActivityFlightBinding;
 import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
-import com.gdu.demo.flight.msgbox.MsgBoxBean;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
@@ -32,15 +32,19 @@ import com.gdu.gimbal.GimbalState;
 import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.StringUtils;
 import com.gdu.lib.util.ViewUtils;
+import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.key.value.CycleFCInfo1;
 import com.gdu.msdk.key.value.CycleRadarInfo;
 import com.gdu.msdk.key.value.ai.TargetMode;
+import com.gdu.msdk.util.KVObserver;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
+import com.gdu.sdk.base.Diagnostics;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.Gimbal;
+import com.gdu.sdk.hms.WarningLevel;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -52,11 +56,11 @@ import java.util.List;
 import java.util.Map;
 
 
-public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, MsgBoxViewCallBack, View.OnClickListener {
+public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, View.OnClickListener {
 
     private ActivityFlightBinding viewBinding;
-    private GDUCodecManager codecManager;
-    private VideoFeeder.VideoDataListener videoDataListener ;
+//    private GDUCodecManager codecManager;
+//    private VideoFeeder.VideoDataListener videoDataListener ;
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
@@ -64,6 +68,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
      * 目标检测类
      */
     private TargetDetectHelper mTargetDetectHelper;
+
+
+    private KVObserver<Integer> mErrMsgSize;
+    private KVObserver<Diagnostics> mErrRollMsg;
+    private KVObserver<List<Diagnostics>> mErrMsgList;
+    private MsgBoxManager msgBoxManager;
 
 
     @Override
@@ -156,14 +166,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
         });
         viewBinding.textureView.setSurfaceTextureListener(this);
-        videoDataListener = new VideoFeeder.VideoDataListener() {
-            @Override
-            public void onReceive(byte[] bytes, int size) {
-                if (null != codecManager) {
-                    codecManager.sendDataToDecoder(bytes, size);
-                }
-            }
-        };
+//        videoDataListener = new VideoFeeder.VideoDataListener() {
+//            @Override
+//            public void onReceive(byte[] bytes, int size) {
+//                if (null != codecManager) {
+//                    codecManager.sendDataToDecoder(bytes, size);
+//                }
+//            }
+//        };
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
         viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
@@ -230,8 +240,21 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
 
     private void initData() {
-        new MsgBoxManager(this, 1,this);
-        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+        msgBoxManager = new MsgBoxManager();
+        mErrMsgSize = this::onExceptionSize;
+        mErrRollMsg = this::onExceptionMsg;
+        mErrMsgList = diagnostics -> {
+            if (null==mMsgBoxPopWin){
+                msgData.size();
+                msgData.addAll(diagnostics);
+            }else {
+                mMsgBoxPopWin.updateMsgData(diagnostics);
+            }
+        };
+        msgBoxManager.getErrMsgSize().register(mErrMsgSize);
+        msgBoxManager.getErrRollMsg().register(mErrRollMsg);
+        msgBoxManager.getErrMsgList().register(mErrMsgList);
+//        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
     }
 
 
@@ -276,34 +299,42 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onResume() {
         super.onResume();
-        if (codecManager != null) {
-            codecManager.onResume();
-        }
+//        if (codecManager != null) {
+//            codecManager.onResume();
+//        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (codecManager != null) {
-            codecManager.onPause();
-        }
+//        if (codecManager != null) {
+//            codecManager.onPause();
+//        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (codecManager != null) {
-            codecManager.onDestroy();
-        }
+//        if (codecManager != null) {
+//            codecManager.onDestroy();
+//        }
         if (mCustomSizeFocusHelper != null) {
             mCustomSizeFocusHelper.onDestroy();
+        }
+        if (null!=msgBoxManager){
+            if (null!=mErrMsgSize)
+                msgBoxManager.getErrMsgSize().unregister(mErrMsgSize);
+            if (null!=mErrRollMsg)
+                msgBoxManager.getErrRollMsg().unregister(mErrRollMsg);
+            if (null!=mErrMsgList)
+                msgBoxManager.getErrMsgList().unregister(mErrMsgList);
         }
     }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (codecManager == null) {
-            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
-        }
+//        if (codecManager == null) {
+//            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
+//        }
     }
 
     @Override
@@ -320,12 +351,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
     }
-    private final List<MsgBoxBean> msgData = new ArrayList<>();
+    private final List<Diagnostics> msgData = new ArrayList<>();
     private MsgBoxPopView mMsgBoxPopWin;
 
-    private void showMsgBoxPopWindow(List<MsgBoxBean> data) {
+    private void showMsgBoxPopWindow(List<Diagnostics> data) {
         if (mMsgBoxPopWin == null) {
-            mMsgBoxPopWin = new MsgBoxPopView(this, viewBinding.ivMsgBoxLabel);
+            mMsgBoxPopWin = new MsgBoxPopView(this);
         }
         final boolean isShow = viewBinding.ivMsgBoxLabel.isSelected();
         mMsgBoxPopWin.setOnDismissListener(() -> ThreadHelper.runOnUiThreadDelayed(()
@@ -343,8 +374,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_msgBoxLabel) {
-            if (msgData.isEmpty() || StringUtils.isEmptyString(viewBinding.tvMsgBoxNum.getText().toString())
-                    || Integer.parseInt(viewBinding.tvMsgBoxNum.getText().toString().trim()) == 0) {
+            if (viewBinding.tvMsgBoxNum.getVisibility() == View.GONE) {
                 return;
             }
             showMsgBoxPopWindow(msgData);
@@ -354,53 +384,56 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         }
     }
 
-    @Override
-    public void updateTitleTvTxt(String title) {
-        ThreadHelper.runOnUiThread(() -> viewBinding.topStateView.setStatusText(title));
-    }
-
-    @Override
-    public void updateTitleTVColor(int txtColor) {
-        ThreadHelper.runOnUiThread(() -> viewBinding.topStateView.setStatusTextColor(txtColor));
-    }
-
-    @Override
-    public void updateHeadViewBg(int resId) {
+    private void onExceptionSize(int size) {
         ThreadHelper.runOnUiThread(() -> {
-            if (resId != 0) {
-                viewBinding.topStateView.setStatusTextBackground(resId);
+            System.out.println("wuqb onExceptionSize size = " + size);
+            if (size <= 0) {
+                viewBinding.tvMsgBoxNum.setText(String.valueOf(0));
+                viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
+            }else{
+                viewBinding.tvMsgBoxNum.setText(String.valueOf(size));
+                viewBinding.tvMsgBoxNum.setVisibility(View.VISIBLE);
             }
         });
     }
-
-    @Override
-    public void updateWarnList(HashMap<Long, WarnBean> warnList) {
-        if (!SdkDemoApplication.getAircraftInstance().isConnected() || warnList.isEmpty()) {
-            msgData.clear();
+// java
+    private int preMsgBoxBg = R.color.color_666666;
+    private void onExceptionMsg(Diagnostics bean) {
+        if (bean == null) return;
+        if (StringUtils.isEmptyString(bean.getReason())) {
             ThreadHelper.runOnUiThread(() -> {
-                viewBinding.tvMsgBoxNum.setText("0");
-                viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
+                if (viewBinding.topStateView.getStatusVisible() == View.VISIBLE) {
+                    viewBinding.topStateView.setStatusVisible(View.GONE);
+                }
+                if (viewBinding.tvMsgBoxNum.getVisibility() == View.VISIBLE) {
+                    viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
+                }
             });
             return;
         }
-        msgData.clear();
-        for (Map.Entry<Long, WarnBean> warnBeanEntry : warnList.entrySet()) {
-            if (!warnBeanEntry.getValue().isErr) {
-                continue;
-            }
-            final MsgBoxBean bean = new MsgBoxBean();
-            bean.setMsgContent(warnBeanEntry.getValue().warnStr);
-            bean.setWarnLevel(warnBeanEntry.getValue().getWarnLevel());
-            CollectionUtils.listAddAvoidNull(msgData, bean);
-        }
-        ThreadHelper.runOnUiThread(() -> {
-            if (!CollectionUtils.isEmptyList(msgData)) {
-                viewBinding.tvMsgBoxNum.setText(String.valueOf(msgData.size()));
-                viewBinding.tvMsgBoxNum.setVisibility(View.VISIBLE);
-            } else {
-                viewBinding.tvMsgBoxNum.setText("0");
-                viewBinding.tvMsgBoxNum.setVisibility(View.GONE);
 
+        int color = R.color.color_666666;
+        WarningLevel warnLevel = bean.getHealthInformation().getWarningLevel();
+
+        System.out.println("wuqb onExceptionMsg warnLevel = " + warnLevel + ",reason=" + bean.getReason());
+        if (warnLevel == WarningLevel.WARNING) {
+            color = R.color.red;
+        } else if (warnLevel == WarningLevel.CAUTION || warnLevel == WarningLevel.NOTICE) {
+            color = R.color.color_EAA300;
+        }
+
+        final int finalColor = color;
+        final String finalWarnStr = bean.getReason();
+        ThreadHelper.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (preMsgBoxBg != finalColor) {
+                    viewBinding.topStateView.setStatusBackgroundTintList(ColorStateList.valueOf(ResourceUtils.getColor(finalColor)));
+                    viewBinding.tvMsgBoxNum.setBackgroundTintList(ColorStateList.valueOf(ResourceUtils.getColor(finalColor)));
+                    preMsgBoxBg = finalColor;
+                }
+                viewBinding.topStateView.setStatusVisible(View.VISIBLE);
+                viewBinding.topStateView.setStatusText(finalWarnStr);
             }
         });
     }

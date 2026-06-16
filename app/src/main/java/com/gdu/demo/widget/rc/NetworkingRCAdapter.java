@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.remotecontroller.IMChildPointInfo;
+import com.gdu.msdk.key.value.bean.IMChildPointInfo;
 
 import java.util.List;
 
@@ -67,15 +67,15 @@ public class NetworkingRCAdapter extends BaseAdapter {
         }
         IMChildPointInfo info = mIMChildPointInfoList.get(i);
         viewHolder.rcNameTextView.setText(mContext.getString(R.string.remote_control) + (i + 1));
-        if (info.type == 0) {
+        if (info.getType() == 0) {
             viewHolder.typeImageView.setImageAlpha(R.drawable.icon_ap);
         } else {
             viewHolder.typeImageView.setImageAlpha(R.drawable.icon_sta);
         }
-        if (info.connectStatus == 1) {
+        if (info.getConnectStatus() == 1) {
             viewHolder.rcLayout.setBackgroundResource(R.drawable.shape_networking_rc_online);
             viewHolder.rcNameTextView.setTextColor(mContext.getColor(R.color.color_09C73A));
-        } else if(info.connectStatus == 0) {
+        } else if(info.getConnectStatus() == 0) {
             viewHolder.rcLayout.setBackgroundResource(R.drawable.shape_networking_rc_offline);
             viewHolder.rcNameTextView.setTextColor(mContext.getColor(R.color.color_C8D2D6));
         } else {

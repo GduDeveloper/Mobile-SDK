@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 28
+    compileSdk 34
     defaultConfig {
         applicationId "com.gdu.demo"
-        minSdkVersion 24
-        targetSdkVersion 31
+        minSdk 24
+        targetSdk 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -76,12 +76,14 @@ dependencies {
     api "com.google.code.gson:gson:2.10.1"
 //    api  files('libs/GduLibrary-2.0.77.aar')
     api  files('libs/msdk-3.0.0.aar')
+    api  files('libs/GduSdkSoundEngine-release.aar')
 
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.yolanda.nohttp:nohttp:1.0.3'
     api 'com.amap.api:3dmap:7.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
+    implementation 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5'
     // 替换Shape的背景库: https://github.com/JavaNoober/BackgroundLibrary
     implementation 'com.github.JavaNoober.BackgroundLibrary:libraryx:1.7.5'
     // https://github.com/youth5201314/banner
@@ -97,4 +99,5 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     implementation 'org.greenrobot:greendao:3.3.0'
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
+    implementation 'com.tencent:mmkv:2.0.2'
 }

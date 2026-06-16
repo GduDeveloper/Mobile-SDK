@@ -28,9 +28,9 @@ import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.SystemState;
-import com.gdu.sdk.camera.VideoFeeder;
-import com.gdu.sdk.codec.GDUCodecManager;
-import com.gdu.sdk.codec.ImageProcessingManager;
+//import com.gdu.sdk.camera.VideoFeeder;
+//import com.gdu.sdk.codec.GDUCodecManager;
+//import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -48,8 +48,8 @@ import java.util.List;
 public class CameraGimbalActivity extends Activity implements TextureView.SurfaceTextureListener {
 
     private final String OUTPATH = Environment.getExternalStorageDirectory() + "/gdu/sdk/local/";//本地副本的保存路径
-    private VideoFeeder.VideoDataListener videoDataListener = null;
-    private GDUCodecManager codecManager = null;
+//    private VideoFeeder.VideoDataListener videoDataListener = null;
+//    private GDUCodecManager codecManager = null;
 
     private TextureView mGduPlayView;
     private TextView mInfoTextView;
@@ -63,7 +63,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     private Gimbal mGDUGimbal;
 
-    private ImageProcessingManager mImageProcessingManager;
+//    private ImageProcessingManager mImageProcessingManager;
     private ImageView mYUVImageView;
 
     private TextView tv_support_mode;
@@ -85,13 +85,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         if (!file.exists()) {
             file.mkdirs();
         }
-        try {
-            VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
-        } catch (Exception ignored) {
-        }
+//        try {
+//            VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+//        } catch (Exception ignored) {
+//        }
         initCamera();
         initGimbal();
-        mImageProcessingManager = new ImageProcessingManager(mContext);
+//        mImageProcessingManager = new ImageProcessingManager(mContext);
     }
 
     private void initGimbal() {
@@ -191,14 +191,14 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         tv_support_mode = findViewById(R.id.tv_support_mode);
         if (mGduPlayView != null) {
             mGduPlayView.setSurfaceTextureListener(this);
-            videoDataListener = new VideoFeeder.VideoDataListener() {
-                @Override
-                public void onReceive(byte[] bytes, int size) {
-                    if (null != codecManager) {
-                        codecManager.sendDataToDecoder(bytes, size);
-                    }
-                }
-            };
+//            videoDataListener = new VideoFeeder.VideoDataListener() {
+//                @Override
+//                public void onReceive(byte[] bytes, int size) {
+//                    if (null != codecManager) {
+//                        codecManager.sendDataToDecoder(bytes, size);
+//                    }
+//                }
+//            };
         }
         tvPreviewFormat = findViewById(R.id.preview_format);
         tvPreviewFormat.setText(ICamera.get().getFlowCodingFormat().getValue() == 0 ? "H264" : "H265");
@@ -400,65 +400,65 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_record_video_to_local:
-                if (codecManager != null) {
-                    codecManager.startStoreMp4ToLocal(OUTPATH, "test.mp4");
-                    toast("开始保存预览流副本到本地");
-                }
+//                if (codecManager != null) {
+//                    codecManager.startStoreMp4ToLocal(OUTPATH, "test.mp4");
+//                    toast("开始保存预览流副本到本地");
+//                }
                 break;
             case R.id.btn_stop_record_video_to_local:
-                if (codecManager != null) {
-                    codecManager.stopStoreMp4ToLocal();
-                    toast("停止保存预览流副本到本地");
-                }
+//                if (codecManager != null) {
+//                    codecManager.stopStoreMp4ToLocal();
+//                    toast("停止保存预览流副本到本地");
+//                }
                 break;
             case R.id.btn_enabled_yuv_data:
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    codecManager.enabledYuvData(true);
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//                    codecManager.enabledYuvData(true);
+//                }
                 break;
 
             case R.id.btn_get_yuv_data:
-                byte[] yuvData =  codecManager.getYuvData();
-                Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
-//                Bitmap bitmap = mFastYUVtoRGB.test(yuvData, 1920, 1080);
-
-                if (bitmap != null) {
-                    mYUVImageView.setImageBitmap(bitmap);
-                }
-
-                String path = OUTPATH + "test.text";
-
-                if (codecManager != null) {
-                    codecManager.enabledYuvData(true);
-                    codecManager.setYuvDataCallback(new GDUCodecManager.YuvDataCallback() {
-                        @Override
-                        public void onYuvDataReceived(byte[] bytes, int i, int i1, int i2) {
-                            FileSaveUtil.getSingle().saveData(bytes, path);
-                        }
-                    });
-                }
+//                byte[] yuvData =  codecManager.getYuvData();
+//                Bitmap bitmap = mImageProcessingManager.convertYUVtoRGB(yuvData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
+////                Bitmap bitmap = mFastYUVtoRGB.test(yuvData, 1920, 1080);
+//
+//                if (bitmap != null) {
+//                    mYUVImageView.setImageBitmap(bitmap);
+//                }
+//
+//                String path = OUTPATH + "test.text";
+//
+//                if (codecManager != null) {
+//                    codecManager.enabledYuvData(true);
+//                    codecManager.setYuvDataCallback(new GDUCodecManager.YuvDataCallback() {
+//                        @Override
+//                        public void onYuvDataReceived(byte[] bytes, int i, int i1, int i2) {
+//                            FileSaveUtil.getSingle().saveData(bytes, path);
+//                        }
+//                    });
+//                }
 
                 break;
             case R.id.btn_get_rgba_data:
-                byte[] rgbData = codecManager.getRgbaData();
-                Bitmap bitmap1 = ImageProcessingManager.rgb2Bitmap(rgbData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
-                if (bitmap1 != null) {
-                    mYUVImageView.setImageBitmap(bitmap1);
-                }
+//                byte[] rgbData = codecManager.getRgbaData();
+//                Bitmap bitmap1 = ImageProcessingManager.rgb2Bitmap(rgbData, codecManager.getVideoWidth(), codecManager.getVideoHeight());
+//                if (bitmap1 != null) {
+//                    mYUVImageView.setImageBitmap(bitmap1);
+//                }
                 break;
             case R.id.btn_store_picture_to_local:
-                if (codecManager != null) {
-                    codecManager.storageCurrentStreamToPicture(OUTPATH, "test.png", new CommonCallbacks.CompletionCallback() {
-                        @Override
-                        public void onResult(Error error) {
-                            if (error == null) {
-                                toast("存储成功");
-                            } else {
-                                toast("存储失败  ");
-                            }
-                        }
-                    });
-                }
+//                if (codecManager != null) {
+//                    codecManager.storageCurrentStreamToPicture(OUTPATH, "test.png", new CommonCallbacks.CompletionCallback() {
+//                        @Override
+//                        public void onResult(Error error) {
+//                            if (error == null) {
+//                                toast("存储成功");
+//                            } else {
+//                                toast("存储失败  ");
+//                            }
+//                        }
+//                    });
+//                }
                 break;
             case R.id.btn_get_capabilities:
                 Capabilities capabilities = mGDUCamera.getCapabilities();
@@ -574,36 +574,36 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (codecManager != null) {
-            codecManager.onResume();
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (codecManager != null) {
-            codecManager.onPause();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (codecManager != null) {
-            codecManager.onDestroy();
-        }
-    }
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (codecManager != null) {
+//            codecManager.onResume();
+//        }
+//    }
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        if (codecManager != null) {
+//            codecManager.onPause();
+//        }
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (codecManager != null) {
+//            codecManager.onDestroy();
+//        }
+//    }
 
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        if (codecManager == null) {
-            codecManager = new GDUCodecManager(mContext, mGduPlayView, width, height);
-        }
+//        if (codecManager == null) {
+//            codecManager = new GDUCodecManager(mContext, mGduPlayView, width, height);
+//        }
     }
 
     @Override

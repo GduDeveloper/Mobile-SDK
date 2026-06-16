@@ -18,8 +18,6 @@ import com.gdu.demo.R;
 import com.gdu.demo.databinding.RcCustomKeyViewBinding;
 import com.gdu.demo.databinding.RcCustomKeyViewMenuPopBinding;
 import com.gdu.demo.utils.ScreenUtils;
-import com.gdu.sdk.customkey.RcCustomKeyBean;
-import com.gdu.sdk.customkey.RcCustomKeyDaoHelper;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -42,9 +40,9 @@ public class RCCustomKeyNewView extends RelativeLayout {
     // 点击的view
     private int clickViewType = -1;
 
-    RcCustomKeyBean comb1;
-    RcCustomKeyBean comb2;
-    RcCustomKeyBean comb3;
+//    RcCustomKeyBean comb1;
+//    RcCustomKeyBean comb2;
+//    RcCustomKeyBean comb3;
 
     private PopupWindow mMenuPop;
 
@@ -82,21 +80,20 @@ public class RCCustomKeyNewView extends RelativeLayout {
             RcCustomKeyMenu menu = (RcCustomKeyMenu) adapter.getItem(position);
             if (menu != null) {
                 setSelectedText(menu);
-                if (clickViewType > 100) {
-                    if (clickViewType == 101) {
-                        comb1.setMenuType(menu.getMenuType());
-                        saveCombKey(101);
-                    } else if (clickViewType == 102) {
-                        comb2.setMenuType(menu.getMenuType());
-                        saveCombKey(102);
-                    } else if (clickViewType == 103) {
-                        comb3.setMenuType(menu.getMenuType());
-                        saveCombKey(103);
-                    }
-
-                } else {
-                    saveData(menu);
-                }
+//                if (clickViewType > 100) {
+//                    if (clickViewType == 101) {
+//                        comb1.setMenuType(menu.getMenuType());
+//                        saveCombKey(101);
+//                    } else if (clickViewType == 102) {
+//                        comb2.setMenuType(menu.getMenuType());
+//                        saveCombKey(102);
+//                    } else if (clickViewType == 103) {
+//                        comb3.setMenuType(menu.getMenuType());
+//                        saveCombKey(103);
+//                    }
+//                } else {
+//                    saveData(menu);
+//                }
             }
         });
 
@@ -138,21 +135,12 @@ public class RCCustomKeyNewView extends RelativeLayout {
         if (clickViewType == -1) {
             return;
         }
-        RcCustomKeyDaoHelper.insertData(new RcCustomKeyBean((long) clickViewType, menu.getMenuType(), 0, 0));
-
-        // c1 c2 取消之前的自定义按钮
-//        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess && (clickViewType == 1 || clickViewType == 2)) {
-//            GduApplication.getSingleApp().gduCommunication.setRCC1AndC2((byte) 0, (byte) 0, null);
-//        }
+//        RcCustomKeyDaoHelper.insertData(new RcCustomKeyBean((long) clickViewType, menu.getMenuType(), 0, 0));
     }
 
     private void saveData(int viewType, RcCustomKeyMenu menu) {
         Logger.e("RcCustomKeyDaoHelper insertData viewType = " + viewType + " menuType = " + menu.getMenuType());
-        RcCustomKeyDaoHelper.insertData(new RcCustomKeyBean((long) viewType, menu.getMenuType(), 0, 0));
-        // c1 c2 取消之前的自定义按钮
-//        if (GlobalVariable.connStateEnum == ConnStateEnum.Conn_Sucess && (viewType == 1 || viewType == 2)) {
-//            GduApplication.getSingleApp().gduCommunication.setRCC1AndC2((byte) 0, (byte) 0, null);
-//        }
+//        RcCustomKeyDaoHelper.insertData(new RcCustomKeyBean((long) viewType, menu.getMenuType(), 0, 0));
     }
 
 
@@ -194,72 +182,72 @@ public class RCCustomKeyNewView extends RelativeLayout {
         viewBinding.ivDelTwo.setOnClickListener(listener);
 
         viewBinding.ovComb11.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb1 != null && isSameCombKey(101, getKey1ValByPos(position), true)) {
-                viewBinding.ovComb11.setIndex(getPos1ByKey(comb1.getCombKey1()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            viewBinding.ovComb11.setIndex(position);
-            comb1.setCombKey1(getKey1ValByPos(position));
-            saveCombKey(101);
+//            if (comb1 != null && isSameCombKey(101, getKey1ValByPos(position), true)) {
+//                viewBinding.ovComb11.setIndex(getPos1ByKey(comb1.getCombKey1()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            viewBinding.ovComb11.setIndex(position);
+//            comb1.setCombKey1(getKey1ValByPos(position));
+//            saveCombKey(101);
         });
 
         viewBinding.ovComb12.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb1 != null && isSameCombKey(101, getKey2ValByPos(position), false)) {
-                viewBinding.ovComb12.setIndex(getPos2ByKey(comb1.getCombKey2()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            viewBinding.ovComb12.setIndex(position);
-            comb1.setCombKey2(getKey2ValByPos(position));
-            saveCombKey(101);
+//            if (comb1 != null && isSameCombKey(101, getKey2ValByPos(position), false)) {
+//                viewBinding.ovComb12.setIndex(getPos2ByKey(comb1.getCombKey2()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            viewBinding.ovComb12.setIndex(position);
+//            comb1.setCombKey2(getKey2ValByPos(position));
+//            saveCombKey(101);
         });
         viewBinding.ovComb21.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb2 != null && isSameCombKey(102, getKey1ValByPos(position), true)) {
-                viewBinding.ovComb21.setIndex(getPos1ByKey(comb2.getCombKey1()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            viewBinding.ovComb21.setIndex(position);
-            comb2.setCombKey1(getKey1ValByPos(position));
-            saveCombKey(102);
+//            if (comb2 != null && isSameCombKey(102, getKey1ValByPos(position), true)) {
+//                viewBinding.ovComb21.setIndex(getPos1ByKey(comb2.getCombKey1()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            viewBinding.ovComb21.setIndex(position);
+//            comb2.setCombKey1(getKey1ValByPos(position));
+//            saveCombKey(102);
         });
 
         viewBinding.ovComb22.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb2 != null && isSameCombKey(102, getKey2ValByPos(position), false)) {
-                viewBinding.ovComb22.setIndex(getPos2ByKey(comb2.getCombKey2()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            viewBinding.ovComb22.setIndex(position);
-            comb2.setCombKey2(getKey2ValByPos(position));
-            saveCombKey(102);
+//            if (comb2 != null && isSameCombKey(102, getKey2ValByPos(position), false)) {
+//                viewBinding.ovComb22.setIndex(getPos2ByKey(comb2.getCombKey2()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            viewBinding.ovComb22.setIndex(position);
+//            comb2.setCombKey2(getKey2ValByPos(position));
+//            saveCombKey(102);
         });
 
         viewBinding.ovComb31.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb3 != null && isSameCombKey(103, getKey1ValByPos(position), true)) {
-                viewBinding.ovComb31.setIndex(getPos1ByKey(comb3.getCombKey1()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            viewBinding.ovComb31.setIndex(position);
-            comb3.setCombKey1(getKey1ValByPos(position));
-            saveCombKey(103);
+//            if (comb3 != null && isSameCombKey(103, getKey1ValByPos(position), true)) {
+//                viewBinding.ovComb31.setIndex(getPos1ByKey(comb3.getCombKey1()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            viewBinding.ovComb31.setIndex(position);
+//            comb3.setCombKey1(getKey1ValByPos(position));
+//            saveCombKey(103);
         });
 
         viewBinding.ovComb32.setOnOptionClickListener((parentId, view, position) -> {
-            if (comb3 != null && isSameCombKey(103, getKey2ValByPos(position), false)) {
-                viewBinding.ovComb32.setIndex(getPos2ByKey(comb3.getCombKey2()));
-                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            viewBinding.ovComb32.setIndex(position);
-            comb3.setCombKey2(getKey2ValByPos(position));
-            saveCombKey(103);
+//            if (comb3 != null && isSameCombKey(103, getKey2ValByPos(position), false)) {
+//                viewBinding.ovComb32.setIndex(getPos2ByKey(comb3.getCombKey2()));
+//                Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            viewBinding.ovComb32.setIndex(position);
+//            comb3.setCombKey2(getKey2ValByPos(position));
+//            saveCombKey(103);
         });
         viewBinding.tvComb1.setOnClickListener(listener);
         viewBinding.tvComb2.setOnClickListener(listener);
@@ -268,37 +256,37 @@ public class RCCustomKeyNewView extends RelativeLayout {
 
     private void saveCombKey(int keyType) {
 
-        if (keyType == 101) {
-            if (comb1 != null  && comb1.getCombKey1() > 0 && comb1.getCombKey2() > 0 ) {
-
-                if (comb1.getCombKey1() == comb1.getCombKey2()) {
-                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                } else {
-                    RcCustomKeyDaoHelper.insertData(comb1);
-                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-        } else if (keyType == 102) {
-            if (comb2 != null && comb2.getCombKey1() > 0 && comb2.getCombKey2() > 0 ) {
-
-                if (comb2.getCombKey1() == comb2.getCombKey2()) {
-                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                } else {
-                    RcCustomKeyDaoHelper.insertData(comb2);
-                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                }
-            }
-        } else if (keyType == 103) {
-            if (comb3 != null  && comb3.getCombKey1() > 0 && comb3.getCombKey2() > 0 ) {
-                if (comb3.getCombKey1() == comb3.getCombKey2()) {
-                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
-                } else {
-                    RcCustomKeyDaoHelper.insertData(comb3);
-                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+//        if (keyType == 101) {
+//            if (comb1 != null  && comb1.getCombKey1() > 0 && comb1.getCombKey2() > 0 ) {
+//
+//                if (comb1.getCombKey1() == comb1.getCombKey2()) {
+//                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    RcCustomKeyDaoHelper.insertData(comb1);
+//                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//        } else if (keyType == 102) {
+//            if (comb2 != null && comb2.getCombKey1() > 0 && comb2.getCombKey2() > 0 ) {
+//
+//                if (comb2.getCombKey1() == comb2.getCombKey2()) {
+//                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    RcCustomKeyDaoHelper.insertData(comb2);
+//                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        } else if (keyType == 103) {
+//            if (comb3 != null  && comb3.getCombKey1() > 0 && comb3.getCombKey2() > 0 ) {
+//                if (comb3.getCombKey1() == comb3.getCombKey2()) {
+//                    Toast.makeText(context, R.string.string_key_can_not_same, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    RcCustomKeyDaoHelper.insertData(comb3);
+//                    Toast.makeText(context, R.string.string_set_success, Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
 
     }
 
@@ -362,12 +350,12 @@ public class RCCustomKeyNewView extends RelativeLayout {
     };
 
     private void delCustomKey(int keyType) {
-        RcCustomKeyBean comb = RcCustomKeyDaoHelper.query(keyType);
-        if (comb != null) {
-            RcCustomKeyDaoHelper.delData(comb);
-            Toast.makeText(context, R.string.string_del_success, Toast.LENGTH_SHORT).show();
-        }
-        setCombKey(keyType);
+//        RcCustomKeyBean comb = RcCustomKeyDaoHelper.query(keyType);
+//        if (comb != null) {
+//            RcCustomKeyDaoHelper.delData(comb);
+//            Toast.makeText(context, R.string.string_del_success, Toast.LENGTH_SHORT).show();
+//        }
+//        setCombKey(keyType);
     }
 
     private void showMenu(int type, TextView textView) {
@@ -394,196 +382,196 @@ public class RCCustomKeyNewView extends RelativeLayout {
     }
 
     private void setCombKey(int type) {
-        RcCustomKeyBean comb = RcCustomKeyDaoHelper.query(type);
-        if (comb != null) {
-            if (type == 101) {
-                comb1 = comb;
-                viewBinding.ovComb11.setIndex(getPos1ByKey(comb.getCombKey1()));
-                viewBinding.ovComb12.setIndex(getPos2ByKey(comb.getCombKey2()));
-                viewBinding.tvComb1.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
-            } else if (type == 102) {
-                comb2 = comb;
-                viewBinding.ovComb21.setIndex(getPos1ByKey(comb.getCombKey1()));
-                viewBinding.ovComb22.setIndex(getPos2ByKey(comb.getCombKey2()));
-                viewBinding.tvComb2.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
-            } else if (type == 103){
-                comb3 = comb;
-                viewBinding.ovComb31.setIndex(getPos1ByKey(comb.getCombKey1()));
-                viewBinding.ovComb32.setIndex(getPos2ByKey(comb.getCombKey2()));
-                viewBinding.tvComb3.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
-            }
-        } else {
-            if (type == 101) { //默认C1， C2
-                comb1 = new RcCustomKeyBean((long) 101, 0, 1, 2);
-                viewBinding.ovComb11.setIndex(0);
-                viewBinding.ovComb12.setIndex(0);
-                viewBinding.tvComb1.setText(context.getString(R.string.string_rc_key_no));
-            } else if (type == 102) { //默认L1， R1
-                comb2 = new RcCustomKeyBean((long) 102, 0, 3, 5);
-                viewBinding.ovComb21.setIndex(1);
-                viewBinding.ovComb22.setIndex(1);
-                viewBinding.tvComb2.setText(context.getString(R.string.string_rc_key_no));
-            } else if(type == 103){ //默认L2， R2
-                comb3 = new RcCustomKeyBean((long) 103, 0, 4, 6);
-                viewBinding.ovComb31.setIndex(2);
-                viewBinding.ovComb32.setIndex(2);
-                viewBinding.tvComb3.setText(context.getString(R.string.string_rc_key_no));
-            }
-        }
+//        RcCustomKeyBean comb = RcCustomKeyDaoHelper.query(type);
+//        if (comb != null) {
+//            if (type == 101) {
+//                comb1 = comb;
+//                viewBinding.ovComb11.setIndex(getPos1ByKey(comb.getCombKey1()));
+//                viewBinding.ovComb12.setIndex(getPos2ByKey(comb.getCombKey2()));
+//                viewBinding.tvComb1.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
+//            } else if (type == 102) {
+//                comb2 = comb;
+//                viewBinding.ovComb21.setIndex(getPos1ByKey(comb.getCombKey1()));
+//                viewBinding.ovComb22.setIndex(getPos2ByKey(comb.getCombKey2()));
+//                viewBinding.tvComb2.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
+//            } else if (type == 103){
+//                comb3 = comb;
+//                viewBinding.ovComb31.setIndex(getPos1ByKey(comb.getCombKey1()));
+//                viewBinding.ovComb32.setIndex(getPos2ByKey(comb.getCombKey2()));
+//                viewBinding.tvComb3.setText(getMenuName(RcCustomKeyMenu.getAllMenu(context), comb));
+//            }
+//        } else {
+//            if (type == 101) { //默认C1， C2
+//                comb1 = new RcCustomKeyBean((long) 101, 0, 1, 2);
+//                viewBinding.ovComb11.setIndex(0);
+//                viewBinding.ovComb12.setIndex(0);
+//                viewBinding.tvComb1.setText(context.getString(R.string.string_rc_key_no));
+//            } else if (type == 102) { //默认L1， R1
+//                comb2 = new RcCustomKeyBean((long) 102, 0, 3, 5);
+//                viewBinding.ovComb21.setIndex(1);
+//                viewBinding.ovComb22.setIndex(1);
+//                viewBinding.tvComb2.setText(context.getString(R.string.string_rc_key_no));
+//            } else if(type == 103){ //默认L2， R2
+//                comb3 = new RcCustomKeyBean((long) 103, 0, 4, 6);
+//                viewBinding.ovComb31.setIndex(2);
+//                viewBinding.ovComb32.setIndex(2);
+//                viewBinding.tvComb3.setText(context.getString(R.string.string_rc_key_no));
+//            }
+//        }
     }
 
     private void setMenuText(ArrayList<RcCustomKeyMenu> list, int viewType) {
-        RcCustomKeyBean bean = RcCustomKeyDaoHelper.query(viewType);
-        switch (viewType) {
-            case 1:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(101, context.getString(R.string.string_rc_key_gimbal_center));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvC1.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvC1.setText(getMenuName(list, bean));
-                }
-                break;
-            case 2:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(102, context.getString(R.string.string_rc_key_gimbal_down));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvC2.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvC2.setText(getMenuName(list, bean));
-                }
-                break;
-            case 3:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(202, context.getString(R.string.string_rc_key_app_change_map));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvL1.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvL1.setText(getMenuName(list, bean));
-                }
-                break;
-            case 4:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(5, context.getString(R.string.string_rc_key_camera_change_mode));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvL2.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvL2.setText(getMenuName(list, bean));
-                }
-                break;
-            case 5:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(1, context.getString(R.string.string_rc_key_camera_enlarge));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvR1.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvR1.setText(getMenuName(list, bean));
-                }
-                break;
-            case 6:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(2, context.getString(R.string.string_rc_key_camera_narrow));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvR2.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvR2.setText(getMenuName(list, bean));
-                }
-                break;
-            case 7:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(206, context.getString(R.string.string_selected_last_target));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvTop.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvTop.setText(getMenuName(list, bean));
-                }
-                break;
-            case 8:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(205, context.getString(R.string.string_selected_next_point));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvBot.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvBot.setText(getMenuName(list, bean));
-                }
-                break;
-            case 9:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(203, context.getString(R.string.string_add_target_point));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvLeft.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvLeft.setText(getMenuName(list, bean));
-                }
-                break;
-            case 10:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(204, context.getString(R.string.string_delete_selected_point));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvRight.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvRight.setText(getMenuName(list, bean));
-                }
-                break;
-            case 11:
-                if (bean == null) {
-                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(207, context.getString(R.string.string_look_for_target));
-                    saveData(viewType, rcCustomKeyMenu);
-                    viewBinding.tvCenter.setText(rcCustomKeyMenu.menuName);
-                } else {
-                    viewBinding.tvCenter.setText(getMenuName(list, bean));
-                }
-                break;
-            default:
-                break;
-        }
+//        RcCustomKeyBean bean = RcCustomKeyDaoHelper.query(viewType);
+//        switch (viewType) {
+//            case 1:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(101, context.getString(R.string.string_rc_key_gimbal_center));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvC1.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvC1.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 2:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(102, context.getString(R.string.string_rc_key_gimbal_down));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvC2.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvC2.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 3:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(202, context.getString(R.string.string_rc_key_app_change_map));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvL1.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvL1.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 4:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(5, context.getString(R.string.string_rc_key_camera_change_mode));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvL2.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvL2.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 5:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(1, context.getString(R.string.string_rc_key_camera_enlarge));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvR1.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvR1.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 6:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(2, context.getString(R.string.string_rc_key_camera_narrow));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvR2.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvR2.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 7:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(206, context.getString(R.string.string_selected_last_target));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvTop.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvTop.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 8:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(205, context.getString(R.string.string_selected_next_point));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvBot.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvBot.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 9:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(203, context.getString(R.string.string_add_target_point));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvLeft.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvLeft.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 10:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(204, context.getString(R.string.string_delete_selected_point));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvRight.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvRight.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            case 11:
+//                if (bean == null) {
+//                    RcCustomKeyMenu rcCustomKeyMenu = new RcCustomKeyMenu(207, context.getString(R.string.string_look_for_target));
+//                    saveData(viewType, rcCustomKeyMenu);
+//                    viewBinding.tvCenter.setText(rcCustomKeyMenu.menuName);
+//                } else {
+//                    viewBinding.tvCenter.setText(getMenuName(list, bean));
+//                }
+//                break;
+//            default:
+//                break;
+//        }
     }
 
-    private String getMenuName(ArrayList<RcCustomKeyMenu> list, RcCustomKeyBean bean) {
-        String menuString = context.getString(R.string.string_rc_key_no);
-        if (bean != null && bean.getMenuType() != 0) {
-            for (RcCustomKeyMenu menu : list) {
-                if (menu.menuType == bean.getMenuType()) {
-                    menuString = menu.getMenuName();
-                    break;
-                }
-            }
-        }
-        return menuString;
-    }
+//    private String getMenuName(ArrayList<RcCustomKeyMenu> list, RcCustomKeyBean bean) {
+//        String menuString = context.getString(R.string.string_rc_key_no);
+//        if (bean != null && bean.getMenuType() != 0) {
+//            for (RcCustomKeyMenu menu : list) {
+//                if (menu.menuType == bean.getMenuType()) {
+//                    menuString = menu.getMenuName();
+//                    break;
+//                }
+//            }
+//        }
+//        return menuString;
+//    }
 
-    private boolean isSameCombKey(int keyType, int comBKey, boolean isLeftKey) {
-        if (comb1 == null || comb2 == null || comb3 == null) {
-            return false;
-        }
-        Log.d("DIYKey",keyType + "-" + comBKey + "-" + isLeftKey);
-        int[] ints1 = new int[2];
-        int[] ints2 = new int[2];
-        int[] ints3 = new int[2];
-        if (keyType == 101) {
-            ints1[0] = isLeftKey ? comBKey : comb1.getCombKey1();
-            ints1[1] = isLeftKey ? comb1.getCombKey2() : comBKey;
-            ints2[0] = comb2.getCombKey1();
-            ints2[1] = comb2.getCombKey2();
-            ints3[0] = comb3.getCombKey1();
-            ints3[1] = comb3.getCombKey2();
-        } else if (keyType == 102) {
-            ints1[0] = comb1.getCombKey1();
-            ints1[1] = comb1.getCombKey2();
-            ints2[0] = isLeftKey ? comBKey : comb2.getCombKey1();
-            ints2[1] = isLeftKey ? comb2.getCombKey2() : comBKey;
-            ints3[0] = comb3.getCombKey1();
-            ints3[1] = comb3.getCombKey2();
-        } else if (keyType == 103) {
-            ints1[0] = comb1.getCombKey1();
-            ints1[1] = comb1.getCombKey2();
-            ints2[0] = comb2.getCombKey1();
-            ints2[1] = comb2.getCombKey2();
-            ints3[0] = isLeftKey ? comBKey : comb3.getCombKey1();
-            ints3[1] = isLeftKey ? comb3.getCombKey2() : comBKey;
-        }
-        return Arrays.equals(ints1, ints2) || Arrays.equals(ints1, ints3) || Arrays.equals(ints2, ints3);
-    }
+//    private boolean isSameCombKey(int keyType, int comBKey, boolean isLeftKey) {
+//        if (comb1 == null || comb2 == null || comb3 == null) {
+//            return false;
+//        }
+//        Log.d("DIYKey",keyType + "-" + comBKey + "-" + isLeftKey);
+//        int[] ints1 = new int[2];
+//        int[] ints2 = new int[2];
+//        int[] ints3 = new int[2];
+//        if (keyType == 101) {
+//            ints1[0] = isLeftKey ? comBKey : comb1.getCombKey1();
+//            ints1[1] = isLeftKey ? comb1.getCombKey2() : comBKey;
+//            ints2[0] = comb2.getCombKey1();
+//            ints2[1] = comb2.getCombKey2();
+//            ints3[0] = comb3.getCombKey1();
+//            ints3[1] = comb3.getCombKey2();
+//        } else if (keyType == 102) {
+//            ints1[0] = comb1.getCombKey1();
+//            ints1[1] = comb1.getCombKey2();
+//            ints2[0] = isLeftKey ? comBKey : comb2.getCombKey1();
+//            ints2[1] = isLeftKey ? comb2.getCombKey2() : comBKey;
+//            ints3[0] = comb3.getCombKey1();
+//            ints3[1] = comb3.getCombKey2();
+//        } else if (keyType == 103) {
+//            ints1[0] = comb1.getCombKey1();
+//            ints1[1] = comb1.getCombKey2();
+//            ints2[0] = comb2.getCombKey1();
+//            ints2[1] = comb2.getCombKey2();
+//            ints3[0] = isLeftKey ? comBKey : comb3.getCombKey1();
+//            ints3[1] = isLeftKey ? comb3.getCombKey2() : comBKey;
+//        }
+//        return Arrays.equals(ints1, ints2) || Arrays.equals(ints1, ints3) || Arrays.equals(ints2, ints3);
+//    }
 
     /**
      * C1:1, L1:3, L2:4

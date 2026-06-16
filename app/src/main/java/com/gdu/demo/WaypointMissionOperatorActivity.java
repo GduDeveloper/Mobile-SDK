@@ -149,7 +149,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 show(waypointMissionExecutionEvent.getCurrentState().getName()
                         + (waypointMissionExecutionEvent.getProgress() == null
                         ? ""
-                        : waypointMissionExecutionEvent.getProgress().targetWaypointIndex));
+                        : waypointMissionExecutionEvent.getProgress().getTargetWaypointIndex()));
 //                updateWaypointMissionState();
             }
 

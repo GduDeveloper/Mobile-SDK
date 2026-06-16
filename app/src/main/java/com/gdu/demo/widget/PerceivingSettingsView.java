@@ -271,7 +271,7 @@ public class PerceivingSettingsView extends RelativeLayout {
         // 水平避障开关
         mObsHorSwitch.setOnClickListener(v -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -362,7 +362,7 @@ public class PerceivingSettingsView extends RelativeLayout {
         // 上视避障开关
         mObsTopSwitch.setOnClickListener(v -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -455,7 +455,7 @@ public class PerceivingSettingsView extends RelativeLayout {
         // 下视避障开关
         mBottomSwitch.setOnClickListener(v -> {
             if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-                Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -574,7 +574,7 @@ public class PerceivingSettingsView extends RelativeLayout {
     private boolean connStateToast() {
         XLogger.INSTANCE.getAPP().i("connStateToast()");
         if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            Toast.makeText(getContext(), R.string.fly_no_conn, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.aircraft_not_connect, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
