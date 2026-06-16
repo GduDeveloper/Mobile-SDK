@@ -25,6 +25,7 @@ import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.Cycle5GSdrStatus;
+import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.rxjava.rxlife.RxLife;
@@ -595,8 +596,13 @@ public class SettingRtkFragment extends Fragment {
         } else if (mLastRTKType == 3) {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
-
-        rtk.connectRtk(stationSource, null, new RTKManager.OnRtkConnectListener() {
+        NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
+        networkServiceSettings.setMountPoint(mMountPoint);
+        networkServiceSettings.setPassword(mPassword);
+        networkServiceSettings.setPort(Integer.parseInt(mPort));
+        networkServiceSettings.setServerAddress(mIP);
+        networkServiceSettings.setUserName(mAccount);
+        rtk.connectRtk(stationSource, networkServiceSettings, new RTKManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {
