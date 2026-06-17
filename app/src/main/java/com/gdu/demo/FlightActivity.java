@@ -255,6 +255,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         msgBoxManager.getErrRollMsg().register(mErrRollMsg);
         msgBoxManager.getErrMsgList().register(mErrMsgList);
 //        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
+        viewModel.registerSeiData();
     }
 
 
@@ -445,6 +446,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onStop() {
         super.onStop();
-        viewModel.stopTarget((byte) 0x02, DroneUtils.getLightType());
+        viewModel.stopTarget();
     }
 }

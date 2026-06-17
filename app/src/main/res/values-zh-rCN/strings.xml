@@ -519,8 +519,10 @@
     <string name="gimbal_version">云台版本</string>
     <string name="string_data_loading_pro">数据加载中…</string>
     <string name="ai_box">AI盒子</string>
-    <string name="ai_box_open_success">AI盒子开启成功</string>
-    <string name="ai_box_open_fail">AI盒子开启失败</string>
+    <string name="ai_box_open_success">AI识别开启成功</string>
+    <string name="ai_box_open_fail">AI识别开启失败</string>
+    <string name="ai_detect_exit_success">AI识别退出成功</string>
+    <string name="ai_detect_exit_fail">AI识别退出失败</string>
     <string name="string_target_detected">检测到目标</string>
     <string name="string_not_target_detected">未检测到目标</string>
     <string name="string_gps_weak">搜星不足</string>

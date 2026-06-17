@@ -42,6 +42,14 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_17.toString()
+    }
+
     applicationVariants.all { variant ->
         variant.outputs.all{
             def dateStr = new Date().format("yyyyMMdd-HHmm")
@@ -101,4 +109,5 @@ dependencies {
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
     implementation 'com.tencent:mmkv:2.0.2'
     implementation 'io.github.cymchad:BaseRecyclerViewAdapterHelper4:4.1.4'
+    api 'com.elvishew:xlog:1.11.1'
 }

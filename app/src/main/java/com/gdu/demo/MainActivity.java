@@ -12,12 +12,14 @@ import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.LifecycleOwner;
 
 import com.gdu.common.error.Error;
 import com.gdu.demo.config.MyConstants;
 import com.gdu.demo.utils.SPUtils;
 import com.gdu.lib.util.TimeUtil;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.base.BaseComponent;
@@ -40,7 +42,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 /**
  *
  */
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -81,6 +83,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
+                    XLogger.INSTANCE.init(mContext);
                     startSDKRegistration();
                 }
             }
@@ -287,7 +290,7 @@ public class MainActivity extends Activity {
                         Log.e(TAG,"拷贝数据库文件出错", e);
                     }
                 }).subscribeOn(Schedulers.io())
-                .to(RxLife.toMain((LifecycleOwner) this))
+                .to(RxLife.toMain(this))
                 .subscribe(o -> {}, throwable -> Log.e(TAG,"拷贝数据库文件出错"));
     }
 

@@ -530,10 +530,12 @@
     <string name="gimbal_version">Gimbal version</string>
     <string name="string_data_loading_pro">Data loading…</string>
     <string name="ai_box">AI box</string>
-    <string name="ai_box_open_success">AI box opened successfully</string>
+    <string name="ai_box_open_success">AI detected opened successfully</string>
     <string name="string_target_detected">Target detected</string>
     <string name="string_not_target_detected">Target not detected</string>
-    <string name="ai_box_open_fail">AI box opening failed</string>
+    <string name="ai_box_open_fail">AI detected opening failed</string>
+    <string name="ai_detect_exit_success">AI detected exit successful</string>
+    <string name="ai_detect_exit_fail">AI detected exit failed</string>
     <string name="string_gps_weak">Insufficient star search</string>
     <string name="string_read_fail">DEM read failure</string>
     <string name="string_end_check">End detection</string>

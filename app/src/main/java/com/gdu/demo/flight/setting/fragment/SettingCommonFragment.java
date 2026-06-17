@@ -1,5 +1,9 @@
 package com.gdu.demo.flight.setting.fragment;
 
+import static com.gdu.sdk.vision.Vision.AI_BOX_P_C_S_100T;
+import static com.gdu.sdk.vision.Vision.AI_BOX_P_C_S_48T;
+import static com.gdu.sdk.vision.Vision.AI_DRONE_P_C_S;
+
 import android.animation.ObjectAnimator;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -11,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -49,6 +54,8 @@ import com.gdu.lib.util.ThreadHelper;
 import org.greenrobot.eventbus.EventBus;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -397,7 +404,6 @@ public class SettingCommonFragment extends Fragment {
 
 
     private void setSecondLevelView(View view, boolean show, String title) {
-
         Log.d("setSecondLevelView","setSecondLevelView  show = " + show + ", title = " + title);
         AnimationUtils.animatorRightInOut(view, show);
         ViewUtils.setViewShowOrHide(mViewBinding.ivBack, show);
@@ -431,124 +437,51 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void initTargetDetectView() {
-        initTargetDetectType();
+        mViewBinding.clBoxModels.setVisibility(View.VISIBLE);
+        mViewBinding.tvAiBox.setVisibility(View.VISIBLE);
+        mViewBinding.line13.setVisibility(View.VISIBLE);
+        objectAnimator = ObjectAnimator.ofFloat(mViewBinding.ivLoading, "rotation", 0f, 360f);
+        objectAnimator.setDuration(1000);
+        objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
+        objectAnimator.start();
 
-        if (DroneUtils.getAiBoxOnline()) {
-            mViewBinding.clBoxModels.setVisibility(View.VISIBLE);
-            mViewBinding.tvAiBox.setVisibility(View.VISIBLE);
-            mViewBinding.line13.setVisibility(View.VISIBLE);
-            objectAnimator = ObjectAnimator.ofFloat(mViewBinding.ivLoading, "rotation", 0f, 360f);
-            objectAnimator.setDuration(1000);
-            objectAnimator.setRepeatCount(ObjectAnimator.INFINITE);
-            objectAnimator.start();
-
-            modelAdapter = new TargetDetectModelAdapter(data -> {
-                if (data != null) {
-                    ArrayList<AIModelState> onLineModels = (ArrayList<AIModelState>) IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue().getTargetDetectModelState();
-                    if (CollectionUtils.isEmptyList(onLineModels)) {
-                        Toast.makeText(requireContext(), R.string.Msg_no_ai_models_warn, Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    for (int i = 0; i < onLineModels.size(); i++) {
-                        if (onLineModels.get(i).getModelId() == data.getId()) {
-                            if (!CollectionUtils.isEmptyList(data.getLabels())) {
-                                for (TargetDetectLabel item : data.getLabels()) {
-                                    int itemTypeId = Integer.parseInt(item.getId());
-                                    if (onLineModels.get(i).getTypeId() == itemTypeId) {
-                                        onLineModels.get(i).setState(item.isChecked() ? (byte) 0x01 : (byte) 0x00);
-                                    }
+        modelAdapter = new TargetDetectModelAdapter(data -> {
+            if (data != null) {
+                ArrayList<AIModelState> onLineModels = (ArrayList<AIModelState>) IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue().getTargetDetectModelState();
+                if (CollectionUtils.isEmptyList(onLineModels)) {
+                    Toast.makeText(requireContext(), R.string.Msg_no_ai_models_warn, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                for (int i = 0; i < onLineModels.size(); i++) {
+                    if (onLineModels.get(i).getModelId() == data.getId()) {
+                        if (!CollectionUtils.isEmptyList(data.getLabels())) {
+                            for (TargetDetectLabel item : data.getLabels()) {
+                                int itemTypeId = Integer.parseInt(item.getId());
+                                if (onLineModels.get(i).getTypeId() == itemTypeId) {
+                                    onLineModels.get(i).setState(item.isChecked() ? (byte) 0x01 : (byte) 0x00);
                                 }
                             }
-                        } else {
-                            //内置算力同时只能开启一个算法模型，因此当开启时候，默认把其他算法模型置为0
-                            if (!IGduDroneDevice.get().getAiModel().isAiBoxPod()) {
-                                onLineModels.get(i).setState((byte) 0x00);
-                            }
+                        }
+                    } else {
+                        //内置算力同时只能开启一个算法模型，因此当开启时候，默认把其他算法模型置为0
+                        if (!IGduDroneDevice.get().getAiModel().isAiBoxPod()) {
+                            onLineModels.get(i).setState((byte) 0x00);
                         }
                     }
-                    Log.d(TAG, "modelAdapter点击打开或关闭算法后：" + GsonUtils.toJson(onLineModels));
-                    SdkDemoApplication.getAircraftInstance().getVision().setTargetType(onLineModels,
-                            error -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
                 }
-            });
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
-            ShapeDrawable dividerDrawable = new ShapeDrawable();
-            dividerDrawable.getPaint().setColor(getResources().getColor(R.color.color_D8D8D8, null));
-            dividerDrawable.setIntrinsicHeight(1);
-            dividerItemDecoration.setDrawable(dividerDrawable);
-            mViewBinding.rvModels.addItemDecoration(dividerItemDecoration);
-            mViewBinding.rvModels.setAdapter(modelAdapter);
-            getTargetDetectModels();
-        } else {
-            mViewBinding.clBoxModels.setVisibility(View.GONE);
-            mViewBinding.tvAiBox.setVisibility(View.GONE);
-            mViewBinding.line13.setVisibility(View.GONE);
-        }
-    }
-
-    private void initTargetDetectType() {
-        resetAiRecognitionSwitch();
-        mViewBinding.cbPerson.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType(TargetLabel.LABEL_0000.getKey(), isChecked));
-        mViewBinding.cbCar.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType(TargetLabel.LABEL_0037.getKey(), isChecked));
-        mViewBinding.cbShip.setOnCheckedChangeListener((buttonView, isChecked) -> setTargetType(TargetLabel.LABEL_0122.getKey(), isChecked));
-    }
-
-    private void resetAiRecognitionSwitch() {
-        mViewBinding.cbPerson.setChecked(isSingleTypeOpen(TargetLabel.LABEL_0000.getKey()));
-        mViewBinding.cbCar.setChecked(isSingleTypeOpen(TargetLabel.LABEL_0037.getKey()));
-        mViewBinding.cbShip.setChecked(isSingleTypeOpen(TargetLabel.LABEL_0122.getKey()));
-    }
-
-    private void setTargetType(int typeId, boolean isChecked) {
-        if (!SdkDemoApplication.getAircraftInstance().isConnected()) {
-            Toast.makeText(requireContext(), R.string.DeviceNoConn, Toast.LENGTH_SHORT).show();
-            resetAiRecognitionSwitch();
-            return;
-        }
-        if (!DroneUtils.isTargetDetectMode()) {
-            Toast.makeText(requireContext(), R.string.Msg_AI_Recoginition_Warn, Toast.LENGTH_SHORT).show();
-            resetAiRecognitionSwitch();
-            return;
-        }
-        if (IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue() == null) {
-            Toast.makeText(requireContext(), R.string.Msg_no_ai_models_warn, Toast.LENGTH_SHORT).show();
-            resetAiRecognitionSwitch();
-            return;
-        }
-
-        ArrayList<AIModelState> onLineModels = (ArrayList<AIModelState>) IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue().getTargetDetectModelState()
-        if (CollectionUtils.isEmptyList(onLineModels)) {
-            Toast.makeText(requireContext(), R.string.Msg_no_ai_models_warn, Toast.LENGTH_SHORT).show();
-            resetAiRecognitionSwitch();
-            return;
-        }
-        for (int i = 0; i < onLineModels.size(); i++) {
-            AIModelState item = onLineModels.get(i);
-            if (item.getTypeId() == typeId) {
-                item.setState((byte) (isChecked ? 0x01 : 0x00));
+                XLogger.INSTANCE.getAPP().d(TAG, "modelAdapter点击打开或关闭算法后：" + GsonUtils.toJson(onLineModels));
+                SdkDemoApplication.getAircraftInstance().getVision().setTargetType(onLineModels,
+                        error -> XLogger.INSTANCE.getAPP().i("SettingCommonFragment", "setAIBoxTargetType callBack() code = " + error));
             }
-        }
-        SdkDemoApplication.getAircraftInstance().getVision().setTargetType(onLineModels, gduError -> {
-                if (gduError == null){
-                    Toast.makeText(requireContext(), R.string.string_set_success, Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(requireContext(), R.string.Label_SettingFail, Toast.LENGTH_SHORT).show();
-                }
-            });
-    }
-
-    private byte[] getCheckedState() {
-        byte[] checkedArray = new byte[3];
-        if (mViewBinding.cbPerson.isChecked()) {
-            checkedArray[0] = 0x01;
-        }
-        if (mViewBinding.cbCar.isChecked()) {
-            checkedArray[1] = 0x01;
-        }
-        if (mViewBinding.cbShip.isChecked()) {
-            checkedArray[2] = 0x01;
-        }
-        return checkedArray;
+        });
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+        ShapeDrawable dividerDrawable = new ShapeDrawable();
+        dividerDrawable.getPaint().setColor(getResources().getColor(R.color.color_D8D8D8, null));
+        dividerDrawable.setIntrinsicHeight(1);
+        dividerItemDecoration.setDrawable(dividerDrawable);
+        mViewBinding.rvModels.addItemDecoration(dividerItemDecoration);
+        mViewBinding.rvModels.setAdapter(modelAdapter);
+        getTargetDetectModels();
     }
 
     private void getTargetDetectModels() {
@@ -577,6 +510,7 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void transModelData(List<AIModelState> data) {
+        Log.d(TAG, "transModelData: " + GsonUtils.toJson(data));
         if (data == null) return;
         ArrayList<TargetDetectModel> models = new ArrayList<>();
 
@@ -585,8 +519,9 @@ public class SettingCommonFragment extends Fragment {
         Cursor cursor = null;
         Cursor labelCursor = null;
 
-        for (int i = 0; i < data.size(); i++) {
-            AIModelState aiModel = data.get(i);
+        List<GroupVO> sourceList = groupItemById(data);
+        for (int i = 0; i < sourceList.size(); i++) {
+            GroupVO aiModel = sourceList.get(i);
             ArrayList<TargetDetectLabel> labels = new ArrayList<>();
             if (aiModel.getChildList() == null) continue;
 
@@ -615,55 +550,52 @@ public class SettingCommonFragment extends Fragment {
             }
             String modelName = "";
             try {
-                cursor = db.rawQuery("SELECT * FROM algo_label_ref WHERE algorithm_id = ?", new String[]{String.valueOf(aiModel.getModelId())});
+                cursor = db.rawQuery("SELECT * FROM algo_label_ref WHERE algorithm_id = ?", new String[]{String.valueOf(aiModel.groupId)});
                 if (cursor != null && cursor.moveToNext()) {
-//                    if (SystemUtils.isZh(requireContext())) {
-//                        modelName = cursor.getString(1);
-//                    } else {
-//                        modelName = cursor.getString(2);
-//                    }
+                    if (SystemUtils.isZh(requireContext())) {
+                        modelName = cursor.getString(1);
+                    } else {
+                        modelName = cursor.getString(2);
+                    }
                     modelName = cursor.getString(5); //烟雾、火点检测
                 }
             } catch (Exception exception) {
                 Log.e("SettingCommonFragment", exception.toString());
             }
-            TargetDetectModel model = new TargetDetectModel(aiModel.getModelId(), modelName, labels);
+            TargetDetectModel model = new TargetDetectModel(aiModel.groupId, modelName, labels);
             models.add(model);
         }
+        XLogger.INSTANCE.getAPP().d(TAG, "当前算法列表：" + GsonUtils.toJson(models));
+        Log.d("SettingCommonFragment", "当前算法列表：" + GsonUtils.toJson(models));
         if (cursor != null) cursor.close();
         if (labelCursor != null) labelCursor.close();
         db.close();
         modelAdapter.submitList(models);
     }
 
-    private boolean getDetectLabelState(int modelId, int index) {
-//        if (GlobalVariable.targetDetectModelState != null && !GlobalVariable.targetDetectModelState.isEmpty()) {
-//            for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
-//                AIModelState model = GlobalVariable.targetDetectModelState.get(i);
-//                if (model.getModelId() == modelId) {
-//                    byte state = model.getLabelState()[index];
-//                    return state == 0x01;
-//                }
-//            }
-//        }
-        return false;
+    public List<GroupVO> groupItemById(List<AIModelState> sourceList) {
+        Map<Integer, List<AIModelState>> groupMap = sourceList.stream()
+                .collect(Collectors.groupingBy(AIModelState::getModelId));
+        return groupMap.entrySet().stream()
+                .map(entry -> {
+                    GroupVO vo = new GroupVO();
+                    vo.setGroupId(entry.getKey());
+                    vo.setChildList(entry.getValue());
+                    return vo;
+                })
+                .collect(Collectors.toList());
     }
 
-    private String showTwoPoint(String number) {
-        String[] tempS = number.split("\\.");
-        if (tempS.length == 1) {
-            return number + ".00";
-        }
-        char[] tempC = tempS[1].toCharArray();
-        int resultNum = tempC.length;
-        if (resultNum == 1) {
-            return number + "0";
-        } else if (resultNum == 2) {
-            return number;
-        }
-        return number;
-    }
+    class GroupVO {
+        private int groupId;
+        private List<AIModelState> childList; // 同ID的子数据集合
 
+        // getter setter
+        public int getGroupId() { return groupId; }
+        public void setGroupId(int groupId) { this.groupId = groupId; }
+        public List<AIModelState> getChildList() { return childList; }
+        public void setChildList(List<AIModelState> childList) { this.childList = childList; }
+    }
 
     public static SettingCommonFragment newInstance() {
         Bundle args = new Bundle();
@@ -672,26 +604,4 @@ public class SettingCommonFragment extends Fragment {
         return fragment;
     }
 
-    /**
-     * 判断人车船模型中单类型算法是否打开
-     * @param typeId 模型类别ID
-     */
-    private boolean isSingleTypeOpen(int typeId){
-        ArrayList<AIModelState> droneModels = null;
-        if (IGduDroneDevice.get().getAiModel().getAiTargetDetectStateDrone().getValue() != null) {
-            droneModels = (ArrayList<AIModelState>)IGduDroneDevice.get().getAiModel().getAiTargetDetectStateDrone().getValue().getOpenedAiModelState();
-        }
-        ArrayList<AIModelState> boxModels = null;
-        if (IGduDroneDevice.get().getAiModel().getAiTargetDetectStateAiBox().getValue() != null) {
-            boxModels = (ArrayList<AIModelState>)IGduDroneDevice.get().getAiModel().getAiTargetDetectStateAiBox().getValue().getOpenedAiModelState();
-        }
-
-        if (boxModels != null && CollectionUtils.isEmptyList(boxModels)) {
-            return boxModels.stream().anyMatch(model -> (model.getModelId() == AI_BOX_P_C_S_100T || model.getModelId() == AI_BOX_P_C_S_48T) && model.getTypeId() == typeId);
-        }
-        if (droneModels != null && CollectionUtils.isEmptyList(droneModels)) {
-            return droneModels.stream().anyMatch(model -> model.getModelId() == AI_DRONE_P_C_S && model.getTypeId() == typeId);
-        }
-        return false;
-    }
 }

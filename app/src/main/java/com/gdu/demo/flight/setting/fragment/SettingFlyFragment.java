@@ -84,7 +84,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     }
 
     private void initView() {
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
         mUnitChnageUtils = new UnitChnageUtils();
         setListener();
 
@@ -842,7 +842,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
     @Override
     public void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     public static SettingFlyFragment newInstance() {
