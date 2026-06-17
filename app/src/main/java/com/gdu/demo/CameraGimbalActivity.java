@@ -469,7 +469,6 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                         evS += exposureCompensation;
                         evS += " ";
                     }
-                    System.out.println("test ev " + evS);
                 }
                 SettingsDefinitions.ISO[] isos = capabilities.ISORange();
                 if (isos != null) {
@@ -478,7 +477,6 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                         isoS += iso;
                         isoS += " ";
                     }
-                    System.out.println("test iso " + isoS);
                 }
                 break;
             case R.id.btn_set_ev:
