@@ -25,6 +25,7 @@ import com.gdu.lib.util.core.SPUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.Cycle5GSdrStatus;
+import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.ReferenceStationSource;
 import com.gdu.sdk.flightcontroller.rtk.RTK;
 import com.rxjava.rxlife.RxLife;
@@ -243,7 +244,7 @@ public class SettingRtkFragment extends Fragment {
                     break;
             }
         }
-        initParam();
+//        initParam();
         updateBDTips();
 
     }
@@ -325,8 +326,37 @@ public class SettingRtkFragment extends Fragment {
 
 
     /**
-     * 初始化登陆参数
+     * 初始化登陆参数   //TODO
      */
+//    private void initParam() {
+//        XLogger.INSTANCE.getAPP().i("initParam()");
+//        String ip = SPUtils.getInstance().getString(SPUtils.RTK_IP);
+//        if (!StringUtils.isEmptyString(ip)) {
+//            binding.ipAddressEdit.setText(ip);
+//        } else {
+//            binding.ipAddressEdit.setText("rtk.ntrip.qxwz.com");
+//        }
+//        String port = SPUtils.getInstance().getString(SPUtils.RTK_PORT);
+//        if (!StringUtils.isEmptyString(port)) {
+//            binding.portEdit.setText(port);
+//        } else {
+//            binding.portEdit.setText("8002");
+//        }
+//        String account = SPUtils.getInstance().getString(SPUtils.RTK_ACCOUNT);
+//        if (!StringUtils.isEmptyString(account)) {
+//            binding.accountEdit.setText(account);
+//        }
+//        String password = SPUtils.getInstance().getString(SPUtils.RTK_PASSWORD);
+//        if (!StringUtils.isEmptyString(password)) {
+//            binding.passwordEdit.setText(password);
+//        }
+//        String mp = SPUtils.getInstance().getString(SPUtils.RTK_MOUNT_POINT);
+//        if (!StringUtils.isEmptyString(mp)) {
+//            binding.mountPointEdit.setText(mp);
+//        } else {
+//            binding.mountPointEdit.setText("AUTO");
+//        }
+//    }
     private void initParam() {
         XLogger.INSTANCE.getAPP().i("initParam()");
         String ip = SPUtils.getInstance().getString(RTK_IP);
@@ -502,7 +532,6 @@ public class SettingRtkFragment extends Fragment {
     }
 
     private void setRtkSwitch() {
-
         boolean isOpen = SPUtils.getInstance().getBoolean(RTK_SWITCH, true);
         //当前开启则关闭
         if (isOpen) {
@@ -567,8 +596,13 @@ public class SettingRtkFragment extends Fragment {
         } else if (mLastRTKType == 3) {
             stationSource = ReferenceStationSource.ONBOARD_RTK;
         }
-
-        rtk.connectRtk(stationSource, null, new RTKManager.OnRtkConnectListener() {
+        NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
+        networkServiceSettings.setMountPoint(mMountPoint);
+        networkServiceSettings.setPassword(mPassword);
+        networkServiceSettings.setPort(Integer.parseInt(mPort));
+        networkServiceSettings.setServerAddress(mIP);
+        networkServiceSettings.setUserName(mAccount);
+        rtk.connectRtk(stationSource, networkServiceSettings, new RTKManager.OnRtkConnectListener() {
             @Override
             public void onStartConnect() {
                 if (mHandler != null) {
