@@ -152,7 +152,7 @@ public class TargetDetectHelper {
      */
     private void addTargetDetectACK() {
         XLogger.INSTANCE.getAPP().i("addTargetDetectACK()");
-        SdkDemoApplication.getAircraftInstance().getVision().setOnTargetDetectListener(new com.gdu.sdk.vision.OnTargetDetectListener() {
+        SdkDemoApplication.getAircraftInstance().getVision().setOnTargetDetectListener(new com.gdu.sdk.vision.listener.OnTargetDetectListener() {
             @Override
             public void onTargetDetecting(List<TargetMode> list) {
                 if (list == null){

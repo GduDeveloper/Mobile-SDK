@@ -6,13 +6,14 @@ import androidx.appcompat.widget.AppCompatImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.gdu.demo.R
+import com.gdu.demo.adapter.BaseRVAdapter
 import com.gdu.demo.flight.setting.bean.TargetDetectLabel
 import com.gdu.demo.flight.setting.bean.TargetDetectModel
 import com.gdu.lib.util.core.ResourceUtils
 
-class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseQuickAdapter<TargetDetectModel, BaseViewHolder>(
-    R.layout.target_detect_model_list_item) {
+class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseRVAdapter<TargetDetectModel>(R.layout.target_detect_model_list_item) {
 
     private var labelAdapter: TargetDetectLabelAdapter? = null
 
@@ -25,7 +26,7 @@ class TargetDetectModelAdapter(val callback: ITargetLabelCheckCallback) : BaseQu
         return count
     }
 
-    override fun convert(holder: BaseViewHolder, item: TargetDetectModel) {
+    override fun onBindVH(holder: QuickViewHolder, item: TargetDetectModel, position: Int) {
             holder.setText(R.id.modelName, "${ResourceUtils.getString(R.string.target_detect_model)}${item.id}")
             var count = getCheckedCount(item.labels)
             holder.setText(R.id.modelUseState, "${ResourceUtils.getString(R.string.target_detect_using)}$count")

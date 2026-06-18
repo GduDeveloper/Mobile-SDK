@@ -1,16 +1,21 @@
 package com.gdu.demo.viewmodel;
 
+import android.util.Log;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.utils.DroneUtils;
+import com.gdu.lib.util.CollectionUtils;
+import com.gdu.lib.util.GsonUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.key.value.ai.TargetMode;
 import com.gdu.msdk.key.value.bean.GimbalType;
-import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.sdk.vision.listener.OnTargetDetectListener;
+import java.util.List;
 
 /**
  * @author wuqb
@@ -18,6 +23,7 @@ import com.gdu.sdk.util.CommonCallbacks;
  * @description TODO
  */
 public class FlightViewModel extends ViewModel {
+    private static final String TAG = FlightViewModel.class.getSimpleName();
     private final MutableLiveData<Integer> toastLiveData = new MutableLiveData<>();
 
     public boolean isShowAiBox(){
@@ -71,103 +77,86 @@ public class FlightViewModel extends ViewModel {
     }
 
     public void switchAIRecognize() {
-        startTargetDetect(DroneUtils.getLightType());
+        boolean isAiOpen = false;
+        if (IGduDroneDevice.get().getAiModel() != null && IGduDroneDevice.get().getAiModel().getAiTargetDetectState() != null
+                && IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue() != null) {
+            isAiOpen = IGduDroneDevice.get().getAiModel().getAiTargetDetectState().getValue().isAiAlgorithmOpen();
+        }
+        if (isAiOpen) {
+            stopTarget();
+        } else {
+            startTargetDetect();
+        }
     }
 
     /**
      * 开始目标识别
-     * @param lightType
      */
-    public void startTargetDetect(int lightType) {
-        XLogger.INSTANCE.getAPP().i("startTargetDetect() lightType = " + lightType);
-        setAIBoxTargetDetect((byte) 0x01);
-//        SdkDemoApplication.getAircraftInstance().getGduVision().startTargetDetect((byte) lightType, gduError -> {
-//                    XLogger.INSTANCE.getAPP().i("targetDetect callBack() code = " + gduError);
-//                    if (gduError == null) {
-//                        DroneUtils.setDiscernIsOpen(true);
-//                        DroneUtils.setTargetDetectMode(true);
-//                        toastLiveData.postValue(R.string.ai_box_open_success);
-//                    }else {
-//                        DroneUtils.setTargetDetectMode(false);
-//                        toastLiveData.postValue(R.string.ai_box_open_fail);
-//                    }
-//                });
+    public void startTargetDetect() {
+        XLogger.INSTANCE.getAPP().i(TAG, "开始AI识别 - startTargetDetect() ");
+        SdkDemoApplication.getAircraftInstance().getVision().startTargetDetect(errer -> {
+            if (errer == null) {
+                DroneUtils.setDiscernIsOpen(true);
+                DroneUtils.setTargetDetectMode(true);
+                toastLiveData.postValue(R.string.ai_box_open_success);
+            } else {
+                DroneUtils.setTargetDetectMode(false);
+                toastLiveData.postValue(R.string.ai_box_open_fail);
+            }
+        });
+    }
+
+    public void stopTarget() {
+        XLogger.INSTANCE.getAPP().i(TAG, "结束AI识别 -  stopTarget() ");
+//        if (!DroneUtils.getAiBoxOnline()) {
+//            return;
+//        }
+        SdkDemoApplication.getAircraftInstance().getVision().stopTargetDetect(error -> {
+            if (null == error) {
+                DroneUtils.setDiscernIsOpen(false);
+                DroneUtils.setTargetDetectMode(false);
+                toastLiveData.postValue(R.string.ai_detect_exit_success);
+            } else {
+                toastLiveData.postValue(R.string.ai_detect_exit_fail);
+            }
+        });
     }
 
     /**
-     * 开关AI盒子算法模型 0x02840038
-     * @param detectType
+     * 接收Ai识别SEI数据
      */
-    public void setAIBoxTargetDetect(byte detectType) {
-//        for (int i = 0; i < GlobalVariable.targetDetectModelState.size(); i++) {
-//            AIModelState modelState = GlobalVariable.targetDetectModelState.get(i);
-//            SdkDemoApplication.getAircraftInstance().getGduVision().setAIBoxTargetType(modelState.getModelId(), detectType, (short) modelState.getCount(), modelState.getLabelState(), new CommonCallbacks.CompletionCallback() {
-//                @Override
-//                public void onResult(GDUError gduError) {
-//                    AppLog.e("TargetDetectHelper", "setAIBoxTargetDetect modelId " + modelState.getModelId() + " detectType " + detectType + "  callBack() code = " + gduError);
-//                }
-//            });
-//        }
-    }
-
-    public void stopTarget(byte stopType, int lightType) {
-        XLogger.INSTANCE.getAPP().i("stopTarget() stopType = " + stopType + "; lightType = " + lightType);
-        setTargetDetect((byte) 0x00);
-        if (!DroneUtils.getAiBoxOnline()) {
-            return;
-        }
-//        SdkDemoApplication.getAircraftInstance().getGduVision().stopTargetDetect((byte) lightType, new CommonCallbacks.CompletionCallback() {
-//            @Override
-//            public void onResult(Error error) {
-//                if (error == null){
-//                }
-//            }
-//        });
-    }
-
-    private void setTargetDetect(byte detectType) {
-        byte[] typeArray;
-        if (detectType == 0x01) { // 打开时默认全开
-            typeArray = new byte[3];
-            for (int i = 0; i < 3; i++) {
-                typeArray[i] = 0x01;
+    public void registerSeiData() {
+        log("开始接收Ai识别SEI数据 - registerSeiData() ");
+        SdkDemoApplication.getAircraftInstance().getVision().setOnTargetDetectListener(new OnTargetDetectListener() {
+            @Override
+            public void onTargetDetecting(@Nullable List<TargetMode> list) {
+                log("接收到SEI数据, size : " + (CollectionUtils.isEmptyList(list) ? 0 : list.size()) + ", data : "
+                    + GsonUtils.toJson(list));
             }
-        } else {
-            typeArray = new byte[3];
-        }
-//        XLogger.INSTANCE.getAPP().i("TargetDetectHelper", "setTargetDetect aiRecognitionSwitch.first = " + GlobalVariable.aiRecognitionSwitch.first);
-//        if (GlobalVariable.aiRecognitionSwitch.first == 0x0C) {
-//            SdkDemoApplication.getAircraftInstance().getGduVision().setTargetType((byte) 0x01, detectType, (short) 3, typeArray, gduError -> {
-//                if (null == gduError){
-//                    if (detectType == 0x01) {
-//                        DroneUtils.setDiscernIsOpen(true);
-//                        DroneUtils.setTargetDetectMode(true);
-//                    }else {
-//                    }
-//                }else {
-//                    if (detectType == 0x01) {
-//                        DroneUtils.setTargetDetectMode(false);
-//                    }
-//                }
-//            });
-//        } else {
-//            SdkDemoApplication.getAircraftInstance().getGduVision().setAITargetType((byte) 0x00, detectType, (short) 3, typeArray, gduError -> {
-//                if (null == gduError){
-//                    if (detectType == 0x01) {
-//                        DroneUtils.setDiscernIsOpen(true);
-//                        DroneUtils.setTargetDetectMode(true);
-//                    }else {
-//                    }
-//                }else {
-//                    if (detectType == 0x01) {
-//                        DroneUtils.setTargetDetectMode(false);
-//                    }
-//                }
-//            });
-//        }
+
+            @Override
+            public void onTargetDetectFailed(int i) {
+
+            }
+
+            @Override
+            public void onTargetDetectStart() {
+
+            }
+
+            @Override
+            public void onTargetDetectFinished() {
+
+            }
+        });
     }
 
     public MutableLiveData<Integer> getToastLiveData() {
         return toastLiveData;
+    }
+
+    private void log(String logStr){
+        XLogger.INSTANCE.getAPP().i(TAG, logStr);
+        Log.d(TAG,  logStr);
     }
 }

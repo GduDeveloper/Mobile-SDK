@@ -12,8 +12,14 @@ import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.gdu.common.error.Error;
+import com.gdu.demo.config.MyConstants;
+import com.gdu.demo.utils.SPUtils;
+import com.gdu.lib.util.TimeUtil;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.key.value.bean.GimbalType;
 import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.base.BaseComponent;
@@ -23,11 +29,20 @@ import com.gdu.sdk.manager.SDKInitEvent;
 import com.gdu.sdk.manager.SDKManager;
 import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.rxjava.rxlife.RxLife;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  *
  */
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity {
 
     public static final String TAG = MainActivity.class.getName();
 
@@ -48,6 +63,7 @@ public class MainActivity extends Activity {
         initView();
         initListener();
 //        RonLog.showLog(true);
+        copyAIBoxDataDb2Local();
     }
 
 
@@ -67,6 +83,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
+                    XLogger.INSTANCE.init(mContext);
                     startSDKRegistration();
                 }
             }
@@ -226,6 +243,55 @@ public class MainActivity extends Activity {
         switch (view.getId()) {
 
         }
+    }
+
+    private void copyAIBoxDataDb2Local() {
+        Log.i(TAG,"copyAIBoxDataDb2Local()");
+        boolean isCopyDbFile = SPUtils.getBoolean(this, MyConstants.COPY_AI_BOX_MODEL_DB_KEY);
+        File databasePath = getDatabasePath("AIBoxData.db");
+        Log.i(TAG,"copyAIBoxDataDb2Local() databasePath = " + databasePath);
+        //根据最近修改时间决定考不拷贝（暂定时间为25年7月30号）
+        long fileLastModify = 0;
+        if (databasePath.exists()) {
+            fileLastModify = databasePath.lastModified();
+        }
+        boolean isNotNeedUpdate = fileLastModify > TimeUtil.getTimeStamp("2025-10-17 23:59:59", "yyyy-MM-dd HH:mm:ss");
+
+        if (isNotNeedUpdate && isCopyDbFile) {
+            Log.i(TAG,"copyAIBoxDataDb2Local() db file is exit");
+            return;
+        }
+        SPUtils.put(this, MyConstants.COPY_AI_BOX_MODEL_DB_KEY, true);
+        Observable.create(emitter -> {
+                    File dbShmPath = getApplicationContext().getDatabasePath("AIBoxData.db-shm");
+                    boolean delResult;
+                    if (dbShmPath.exists()) {
+                        delResult = dbShmPath.delete();
+                        Log.i(TAG,"copyAIBoxDataDb2Local() delShmResult = " + delResult);
+                    }
+                    File dbWalPath = getApplicationContext().getDatabasePath("AIBoxData.db-wal");
+                    if (dbWalPath.exists()) {
+                        delResult = dbWalPath.delete();
+                        Log.i(TAG,"copyAIBoxDataDb2Local() delWalResult = " + delResult);
+                    }
+                    if (databasePath.exists()) {
+                        delResult = databasePath.delete();
+                        Log.i(TAG,"copyAIBoxDataDb2Local() delDBResult = " + delResult);
+                    }
+                    try (InputStream is = getAssets().open("database/AIBoxData.db");
+                         FileOutputStream fos = new FileOutputStream(databasePath)) {
+                        byte[] data = new byte[1024];
+                        int len = 0;
+                        while ((len = is.read(data)) > 0) {
+                            fos.write(data, 0, len);
+                        }
+                        Log.i(TAG,"copyAIBoxDataDb2Local() 数据拷贝完成");
+                    } catch (IOException e) {
+                        Log.e(TAG,"拷贝数据库文件出错", e);
+                    }
+                }).subscribeOn(Schedulers.io())
+                .to(RxLife.toMain(this))
+                .subscribe(o -> {}, throwable -> Log.e(TAG,"拷贝数据库文件出错"));
     }
 
 }

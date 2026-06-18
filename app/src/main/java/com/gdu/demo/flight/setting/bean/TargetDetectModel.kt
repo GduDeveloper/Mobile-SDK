@@ -5,5 +5,6 @@ package com.gdu.demo.flight.setting.bean
  */
 data class TargetDetectModel(
     val id: Int,
+    val name: String,
     val labels: MutableList<TargetDetectLabel>
 )

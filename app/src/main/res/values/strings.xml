@@ -530,10 +530,12 @@
     <string name="gimbal_version">Gimbal version</string>
     <string name="string_data_loading_pro">Data loading…</string>
     <string name="ai_box">AI box</string>
-    <string name="ai_box_open_success">AI box opened successfully</string>
+    <string name="ai_box_open_success">AI detected opened successfully</string>
     <string name="string_target_detected">Target detected</string>
     <string name="string_not_target_detected">Target not detected</string>
-    <string name="ai_box_open_fail">AI box opening failed</string>
+    <string name="ai_box_open_fail">AI detected opening failed</string>
+    <string name="ai_detect_exit_success">AI detected exit successful</string>
+    <string name="ai_detect_exit_fail">AI detected exit failed</string>
     <string name="string_gps_weak">Insufficient star search</string>
     <string name="string_read_fail">DEM read failure</string>
     <string name="string_end_check">End detection</string>
@@ -745,6 +747,7 @@
     <string name="Label_NoControlPermissionTip">The remote control does not have control permission, please obtain control permission and try again</string>
     <string name="please_exit_point_fly">Please finish the pointing flight</string>
     <string name="Msg_AI_Recoginition_Warn">Target recognition is not enabled</string>
+    <string name="Msg_no_ai_models_warn">No recognition algorithm currently</string>
     <string name="target_detect_model">Model</string>
     <string name="target_detect_using">In use</string>
     <string name="Label_ResetDroneFail">Drone reset failed</string>
