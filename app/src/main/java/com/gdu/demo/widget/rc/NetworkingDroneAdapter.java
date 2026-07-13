@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gdu.demo.R;
-import com.gdu.remotecontroller.IMChildPointInfo;
+import com.gdu.drone.IMChildPointInfo;
 
 import java.util.List;
 
