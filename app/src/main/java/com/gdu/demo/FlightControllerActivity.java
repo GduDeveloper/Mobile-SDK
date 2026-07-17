@@ -13,13 +13,17 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 
 import com.gdu.common.error.GDUError;
+import com.gdu.dock.DockType;
+import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
+import com.gdu.sdk.flightcontroller.AircraftOperationScenarioMode;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
+import com.gdu.sdk.flightcontroller.bean.AircraftOperationScenarioInfo;
 import com.gdu.sdk.flightcontroller.bean.LowBatteryWarnInfo;
 import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -45,6 +49,8 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     private TextView mAircraftModelTextview;
 
     private TextView mAircraftSNTextview;
+
+    private FlightControllerState mLastFlightControllerState;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +96,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         mGDUFlightController.setStateCallback(new FlightControllerState.Callback() {
             @Override
             public void onUpdate(FlightControllerState flightControllerState) {
+                mLastFlightControllerState = flightControllerState;
                 showText(mFCStateInfoTextView, flightControllerState.getString());
             }
         });
@@ -466,6 +473,112 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
+
+    /**
+     * 设置飞机使用场景 - 示例实现：将飞机场景设置为机场模式，并使用当前飞机位置作为返航点
+     */
+    private void setAircraftOperationScenario() {
+        if (mGDUFlightController == null) return;
+        if (mLastFlightControllerState == null) {
+            toastText("未获取到飞行器位置");
+            return;
+        }
+        LocationCoordinate3D loc = mLastFlightControllerState.getAircraftLocation();
+        AircraftOperationScenarioInfo info = new AircraftOperationScenarioInfo();
+        info.setAircraftMode(AircraftOperationScenarioMode.AIRPORT_MODE);
+        info.setDockHeadingValid(false);
+        info.setHangarHeadingAngleRad(0);
+        info.setAlternateLandingPointValid(true);
+        info.setAlternateLandingPointLatitude(loc.getLatitude() + 0.00001);
+        info.setAlternateLandingPointLongitude(loc.getLongitude() + 0.00001);
+        info.setTakeoffPointCoordinateValid(false);
+        info.setQuickTakeoffValid(false);
+        info.setDockType(DockType.K03);
+        info.setTakeoffPointLatitude(0);
+        info.setTakeoffPointLongitude(0);
+        info.setTakeoffPointEllipsoidHeight(0);
+
+        mGDUFlightController.setAircraftOperationScenarioMode(info, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置飞机使用场景成功");
+                } else {
+                    toastText("设置飞机使用场景失败");
+                }
+            }
+        });
+    }
+
+    /**
+     * 设置机场备降返航点为当前飞机位置
+     */
+    private void setDockAlternatePoint() {
+        if (mGDUFlightController == null) return;
+        if (mLastFlightControllerState == null) {
+            toastText("未获取到飞行器位置");
+            return;
+        }
+        LocationCoordinate3D loc3d = mLastFlightControllerState.getAircraftLocation();
+        LocationCoordinate2D point2d = new LocationCoordinate2D(loc3d.getLatitude(), loc3d.getLongitude());
+        mGDUFlightController.setDockAlternateLandPoint(point2d, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置机场备降点成功");
+                } else {
+                    toastText("设置机场备降点失败");
+                }
+            }
+        });
+    }
+
+    private void getDockAlternatePoint() {
+        if (mGDUFlightController == null) return;
+        mGDUFlightController.getDockAlternateLandPoint(new CommonCallbacks.CompletionCallbackWith<LocationCoordinate2D>() {
+            @Override
+            public void onSuccess(LocationCoordinate2D var1) {
+                if (var1 != null) {
+                    toastText("获取机场备降点成功");
+                } else
+                    toastText("获取机场备降点失败");
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+
+            }
+        });
+    }
+
+    private void startReturnToDock() {
+        if (mGDUFlightController == null) return;
+        mGDUFlightController.startReturnToDock(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("开始返航到机场成功");
+                } else {
+                    toastText("开始返航到机场失败");
+                }
+            }
+        });
+    }
+
+    private void startReturnToDockAlternatePoint() {
+        if (mGDUFlightController == null) return;
+        mGDUFlightController.startReturnToDockAlternateLandPoint(new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("返航到机场备降点已开始");
+                } else {
+                    toastText("返航到机场备降点失败");
+                }
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -619,6 +732,20 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                         showText(mAircraftSNTextview, var1.getDescription());
                     }
                 });
+            case R.id.set_dock_alternate_point_button:
+                setDockAlternatePoint();
+                break;
+            case R.id.get_dock_alternate_point_button:
+                getDockAlternatePoint();
+                break;
+            case R.id.start_return_to_dock_button:
+                startReturnToDock();
+                break;
+            case R.id.start_return_to_dock_alternate_button:
+                startReturnToDockAlternatePoint();
+                break;
+            case R.id.set_aircraft_scenario_button:
+                setAircraftOperationScenario();
                 break;
         }
     }
