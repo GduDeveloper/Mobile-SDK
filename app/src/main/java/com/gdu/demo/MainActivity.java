@@ -21,8 +21,10 @@ import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.manager.GDUSDKInitEvent;
 import com.gdu.sdk.manager.GDUSDKManager;
+import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.logger.MyLogUtils;
 
 /**
  *
@@ -47,7 +49,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
-//        RonLog.showLog(true);
+        GDUSDKManager.getInstance().setLogEnable(true);
+        GDUSDKManager.getInstance().setCustomLogPath("/sdcard/gdu_log");
     }
 
 
