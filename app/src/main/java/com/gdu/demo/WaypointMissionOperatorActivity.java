@@ -280,14 +280,26 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 break;
             case R.id.start_waypoint_button:
                 if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
-                    waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+//                    waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+//                        @Override
+//                        public void onResult(GDUError error) {
+//                            if (error == null) {
+//                                toast("开始航迹成功");
+//                            } else {
+//                                toast("开始航迹失败");
+//                            }
+//                        }
+//                    });
+
+                    waypointMissionOperator.startMissionWithTaskID(12345, new CommonCallbacks.CompletionCallbackWith<String>() {
                         @Override
-                        public void onResult(GDUError error) {
-                            if (error == null) {
-                                toast("开始航迹成功");
-                            } else {
-                                toast("开始航迹失败");
-                            }
+                        public void onSuccess(String taskName) {
+                            toast("开始航迹成功 taskID:" + taskName);
+                        }
+
+                        @Override
+                        public void onFailure(GDUError var1) {
+                            toast("开始航迹失败");
                         }
                     });
                 }
