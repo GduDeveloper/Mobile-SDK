@@ -347,6 +347,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
 //      builder.setPointOfInterest(new LocationCoordinate2D(15, 15));
 //      builder.headingMode(WaypointMissionHeadingMode.TOWARD_POINT_OF_INTEREST);
         waypointMission.setGimbalPitchRotationEnabled(true);
+        waypointMission.setAltitudeMode(1);
 
         List<Waypoint> waypointList = new ArrayList<>();
 
