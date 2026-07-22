@@ -1,6 +1,7 @@
 package com.gdu.demo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -26,6 +27,8 @@ import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.sdk.camera.CameraMode;
+import com.gdu.sdk.camera.CameraStreamSettings;
+import com.gdu.sdk.camera.CameraVideoStreamSource;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.camera.VideoFeeder;
@@ -561,6 +564,12 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
                 });
                 break;
+            case  R.id.btn_set_capture_storage:
+                    showStorageConfigDialog(true);
+                    break;
+            case R.id.btn_set_record_storage:
+                    showStorageConfigDialog(false);
+                break;
         }
     }
 
@@ -627,5 +636,136 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 //            byte[] data = codecManager.getRgbaData();
 //            RonLog.LogD("test onSurfaceTextureUpdated " + (data != null ? data.length : 0));
 //        }
+    }
+
+    private void showStorageConfigDialog(final boolean isCapture) {
+        if (mGDUCamera == null) {
+            toast("相机未连接");
+            return;
+        }
+
+        // 根据是拍照还是录像，异步获取当前设置并在回调中显示对话框
+        CommonCallbacks.CompletionCallbackWith<CameraStreamSettings> callback = new CommonCallbacks.CompletionCallbackWith<CameraStreamSettings>() {
+            @Override
+            public void onSuccess(CameraStreamSettings currentSettings) {
+                runOnUiThread(() -> {
+                    // 构造初始选中项
+                    final String[] items = new String[]{"广角 (WIDE)", "变焦 (ZOOM)", "红外 (INFRARED_THERMAL)", "保存当前图传画面"};
+                    final boolean[] checked = new boolean[]{false, false, false, false};
+
+                    if (currentSettings != null) {
+                        List<CameraVideoStreamSource> sources = currentSettings.getCameraVideoStreamSources();
+                        if (sources != null) {
+                            for (CameraVideoStreamSource src : sources) {
+                                if (src == CameraVideoStreamSource.WIDE) checked[0] = true;
+                                if (src == CameraVideoStreamSource.ZOOM) checked[1] = true;
+                                if (src == CameraVideoStreamSource.INFRARED_THERMAL) checked[2] = true;
+                            }
+                        }
+                        checked[3] = currentSettings.needCurrentLiveViewStream();
+                    } else {
+                        // 如果未能获取到当前设置，使用默认值（保持兼容旧行为）
+                        checked[0] = true;
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle(isCapture ? "设置拍照存储配置" : "设置录像存储配置");
+                    builder.setMultiChoiceItems(items, checked, (dialog, which, isChecked) -> checked[which] = isChecked);
+                    builder.setPositiveButton("确定", (dialog, which) -> {
+                        List<CameraVideoStreamSource> sources = new ArrayList<>();
+                        if (checked[0]) sources.add(CameraVideoStreamSource.WIDE);
+                        if (checked[1]) sources.add(CameraVideoStreamSource.ZOOM);
+                        if (checked[2]) sources.add(CameraVideoStreamSource.INFRARED_THERMAL);
+
+                        CameraStreamSettings.Builder b = new CameraStreamSettings.Builder();
+                        b.setCameraVideoStreamSources(sources);
+                        b.setNeedCurrentLiveViewStream(checked[3]);
+                        CameraStreamSettings settings = b.build();
+
+                        if (isCapture) {
+                            mGDUCamera.setCaptureCameraStreamSettings(settings, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(GDUError error) {
+                                    if (error == null) {
+                                        toast("设置拍照存储配置成功");
+                                    } else {
+                                        toast("设置拍照存储配置失败: " + error.getDescription());
+                                    }
+                                }
+                            });
+                        } else {
+                            mGDUCamera.setRecordCameraStreamSettings(settings, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(GDUError error) {
+                                    if (error == null) {
+                                        toast("设置录像存储配置成功");
+                                    } else {
+                                        toast("设置录像存储配置失败: " + error.getDescription());
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.show();
+                });
+            }
+
+            @Override
+            public void onFailure(GDUError error) {
+                // 获取失败时仍然展示对话框，使用默认选项
+                runOnUiThread(() -> {
+                    final String[] items = new String[]{"广角 (WIDE)", "变焦 (ZOOM)", "红外 (INFRARED_THERMAL)", "保存当前图传画面"};
+                    final boolean[] checked = new boolean[]{true, false, false, false};
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle(isCapture ? "设置拍照存储配置" : "设置录像存储配置");
+                    builder.setMultiChoiceItems(items, checked, (dialog, which, isChecked) -> checked[which] = isChecked);
+                    builder.setPositiveButton("确定", (dialog, which) -> {
+                        List<CameraVideoStreamSource> sources = new ArrayList<>();
+                        if (checked[0]) sources.add(CameraVideoStreamSource.WIDE);
+                        if (checked[1]) sources.add(CameraVideoStreamSource.ZOOM);
+                        if (checked[2]) sources.add(CameraVideoStreamSource.INFRARED_THERMAL);
+
+                        CameraStreamSettings.Builder b = new CameraStreamSettings.Builder();
+                        b.setCameraVideoStreamSources(sources);
+                        b.setNeedCurrentLiveViewStream(checked[3]);
+                        CameraStreamSettings settings = b.build();
+
+                        if (isCapture) {
+                            mGDUCamera.setCaptureCameraStreamSettings(settings, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(GDUError error) {
+                                    if (error == null) {
+                                        toast("设置拍照存储配置成功");
+                                    } else {
+                                        toast("设置拍照存储配置失败: " + error.getDescription());
+                                    }
+                                }
+                            });
+                        } else {
+                            mGDUCamera.setRecordCameraStreamSettings(settings, new CommonCallbacks.CompletionCallback() {
+                                @Override
+                                public void onResult(GDUError error) {
+                                    if (error == null) {
+                                        toast("设置录像存储配置成功");
+                                    } else {
+                                        toast("设置录像存储配置失败: " + error.getDescription());
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    builder.setNegativeButton("取消", null);
+                    builder.show();
+                });
+            }
+        };
+
+        if (isCapture) {
+            mGDUCamera.getCaptureCameraStreamSettings(callback);
+        } else {
+            mGDUCamera.getRecordCameraStreamSettings(callback);
+        }
     }
 }
