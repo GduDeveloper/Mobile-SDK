@@ -10,7 +10,7 @@ GDU Android MSDK 为移动端应用提供对无人机的全面控制与数据接
 
 ## 三、SDK_API文档
 
-   [SDK_API文档](https://github.com/GduDeveloper/Mobile-SDK/blob/develop_3.0/document/MSDK_API/cn/00.MSDK_API.md.md)
+   [SDK_API文档](https://github.com/GduDeveloper/Mobile-SDK/blob/develop_3.0/document/MSDK_API/cn/00.MSDK_API.md)
 
 
 ## 四、SDK集成
