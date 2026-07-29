@@ -1,20 +1,20 @@
 # GDU SDK for Android
 
-## SDK简介
+## 一、SDK简介
 GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
 双光云台，1红外双光云台，四光云台）控制；实现实时图传显示，飞行信息反馈，航迹飞行等功能接口。便于开发者完成基于自身场景的更深层、更个性化飞行器开发需求。
 
 
-## SDK版本更新记录
+## 二、SDK版本更新记录
 
    [完整更新记录](https://github.com/GduDeveloper/Mobile-SDK/blob/develop_3.0/document/UPDATE_VERSION.md)
 
-## SDK_API文档
+## 三、SDK_API文档
 
    [SDK_API文档](https://github.com/GduDeveloper/Mobile-SDK/blob/develop_3.0/document/MSDK_API/cn/00.MSDK_API.md.md)
 
 
-## SDK集成
+## 四、SDK集成
 ### 添加依赖文件
 ~~~xml
 1.导入SDK开发包GduLibrary-*.*.*.jar到libs目录；
@@ -28,7 +28,7 @@ sourceSets {
         }
     }
 ~~~
-## 提供开发接口
+## 五、提供开发接口
 ### 1.
     (1).GDUSDKManager: SDK提供注册，飞行器连接，关闭
     云台相机参数设置和获取等接口
@@ -47,7 +47,7 @@ sourceSets {
     (11).GDUCodecManager:解码相关接口
     (12).GDUDiagnostics:异常提示相关接口
     
-## MSDK使用场景示例
+## 六、MSDK使用场景示例
 1. MSDK配合图传盒子，在机场中的使用
    本设备为**无人机图传 + 双 RTK 一体化接收盒子**，集成无线图传接收、双路 RTK 定位接收模块，支持 Android MSDK 对接，可对接工控板、带网口 Android 设备，适配车机、自动化机库、船载等地面 / 舰载无人机地面接收场景。
 
@@ -144,6 +144,6 @@ sourceSets {
 4. RTK 天线尽量远离大功率电源、电机等电磁干扰源；
 5. 船载 / 车载震动环境使用，所有接头做好防震紧固，避免接头松动断连。
 
-## 支持
+## 七、支持
    有问题可以联系dev@gdu-tech.com
 
