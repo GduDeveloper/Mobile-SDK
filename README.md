@@ -81,7 +81,7 @@ sourceSets {
 
 ## 2 整体通信框架
 
-![drone_communication_diagram_v5](media/image1.png)
+![drone_communication_diagram_v5](document/drone_communication_diagram_v5.png)
 
 ## 3 硬件接线步骤
 
