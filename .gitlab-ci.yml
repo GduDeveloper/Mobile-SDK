@@ -17,6 +17,7 @@ sync_mirror:
     - git remote remove mirror 2>/dev/null || true
     - git remote add mirror ${TARGET_GIT_URL}
     - git fetch origin --prune
+    - git fetch mirror --prune
     - git push mirror HEAD:refs/heads/develop_3.0 --force-with-lease
   only:
     - push
