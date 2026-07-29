@@ -1,8 +1,7 @@
 # GDU SDK for Android
 
 ## 一、SDK简介
-GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
-双光云台，1红外双光云台，四光云台）控制；实现实时图传显示，飞行信息反馈，航迹飞行等功能接口。便于开发者完成基于自身场景的更深层、更个性化飞行器开发需求。
+GDU Android MSDK 为移动端应用提供对无人机的全面控制与数据接入能力。功能包括飞行与遥控器控制、云台与相机控制、实时高清图传、飞行状态与传感器数据回传、航线与任务管理、以及 RTK/定位与解码管理等。SDK 支持S400系列，S200系列，及多种云台与相机型号（含 8K、双光、红外等），兼容常见 Android 硬件平台，便于在巡检、应急响应、测绘与行业级场景中快速集成与二次开发。
 
 
 ## 二、SDK版本更新记录
@@ -15,38 +14,38 @@ GDU无人机Android SDK目前开放了无人机控制，挂载云台（8K,
 
 
 ## 四、SDK集成
-### 添加依赖文件
-~~~xml
-1.导入SDK开发包GduLibrary-*.*.*.jar到libs目录；
-  导入libCRtp.so和librtmp.so到libs下的arm64-v8a和armeabi-v7a目录
-2.添加jar包
- implementation fileTree(dir: 'libs', include: ['*.jar'])
-3.添加so库
+### 添加依赖
+1. 将 SDK Jar 包（GduLibrary-*.jar）拷贝到 app/libs 目录；将本地 native 库 libCRtp.so 与 librtmp.so 放到对应 ABI 目录（libs/arm64-v8a, libs/armeabi-v7a）。
+2. 在 module 的 build.gradle 中添加：
+~~~groovy
+implementation fileTree(dir: 'libs', include: ['*.jar'])
 sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs']
-        }
+    main {
+        jniLibs.srcDirs = ['libs']
     }
+}
 ~~~
+3. 权限与配置：在 AndroidManifest.xml 中声明相机、录音、网络与定位等所需权限，并在运行时请求授权。
+4. 混淆：启用 R8/ProGuard 时，请参考 SDK 随附的混淆规则并保留 SDK 的公共 API 类。
+5. 示例：建议参考 samples 或示例工程以快速完成初始化与图传显示的接入。
 ## 五、提供开发接口
-### 1.
-    (1).GDUSDKManager: SDK提供注册，飞行器连接，关闭
-    云台相机参数设置和获取等接口
-    (2).GDUAircraft: 获取无人机系统各组件；
-    (3).GDUFlightController:提供飞控相关接口。
-    (4).GDUCamera:提供相机相关接口
-    (5).GDUGimbal:提供云台相关接口
-    (6).GDUBattery:提供电池相关接口
-    (7).GDURemoteController:提供遥控器相关接口
-    (8).GDURadar:提供雷达相关接口
-    (9).GDUAirlink:提供图传链路相关接口
-    (10).Mission:提供任务相关接口；包含如下功能：
-        A.WaypointMission:航点任务
-        B.FollowMeMission:GPS跟随
-        C.HotpointMission:GPS环绕
-    (11).GDUCodecManager:解码相关接口
-    (12).GDUDiagnostics:异常提示相关接口
-    
+SDK 提供一组高层 API，便于控制无人机与获取数据。主要接口包括：
+
+- GDUSDKManager：SDK 初始化、注册与授权管理；负责设备发现、连接与生命周期管理。
+- GDUAircraft：表示飞行器实体，提供对子模块（飞控、相机、云台、电池等）的访问入口。
+- GDUFlightController：飞控控制接口（起飞/降落、姿态控制、任务调度）。
+- GDUCamera：相机控制与媒体管理（拍照、录像、相机参数设置、视频流控制）。
+- GDUGimbal：云台控制（俯仰、偏航、预设位管理等）。
+- GDUBattery：电池状态查询与电量/健康告警回调。
+- GDURemoteController：遥控器状态与按键事件接口。
+- GDURadar：雷达/避障感知数据接口。
+- GDUAirlink：图传链路、带宽与网络参数管理。
+- GDUCodecManager：视频流解码与渲染管理。
+- Mission：任务系统，包含 WaypointMission、FollowMe、Hotpoint 等任务类型。
+- GDUDiagnostics：运行态诊断、日志与错误上报接口。
+
+示例与调用方式详见上方的 SDK_API 文档链接。
+
 ## 六、MSDK使用场景示例
 1. MSDK配合图传盒子，在机场中的使用
    本设备为**无人机图传 + 双 RTK 一体化接收盒子**，集成无线图传接收、双路 RTK 定位接收模块，支持 Android MSDK 对接，可对接工控板、带网口 Android 设备，适配车机、自动化机库、船载等地面 / 舰载无人机地面接收场景。
