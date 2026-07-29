@@ -15,10 +15,10 @@ GDU Android MSDK 为移动端应用提供对无人机的全面控制与数据接
 
 ## 四、SDK集成
 ### 添加依赖
-1. 将 SDK Jar 包（GduLibrary-*.jar）拷贝到 app/libs 目录；将本地 native 库 libCRtp.so 与 librtmp.so 放到对应 ABI 目录（libs/arm64-v8a, libs/armeabi-v7a）。
+1. 将 SDK Jar 包（GduLibrary-*.aar）拷贝到 app/libs 目录。
 2. 在 module 的 build.gradle 中添加：
 ~~~groovy
-implementation fileTree(dir: 'libs', include: ['*.jar'])
+implementation fileTree(dir: 'libs', include: ['*.aar'])
 sourceSets {
     main {
         jniLibs.srcDirs = ['libs']
