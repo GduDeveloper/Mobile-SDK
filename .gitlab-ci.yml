@@ -1,0 +1,22 @@
+stages:
+  - sync_mirror
+
+sync_mirror:
+  stage: sync_mirror
+  variables:
+    GIT_DEPTH: 0
+    TARGET_GIT_URL: "https://${SYNC_PAT}@github.com/GduDeveloper/Mobile-SDK.git"
+  script:
+    - >
+      if [ -z "${SYNC_PAT}" ]; then
+        echo "ERROR: SYNC_PAT 环境变量为空！"
+        exit 1
+      fi
+    - git config --global user.name "GitLab Auto Sync"
+    - git config --global user.email "sync@gitlab.local"
+    - git remote remove mirror 2>/dev/null || true
+    - git remote add mirror ${TARGET_GIT_URL}
+    - git fetch origin --prune
+    - git push mirror HEAD:refs/heads/develop_3.0 --force-with-lease
+  only:
+    - push
