@@ -15,13 +15,24 @@ android {
             abiFilters  "arm64-v8a"
         }
     }
+    signingConfigs {
+        release {
+            keyAlias 'GDU_MSDK_DEMO'
+            keyPassword 'gdu_sdk'
+            storeFile file('key/GDU_SDKdemo.jks')
+            storePassword 'gdu_sdk'
+        }
+    }
+
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             shrinkResources false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            signingConfig signingConfigs.release
             shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -30,15 +41,6 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-        }
-    }
-
-    signingConfigs {
-        release {
-            keyAlias 'GDU_MSDK_DEMO'
-            keyPassword 'gdu_sdk'
-            storeFile file('key/GDU_Pro2.jks')
-            storePassword 'gdu_sdk'
         }
     }
 

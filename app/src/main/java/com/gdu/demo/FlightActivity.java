@@ -42,9 +42,11 @@ import com.gdu.msdk.util.KVObserver;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
 import com.gdu.sdk.base.Diagnostics;
+import com.gdu.sdk.codec.CodecManager;
 import com.gdu.sdk.flightcontroller.FlightController;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.hms.WarningLevel;
+import com.gdu.sdk.manager.SDKManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
@@ -61,6 +63,8 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     private ActivityFlightBinding viewBinding;
 //    private GDUCodecManager codecManager;
 //    private VideoFeeder.VideoDataListener videoDataListener ;
+
+     private CodecManager mCodecManager;
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
@@ -82,6 +86,11 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         viewBinding = ActivityFlightBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
         viewModel = new ViewModelProvider(this).get(FlightViewModel.class);
+
+        Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
+        if (aircraft != null) {
+            mCodecManager = aircraft.getCodecManager();
+        }
         initView();
         initData();
         initListener();
@@ -333,6 +342,10 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     }
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        if (mCodecManager != null) {
+            mCodecManager.startPreview(0, surface);
+        }
+
 //        if (codecManager == null) {
 //            codecManager = new GDUCodecManager(FlightActivity.this, surface, width, height);
 //        }
@@ -340,11 +353,16 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        if (mCodecManager != null) {
+            mCodecManager.onSurfaceLayoutChanged(0, width, height);
+        }
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        if (mCodecManager != null) {
+            mCodecManager.stopPreview(0);
+        }
         return false;
     }
 
