@@ -6,7 +6,7 @@ import com.gdu.lib.base.GduEnvConfig;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.manager.SDKManager;
 import com.gdu.sdk.products.Aircraft;
-import com.yolanda.nohttp.NoHttp;
+//import com.yolanda.nohttp.NoHttp;
 
 
 public class SdkDemoApplication extends Application {
@@ -22,7 +22,7 @@ public class SdkDemoApplication extends Application {
         GduEnvConfig.FLAVOR = "MobileSdkV4";
         CrashHandler crashHandler = CrashHandler.getInstance();
         crashHandler.init(getApplicationContext());
-        NoHttp.initialize(this);
+//        NoHttp.initialize(this);
     }
 
 
