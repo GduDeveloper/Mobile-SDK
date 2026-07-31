@@ -57,6 +57,7 @@ public class MediaDetailActivity extends Activity {
         viewBinding.tvGetPreview.setOnClickListener(listener);
         viewBinding.tvGetRaw.setOnClickListener(listener);
         viewBinding.tvGetVideo.setOnClickListener(listener);
+        viewBinding.tvGetRawWifi.setOnClickListener(listener);
     }
 
     private void initData() {
@@ -82,7 +83,9 @@ public class MediaDetailActivity extends Activity {
                 case R.id.tv_get_raw:
                     getImageRaw();
                     break;
-
+                case R.id.tv_get_raw_wifi:
+                    getImageRawByWifi();
+                    break;
                 default:
                     break;
             }
@@ -144,6 +147,62 @@ public class MediaDetailActivity extends Activity {
 
             }
 
+            @Override
+            public void onProgress(int i) {
+
+            }
+
+        });
+    }
+
+    private void getImageRawByWifi() {
+        manager.getRawFileByWifi(path, "", new FileDownCallback.OnMediaFileCallBack() {
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onRealtimeDataUpdate(byte[] bytes, long position, boolean isLastPack) {
+
+            }
+
+            @Override
+            public void onProgress(long total, long current) {
+
+            }
+
+            @Override
+            public void onSuccess(Bitmap result, String path) {
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d("ImagePath ", "path = " + path);
+                            String localPath = "file://" + path;
+                            Glide.with(MediaDetailActivity.this).load(localPath).into(viewBinding.ivRaw);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFail(GDUError error) {
+
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                if (handler != null) {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            String progressText = format.format(progress * 1.0) + "%";
+                            viewBinding.tvRawProgress.setText(progressText);
+                        }
+                    });
+                }
+            }
         });
     }
 
@@ -190,6 +249,11 @@ public class MediaDetailActivity extends Activity {
 
             @Override
             public void onFail(GDUError error) {
+
+            }
+
+            @Override
+            public void onProgress(int i) {
 
             }
 
@@ -240,6 +304,11 @@ public class MediaDetailActivity extends Activity {
 
             @Override
             public void onFail(GDUError error) {
+
+            }
+
+            @Override
+            public void onProgress(int i) {
 
             }
 

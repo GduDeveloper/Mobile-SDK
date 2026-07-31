@@ -58,6 +58,16 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/tv_get_raw_wifi"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:background="@color/colorAccent"
+            android:gravity="center"
+            android:text="WiFi下载原图"
+            android:textSize="13sp" />
+
+        <TextView
             android:id="@+id/tv_get_video"
             android:layout_width="150dp"
             android:layout_height="50dp"

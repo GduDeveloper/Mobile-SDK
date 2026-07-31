@@ -2,6 +2,7 @@ package com.gdu.demo.mediatest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
 import android.os.Handler;
@@ -257,8 +258,58 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
             toastText("云台未连接");
             return;
         }
+        updateDownloadStatus("下载状态：准备下载\n下载进度：0%");
+        manager.getRawFileByWifi(path, "", new FileDownCallback.OnMediaFileCallBack() {
+            @Override
+            public void onStart() {
+                updateDownloadStatus("下载状态：开始下载\n下载进度：0%");
+            }
 
+            @Override
+            public void onRealtimeDataUpdate(byte[] bytes, long position, boolean isLastPack) {
+                if (isLastPack) {
+                    updateDownloadStatus("下载状态：接收完成，等待保存");
+                }
+            }
 
+            @Override
+            public void onProgress(long total, long current) {
+                if (total > 0) {
+                    int percent = (int) ((current * 100f) / total);
+                    updateDownloadProgress("下载中", Math.min(percent, 100));
+                }
+            }
+
+            @Override
+            public void onSuccess(Bitmap result, String path) {
+                saveVideoPath = path;
+                updateDownloadStatus("下载状态：下载成功\n保存路径：" + saveVideoPath);
+            }
+
+            @Override
+            public void onFail(GDUError error) {
+                updateDownloadStatus("下载状态：下载失败\n失败原因：" + (error == null ? "unknown" : String.valueOf(error)));
+            }
+
+            @Override
+            public void onProgress(int progress) {
+                updateDownloadProgress("下载中", Math.min(progress, 100));
+            }
+        });
+
+    }
+
+    private void updateDownloadProgress(String status, int progress) {
+        updateDownloadStatus("下载状态：" + status + "\n下载进度：" + progress + "%");
+    }
+
+    private void updateDownloadStatus(String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                viewBinding.tvDownloadProgress.setText(text);
+            }
+        });
     }
 
     private void videoPlayResume() {

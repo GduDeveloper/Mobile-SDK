@@ -251,6 +251,11 @@ public class MediaTestActivity extends Activity {
                     getThum(mediaFiles, nextIndex);
                 }
             }
+
+            @Override
+            public void onProgress(int i) {
+
+            }
         });
     }
 
