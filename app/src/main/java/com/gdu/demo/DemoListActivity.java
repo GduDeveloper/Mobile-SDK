@@ -84,6 +84,13 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
             case R.id.psdk_test_button:
                 Intent customIntent = new Intent(mContext, PsdkTestActivity.class);
                 startActivity(customIntent);
+                break;
+            case R.id.nest_controller_button:
+                Intent nestIntent = new Intent(mContext, NestControllerActivity.class);
+                startActivity(nestIntent);
+                break;
+            default:
+                break;
         }
     }
 }
