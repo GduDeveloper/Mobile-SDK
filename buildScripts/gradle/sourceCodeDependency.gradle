@@ -1,0 +1,154 @@
+/**------------------start* 源码级联模式的配置------------------------------*/
+File file1 = new File(getRootDir().path + File.separator + "sourceCodeConfig.gradle")
+
+if (file1.exists()) {
+    long startTime = System.currentTimeMillis()
+    apply from: file1
+    // win下提示用户当前正在执行级联编译，防止用户不知道的情况下(例如切换分支)不必要的级联编译或者级联编译带来的问题
+    if (ext.sourceMap.size() > 0) {
+        if (!ext.properties.containsKey("showTips") || ext.showTips) {
+            // 判断当前的ext属性中是否含有showTips属性，如果包含这个属性或者这个属性为true都弹窗提示
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
+               new Thread({
+                   'mshta vbscript:CreateObject("Wscript.Shell").popup("当前正在执行级联编译, 若要关闭请在sourceCodeConfig.gradle中注释",2,"Gradle编译提示",64)(window.close)'.execute()
+               }).start()
+            }
+        }
+    }
+
+    ext.sourceMap.each { key, path ->
+        // 校验规则是否满足
+        println("级联配置: ${key} , ${path}")
+        if (!key.contains(":")) {
+            throw new Exception("级联配置Error: '${key}' 格式错误")
+        }
+        File targetFile = new File("${path}")
+        if (!targetFile.exists()) {
+            throw new Exception("级联配置Error: '${path}' 路径不存在")
+        }
+//        String group = key.split(":")[0]
+        String artifactId = key.split(":")[1]
+        include ":${artifactId}"
+        project(":${artifactId}").projectDir = targetFile
+    }
+
+    //通过修改vcs.xml配置实现在一个project中操作多个git module的操作
+    List multipleGitConfList = new ArrayList<String>()
+    String conf = ""
+    int mappingCount = 0
+    File vcsFile = new File("${rootProject.getProjectDir()}${File.separator}.idea${File.separator}vcs.xml")
+    if (vcsFile.exists()) {
+
+        // 如果vcs.xml文件中，由于多级级联后，导致文件丢失。需要进行回填
+        checkVcsFileHasContent(vcsFile)
+
+        vcsFile.eachLine { String line ->
+            if (line.contains("<mapping")) {
+                mappingCount++
+                String lineTemp = line.substring(line.indexOf("directory=\"") + 10, line.lastIndexOf("vcs=\"")).trim()
+                lineTemp = lineTemp.replaceAll("\"", "").trim()
+                if (lineTemp.isEmpty() || lineTemp == "\$PROJECT_DIR\$") {
+                    conf += "#GIT_CONF#"
+                    conf += "${line}\r\n"
+                } else {
+                    multipleGitConfList.add(lineTemp)
+                }
+            } else {
+                conf += "${line}\r\n"
+            }
+        }
+
+        if (ext.sourceMap.size() > 0) {
+            List gitRoot = new ArrayList<String>()
+            String gitConf = ""
+            ext.sourceMap.each { k, path ->
+                String rootPath = findGitDir(new File(path)).absolutePath
+                if (!gitRoot.contains(rootPath)) {
+                    gitConf += "    <mapping directory=\"${rootPath}\" vcs=\"Git\" />\r\n"
+                    gitRoot.add(rootPath)
+                }
+            }
+            if (multipleGitConfList.containsAll(gitRoot) && gitRoot.containsAll(multipleGitConfList)) {
+                println "Git级联配置添加====不做配置变更"
+            } else {
+                println "Git级联配置添加====配置有改变"
+                vcsFile.text = conf.replace("#GIT_CONF#", gitConf).trim()
+            }
+        } else {
+            if (mappingCount == 1) {
+                println "Git级联配置取消====不做配置变更"
+            } else {
+                println "Git级联配置取消====配置有改变"
+                vcsFile.text = conf.replace("#GIT_CONF#", "").trim()
+            }
+        }
+        println "级联配置(组件和Git)耗时====${System.currentTimeMillis() - startTime}ms"
+    }
+}
+
+gradle.projectsLoaded {
+    Gradle gradle ->
+        if (file1.exists() && ext.sourceMap.size() > 0) {
+            gradle.rootProject.ext.sourceMap = ext.sourceMap
+        } else {
+            gradle.rootProject.ext.sourceMap = []
+        }
+}
+
+
+gradle.allprojects{ p->
+    p.configurations.configureEach {
+        resolutionStrategy.dependencySubstitution {
+            rootProject.ext.sourceMap.each { k, v ->
+//                String group = k.split(":")[0]
+                String artifactId = k.split(":")[1]
+                substitute module("${k}") using project(":${artifactId}")
+            }
+        }
+    }
+}
+
+/**
+ * 查找使git生效的根目录文件夹
+ * @param moduleFile 配置的module组件目录文件
+ * @return 返回git根目录
+ */
+private static File findGitDir(File moduleFile) {
+    File finalFile = null
+    for (File child : moduleFile.listFiles()) {
+        if ("settings.gradle".equalsIgnoreCase(child.name)) {
+            finalFile = child.parentFile
+            return finalFile
+        }
+    }
+    if (finalFile == null) {
+        finalFile = findGitDir(moduleFile.parentFile)
+        if (finalFile == null) {
+            finalFile = moduleFile.parentFile
+        }
+    }
+    return finalFile
+}
+
+/**
+ * 检查当前ide中是否存在当前工程的映射，默认是git
+ * 如果没有，给个默认值，避免后续无法级联
+ * @param vcsFile
+ */
+private static void checkVcsFileHasContent(File vcsFile) {
+    String text = vcsFile.text
+    if (text == null || text.isEmpty()) {
+        return
+    }
+    if (text.contains("<mapping")) {
+        return
+    }
+    // 如果不包含<mapping
+    vcsFile.text = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" +
+            "<project version=\"4\">\r\n" +
+            "  <component name=\"VcsDirectoryMappings\">\r\n" +
+            "    <mapping directory=\"\" vcs=\"Git\" />\r\n" +
+            "  </component>\r\n" +
+            "</project>"
+}
+/**------------------ 级联模式的配置----------------end-----------*/
