@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -84,6 +85,9 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
                     XLogger.INSTANCE.init(mContext);
+                    //机库模式下，需要初始化CarNestReportIp
+                    CarNestReportIpInit.initCarNestReportIp();
+
                     startSDKRegistration();
                 }
             }
@@ -112,12 +116,14 @@ public class MainActivity extends FragmentActivity {
 
     public boolean checkAndRequestPermissions() {
         //判断是否已经赋予权限
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q){
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,}, 1);
                 return false;
+            }
         }
         return true;
     }

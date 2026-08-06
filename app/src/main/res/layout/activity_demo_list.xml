@@ -103,6 +103,14 @@
                 android:layout_weight="1"
                 android:text="psdk挂载测试" />
 
+            <Button
+                android:id="@+id/nest_controller_button"
+                android:onClick="onClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="机库控制器" />
+
         </LinearLayout>
     </ScrollView>
 

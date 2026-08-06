@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/tv_show_msg"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:textColor="#ff0000" />
 
 </LinearLayout>

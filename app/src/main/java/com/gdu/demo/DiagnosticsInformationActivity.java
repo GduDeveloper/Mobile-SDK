@@ -6,6 +6,9 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.gdu.demo.flight.msgbox.ErrCodeGetStringUtils;
+import com.gdu.lib.util.GsonUtils;
+import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.sdk.base.Diagnostics;
 
 import java.util.List;
@@ -38,8 +41,13 @@ public class DiagnosticsInformationActivity extends Activity {
         if (diagnostics != null && diagnostics.size() > 0) {
             StringBuilder sb = new StringBuilder();
             for (Diagnostics diagnostic : diagnostics) {
-                sb.append(diagnostic.getReason());
-                sb.append(";");
+                sb.append(diagnostic.getCode());
+                int warnResId = ErrCodeGetStringUtils.getErrCodeStringResId(diagnostic.getHealthInformation().getComponentId(), diagnostic.getHealthInformation().getFunctionId(), diagnostic.getCode());
+                if (warnResId != 0){
+                  sb.append(":").append(ResourceUtils.getString(warnResId));
+                }
+
+                sb.append(";\r\n");
             }
             return sb.toString();
         }
