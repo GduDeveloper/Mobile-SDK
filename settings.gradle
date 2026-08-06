@@ -1,1 +1,36 @@
+pluginManagement {
+    repositories {
+        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
+        google()
+        mavenCentral()
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        maven { url 'https://www.jitpack.io' }
+        mavenLocal()
+    }
+}
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    versionCatalogs {
+        create("versions") {
+            from(files("gradle/env.versions.toml"))
+        }
+    }
+
+    repositories {
+        maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
+        google()
+        mavenCentral()
+//        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://dl.google.com/dl/android/maven2/' }
+        maven { url 'https://www.jitpack.io' }
+        mavenLocal()
+    }
+}
+
 include ':app'
+
+// 源码级联依赖配置
+apply from: "./buildScripts/gradle/sourceCodeDependency.gradle"
