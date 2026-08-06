@@ -172,7 +172,7 @@ public class SettingVisionFragment extends Fragment {
         CycleRadarInfo radarInfo = IVision.get().getRadarInfo().getValue();
         boolean obstacleIsOpen = radarInfo != null && radarInfo.getObstacleIsOpen();
         preMessage.arg1 = obstacleIsOpen ? 0 : 1;
-        preMessage.arg2 = IVision.get().getOverallObstacleAvoidanceStrategy();
+        preMessage.arg2 = IVision.get().getOverallObstacleAvoidanceStrategy() == null? 0:IVision.get().getOverallObstacleAvoidanceStrategy();
         mHandler.sendMessage(preMessage);
     }
 
