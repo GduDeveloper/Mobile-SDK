@@ -85,9 +85,15 @@ dependencies {
     api "org.greenrobot:eventbus:3.3.1"
     api "com.google.code.gson:gson:2.10.1"
 //    api  files('libs/GduLibrary-2.0.77.aar')
-    api  files('libs/msdk-3.0.0.aar')
-    api  files('libs/GduSdkSoundEngine-release.aar')
-
+    if (rootProject.ext.sourceEnable) {
+        // 源码级联模式: 依赖GduWrapper源码坐标(会被dependencySubstitution替换为源码工程)
+        implementation gduVers.gduMSdk
+        implementation gduVers.gduWrapper
+        implementation gduVers.gduLibGdc
+    } else {
+        api files('libs/msdk-3.0.0.aar')
+        api  files('libs/GduSdkSoundEngine-release.aar')
+    }
     api 'com.google.code.gson:gson:2.8.2'
 //    api 'com.yolanda.nohttp:nohttp:1.0.3'
     api 'com.amap.api:3dmap:7.3.0'

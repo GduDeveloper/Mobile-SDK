@@ -4,6 +4,10 @@ File file1 = new File(getRootDir().path + File.separator + "sourceCodeConfig.gra
 if (file1.exists()) {
     long startTime = System.currentTimeMillis()
     apply from: file1
+
+    // 是否开启了源码级联依赖
+    ext.sourceEnable = (ext.sourceMap.size() > 0)
+
     // win下提示用户当前正在执行级联编译，防止用户不知道的情况下(例如切换分支)不必要的级联编译或者级联编译带来的问题
     if (ext.sourceMap.size() > 0) {
         if (!ext.properties.containsKey("showTips") || ext.showTips) {
@@ -90,8 +94,10 @@ gradle.projectsLoaded {
     Gradle gradle ->
         if (file1.exists() && ext.sourceMap.size() > 0) {
             gradle.rootProject.ext.sourceMap = ext.sourceMap
+            gradle.rootProject.ext.sourceEnable = true
         } else {
             gradle.rootProject.ext.sourceMap = []
+            gradle.rootProject.ext.sourceEnable = false
         }
 }
 
