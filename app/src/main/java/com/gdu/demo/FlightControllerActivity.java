@@ -579,6 +579,49 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
+
+    /**
+     * 设置返航预留电量
+     */
+    private void setReturnRemainPower() {
+        if (mGDUFlightController == null) {
+            return;
+        }
+        // Demo value: reserve 25% battery for return-to-home.
+        final int remainPower = 25;
+        mGDUFlightController.setReturnRemainPower(remainPower, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置返航预留电量成功: " + remainPower + "%");
+                } else {
+                    toastText("设置返航预留电量失败");
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取返航预留电量
+     */
+    private void getReturnRemainPower() {
+        if (mGDUFlightController == null) {
+            return;
+        }
+        mGDUFlightController.getReturnRemainPower(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+            @Override
+            public void onSuccess(Integer remainPower) {
+                toastText("返航预留电量: " + remainPower + "%");
+            }
+
+            @Override
+            public void onFailure(GDUError error) {
+                toastText("获取返航预留电量失败");
+            }
+        });
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -746,6 +789,12 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 break;
             case R.id.set_aircraft_scenario_button:
                 setAircraftOperationScenario();
+                break;
+            case R.id.set_return_remain_power_button:
+                setReturnRemainPower();
+                break;
+            case R.id.get_return_remain_power_button:
+                getReturnRemainPower();
                 break;
         }
     }

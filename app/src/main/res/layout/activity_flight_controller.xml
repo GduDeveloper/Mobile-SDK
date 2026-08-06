@@ -360,6 +360,20 @@
                     android:text="获取严重低电量阈值"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
+
+                <Button
+                    android:id="@+id/set_return_remain_power_button"
+                    android:onClick="onClick"
+                    android:text="设置返航预留电量"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/get_return_remain_power_button"
+                    android:onClick="onClick"
+                    android:text="获取返航预留电量"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
             <LinearLayout
