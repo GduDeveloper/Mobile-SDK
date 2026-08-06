@@ -75,8 +75,8 @@ public class PreFlightInspectionActivity extends FragmentActivity {
             preLimitHeightValue = DroneValueConstants.LIMIT_HEIGHT_DEFAULT;
         } else if (mLimitHeightValue < DroneValueConstants.LIMIT_HEIGHT_MIN) {
             preLimitHeightValue = DroneValueConstants.LIMIT_HEIGHT_MIN;
-        } else if (mLimitHeightValue > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
-            preLimitHeightValue = DroneValueConstants.getLIMIT_HEIGHT_MAX();
+        } else if (mLimitHeightValue > DroneValueConstants.LIMIT_HEIGHT_MAX) {
+            preLimitHeightValue = DroneValueConstants.LIMIT_HEIGHT_MAX;
         } else {
             preLimitHeightValue = mLimitHeightValue;
         }
@@ -453,10 +453,10 @@ public class PreFlightInspectionActivity extends FragmentActivity {
         mViewBinding.preFlightLimitHeightEdit.setEnabled(false);
 
         String heightLimitTipStr = UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_HEIGHT_MIN) + "-"
-                + UnitChnageUtils.getUnitValue(DroneValueConstants.getLIMIT_HEIGHT_MAX()) + UnitChnageUtils.getUnit();
+                + UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_HEIGHT_MAX) + UnitChnageUtils.getUnit();
         mViewBinding.preFlightLimitHeightValue.setText(heightLimitTipStr);
         //根据英寸单位换算的最大数值长度，设置输入框的最大可输入范围
-        mViewBinding.preFlightLimitHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(DroneValueConstants.getLIMIT_HEIGHT_MAX())).length())});
+        mViewBinding.preFlightLimitHeightEdit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(String.valueOf(UnitChnageUtils.getUnitValue(DroneValueConstants.LIMIT_HEIGHT_MAX)).length())});
         viewModel.getLimitHeightLiveData().observe(this, data -> {
             if (data.getHeight() == -1) {
                 mViewBinding.preFlightLimitHeightEdit.setText("INF");

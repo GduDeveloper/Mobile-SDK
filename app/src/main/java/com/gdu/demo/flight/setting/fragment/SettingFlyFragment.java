@@ -123,10 +123,10 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             mViewBinding.sbLimitHeight.setMin(DroneValueConstants.LIMIT_HEIGHT_MIN);
         }
-        mViewBinding.sbLimitHeight.setMax(DroneValueConstants.getLIMIT_HEIGHT_MAX());
+        mViewBinding.sbLimitHeight.setMax(DroneValueConstants.LIMIT_HEIGHT_MAX);
         mViewBinding.etHeightLimit.setText(String.valueOf(preHeightLimit));
         mUnitChnageUtils.showUnit(DroneValueConstants.LIMIT_HEIGHT_MIN, mViewBinding.tvLimitHeightMin);
-        mUnitChnageUtils.showUnit(DroneValueConstants.getLIMIT_HEIGHT_MAX(), mViewBinding.tvLimitHeightMax);
+        mUnitChnageUtils.showUnit(DroneValueConstants.LIMIT_HEIGHT_MAX, mViewBinding.tvLimitHeightMax);
         if (SdkDemoApplication.getAircraftInstance().isConnected()) {
             mViewBinding.etHeightLimit.setText(String.valueOf(UnitChnageUtils.getUnitValue(mViewBinding.sbLimitHeight.getProgress())));
         } else {
@@ -148,7 +148,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                 mViewBinding.sbLimitHeight.setEnabled(data.isOpen());
                 mViewBinding.etHeightLimit.setEnabled(data.isOpen());
             }
-            if (data.isOpen() || (data.getHeight() >= DroneValueConstants.LIMIT_HEIGHT_MIN && data.getHeight() <= DroneValueConstants.getLIMIT_HEIGHT_MAX())) {
+            if (data.isOpen() || (data.getHeight() >= DroneValueConstants.LIMIT_HEIGHT_MIN && data.getHeight() <= DroneValueConstants.LIMIT_HEIGHT_MAX)) {
                 mViewBinding.sbLimitHeight.setProgress(data.getHeight());
                 String limitHeightStr = String.valueOf(UnitChnageUtils.getUnitValue(data.getHeight()));
                 mViewBinding.etHeightLimit.setText(limitHeightStr);
@@ -188,7 +188,7 @@ public class SettingFlyFragment extends Fragment implements View.OnClickListener
                     return;
                 }
                 int valueInt = UnitChnageUtils.inch2m(Integer.parseInt(value));
-                if (valueInt < DroneValueConstants.LIMIT_HEIGHT_MIN || valueInt > DroneValueConstants.getLIMIT_HEIGHT_MAX()) {
+                if (valueInt < DroneValueConstants.LIMIT_HEIGHT_MIN || valueInt > DroneValueConstants.LIMIT_HEIGHT_MAX) {
                     Toast.makeText(getContext(), R.string.input_error, Toast.LENGTH_SHORT).show();
                     setHeightFailHandle();
                     return;

@@ -12,8 +12,6 @@ import androidx.fragment.app.Fragment;
 import com.gdu.demo.databinding.FragmentSettingCameraBinding;
 import com.gdu.demo.flight.setting.camera.VLCameraSetHelper;
 
-import org.greenrobot.eventbus.EventBus;
-
 /**
  * @Author: lixiqiang
  * @Date: 2022/6/27
@@ -36,9 +34,6 @@ public class SettingCameraFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!EventBus.getDefault().isRegistered(this)){
-            EventBus.getDefault().register(this);
-        }
         initView();
         initData();
     }
@@ -71,7 +66,6 @@ public class SettingCameraFragment extends Fragment {
 
     @Override
     public void onDestroyView() {
-        EventBus.getDefault().unregister(this);
         super.onDestroyView();
         if (mCameraSetHelper != null) {
             mCameraSetHelper.onDestory();
