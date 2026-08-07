@@ -9,18 +9,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
+import com.gdu.common.error.Error
 import com.gdu.drone.LocationCoordinate3D
 import com.gdu.lib.util.GsonUtils
-import com.gdu.lib.util.core.ThreadUtils
 import com.gdu.lib.util.core.ToastUtils
 import com.gdu.lib.util.core.XLogger
-import com.gdu.msdk.device.component.interfaces.ICarNest
-import com.gdu.msdk.device.interfaces.IGduCarNestDevice
-import com.gdu.msdk.device.interfaces.IGduCarNestDevice.Companion.get
-import com.gdu.msdk.device.interfaces.IGduDroneDevice
 import com.gdu.msdk.key.callback.MSdkCallback
-import com.gdu.msdk.key.callback.MSdkCallback.ActionCallback
 import com.gdu.msdk.key.error.MError
 import com.gdu.msdk.key.value.ParamCarNestFlightFollow
 import com.gdu.msdk.key.value.ParamPointBean
@@ -36,18 +30,19 @@ import com.gdu.msdk.key.value.RespCarNestPowerOnOrOff
 import com.gdu.msdk.key.value.RespCarNestProgramVersion
 import com.gdu.msdk.key.value.RespCarNestSmartControl
 import com.gdu.msdk.key.value.TakeOffResultBean
-import com.gdu.msdk.key.value.base.KeyResult
 import com.gdu.msdk.key.value.common.EmptyMsg
 import com.gdu.msdk.key.value.nest.ParamConfigParam
 import com.gdu.msdk.key.value.nest.ParamNestWifi
 import com.gdu.msdk.key.value.nest.ParamSetupServiceConfig
 import com.gdu.msdk.key.value.ota.AckNestAllVersionInfo
 import com.gdu.rtk.PositioningSolution
+import com.gdu.sdk.flightcontroller.FlightController
+import com.gdu.sdk.nest.NestController
 import com.gdu.sdk.simulator.InitializationData
 import com.gdu.sdk.sound.engine.GduSoundManager
 import com.gdu.sdk.sound.engine.SoundConst
+import com.gdu.sdk.util.CommonCallbacks
 import com.google.android.flexbox.AlignItems
-import com.google.android.flexbox.AlignSelf
 import com.google.android.flexbox.FlexboxLayout
 import kotlin.math.asin
 import kotlin.math.atan2
@@ -61,7 +56,8 @@ import kotlin.math.sqrt
  */
 class NestControllerActivity : Activity(), View.OnClickListener {
     private var mContext: Context? = null
-    private var mCarNestController: ICarNest? = null
+    private var mNestController: NestController? = null
+    private var mGDUFlightController: FlightController? = null
 
     // 布局容器
     private var mPropertyLayout: LinearLayout? = null
@@ -79,15 +75,14 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         mContentLayout = findViewById(R.id.nest_content_function)
 
         // 获取CarNestController实例（假设从应用中获取，实际实现可能不同）
-        mCarNestController = this.carNestControllerInstance
+        mNestController = SdkDemoApplication.getAircraftInstance().nestController
+        mGDUFlightController = SdkDemoApplication.getAircraftInstance().flightController
 
         initStaticProperties()
         initObservableProperties()
         initControlButtons()
         initDebugControlButtons()
     }
-
-    private val carNestControllerInstance: ICarNest get() = get.carNest
 
     /**
      * 初始化非Observable属性（一次性获取）
@@ -108,7 +103,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         val nestInDroneBatteryInfoView =
             addObservablePropertyView("机库内无人机电池信息：", "等待更新...")
         // {{ 修改1：将setCallback替换为addObserver }}
-        mCarNestController!!.nestInDroneBatteryInfo.register {
+        mNestController?.nestInDroneBatteryInfo?.register {
             updateTextView(nestInDroneBatteryInfoView, GsonUtils.toJson(it))
         }
 
@@ -116,7 +111,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         val nestInStandbyBattInfoView =
             addObservablePropertyView("机库待机电池信息：", "等待更新...")
         // {{ 修改2：将setCallback替换为addObserver }}
-        mCarNestController!!.nestInStandbyBattInfo.register {
+        mNestController?.nestInStandbyBattInfo?.register {
             updateTextView(nestInStandbyBattInfoView, GsonUtils.toJson(it))
         }
 
@@ -124,7 +119,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // nestState
         val nestStateView = addObservablePropertyView("机库状态：", "等待更新...")
         // {{ 修改3：将setCallback替换为addObserver }}
-        mCarNestController!!.nestState.register {
+        mNestController?.nestState?.register {
             updateTextView(nestStateView, GsonUtils.toJson(it))
         }
 
@@ -132,7 +127,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyCarNestLocationChanged
         val locationChangedView = addObservablePropertyView("机库位置变化：", "等待更新...")
         // {{ 修改4：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyCarNestLocationChanged.register {
+        mNestController?.notifyCarNestLocationChanged?.register {
             updateTextView(locationChangedView, GsonUtils.toJson(it))
         }
 
@@ -140,7 +135,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyCarNestWindSpeedChanged
         val windSpeedChangedView = addObservablePropertyView("风速变化：", "等待更新...")
         // {{ 修改5：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyCarNestWindSpeedChanged.register {
+        mNestController?.notifyCarNestWindSpeedChanged?.register {
             updateTextView(windSpeedChangedView, GsonUtils.toJson(it))
         }
 
@@ -148,7 +143,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyLowPowerState
         val lowPowerStateView = addObservablePropertyView("低电量状态：", "等待更新...")
         // {{ 修改6：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyLowPowerState.register {
+        mNestController?.notifyLowPowerState?.register {
             updateTextView(lowPowerStateView, GsonUtils.toJson(it))
         }
 
@@ -156,7 +151,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyNestDoorStateChanged
         val doorStateChangedView = addObservablePropertyView("机库舱门状态变化：", "等待更新...")
         // {{ 修改7：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyNestDoorStateChanged.register {
+        mNestController?.notifyNestDoorStateChanged?.register {
             updateTextView(doorStateChangedView, GsonUtils.toJson(it))
         }
 
@@ -164,7 +159,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyNestDroneInPlace
         val droneInPlaceView = addObservablePropertyView("无人机在位状态", "等待更新...")
         // {{ 修改8：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyNestDroneInPlace.register {
+        mNestController?.notifyNestDroneInPlace?.register {
             updateTextView(droneInPlaceView, GsonUtils.toJson(it))
         }
 
@@ -172,7 +167,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyNestDronePower
         val dronePowerView = addObservablePropertyView("无人机电源状态", "等待更新...")
         // {{ 修改9：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyNestDronePower.register {
+        mNestController?.notifyNestDronePower?.register {
             updateTextView(dronePowerView, GsonUtils.toJson(it))
         }
 
@@ -180,7 +175,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyNestRightsState
         val rightsStateView = addObservablePropertyView("机库控制权状态", "等待更新...")
         // {{ 修改10：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyNestRightsState.register {
+        mNestController?.notifyNestRightsState?.register {
             updateTextView(rightsStateView, GsonUtils.toJson(it))
         }
 
@@ -188,7 +183,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyNestWorkMode
         val workModeView = addObservablePropertyView("机库工作模式", "等待更新...")
         // {{ 修改11：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyNestWorkMode.register {
+        mNestController?.notifyNestWorkMode?.register {
             updateTextView(workModeView, GsonUtils.toJson(it))
         }
 
@@ -196,7 +191,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // notifyOwnerNestControlFollow
         val controlFollowView = addObservablePropertyView("主人机库控制跟随", "等待更新...")
         // {{ 修改12：将setCallback替换为addObserver }}
-        mCarNestController!!.notifyOwnerNestControlFollow.register {
+        mNestController?.notifyOwnerNestControlFollow?.register {
             updateTextView(controlFollowView, GsonUtils.toJson(it))
         }
 
@@ -204,7 +199,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // onboardCompTaskState
         val compTaskStateView = addObservablePropertyView("机载组件任务状态", "等待更新...")
         // {{ 修改13：将setCallback替换为addObserver }}
-        mCarNestController!!.onboardCompTaskState.register {
+        mNestController?.onboardCompTaskState?.register {
             updateTextView(compTaskStateView, GsonUtils.toJson(it))
         }
 
@@ -212,7 +207,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // outNestState
         val outNestStateView = addObservablePropertyView("出巢状态", "等待更新...")
         // {{ 修改14：将setCallback替换为addObserver }}
-        mCarNestController!!.outNestState.register {
+        mNestController?.outNestState?.register {
             updateTextView(outNestStateView, GsonUtils.toJson(it))
         }
 
@@ -220,7 +215,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // periMcuInfo
         val periMcuInfoView = addObservablePropertyView("外围MCU信息", "等待更新...")
         // {{ 修改15：将setCallback替换为addObserver }}
-        mCarNestController!!.periMcuInfo?.register {
+        mNestController?.periMcuInfo?.register {
             updateTextView(periMcuInfoView, GsonUtils.toJson(it))
         }
 
@@ -228,7 +223,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // sensorMcuInfo
         val sensorMcuInfoView = addObservablePropertyView("传感器MCU信息", "等待更新...")
         // {{ 修改16：将setCallback替换为addObserver（注意安全调用） }}
-        mCarNestController?.sensorMcuInfo?.register {
+        mNestController?.sensorMcuInfo?.register {
             updateTextView(sensorMcuInfoView, GsonUtils.toJson(it))
         }
     }
@@ -244,24 +239,24 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addSectionTitle("机库控制", mContentLayout)
         // 1. 一键开仓
         addButton("一键开仓") {
-            mCarNestController?.nestActionOperation(24, 0, object : ActionCallback<EmptyMsg> {
+            mNestController?.nestActionOperation(24, 0, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("一键开仓成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("一键开仓失败")
                 }
             })
         }
         // 2. 一键关仓
         addButton("一键关仓") {
-            mCarNestController?.nestActionOperation(25, 0, object : ActionCallback<EmptyMsg> {
+            mNestController?.nestActionOperation(25, 0, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("一键关仓成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("一键关仓失败")
                 }
             })
@@ -270,8 +265,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 3. 机库无人机充电
         addButton("机库无人机充电") {
-            mCarNestController?.smartControl(9, object : ActionCallback<RespCarNestSmartControl> {
-                override fun onFailure(error: MError) {
+            mNestController?.smartControl(9, object : CommonCallbacks.CompletionCallbackWith<RespCarNestSmartControl> {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("机库无人机充电失败")
                 }
 
@@ -282,12 +277,12 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         }
         // 4. 机库无人机停止充电
         addButton("机库无人机停止充电") {
-            mCarNestController?.smartControl(10, object : ActionCallback<RespCarNestSmartControl> {
+            mNestController?.smartControl(10, object : CommonCallbacks.CompletionCallbackWith<RespCarNestSmartControl> {
                 override fun onSuccess(result: RespCarNestSmartControl?) {
                     ToastUtils.showShort("机库无人机停止充电成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("机库无人机停止充电失败")
                 }
             })
@@ -295,51 +290,51 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 5. 机库无人机唤醒
         addButton("无人机唤醒") {
-            mCarNestController?.nestActionOperation(0x12, 0, object : ActionCallback<EmptyMsg> {
+            mNestController?.nestActionOperation(0x12, 0, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("无人机唤醒成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("无人机唤醒失败")
                 }
             })
         }
         // 6. 机库无人机对频
         addButton("机库无人机对频") {
-            mCarNestController?.nestActionOperation(22, 1, object : ActionCallback<EmptyMsg> {
+            mNestController?.nestActionOperation(22, 1, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("机库无人机对频成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("机库无人机对频失败")
                 }
             })
         }
         // 7. 防盗模式
         addButton("防盗模式-开") {
-            mCarNestController?.nestModleControl(
+            mNestController?.nestModelControl(
                 0x02,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("防盗模式开设置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("防盗模式开设置失败")
                     }
                 })
         }
         addButton("防盗模式-关") {
-            mCarNestController?.nestModleControl(
+            mNestController?.nestModelControl(
                 0x03,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("防盗模式关设置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("防盗模式关设置失败")
                     }
                 })
@@ -353,27 +348,27 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 8. 飞机电池开关机
         addButton("飞机关机") {
-            mCarNestController?.droneBatteryPowerOnOff(
+            mNestController?.droneBatteryPowerOnOff(
                 0x00,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("飞机关机成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("飞机关机失败")
                     }
                 })
         }
         addButton("飞机开机") {
-            mCarNestController?.droneBatteryPowerOnOff(
+            mNestController?.droneBatteryPowerOnOff(
                 0x01,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("飞机开机成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("飞机开机失败")
                     }
                 })
@@ -381,40 +376,40 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 9. 飞机低功耗控制
         addButton("关闭无人机低功耗") {
-            mCarNestController?.droneLowPowerControl(
+            mNestController?.droneLowPowerControl(
                 0x00,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("关闭无人机低功耗成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("关闭无人机低功耗失败")
                     }
                 })
         }
         addButton("进入无人机低功耗") {
-            mCarNestController?.droneLowPowerControl(
+            mNestController?.droneLowPowerControl(
                 0x01,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("进入无人机低功耗成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("进入无人机低功耗失败")
                     }
                 })
         }
         // 18. 机库休眠
         addButton("机库休眠") {
-            mCarNestController?.nestBatteryPowerOff(object :
-                MSdkCallback.ActionCallback<RespCarNestPowerOnOrOff> {
+            mNestController?.nestBatteryPowerOff(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestPowerOnOrOff> {
                 override fun onSuccess(result: RespCarNestPowerOnOrOff?) {
                     ToastUtils.showShort("机库休眠成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("机库休眠失败")
                 }
             })
@@ -422,15 +417,31 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 27. WiFi STA开关
         addButton("开启WiFi STA") {
-            mCarNestController?.openWifiSta(true) { result -> ToastUtils.showShort("openWifiSta isOpen = true; result = $result") }
+            mNestController?.openWifiSta(true, object : CommonCallbacks.CompletionCallbackWith<Error?> {
+                override fun onSuccess(result: Error?) {
+                    ToastUtils.showShort("openWifiSta isOpen = true; result = $result")
+                }
+
+                override fun onFailure(var1: Error?) {
+                    ToastUtils.showShort("openWifiSta isOpen = true; result = $var1")
+                }
+            })
         }
         addButton("关闭WiFi STA") {
-            mCarNestController?.openWifiSta(false) { result -> ToastUtils.showShort("openWifiSta isClose = false; result = $result") }
+            mNestController?.openWifiSta(false, object : CommonCallbacks.CompletionCallbackWith<Error?> {
+                override fun onSuccess(result: Error?) {
+                    ToastUtils.showShort("openWifiSta isClose = false; result = $result")
+                }
+
+                override fun onFailure(var1: Error?) {
+                    ToastUtils.showShort("openWifiSta isClose = false; result = $var1")
+                }
+            })
         }
 
         addButton("无人机模拟飞行") {
-            val simulator = IGduDroneDevice.get.flightController.simulator
-            if (simulator.isSimulatorActive()) {
+            val simulator = mGDUFlightController?.simulator
+            if (simulator?.isSimulatorActive() == true) {
                 simulator.stop(null)
                 ToastUtils.showShort("已开启无人机模拟飞行")
             } else {
@@ -442,7 +453,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     PositioningSolution.FIXED_POINT,
                     30.toByte()
                 )
-                simulator.start(initializationData, object : MSdkCallback.ActionCallback<EmptyMsg> {
+                simulator?.start(initializationData, object : MSdkCallback.ActionCallback<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("无人机模拟飞行开启成功")
                     }
@@ -455,8 +466,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         }
 
         addButton("机库模拟飞行") {
-            val simulator = IGduCarNestDevice.get.simulator
-            if (simulator.isSimulatorActive()) {
+            val simulator = mNestController?.simulator
+            if (simulator?.isSimulatorActive() == true) {
                 ToastUtils.showShort("已开启机库模拟飞行")
                 simulator.stop(null)
             } else {
@@ -468,7 +479,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     30.toByte()
                 )
                 XLogger.APP.i("NestSimulator", "start simulator")
-                simulator.start(initializationData, object : MSdkCallback.ActionCallback<EmptyMsg> {
+                simulator?.start(initializationData, object : MSdkCallback.ActionCallback<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("机库模拟飞行开启成功")
                     }
@@ -483,26 +494,26 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addSectionTitle("版本信息", mContentLayout)
         // 5. 请求MCU程序版本
         addButton("获取MCU程序版本") {
-            mCarNestController?.reqMcuProgramVersion(object :
-                MSdkCallback.ActionCallback<RespCarNestProgramVersion> {
-                override fun onSuccess(data: RespCarNestProgramVersion?) {
-                    ToastUtils.showShort("MCU版本: ${data?.nestOutMcuVersion}")
+            mNestController?.reqMcuProgramVersion(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestProgramVersion> {
+                override fun onSuccess(result: RespCarNestProgramVersion?) {
+                    ToastUtils.showShort("MCU版本: ${result?.nestOutMcuVersion}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取MCU版本失败")
                 }
             })
         }
         // 10. 获取蓝牙版本
         addButton("获取蓝牙版本") {
-            mCarNestController?.getBleVersion(object :
-                MSdkCallback.ActionCallback<RespCarNestBleVersion> {
+            mNestController?.getBleVersion(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestBleVersion> {
                 override fun onSuccess(result: RespCarNestBleVersion?) {
                     ToastUtils.showShort("蓝牙版本: ${result?.nestBleVersion}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取蓝牙版本失败")
                 }
             })
@@ -510,26 +521,26 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 14. 获取机库SN码
         addButton("获取机库SN") {
-            mCarNestController?.getNestSnCode(object :
-                MSdkCallback.ActionCallback<RespCarNestGetNestSn> {
+            mNestController?.getNestSnCode(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestGetNestSn> {
                 override fun onSuccess(result: RespCarNestGetNestSn?) {
                     ToastUtils.showShort("SN: ${result?.carNestSn}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取SN失败")
                 }
             })
         }
         // 17. 获取综控组件版本
         addButton("获取综控版本") {
-            mCarNestController?.getSocSysVersion(object :
-                MSdkCallback.ActionCallback<RespCarNestGetSocSysVersion> {
+            mNestController?.getSocSysVersion(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestGetSocSysVersion> {
                 override fun onSuccess(result: RespCarNestGetSocSysVersion?) {
                     ToastUtils.showShort("综控版本: ${result?.nestSocSysVersion}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取综控版本失败")
 
                 }
@@ -538,49 +549,49 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         // 19-22. 获取各个版本
         listOf(
             "图传版本" to {
-                mCarNestController?.getImgTransVersion(object :
-                    MSdkCallback.ActionCallback<RespCarNestGetImgTransVersion> {
+                mNestController?.getImgTransVersion(object :
+                    CommonCallbacks.CompletionCallbackWith<RespCarNestGetImgTransVersion> {
                     override fun onSuccess(result: RespCarNestGetImgTransVersion?) {
                         ToastUtils.showShort("图传版本: ${result?.nestImgTransVersion}")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("获取图传版本失败")
                     }
                 })
             },
             "图传系统版本" to {
-                mCarNestController?.getImgBootTransVersion(object :
-                    MSdkCallback.ActionCallback<RespCarNestGetImgBootTransVersion> {
+                mNestController?.getImgBootTransVersion(object :
+                    CommonCallbacks.CompletionCallbackWith<RespCarNestGetImgBootTransVersion> {
                     override fun onSuccess(result: RespCarNestGetImgBootTransVersion?) {
                         ToastUtils.showShort("图传系统版本: ${result?.nestImgBootTransVersion}")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("获取图传系统版本失败")
                     }
                 })
             },
             "传感器MCU APP版本" to {
-                mCarNestController?.getSensorMcuAppVersion(object :
-                    MSdkCallback.ActionCallback<RespCarNestGetSensorMcuAppVersion> {
+                mNestController?.getSensorMcuAppVersion(object :
+                    CommonCallbacks.CompletionCallbackWith<RespCarNestGetSensorMcuAppVersion> {
                     override fun onSuccess(result: RespCarNestGetSensorMcuAppVersion?) {
                         ToastUtils.showShort("传感器MCU APP版本: ${result?.sensorMcuAppVersion}")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("获取传感器MCU APP版本失败")
                     }
                 })
             },
             "传感器MCU Boot版本" to {
-                mCarNestController?.getSensorMcuBootVersion(object :
-                    MSdkCallback.ActionCallback<RespCarNestGetSensorMcuBootVersion> {
+                mNestController?.getSensorMcuBootVersion(object :
+                    CommonCallbacks.CompletionCallbackWith<RespCarNestGetSensorMcuBootVersion> {
                     override fun onSuccess(result: RespCarNestGetSensorMcuBootVersion?) {
                         ToastUtils.showShort("传感器MCU Boot版本: ${result?.sensorMcuBootVersion}")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("获取传感器MCU Boot版本失败")
                     }
                 })
@@ -591,13 +602,13 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 23. 获取机库版本（综合）
         addButton("获取机库版本") {
-            mCarNestController?.getCarNestVersion(object :
-                MSdkCallback.ActionCallback<AckNestAllVersionInfo> {
+            mNestController?.getCarNestVersion(object :
+                CommonCallbacks.CompletionCallbackWith<AckNestAllVersionInfo> {
                 override fun onSuccess(result: AckNestAllVersionInfo?) {
                     ToastUtils.showLong("机库版本: ${result?.carNestVersion}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取机库版本失败")
                 }
             })
@@ -612,53 +623,50 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 16. 一键起飞（三种模式，其他参数使用默认值）
         addButton("一键起飞") {
-            mCarNestController?.nestOneKeyFly(
+            mNestController?.nestOneKeyFly(
                 (20 * 100).toShort(),  // height
                 100,   // speed
                 0,
                 0.0,  // lng 示例
                 0.0,   // lat 示例
                 0, 0, 0,
-                object : MSdkCallback.ActionCallback<TakeOffResultBean> {
+                object : CommonCallbacks.CompletionCallbackWith<TakeOffResultBean> {
                     override fun onSuccess(result: TakeOffResultBean?) {
                         ToastUtils.showShort("起飞成功: $result")
                     }
 
-                    override fun onFailure(error: MError) {
-                        ToastUtils.showShort("起飞失败: ${error.msg}")
+                    override fun onFailure(var1: Error?) {
+                        ToastUtils.showShort("起飞失败")
                     }
                 }
             )
         }
         addButton("一键降落") {
-            IGduDroneDevice.get.flightController.exactBack(true,0,0,0, object : MSdkCallback.ActionCallback<EmptyMsg> {
-                override fun onSuccess(result: EmptyMsg?) {
+            mGDUFlightController?.exactBack(true,0,0,0) { var1 ->
+                if (var1 == null) {
+                    ToastUtils.showShort("降落成功")
+                } else {
+                    ToastUtils.showShort("降落失败: ${var1.msg}")
                 }
-
-                override fun onFailure(error: MError) {
-                    ToastUtils.showShort("降落失败: ${error.msg}")
-                }
-            })
+            }
         }
         addButton("一键出库") {
-            IGduDroneDevice.get.flightController.fcInfo1.value?.let { it ->
+            mGDUFlightController?.fcInfo1?.let { it ->
                 //20260428 根据@志来要求，增加无人机在空中时执行一键出库（降落到指定位置）需求，区分于在舱内的一键出库
-                val isGround = IGduDroneDevice.get.flightController.fcInfo1.value?.droneFlyState?.isGround() == true
+                val isGround = mGDUFlightController?.fcInfo1?.droneFlyState?.isGround() == true
                 if (!isGround) {
                     //舱门是否开启  根据bug59365 增加仓门未关闭，禁止空中出库的语音提示
-                    val isOpenDoor = IGduCarNestDevice.get.carNest.notifyNestDoorStateChanged.value == 2.toByte()
+                    val isOpenDoor = mNestController?.notifyNestDoorStateChanged?.value == 2.toByte()
                     if (isOpenDoor) {
                         GduSoundManager.playSound(SoundConst.CAR_NEST_OUT_DOOR_NOT_CLOSE, 0, false)
                         return@addButton
                     }
-                    IGduDroneDevice.get.flightController.carNestExactBack(true, (8 * 100).toShort(), 0, 0, 1, object : MSdkCallback.ActionCallback<EmptyMsg> {
+                    mGDUFlightController?.carNestExactBack(true, (8 * 100).toShort(), 0, 0, 1, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                         override fun onSuccess(result: EmptyMsg?) {
-                            if (result?.code == 0) {
-                                ToastUtils.showShort("一键出库成功")
-                            }
+                            ToastUtils.showShort("一键出库成功")
                         }
 
-                        override fun onFailure(error: MError) {
+                        override fun onFailure(error: Error) {
                             ToastUtils.showShort("一键出库失败: ${error.msg}")
                         }
                     })
@@ -668,8 +676,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     val landPoint = calculateNewPosition(it.latitude, it.longitude, angle, 8.toDouble())
                     val landLat = landPoint[0]
                     val landLng = landPoint[1]
-                    mCarNestController?.nestOneKeyFly((20 * 100).toShort(), 100.toShort(), 1.toByte(), landLng, landLat, 8 * 100, 0, 0,
-                        callback = object : MSdkCallback.ActionCallback<TakeOffResultBean> {
+                    mNestController?.nestOneKeyFly((20 * 100).toShort(), 100.toShort(), 1.toByte(), landLng, landLat, 8 * 100, 0, 0,
+                        callback = object : CommonCallbacks.CompletionCallbackWith<TakeOffResultBean> {
                             override fun onSuccess(result: TakeOffResultBean?) {
                                 result?.let {
                                     if (it.code != 0) {
@@ -680,7 +688,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                                 }
                             }
 
-                            override fun onFailure(error: MError) {
+                            override fun onFailure(var1: Error?) {
                                 ToastUtils.showShort("一键出库失败")
 
                             }
@@ -689,8 +697,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
             }
         }
         addButton("一键入库") {
-            mCarNestController?.nestOneKeyFly((20 * 100).toShort(), 100.toShort(), 2.toByte(), 0.0, 0.0,
-                callback = object :MSdkCallback.ActionCallback<TakeOffResultBean>{
+            mNestController?.nestOneKeyFly((20 * 100).toShort(), 100.toShort(), 2.toByte(), 0.0, 0.0,
+                callback = object :CommonCallbacks.CompletionCallbackWith<TakeOffResultBean>{
                     override fun onSuccess(result: TakeOffResultBean?) {
                         result?.let {
                             if (it.code != 0) {
@@ -702,7 +710,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     }
 
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("一键入库失败")
                     }
                 })
@@ -712,27 +720,27 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 28. 云台朝向设置
         addButton("云台-机头朝向目标点") {
-            mCarNestController?.setGimbalTargetHeadType(
+            mNestController?.setGimbalTargetHeadType(
                 0,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("机头朝向目标点成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("机头朝向目标点失败")
                     }
                 })
         }
         addButton("云台-飞机跟随机库朝向") {
-            mCarNestController?.setGimbalTargetHeadType(
+            mNestController?.setGimbalTargetHeadType(
                 2,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("飞机跟随机库朝向成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("飞机跟随机库朝向失败")
                     }
                 })
@@ -740,13 +748,13 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 29. 获取云台朝向类型
         addButton("获取云台朝向类型") {
-            mCarNestController?.getGimbalTargetHeadType(object :
-                MSdkCallback.ActionCallback<RespCarNestGetGimbalTargetType> {
+            mNestController?.getGimbalTargetHeadType(object :
+                CommonCallbacks.CompletionCallbackWith<RespCarNestGetGimbalTargetType> {
                 override fun onSuccess(result: RespCarNestGetGimbalTargetType?) {
                     ToastUtils.showShort("朝向类型: ${result?.gimbalTargetType}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取朝向类型失败")
                 }
             })
@@ -754,8 +762,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 30. 伴飞控制（仅开启/关闭，其他参数默认）
         addButton("开启伴飞-前方探路") {
-            mCarNestController?.sensorMcuInfo?.value?.let {
-                mCarNestController?.controlFlightFollow(
+            mNestController?.sensorMcuInfo?.value?.let {
+                mNestController?.controlFlightFollow(
                     true,
                     it.fromBleNestLat,
                     it.fromBleNestLng,
@@ -766,27 +774,27 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     1,
                     60,
                     1,
-                    object : MSdkCallback.ActionCallback<EmptyMsg> {
+                    object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                         override fun onSuccess(result: EmptyMsg?) {
                             ToastUtils.showShort("开启伴飞成功")
                         }
 
-                        override fun onFailure(error: MError) {
+                        override fun onFailure(var1: Error?) {
                             ToastUtils.showShort("开启伴飞失败")
                         }
                     })
             }
         }
         addButton("关闭伴飞") {
-            mCarNestController?.controlFlightFollow(
+            mNestController?.controlFlightFollow(
                 false,
                 0.0, 0.0, 0, 0, 0, 0, 0, 0, 0,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("关闭伴飞成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("关闭伴飞失败")
                     }
                 }
@@ -795,23 +803,23 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         addButton("指点飞行") {
             val list = arrayListOf<ParamPointBean>()
-            IGduDroneDevice.get.flightController.fcInfo1.value?.let {
+            mGDUFlightController?.fcInfo1?.let {
                 list.add(ParamPointBean(0, it.longitude, it.latitude, 2, 60))
                 list.add(ParamPointBean(0, it.longitude + 0.0009, it.latitude, 2, 80))
             }
-            IGduDroneDevice.get.flightController.startMultiplePointFly(list, 15, 5, 5) { result ->
-                XLogger.APP.i("guidePointFly","guidePointFly  result = $result" )
-                if (result.success) {
+            mGDUFlightController?.startMultiplePointFly(list, 15, 5, 5, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
+                override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("指点飞行成功")
-                }else{
+                }
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("指点飞行失败")
                 }
-            }
+            })
         }
 
         addButton("环绕飞行/定点环绕-开始") {
-            mCarNestController?.sensorMcuInfo?.value?.let {
-                IGduDroneDevice.get.flightController.controlFlightSurround(
+            mNestController?.sensorMcuInfo?.value?.let {
+                mGDUFlightController?.controlFlightSurround(
                     1.toByte(),
                     it.fromBleNestLat,
                     it.fromBleNestLng,
@@ -821,20 +829,20 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     0.toByte(),
                     40.toShort(),
                     0,
-                    object : MSdkCallback.ActionCallback<EmptyMsg> {
+                    object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                         override fun onSuccess(result: EmptyMsg?) {
                             ToastUtils.showShort("环绕飞行成功")
                         }
 
-                        override fun onFailure(error: MError) {
+                        override fun onFailure(var1: Error?) {
                             ToastUtils.showShort("环绕飞行失败")
                         }
                     })
             }
         }
         addButton("环绕飞行/定点环绕-结束") {
-            mCarNestController?.sensorMcuInfo?.value?.let {
-                IGduDroneDevice.get.flightController.controlFlightSurround(
+            mNestController?.sensorMcuInfo?.value?.let {
+                mGDUFlightController?.controlFlightSurround(
                     2.toByte(),
                     it.fromBleNestLat,
                     it.fromBleNestLng,
@@ -844,12 +852,12 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     0.toByte(),
                     40.toShort(),
                     0,
-                    object : MSdkCallback.ActionCallback<EmptyMsg> {
+                    object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                         override fun onSuccess(result: EmptyMsg?) {
                             ToastUtils.showShort("环绕飞行成功")
                         }
 
-                        override fun onFailure(error: MError) {
+                        override fun onFailure(var1: Error?) {
                             ToastUtils.showShort("环绕飞行失败")
                         }
                     })
@@ -858,13 +866,13 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 31. 获取跟随信息
         addButton("获取跟随信息") {
-            mCarNestController?.getFollowInfo(object :
-                MSdkCallback.ActionCallback<ParamCarNestFlightFollow> {
+            mNestController?.getFollowInfo(object :
+                CommonCallbacks.CompletionCallbackWith<ParamCarNestFlightFollow> {
                 override fun onSuccess(result: ParamCarNestFlightFollow?) {
                     ToastUtils.showShort("跟随信息: ${GsonUtils.toJson(result)}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取跟随信息失败")
                 }
             })
@@ -872,15 +880,15 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 34. 请求机库保存配置（默认高度距离）
         addButton("保存机库配置(10,5)") {
-            mCarNestController?.requestSetConfigByNest(
+            mNestController?.requestSetConfigByNest(
                 10,
                 5,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("保存配置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("保存配置失败")
                     }
                 })
@@ -888,13 +896,13 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 35. 获取机库配置
         addButton("获取机库配置") {
-            mCarNestController?.getConfigParamByNest(object :
-                MSdkCallback.ActionCallback<ParamConfigParam> {
+            mNestController?.getConfigParamByNest(object :
+                CommonCallbacks.CompletionCallbackWith<ParamConfigParam> {
                 override fun onSuccess(result: ParamConfigParam?) {
                     ToastUtils.showShort("配置: ${GsonUtils.toJson(result)}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取配置失败")
                 }
             })
@@ -902,23 +910,23 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 36. 设置飞机低功耗模式（0关闭/1开启）
         addButton("是否进入飞机低功耗-关闭") {
-            mCarNestController?.setLowPowerMode(0, object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.setLowPowerMode(0, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("关闭低功耗成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("关闭低功耗失败")
                 }
             })
         }
         addButton("是否进入飞机低功耗-开启") {
-            mCarNestController?.setLowPowerMode(1, object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.setLowPowerMode(1, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("开启低功耗成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("开启低功耗失败")
                 }
             })
@@ -928,14 +936,14 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 38. 设置机库WiFi密码（空密码示例）
         addButton("设置WiFi密码") {
-            mCarNestController?.setNestWifiPwd(
+            mNestController?.setNestWifiPwd(
                 "12345678".toByteArray(),
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("设置WiFi密码成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("设置WiFi密码失败")
                     }
                 })
@@ -943,12 +951,12 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 39. 获取机库WiFi密码
         addButton("获取WiFi密码") {
-            mCarNestController?.getNestWifiPwd(object : MSdkCallback.ActionCallback<ParamNestWifi> {
+            mNestController?.getNestWifiPwd(object : CommonCallbacks.CompletionCallbackWith<ParamNestWifi> {
                 override fun onSuccess(result: ParamNestWifi?) {
                     ToastUtils.showShort("WiFi密码: ${String(result?.nestPwd ?: byteArrayOf())}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取WiFi密码失败")
                 }
             })
@@ -956,14 +964,14 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 40. 设置机库服务配置（空字符串）
         addButton("设置服务配置") {
-            mCarNestController?.setNestSetupServiceConfig(
+            mNestController?.setNestSetupServiceConfig(
                 "https://uver5.com",
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("设置服务配置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("设置服务配置失败")
                     }
                 })
@@ -971,13 +979,13 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 41. 获取机库服务配置
         addButton("获取服务配置") {
-            mCarNestController?.getNestSetupServiceConfig(object :
-                MSdkCallback.ActionCallback<ParamSetupServiceConfig> {
+            mNestController?.getNestSetupServiceConfig(object :
+                CommonCallbacks.CompletionCallbackWith<ParamSetupServiceConfig> {
                 override fun onSuccess(result: ParamSetupServiceConfig?) {
                     ToastUtils.showShort("服务配置: ${GsonUtils.toJson(result)}")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("获取服务配置失败")
                 }
             })
@@ -1019,17 +1027,17 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 44. 请求机库控制权
         addButton("请求控制权(默认)") {
-            mCarNestController?.reqNestControlRights(
+            mNestController?.reqNestControlRights(
                 "uuid",
                 "192.168.1.1",
                 0,
                 0,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("请求控制权成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("请求控制权失败")
                     }
                 })
@@ -1037,17 +1045,17 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 45. 重试请求控制权
         addButton("重试控制权(默认)") {
-            mCarNestController?.retryNestControlRights(
+            mNestController?.retryNestControlRights(
                 "uuid",
                 "192.168.1.1",
                 0,
                 0,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("重试控制权成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("重试控制权失败")
                     }
                 })
@@ -1172,40 +1180,40 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addSectionTitle("调试功能", mContentLayout)
         // 11. 机库内遥控器对频飞机 / 机库图传对频飞机
         addButton("机库遥控器对频") {
-            mCarNestController?.rcFrequencyDrone(
+            mNestController?.rcFrequencyDrone(
                 0x00,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("遥控器对频成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("遥控器对频失败")
                     }
                 })
         }
         addButton("机库图传对频") {
-            mCarNestController?.rcFrequencyDrone(
+            mNestController?.rcFrequencyDrone(
                 0x01,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("图传对频成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("图传对频失败")
                     }
                 })
         }
         addButton("机库低功耗模式") {
-            mCarNestController?.nestModleControl(
+            mNestController?.nestModelControl(
                 0x01,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("低功耗模式设置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("低功耗模式设置失败")
                     }
                 })
@@ -1229,15 +1237,15 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     else -> ""
                 }
                 addButton("$typeName-$actionName") {
-                    mCarNestController?.servoControl(
+                    mNestController?.servoControl(
                         type,
                         msg,
-                        object : MSdkCallback.ActionCallback<EmptyMsg> {
+                        object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                             override fun onSuccess(result: EmptyMsg?) {
                                 ToastUtils.showShort("$typeName-$actionName 成功")
                             }
 
-                            override fun onFailure(error: MError) {
+                            override fun onFailure(var1: Error?) {
                                 ToastUtils.showShort("$typeName-$actionName 失败")
                             }
                         })
@@ -1259,15 +1267,15 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         for ((type, typeName) in periTypes) {
             for ((msg, msgName) in periMsgs) {
                 addButton("外设-$typeName-$msgName") {
-                    mCarNestController?.peripheralsControl(
+                    mNestController?.peripheralsControl(
                         type,
                         msg,
-                        object : MSdkCallback.ActionCallback<EmptyMsg> {
+                        object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                             override fun onSuccess(result: EmptyMsg?) {
                                 ToastUtils.showShort("外设-$typeName-$msgName 成功")
                             }
 
-                            override fun onFailure(error: MError) {
+                            override fun onFailure(var1: Error?) {
                                 ToastUtils.showShort("外设-$typeName-$msgName 失败")
                             }
                         })
@@ -1278,37 +1286,37 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 4. 请求跳转：跳转到用户程序 / BootLoader
         addButton("跳转到用户程序") {
-            mCarNestController?.reqJump(0x00, object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.reqJump(0x00, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("跳转用户程序成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("跳转用户程序失败")
                 }
             })
         }
         addButton("跳转到BootLoader") {
-            mCarNestController?.reqJump(0x01, object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.reqJump(0x01, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("跳转BootLoader成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("跳转BootLoader失败")
                 }
             })
         }
         // 15. 机库模式控制
         addButton("机库重启") {
-            mCarNestController?.nestModleControl(
+            mNestController?.nestModelControl(
                 0x00,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("机库重启成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("机库重启失败")
                     }
                 })
@@ -1325,14 +1333,14 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         )
         for ((code, name) in lightModes) {
             addButton("灯语-$name") {
-                mCarNestController?.nestLightControl(
+                mNestController?.nestLightControl(
                     code.toByte(),
-                    object : MSdkCallback.ActionCallback<EmptyMsg> {
+                    object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                         override fun onSuccess(result: EmptyMsg?) {
                             ToastUtils.showShort("灯语控制成功")
                         }
 
-                        override fun onFailure(error: MError) {
+                        override fun onFailure(var1: Error?) {
                             ToastUtils.showShort("灯语控制失败")
                         }
                     })
@@ -1340,8 +1348,8 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         }
         // 13. 设置机库SN码（默认值）
         addButton("设置机库SN") {
-            mCarNestController?.setNestSnCode("SN123", object : ActionCallback<EmptyMsg> {
-                override fun onFailure(error: MError) {
+            mNestController?.setNestSnCode("SN123", object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
+                override fun onFailure(error: Error) {
                     ToastUtils.showShort("SN设置失败")
                 }
 
@@ -1352,12 +1360,12 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         }
         // 6. 设置蓝牙名称（使用默认名称）
         addButton("设置蓝牙名称") {
-            mCarNestController?.setBleName("BTGDU", object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.setBleName("BTGDU", object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("设置蓝牙名称成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("设置蓝牙名称失败")
                 }
             })
@@ -1375,15 +1383,15 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         for ((info, infoName) in taskInfos) {
             for ((type, typeName) in taskTypes) {
                 addButton("任务-$infoName-$typeName") {
-                    mCarNestController?.droneTaskPre(
+                    mNestController?.droneTaskPre(
                         info,
                         type,
-                        object : MSdkCallback.ActionCallback<EmptyMsg> {
+                        object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                             override fun onSuccess(result: EmptyMsg?) {
                                 ToastUtils.showShort("任务准备成功")
                             }
 
-                            override fun onFailure(error: MError) {
+                            override fun onFailure(var1: Error?) {
                                 ToastUtils.showShort("任务准备失败")
                             }
                         })
@@ -1392,16 +1400,16 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         }
         // 25. 上报遥控器经纬度（默认0）
         addButton("上报遥控器位置(0,0,0)") {
-            mCarNestController?.uploadRCPosition(
+            mNestController?.uploadRCPosition(
                 0.0,
                 0.0,
                 0.0,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("上报位置成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("上报位置失败")
                     }
                 })
@@ -1409,27 +1417,27 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 26. 演示模式开关
         addButton("开启演示模式") {
-            mCarNestController?.changeHallMode(
+            mNestController?.changeHallMode(
                 true,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("开启演示模式成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("开启演示模式失败")
                     }
                 })
         }
         addButton("关闭演示模式") {
-            mCarNestController?.changeHallMode(
+            mNestController?.changeHallMode(
                 false,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("关闭演示模式成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("关闭演示模式失败")
                     }
                 })
@@ -1437,25 +1445,25 @@ class NestControllerActivity : Activity(), View.OnClickListener {
 
         // 37. 视觉跟踪开关
         addButton("开启视觉跟踪") {
-            mCarNestController?.setVisonTrack(true, object : MSdkCallback.ActionCallback<EmptyMsg> {
+            mNestController?.setVisonTrack(true, object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                 override fun onSuccess(result: EmptyMsg?) {
                     ToastUtils.showShort("开启视觉跟踪成功")
                 }
 
-                override fun onFailure(error: MError) {
+                override fun onFailure(var1: Error?) {
                     ToastUtils.showShort("开启视觉跟踪失败")
                 }
             })
         }
         addButton("关闭视觉跟踪") {
-            mCarNestController?.setVisonTrack(
+            mNestController?.setVisonTrack(
                 false,
-                object : MSdkCallback.ActionCallback<EmptyMsg> {
+                object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("关闭视觉跟踪成功")
                     }
 
-                    override fun onFailure(error: MError) {
+                    override fun onFailure(var1: Error?) {
                         ToastUtils.showShort("关闭视觉跟踪失败")
                     }
                 })
