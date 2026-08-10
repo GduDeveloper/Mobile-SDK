@@ -462,6 +462,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                         ToastUtils.showShort("无人机模拟飞行开启失败")
                     }
                 })
+                mGDUFlightController?.switchSmartBattery()
             }
         }
 
