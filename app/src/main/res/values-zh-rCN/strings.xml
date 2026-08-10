@@ -1394,4 +1394,12 @@
     <string name="Msg_ErrorCode_4040200B">卫星导航信号弱，建议寻找空旷环境</string>
     <string name="Msg_ErrorCode_4040200D">RTK信号异常</string>
 
+
+    <string name="camera_param_acquired">未获取到相机参数</string>
+    <string name="ui_setting_success">设置成功</string>
+    <string name="ui_setting_failed">设置失败</string>
+    <string name="camera_no_light_type">不可切换光类型</string>
+    <string name="camera_no_infrared_light">当前光类型不是红外模式</string>
+    <string name="setting_rc_route_open_cannot_use_gimbal">任务执行中，云台不可控</string>
+
 </resources>

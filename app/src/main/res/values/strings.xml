@@ -1407,4 +1407,12 @@
     <string name="Msg_ErrorCode_4040200A">Satellite navigation system is abnormal. Please contact the after-sales service for handling.</string>
     <string name="Msg_ErrorCode_4040200B">Satellite navigation signal is weak, it is recommended to look for open environment</string>
     <string name="Msg_ErrorCode_4040200D">Abnormal RTK signal</string>
+
+    <string name="camera_param_acquired">No camera parameters acquired</string>
+    <string name="ui_setting_success">Set success</string>
+    <string name="ui_setting_failed">Set fail</string>
+    <string name="camera_no_light_type">Light type cannot be switched</string>
+    <string name="camera_no_infrared_light">The current light type is not the infrared mode</string>
+    <string name="setting_rc_route_open_cannot_use_gimbal">During task execution, the gimbal is uncontrollable</string>
+
 </resources>
