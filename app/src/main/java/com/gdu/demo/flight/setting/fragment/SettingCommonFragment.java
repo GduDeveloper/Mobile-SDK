@@ -1,9 +1,5 @@
 package com.gdu.demo.flight.setting.fragment;
 
-import static com.gdu.sdk.vision.Vision.AI_BOX_P_C_S_100T;
-import static com.gdu.sdk.vision.Vision.AI_BOX_P_C_S_48T;
-import static com.gdu.sdk.vision.Vision.AI_DRONE_P_C_S;
-
 import android.animation.ObjectAnimator;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -139,7 +135,9 @@ public class SettingCommonFragment extends Fragment {
 
         ViewUtils.setViewShowOrHide(mViewBinding.vvRtkVersionView, DroneUtils.getRtkOnline());
         mViewBinding.vvRtkVersionView.setFirmwareName(GduEnvConfig.application.getString(R.string.Label_RtkVersion));
-        ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, DroneUtils.getFcInfo1().getAdsBOnline());
+        if (DroneUtils.getFcInfo1() != null) {
+            ViewUtils.setViewShowOrHide(mViewBinding.viewADSBGroup, DroneUtils.getFcInfo1().getAdsBOnline());
+        }
 
         final boolean isOpenADSB = SPUtils.getInstance().getBoolean(IS_OPEN_ASD_B);
         mViewBinding.ivSwitchADSBBtn.setSelected(isOpenADSB);
