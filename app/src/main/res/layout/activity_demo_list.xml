@@ -103,6 +103,14 @@
                 android:layout_weight="1"
                 android:text="psdk挂载测试" />
 
+            <Button
+                android:id="@+id/bt_log"
+                android:onClick="onClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="日志" />
+
         </LinearLayout>
     </ScrollView>
 

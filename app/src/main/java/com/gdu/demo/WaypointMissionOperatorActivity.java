@@ -355,9 +355,6 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         waypointMission.setResponseLostActionOnRCSignalLost(false);
         waypointMission.setFinishedAction(WaypointMissionFinishedAction.GO_HOME);
         waypointMission.setHeadingMode(WaypointMissionHeadingMode.AUTO);
-//      builder.gotoFirstWaypointMode(WaypointMissionGotoWaypointMode.SAFELY);  waypointMission.setGotoFirstWaypointMode(WaypointMissionFlightPathMode.NORMAL);
-//      builder.setPointOfInterest(new LocationCoordinate2D(15, 15));
-//      builder.headingMode(WaypointMissionHeadingMode.TOWARD_POINT_OF_INTEREST);
         waypointMission.setGimbalPitchRotationEnabled(true);
         waypointMission.setAltitudeMode(1);
 
