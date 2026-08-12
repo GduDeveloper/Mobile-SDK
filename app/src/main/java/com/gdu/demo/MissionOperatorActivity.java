@@ -26,9 +26,7 @@ import com.gdu.demo.viewmodel.MissionOperatorViewModel;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.TapFlyState;
-import com.gdu.msdk.enums.OrbitHeadingEnum;
 import com.gdu.msdk.enums.OrbitPitchEnum;
-import com.gdu.msdk.hms.ExceptionController;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.Camera;
@@ -40,15 +38,6 @@ import com.gdu.sdk.simulator.InitializationData;
 import com.gdu.sdk.util.CommonCallbacks;
 
 public class MissionOperatorActivity extends FragmentActivity /*implements LocationSource , View.OnClickListener*/ {
-
-    private static final double HORIZONTAL_DISTANCE = 30;
-    private static final double VERTICAL_DISTANCE = 30;
-    private static final double ONE_METER_OFFSET = 0.00000899322;
-
-    private double latitude = 0;
-    private double longitude = 0;
-
-    private boolean isStartFollow;
 
     private TextView flyInfoView;
     private MapView mMapView;
@@ -65,10 +54,6 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
 
     private Camera mGDUCamera;
     private MissionOperatorViewModel viewModel;
-
-//    private HotpointMissionOperator mHotpointMissionOperator;
-//
-//    private FollowMeMissionOperator mFollowMeMissionOperator;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,71 +106,9 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
                     });
                 }
             });
-
-            // mHotpointMissionOperator = getHotpointMissionOperator();
-
-            // mFollowMeMissionOperator = getFollowMeMissionOperator();
-            setUpListener();
-
             mGDUCamera = (Camera) ((Aircraft) SdkDemoApplication.getProductInstance()).getCamera();
-
         }
     }
-
-    private void setUpListener() {
-//        mHotpointMissionOperator.addListener(new HotpointMissionOperatorListener() {
-//            @Override
-//            public void onExecutionUpdate(HotpointMissionEvent paramHotpointMissionEvent) {
-//                toast("环绕状态 " + paramHotpointMissionEvent.getCurrentState().getName());
-//            }
-//
-//            @Override
-//            public void onExecutionStart() {
-//                toast("环绕状态 开始");
-//            }
-//
-//            @Override
-//            public void onExecutionFinish(Error error) {
-//                toast("环绕状态 结束 " + error.getMsg());
-//            }
-//        });
-//
-//        mFollowMeMissionOperator.addListener(new FollowMeMissionOperatorListener() {
-//            @Override
-//            public void onExecutionUpdate(FollowMeMissionEvent followMeMissionEvent) {
-//                toast("跟随状态 " + followMeMissionEvent.getCurrentState());
-//            }
-//
-//            @Override
-//            public void onExecutionStart() {
-//                toast("跟随状态 开始");
-//            }
-//
-//            @Override
-//            public void onExecutionFinish(Error error) {
-//                toast("跟随状态 结束" + error);
-//            }
-//        });
-    }
-
-
-//    private HotpointMissionOperator getHotpointMissionOperator() {
-//        if (null == mHotpointMissionOperator) {
-//            if (null != MissionControl.getInstance()) {
-//                return MissionControl.getInstance().getHotpointMissionOperator();
-//            }
-//        }
-//        return mHotpointMissionOperator;
-//    }
-//
-//    private FollowMeMissionOperator getFollowMeMissionOperator() {
-//        if (null == mFollowMeMissionOperator) {
-//            if (null != MissionControl.getInstance()) {
-//                return MissionControl.getInstance().getFollowMeMissionOperator();
-//            }
-//        }
-//        return mFollowMeMissionOperator;
-//    }
 
     private void initListener() {
         if (mGDUCamera != null) {
@@ -273,70 +196,21 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
                     }
                 });
                 break;
-            case R.id.start_hotpoint_button:
-//                XLogger.INSTANCE.getAPP().i("test status " + MissionControl.getInstance().getHotpointMissionOperator().getCurrentState().getName());
-//                HotpointMission hotpointMission = new HotpointMission();
-//                LocationCoordinate2D hotpoint = new LocationCoordinate2D(30.471033, 114.4280014);
-//                hotpointMission.setHotpoint(hotpoint);
-//                hotpointMission.setAltitude(50);
-//                hotpointMission.setClockwise(true);
-//                hotpointMission.setAngularVelocity(0.10019f);
-//                hotpointMission.setRadius(80);
-//                hotpointMission.setHeading(HotpointHeading.TOWARDS_HOT_POINT);
-//                hotpointMission.setStartPoint(HotpointStartPoint.NORTH);
-//                mHotpointMissionOperator.startMission(hotpointMission, new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        if (error == null) {
-//                            toast("开始环绕发送成功");
-//                        } else {
-//                            toast("开始环绕发送失败");
-//                        }
-//                    }
-//                });
+            case R.id.start_hotpoint_button: //开始环绕
+                viewModel.startSurroundMission();
+                break;
+            case R.id.pause_hotpoint_button: //暂停环绕
+                viewModel.pauseSurroundMission();
                 break;
 
-            case R.id.pause_hotpoint_button:
-//                mHotpointMissionOperator.pause(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        if (error == null) {
-//                            toast("暂停环绕发送成功");
-//                        } else {
-//                            toast("暂停环绕发送失败");
-//                        }
-//                    }
-//                });
+            case R.id.continue_hotpoint_button: //继续环绕
+                viewModel.resumeSurroundMission();
                 break;
-
-            case R.id.continue_hotpoint_button:
-//                mHotpointMissionOperator.resume(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//
-//                    }
-//                });
-                break;
-            case R.id.stop_hotpoint_button:
-//                mHotpointMissionOperator.stop(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        if (error == null) {
-//                            toast("结束环绕发送成功");
-//                        } else {
-//                            toast("结束环绕发送失败");
-//                        }
-//                    }
-//                });
+            case R.id.stop_hotpoint_button: //结束环绕
+                viewModel.stopSurroundMission();
                 break;
             case R.id.set_hotpoint_heading_button:
-                mGDUFlightController.setSurroundHeadingType(OrbitHeadingEnum.AWAY_FROM_CIRCLE_CENTER,0, error -> {
-                    if (error == null) {
-                        toast("设置机头角度发送成功");
-                    } else {
-                        toast("设置机头角度发送失败");
-                    }
-                });
+                viewModel.setSurroundHeadingType();
                 break;
             case R.id.set_hotpoint_gimbal_pitch_button:
                 mGDUFlightController.setSurroundGimbalAngle(OrbitPitchEnum.GIMBAL,60, error -> {
@@ -380,61 +254,23 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
                 });
                 break;
             case R.id.start_follow_button:
-                startFollow();
+                viewModel.startFollow();
                 break;
             case R.id.stop_follow_button:
-//                mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        isStartFollow = false;
-//                        if (error == null) {
-//                            toast("停止跟随发送成功");
-//                        } else {
-//                            toast("停止跟随发送失败");
-//                        }
-//                    }
-//                });
+                viewModel.stopFollow();
                 break;
             case R.id.start_high_precision_follow_button:
                 startHighPrecisionFollow();
                 break;
 
             case R.id.stop_high_precision_follow_button:
-//                mFollowMeMissionOperator.stopMission(new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        isStartFollow = false;
-//                        if (error == null) {
-//                            toast("停止跟随发送成功");
-//                        } else {
-//                            toast("停止跟随发送失败");
-//                        }
-//                    }
-//                });
+                viewModel.stopGpsDifferentialFollow();
                 break;
             case R.id.set_follow_me_heading_button:
-//                mFollowMeMissionOperator.setFollowMeHeading(FollowMeHeading.SET_HEADING_ANGLE, 50, new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        if (error == null) {
-//                            toast("设置跟随机头发送成功");
-//                        } else {
-//                            toast("设置跟随机头发送失败");
-//                        }
-//                    }
-//                });
+                viewModel.setFollowHeadingType();
                 break;
             case R.id.set_follow_me_gimbal_pitch_button:
-//                mFollowMeMissionOperator.setFollowMeGimbalPitch(FollowMeGimbalPitch.SET_GIMBAL_PITCH, 80, new CommonCallbacks.CompletionCallback() {
-//                    @Override
-//                    public void onResult(Error error) {
-//                        if (error == null) {
-//                            toast("设置跟随云台发送成功");
-//                        } else {
-//                            toast("设置跟随云台发送失败");
-//                        }
-//                    }
-//                });
+                viewModel.setFollowGimbalAngle();
                 break;
             case R.id.start_fly_button: //开始起飞
                 mGDUFlightController.startTakeoff(new CommonCallbacks.CompletionCallback() {
@@ -473,89 +309,7 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
         } else {
             isSetDistanceAndHeightEnable = false;
         }
-//        FollowMeMission followMeMission = new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION, latitude, longitude, true, isSetDistanceAndHeightEnable, 15f,  isSetDistanceAndHeightEnable, 3, 0);
-//        mFollowMeMissionOperator.startMission(followMeMission, new CommonCallbacks.CompletionCallback() {
-//            @Override
-//            public void onResult(Error error) {
-//                if (error == null) {
-//                    if (error == null) {
-//                        toast("开始跟随发送成功");
-//                    } else {
-//                        toast("开始跟随发送失败");
-//                    }
-//                }
-//            }
-//        });
-    }
-
-    /**
-     * GPS跟随
-     * */
-    private void startFollow(){
-        latitude = 30.471033;
-        longitude = 114.4280014;
-//        mFollowMeMissionOperator.startMission(new FollowMeMission(FollowMeHeading.TOWARD_FOLLOW_POSITION,
-//                latitude + 5 * ONE_METER_OFFSET, longitude + 5 * ONE_METER_OFFSET, 30f
-//        ), new CommonCallbacks.CompletionCallback() {
-//            @Override
-//            public void onResult(Error error) {
-//                if (error == null) {
-//                    toast("开始跟随发送成功");
-//                } else {
-//                    toast("开始跟随发送失败");
-//                }
-//                if (error == null) {
-//                    isStartFollow = true;
-//                    new Thread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            int cnt = 0;
-//                            while(cnt < 100 && isStartFollow) {
-//                                latitude = latitude + 5 * ONE_METER_OFFSET;
-//                                longitude = longitude + 5 * ONE_METER_OFFSET;
-//                                LocationCoordinate2D newLocation = new LocationCoordinate2D(latitude, longitude);
-//                                runOnUiThread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        LatLng latLng = new LatLng(latitude, longitude);
-//                                        if (mGPSTargetMarker != null) {
-//                                            coordinateConverter.coord(latLng);
-//                                            mGPSTargetMarker.setPosition(coordinateConverter.convert());
-//                                        } else {
-//                                            MarkerOptions markerOptions = new MarkerOptions();
-//                                            markerOptions.position(latLng);
-//                                            mGPSTargetMarker = aMap.addMarker(markerOptions);
-//                                        }
-//                                    }
-//                                });
-//                                XLogger.INSTANCE.getAPP().i("test FollowingTarget " + newLocation.toString());
-//                                mFollowMeMissionOperator.updateFollowingTarget(newLocation, new CommonCallbacks.CompletionCallback() {
-//                                    @Override
-//                                    public void onResult(Error error) {
-//                                        if (error == null) {
-//                                            toast("跟随目标点发送成功");
-//                                        } else {
-//                                            toast("跟随目标点发送失败");
-//                                        }
-//                                    }
-//                                });
-//                                try {
-//                                    Thread.sleep(1500);
-//                                } catch (InterruptedException e) {
-//                                    e.printStackTrace();
-//                                }
-//                                cnt++;
-//                            }
-//                        }
-//                    }).start();
-//                }
-//            }
-//        });
-    }
-
-
-    private int calculateTurnAngle() {
-        return Math.round((float)Math.toDegrees(Math.atan(VERTICAL_DISTANCE/ HORIZONTAL_DISTANCE)));
+        viewModel.startGpsDifferentialFollow(isSetDistanceAndHeightEnable);
     }
 
 
@@ -563,7 +317,6 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                mVideoPicTextView.setText(toast);
                 Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
             }
         });
@@ -574,7 +327,6 @@ public class MissionOperatorActivity extends FragmentActivity /*implements Locat
             @Override
             public void run() {
                 mMissionInfoTextView.setText(toast);
-//                Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
             }
         });
     }

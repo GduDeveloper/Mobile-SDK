@@ -14,6 +14,7 @@ import com.gdu.drone.LocationCoordinate3D
 import com.gdu.lib.util.GsonUtils
 import com.gdu.lib.util.core.ToastUtils
 import com.gdu.lib.util.core.XLogger
+import com.gdu.msdk.enums.HeadingTypeEnum
 import com.gdu.msdk.key.callback.MSdkCallback
 import com.gdu.msdk.key.error.MError
 import com.gdu.msdk.key.value.ParamCarNestFlightFollow
@@ -723,6 +724,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addButton("云台-机头朝向目标点") {
             mNestController?.setGimbalTargetHeadType(
                 0,
+                0,
                 object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("机头朝向目标点成功")
@@ -736,6 +738,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addButton("云台-飞机跟随机库朝向") {
             mNestController?.setGimbalTargetHeadType(
                 2,
+                0,
                 object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("飞机跟随机库朝向成功")
@@ -768,7 +771,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
                     true,
                     it.fromBleNestLat,
                     it.fromBleNestLng,
-                    0,
+                    HeadingTypeEnum.POINT_TARGET,
                     1,
                     100,
                     100,
@@ -789,7 +792,7 @@ class NestControllerActivity : Activity(), View.OnClickListener {
         addButton("关闭伴飞") {
             mNestController?.controlFlightFollow(
                 false,
-                0.0, 0.0, 0, 0, 0, 0, 0, 0, 0,
+                0.0, 0.0, HeadingTypeEnum.POINT_TARGET, 0, 0, 0, 0, 0, 0,
                 object : CommonCallbacks.CompletionCallbackWith<EmptyMsg> {
                     override fun onSuccess(result: EmptyMsg?) {
                         ToastUtils.showShort("关闭伴飞成功")
