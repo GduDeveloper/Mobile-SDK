@@ -14,6 +14,7 @@ import com.gdu.demo.widget.rc.RcCustomKeyMenAdapter
 import com.gdu.demo.widget.rc.RcMenuTitleAdapter
 import com.gdu.demo.widget.rc.SettingMenuItem
 import com.gdu.lib.util.core.ScreenUtils
+import com.gdu.lib.util.core.XLogger
 
 /**
  *
@@ -62,10 +63,12 @@ class CustomKeyActionPopupWindow(val context: Context) : PopupWindow(context) {
             setAdapter(menuAdapter)
         }
         menuAdapter.setOnItemClickListener { adapter, _, position ->
+            XLogger.APP.i("RCCustom", "start setOnItemClickListener ")
             adapter.getItem(position)?.let {
                 onChooseClick?.invoke(it as RCKeyActionItem)
                 this.dismiss()
             }
+            XLogger.APP.i("RCCustom", "end setOnItemClickListener ")
         }
     }
 

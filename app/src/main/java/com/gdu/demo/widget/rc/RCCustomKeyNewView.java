@@ -1,30 +1,21 @@
 package com.gdu.demo.widget.rc;
 
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import com.gdu.demo.R;
 import com.gdu.demo.databinding.RcCustomKeyViewBinding;
-import com.gdu.demo.databinding.RcCustomKeyViewMenuPopBinding;
-import com.gdu.demo.utils.ScreenUtils;
 import com.gdu.demo.widget.rc.key.CustomKeyActionPopupWindow;
 import com.gdu.demo.widget.rc.key.IActionViewKey;
 import com.gdu.demo.widget.rc.key.IDiyViewKey;
-import com.gdu.demo.widget.rc.key.RCCustomKeyRepository;
 import com.gdu.demo.widget.rc.key.RCCustomKeyViewModel;
-import com.gdu.demo.widget.rc.key.RCKeyActionItem;
+import com.gdu.lib.util.core.XLogger;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @Author: lixiqiang
@@ -35,13 +26,10 @@ public class RCCustomKeyNewView extends RelativeLayout {
     private final Context context;
     private RcCustomKeyViewBinding viewBinding;
 
-    private RcCustomKeyMenAdapter menAdapter;
     private final RCCustomKeyViewModel viewModel = new RCCustomKeyViewModel();
 
     private TextView currentTextView;
-    private int clickViewType = -1;
 
-    private PopupWindow mMenuPop;
     private CustomKeyActionPopupWindow actionPopupWindow;
 
     private static final int TAG_KEY_VIEW_KEY = R.id.tv_c_title;
@@ -65,78 +53,8 @@ public class RCCustomKeyNewView extends RelativeLayout {
     private void initView() {
         View view = LayoutInflater.from(context).inflate(R.layout.rc_custom_key_view, this);
         viewBinding = RcCustomKeyViewBinding.bind(view);
-        initMenuPop();
     }
 
-    private void initMenuPop() {
-        RcCustomKeyViewMenuPopBinding menuPopBinding = RcCustomKeyViewMenuPopBinding.inflate(LayoutInflater.from(getContext()));
-        menAdapter = new RcCustomKeyMenAdapter();
-        menuPopBinding.rvMenu.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        menuPopBinding.rvMenu.setAdapter(menAdapter);
-        setMenu(0);
-        menAdapter.setOnItemClickListener((adapter, view1, position) -> {
-            RCKeyActionItem menu = (RCKeyActionItem) adapter.getItem(position);
-            if (menu != null) {
-                onActionSelected(menu);
-            }
-        });
-
-        List<SettingMenuItem> list = new ArrayList<>();
-        list.add(new SettingMenuItem(1, R.drawable.rc_custom_key_camera, ""));
-        list.add(new SettingMenuItem(2, R.drawable.rc_custom_key_gimbal, ""));
-        list.add(new SettingMenuItem(3, R.drawable.rc_custom_key_app, ""));
-        list.add(new SettingMenuItem(4, R.drawable.rc_custom_key_flight_control, ""));
-
-        RcMenuTitleAdapter titleAdapter = new RcMenuTitleAdapter();
-        menuPopBinding.rvTitle.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-        menuPopBinding.rvTitle.setAdapter(titleAdapter);
-        titleAdapter.setNewInstance(list);
-        titleAdapter.setOnItemClickListener((adapter, view12, position) -> {
-            titleAdapter.setSelectPosition(position);
-            setMenu(position);
-        });
-        menuPopBinding.ivClose.setOnClickListener(v -> {
-            if (mMenuPop != null) {
-                mMenuPop.dismiss();
-            }
-        });
-        mMenuPop = new PopupWindow(menuPopBinding.getRoot());
-        mMenuPop.setWidth(getResources().getDimensionPixelSize(R.dimen.dp_230));
-        mMenuPop.setHeight(ScreenUtils.getScreenHeight(getContext()) - getResources().getDimensionPixelSize(R.dimen.dp_140));
-        mMenuPop.setBackgroundDrawable(new ColorDrawable(0x00000000));
-        mMenuPop.setFocusable(false);
-        mMenuPop.setOutsideTouchable(true);
-    }
-
-    private void onActionSelected(RCKeyActionItem menu) {
-        mMenuPop.dismiss();
-        if (currentTextView == null || clickViewType == -1) {
-            return;
-        }
-        currentTextView.setText(menu.getActionName());
-
-        if (clickViewType > 100) {
-            // 组合按键的逻辑
-            // TODO: 组合按键动作保存（如有需要可扩展）
-        } else {
-            // 单按键保存动作
-            viewModel.saveViewAndAction(clickViewType, menu.getActionId());
-        }
-    }
-
-    private void setMenu(int position) {
-        List<RCKeyActionItem> list = new ArrayList<>();
-        if (position == 0) {
-            list = RCCustomKeyRepository.INSTANCE.getCameraActionList();
-        } else if (position == 1) {
-            list = RCCustomKeyRepository.INSTANCE.getGimbalActionList();
-        } else if (position == 2) {
-            list = RCCustomKeyRepository.INSTANCE.getAppActionList();
-        } else if (position == 3) {
-            list = RCCustomKeyRepository.INSTANCE.getFcActionList();
-        }
-        menAdapter.setNewInstance(list);
-    }
 
     private void bindViewAction(TextView view, int rcKeyId) {
         view.setTag(TAG_KEY_VIEW_KEY, rcKeyId);
@@ -237,11 +155,13 @@ public class RCCustomKeyNewView extends RelativeLayout {
                 }
             });
             actionPopupWindow.setOnChooseListener(action -> {
+                XLogger.APP.i("RCCustom", "start setOnChooseListener ");
                 if (currentTextView != null) {
                     currentTextView.setText(action.getActionName());
                     int rcKeyId = getBindViewKey(currentTextView);
                     viewModel.saveViewAndAction(rcKeyId, action.getActionId());
                 }
+                XLogger.INSTANCE.getAPP().i("RCCustom", "end setOnChooseListener ActionName = " + action.getActionName());
                 return null;
             });
         }
@@ -274,29 +194,11 @@ public class RCCustomKeyNewView extends RelativeLayout {
         }
     }
 
-    private int getKey1ValByPos(int pos) {
-        switch (pos) {
-            case 0: return 1;
-            case 1: return 3;
-            case 2: return 4;
-            default: return 0;
-        }
-    }
-
     private int getPos1ByKey(int key) {
         switch (key) {
             case 1: return 0;
             case 3: return 1;
             case 4: return 2;
-            default: return 0;
-        }
-    }
-
-    private int getKey2ValByPos(int pos) {
-        switch (pos) {
-            case 0: return 2;
-            case 1: return 5;
-            case 2: return 6;
             default: return 0;
         }
     }

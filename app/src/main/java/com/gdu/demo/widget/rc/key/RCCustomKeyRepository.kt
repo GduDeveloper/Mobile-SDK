@@ -5,6 +5,7 @@ import com.gdu.lib.base.GduEnvConfig
 import com.gdu.lib.util.MMKVUtils
 import com.gdu.lib.util.ThreadHelper
 import com.gdu.lib.util.core.GsonUtils
+import com.gdu.lib.util.core.XLogger
 import com.gdu.msdk.device.interfaces.IGduDroneDevice
 import com.google.gson.reflect.TypeToken
 
@@ -106,13 +107,17 @@ object RCCustomKeyRepository {
 
     private fun saveActionRCKey() {
         ThreadHelper.runOnAsync {
-            MMKVUtils.getKV().putString(MMKV_KEY_RC_SINGLE_KEY_ACTION, GsonUtils.toJson(rcKeyActionIdMap))
+            val json = GsonUtils.toJson(rcKeyActionIdMap)
+            MMKVUtils.getKV().putString(MMKV_KEY_RC_SINGLE_KEY_ACTION, json)
+            XLogger.APP.i("RCCustom", "saveActionRCKey json:$json")
         }
     }
 
     private fun saveDiyViewAndRCKey() {
         ThreadHelper.runOnAsync {
-            MMKVUtils.getKV().putString(MMKV_KEY_DIY_VIEW_RC_KEY, GsonUtils.toJson(diyViewIdAndRCKeyIdMap))
+            val json = GsonUtils.toJson(diyViewIdAndRCKeyIdMap)
+            MMKVUtils.getKV().putString(MMKV_KEY_DIY_VIEW_RC_KEY, json)
+            XLogger.APP.i("RCCustom", "saveDiyViewAndRCKey json:$json")
         }
     }
 

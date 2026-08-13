@@ -1,6 +1,7 @@
 package com.gdu.demo.widget.rc.key
 
 import androidx.lifecycle.ViewModel
+import com.gdu.lib.util.core.XLogger
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.interfaces.IGduDroneDevice
 
@@ -28,6 +29,7 @@ class RCCustomKeyViewModel: ViewModel(){
      * @param actionId ICustomAction
      */
     fun saveViewAndAction(rcKeyId: Int, actionId: Int) {
+        XLogger.APP.i("RCCustom", "start saveViewAndAction rcKeyId:$rcKeyId, actionId:$actionId")
         RCCustomKeyRepository.changeRCKeyAction(rcKeyId, actionId)
 
         if (rcKeyId == IActionViewKey.VIEW_C1 || rcKeyId == IActionViewKey.VIEW_C2) {
