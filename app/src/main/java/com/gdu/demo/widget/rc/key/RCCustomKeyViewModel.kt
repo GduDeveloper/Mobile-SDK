@@ -29,7 +29,7 @@ class RCCustomKeyViewModel: ViewModel(){
      * @param actionId ICustomAction
      */
     fun saveViewAndAction(rcKeyId: Int, actionId: Int) {
-        XLogger.APP.i("RCCustom", "start saveViewAndAction rcKeyId:$rcKeyId, actionId:$actionId")
+        XLogger.APP.i("RCKeyAction", "start saveViewAndAction rcKeyId:$rcKeyId, actionId:$actionId")
         RCCustomKeyRepository.changeRCKeyAction(rcKeyId, actionId)
 
         if (rcKeyId == IActionViewKey.VIEW_C1 || rcKeyId == IActionViewKey.VIEW_C2) {

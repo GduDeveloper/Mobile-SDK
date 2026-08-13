@@ -63,12 +63,12 @@ class CustomKeyActionPopupWindow(val context: Context) : PopupWindow(context) {
             setAdapter(menuAdapter)
         }
         menuAdapter.setOnItemClickListener { adapter, _, position ->
-            XLogger.APP.i("RCCustom", "start setOnItemClickListener ")
+            XLogger.APP.i("RCKeyAction", "start setOnItemClickListener ")
             adapter.getItem(position)?.let {
                 onChooseClick?.invoke(it as RCKeyActionItem)
                 this.dismiss()
             }
-            XLogger.APP.i("RCCustom", "end setOnItemClickListener ")
+            XLogger.APP.i("RCKeyAction", "end setOnItemClickListener ")
         }
     }
 

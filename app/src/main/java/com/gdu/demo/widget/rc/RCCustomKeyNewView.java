@@ -124,13 +124,6 @@ public class RCCustomKeyNewView extends RelativeLayout {
         setDiyOptionClickListener(viewBinding.ovComb12);
         setDiyOptionClickListener(viewBinding.ovComb22);
         setDiyOptionClickListener(viewBinding.ovComb32);
-
-        viewBinding.ivDelOne.setOnClickListener(v -> {
-            // TODO: 删除组合按键1
-        });
-        viewBinding.ivDelTwo.setOnClickListener(v -> {
-            // TODO: 删除组合按键2
-        });
     }
 
     private void setDiyOptionClickListener(com.gdu.demo.widget.GduSpinner view) {
@@ -155,13 +148,15 @@ public class RCCustomKeyNewView extends RelativeLayout {
                 }
             });
             actionPopupWindow.setOnChooseListener(action -> {
-                XLogger.APP.i("RCCustom", "start setOnChooseListener ");
+                XLogger.APP.i("RCKeyAction", "start setOnChooseListener " + Thread.currentThread().getName());
                 if (currentTextView != null) {
                     currentTextView.setText(action.getActionName());
+                    currentTextView.requestLayout();
+                    currentTextView.postInvalidate();
                     int rcKeyId = getBindViewKey(currentTextView);
                     viewModel.saveViewAndAction(rcKeyId, action.getActionId());
                 }
-                XLogger.INSTANCE.getAPP().i("RCCustom", "end setOnChooseListener ActionName = " + action.getActionName());
+                XLogger.INSTANCE.getAPP().i("RCKeyAction", "end setOnChooseListener ActionName = " + action.getActionName());
                 return null;
             });
         }
@@ -173,42 +168,6 @@ public class RCCustomKeyNewView extends RelativeLayout {
     private void initData() {
         // 单按键已通过bindViewAction初始化文本
         // 组合按键默认值
-        setCombKey(101);
-        setCombKey(102);
-        setCombKey(103);
     }
 
-    private void setCombKey(int type) {
-        if (type == 101) {
-            viewBinding.ovComb11.setIndex(getPos1ByKey(1));
-            viewBinding.ovComb12.setIndex(getPos2ByKey(2));
-            viewBinding.tvComb1.setText(context.getString(R.string.string_rc_key_no));
-        } else if (type == 102) {
-            viewBinding.ovComb21.setIndex(getPos1ByKey(3));
-            viewBinding.ovComb22.setIndex(getPos2ByKey(5));
-            viewBinding.tvComb2.setText(context.getString(R.string.string_rc_key_no));
-        } else if (type == 103) {
-            viewBinding.ovComb31.setIndex(getPos1ByKey(4));
-            viewBinding.ovComb32.setIndex(getPos2ByKey(6));
-            viewBinding.tvComb3.setText(context.getString(R.string.string_rc_key_no));
-        }
-    }
-
-    private int getPos1ByKey(int key) {
-        switch (key) {
-            case 1: return 0;
-            case 3: return 1;
-            case 4: return 2;
-            default: return 0;
-        }
-    }
-
-    private int getPos2ByKey(int key) {
-        switch (key) {
-            case 2: return 0;
-            case 5: return 1;
-            case 6: return 2;
-            default: return 0;
-        }
-    }
 }

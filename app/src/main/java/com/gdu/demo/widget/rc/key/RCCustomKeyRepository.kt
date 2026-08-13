@@ -109,7 +109,7 @@ object RCCustomKeyRepository {
         ThreadHelper.runOnAsync {
             val json = GsonUtils.toJson(rcKeyActionIdMap)
             MMKVUtils.getKV().putString(MMKV_KEY_RC_SINGLE_KEY_ACTION, json)
-            XLogger.APP.i("RCCustom", "saveActionRCKey json:$json")
+            XLogger.APP.i("RCKeyAction", "saveActionRCKey json:$json")
         }
     }
 
@@ -117,7 +117,7 @@ object RCCustomKeyRepository {
         ThreadHelper.runOnAsync {
             val json = GsonUtils.toJson(diyViewIdAndRCKeyIdMap)
             MMKVUtils.getKV().putString(MMKV_KEY_DIY_VIEW_RC_KEY, json)
-            XLogger.APP.i("RCCustom", "saveDiyViewAndRCKey json:$json")
+            XLogger.APP.i("RCKeyAction", "saveDiyViewAndRCKey json:$json")
         }
     }
 

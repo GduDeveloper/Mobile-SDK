@@ -14,11 +14,12 @@ import android.widget.TextView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.LifecycleOwner;
 
 import com.gdu.common.error.Error;
 import com.gdu.demo.config.MyConstants;
 import com.gdu.demo.utils.SPUtils;
+import com.gdu.demo.widget.rc.key.RCCustomKeyActionManager;
+import com.gdu.demo.widget.rc.key.RCCustomKeyRepository;
 import com.gdu.lib.util.TimeUtil;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.key.value.bean.GimbalType;
@@ -87,6 +88,9 @@ public class MainActivity extends FragmentActivity {
                     XLogger.INSTANCE.init(mContext);
                     //机库模式下，需要初始化CarNestReportIp
                     CarNestReportIpInit.initCarNestReportIp();
+                    // 自定义按键初始化
+                    RCCustomKeyRepository.INSTANCE.init();
+                    RCCustomKeyActionManager.INSTANCE.init();
 
                     startSDKRegistration();
                 }
