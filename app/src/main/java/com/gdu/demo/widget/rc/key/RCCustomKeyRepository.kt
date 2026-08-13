@@ -19,6 +19,10 @@ object RCCustomKeyRepository {
     private const val MMKV_KEY_RC_SINGLE_KEY_ACTION = "MMKV_KEY_RC_SINGLE_KEY_ACTION"
     private const val MMKV_KEY_DIY_VIEW_RC_KEY = "MMKV_KEY_DIY_VIEW_RC_KEY"
 
+    // 是否已初始化
+    @Volatile
+    private var isInitialized = false
+
     // 不同类型的action；actionId - actionName
     val cameraActionList by lazy { getCameraActions() }
     val gimbalActionList by lazy { getGimbalActions() }
@@ -38,6 +42,10 @@ object RCCustomKeyRepository {
      * 前置初始化
      */
     fun init() {
+        if (isInitialized) {
+            return
+        }
+        isInitialized = true
         loadSingleKeyActionMap()
         loadDiyViewAndRCKeyMap()
     }

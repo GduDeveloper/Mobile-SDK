@@ -14,6 +14,12 @@ import com.gdu.msdk.key.value.rc.CycleRCRocker
 object RCCustomKeyActionManager {
 
     /**
+     * 是否已初始化
+     */
+    @Volatile
+    private var isInitialized = false
+
+    /**
      * 是否触发了组合按键事件
      */
     private var isMultiAction = false
@@ -31,6 +37,10 @@ object RCCustomKeyActionManager {
     }
 
     fun init() {
+        if (isInitialized) {
+            return
+        }
+        isInitialized = true
         log("RCCustomKeyActionManager init")
         IGduRCDevice.get.cycleRCRockerInfo.listen(object : MSdkCallback.KeyListener<CycleRCRocker>{
             override fun onValueChange(oldValue: CycleRCRocker?, newValue: CycleRCRocker?) {
