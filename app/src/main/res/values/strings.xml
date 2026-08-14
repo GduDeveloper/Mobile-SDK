@@ -96,6 +96,8 @@
     <string name="Msg_DistanceToLongTip">The target point is too far away to reach the target point</string>
     <string name="string_no_rc_location">Unable to obtain remote control coordinates, execution failed</string>
     <string name="Msg_GoHomePointDistanceOut">The home point setting cannot be greater than 2500 meters</string>
+    <string name="bizflight_backhome_latlng_with_aircraft_too_far">The distance between the return point and the aircraft exceeds 15KM.</string>
+    <string name="bizflight_backhome_latlng_without_limit_distance">The return distance exceeds the limit distance, so it cannot be set.</string>
     <string name="home_point_set_successfully">The home point is set successfully</string>
     <string name="home_point_set_failed">The home point is set failed</string>
     <string name="tip">Tips</string>

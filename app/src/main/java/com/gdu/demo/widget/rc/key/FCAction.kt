@@ -5,6 +5,7 @@ import com.gdu.lib.util.ActivityManager
 import com.gdu.lib.util.core.ToastUtils
 import com.gdu.msdk.device.component.interfaces.IFlightController
 import com.gdu.msdk.device.interfaces.IGduDroneDevice
+import com.gdu.msdk.key.value.bean.LatLon
 
 /**
  *
@@ -30,7 +31,7 @@ object FCAction: IKeyAction {
                 val droneLat = IFlightController.get.fcInfo1.value?.latitude?: 0.0
                 val droneLng = IFlightController.get.fcInfo1.value?.longitude?: 0.0
                 log("UPDATE_HOME_AIR, droneLat = $droneLat, droneLng = $droneLng")
-//                FlightControllerBox.setHomePoint(LatLon(droneLat, droneLng), FlightControllerBox.HOME_POINT_PLANET)
+                FlightControllerBox.setHomePoint(LatLon(droneLat, droneLng), FlightControllerBox.HOME_POINT_PLANET)
             }
 
             ICustomAction.KEY_FC_UPDATE_HOME_RC -> { // 更新HOME点（当前遥控器位置）

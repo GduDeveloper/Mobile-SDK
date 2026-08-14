@@ -95,6 +95,8 @@
     <string name="Msg_DistanceToLongTip">目标点距离过远无法飞达目标点</string>
     <string name="string_no_rc_location">未获取到遥控器坐标，执行失败</string>
     <string name="Msg_GoHomePointDistanceOut">返航点设置不能大于2500米</string>
+    <string name="bizflight_backhome_latlng_with_aircraft_too_far">返航点与无人机间距离超过15KM</string>
+    <string name="bizflight_backhome_latlng_without_limit_distance">返航距离大于限制距离，无法设置</string>
     <string name="home_point_set_successfully">返航点设置成功</string>
     <string name="home_point_set_failed">返航点设置失败</string>
     <string name="tip">提示</string>
