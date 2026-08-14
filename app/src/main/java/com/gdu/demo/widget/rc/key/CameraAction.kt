@@ -9,8 +9,10 @@ import com.gdu.msdk.device.component.pod.utils.CameraUtils
 import com.gdu.msdk.device.interfaces.IGduDroneDevice
 import com.gdu.msdk.key.callback.MSdkCallback
 import com.gdu.msdk.key.error.MError
+import com.gdu.msdk.key.value.bean.GimbalType
 import com.gdu.msdk.key.value.bean.LightType
 import com.gdu.msdk.key.value.common.EmptyMsg
+import kotlin.math.abs
 
 /**
  *
@@ -19,14 +21,17 @@ import com.gdu.msdk.key.value.common.EmptyMsg
  */
 object CameraAction: IKeyAction {
 
+    /** 变焦(大/小)最后设置时间  */
+    private var lastSetZoomTime: Long = 0
+
     override fun doAction(actionId: Int) {
         when(actionId) {
             // 相机
             ICustomAction.KEY_CAMERA_ZOOM_IN -> { // 变焦放大
-//                TheRouter.get(IVideoService::class.java)?.handleVideoCameraZoomAdd()
+                handlerZoomAdd()
             }
             ICustomAction.KEY_CAMERA_ZOOM_OUT -> { // 变焦缩小
-//                TheRouter.get(IVideoService::class.java)?.handleVideoCameraZoomSub()
+                handlerZoomSub()
             }
             ICustomAction.KEY_CAMERA_INCREASE_EV -> { // 增加EV值
                 changeEV(true)
@@ -45,6 +50,216 @@ object CameraAction: IKeyAction {
             }
         }
     }
+
+
+    /**
+     * 变焦放大
+     */
+    fun handlerZoomAdd() {
+        // TODO RcCustomKeyManager.handlerZoomSub 有判断航迹是否执行
+        val size = ICamera.get.currentVLCameraZoom.value.toInt().toShort()
+        log("[handlerZoomAdd] cameraZoom = $size; gimbalType = ${IGimbal.get.gimbalType}")
+        if (size < 0) {
+            return
+        }
+
+        var setSize: Short = 0
+
+        if (IGimbal.get.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT
+            || IGimbal.get.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW) {
+
+            if (size < 18) {
+                setSize = (size + 1).toShort()
+            } else if (size.toInt() == 18) {
+                setSize = 36
+            } else if (size.toInt() == 36) {
+                setSize = 54
+            } else if (size.toInt() == 54) {
+                setSize = 72
+            } else if (size.toInt() == 72) {
+                setSize = 108
+            } else if (size.toInt() == 108) {
+                setSize = 144
+            }
+
+        } else if (IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S200
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S200_IR640
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_S_IR640_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PTL_S220_IR640
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_MICRO_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_SE
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_PZ
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_SE_PZ
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PWG01
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PWG01SE
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_P300PWG
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_P300SE
+        ) {
+            if (size < 10) {
+                setSize = (size + 1).toShort()
+            } else if (size < 20) {
+                setSize = 20
+            } else if (size < 30) {
+                setSize = 30
+            } else if (size < 40) {
+                setSize = 40
+            } else if (size < 50) {
+                setSize = 50
+            } else if (size < 60) {
+                setSize = 60
+            } else if (size < 70) {
+                setSize = 70
+            } else if (size < 80) {
+                setSize = 80
+            } else if (size < 90) {
+                setSize = 90
+            } else if (size < 100) {
+                setSize = 100
+            } else if (size < 110) {
+                setSize = 110
+            } else if (size < 120) {
+                setSize = 120
+            } else if (size < 130) {
+                setSize = 130
+            } else if (size < 140) {
+                setSize = 140
+            } else if (size < 150) {
+                setSize = 150
+            } else if (size <= 160) {
+                setSize = 160
+            }
+        }
+
+        if (setSize.toInt() == 0) {
+            log("[handlerZoomAdd] setSize == 0")
+            return
+        }
+
+        setSize = (setSize * 10).toShort()
+
+        if (abs(System.currentTimeMillis() - lastSetZoomTime) < 300) {
+            log("[handlerZoomAdd] lastSetZoomTime less than 300")
+            return
+        }
+
+        lastSetZoomTime = System.currentTimeMillis()
+        log("[handlerZoomAdd] size = $size, setSize = $setSize")
+
+        IGduDroneDevice.get.camera.setZoomSizeRatio(setSize) {}
+    }
+
+    /**
+     * 变焦缩小
+     */
+    fun handlerZoomSub() {
+
+        val size = ICamera.get.currentVLCameraZoom.value.toInt().toShort()
+        log("[handlerZoomSub] cameraZoom = $size; gimbalType = ${IGimbal.get.gimbalType}")
+        if (size < 0) {
+            return
+        }
+
+        var setSize: Short = 0
+
+        if (IGimbal.get.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT
+            || IGimbal.get.gimbalType == GimbalType.GIMBAL_FOUR_LIGHT_NEW) {
+
+            if (size <= 1) {
+                setSize = 0
+            } else if (size <= 18) {
+                setSize = (size - 1).toShort()
+            } else if (size.toInt() == 36) {
+                setSize = 18
+            } else if (size.toInt() == 54) {
+                setSize = 36
+            } else if (size.toInt() == 72) {
+                setSize = 54
+            } else if (size.toInt() == 108) {
+                setSize = 72
+            } else if (size.toInt() == 144) {
+                setSize = 108
+            }
+
+        } else if (IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S200
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S200_IR640
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_SX_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_IR640_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PDL_S220PRO_S_IR640_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PTL_S220_IR640
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_MICRO_FOUR_LIGHT
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_SE
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_PZ
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PQL02_SE_PZ
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PWG01
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_PWG01SE
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_P300PWG
+            || IGimbal.get.gimbalType === GimbalType.GIMBAL_P300SE
+        ) {
+
+            setSize = if (size > 160) {
+                160
+            } else if (size > 150) {
+                150
+            } else if (size > 140) {
+                140
+            } else if (size > 130) {
+                130
+            } else if (size > 120) {
+                120
+            } else if (size > 110) {
+                110
+            } else if (size > 100) {
+                100
+            } else if (size > 90) {
+                90
+            } else if (size > 80) {
+                80
+            } else if (size > 70) {
+                70
+            } else if (size > 60) {
+                60
+            } else if (size > 50) {
+                50
+            } else if (size > 40) {
+                40
+            } else if (size > 30) {
+                30
+            } else if (size > 20) {
+                20
+            } else if (size > 10) {
+                10
+            } else if (size > 0) {
+                (size - 1).toShort()
+            } else {
+                0
+            }
+        }
+
+        if (setSize.toInt() == 0) {
+            log("[handlerZoomSub] setSize == 0")
+            return
+        }
+
+        setSize = (setSize * 10).toShort()
+
+        if (abs(System.currentTimeMillis() - lastSetZoomTime) < 300) {
+            log("[handlerZoomSub] lastSetZoomTime less than 300")
+            return
+        }
+
+        lastSetZoomTime = System.currentTimeMillis()
+        log("[handlerZoomSub] size = $size, setSize = $setSize")
+
+        IGduDroneDevice.get.camera.setZoomSizeRatio(setSize) {}
+
+    }
+
 
 
     private fun changeEV(add: Boolean) {
@@ -158,9 +373,6 @@ object CameraAction: IKeyAction {
         XLogger.APP.i("CameraAction", "[changeModel] currentLightType = $current, nextIndex = $nextIndex, nextValue = $nextValue")
 
         ICamera.get.switchImageMode(nextValue, null)
-//        ActivityManager.getInstance().flightHomeActivity?.let {
-//            HiltRouter.router(it, IVideoScopePApi::class.java).mainLightTypeController().switchLightType(LightType.get(nextValue.toInt()))
-//        }
     }
 
     private fun openFFC() {
