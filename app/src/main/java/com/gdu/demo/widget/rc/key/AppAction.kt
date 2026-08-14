@@ -22,19 +22,19 @@ object AppAction : IKeyAction{
 //                }
             }
             ICustomAction.KEY_APP_ADD_TARGET_POINT -> { // 新增目标点
-                addTargetPoint()
+//                addTargetPoint()
             }
             ICustomAction.KEY_APP_DELETE_SELECTED_POINT -> { // 删除选中目标点
-                deleteTargetPoint()
+//                deleteTargetPoint()
             }
             ICustomAction.KEY_APP_SELECTED_NEXT_POINT -> { // 选中下一个目标点
-                selectNextTargetPoint()
+//                selectNextTargetPoint()
             }
             ICustomAction.KEY_APP_SELECTED_PREVIOUS_POINT -> { // 选中上一个目标点
-                selectPrevTargetPoint()
+//                selectPrevTargetPoint()
             }
             ICustomAction.KEY_APP_LOOK_FOR_TARGET -> { // 看向目标
-                lookAtTarget()
+//                lookAtTarget()
             }
         }
     }

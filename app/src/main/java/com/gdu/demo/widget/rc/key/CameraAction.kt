@@ -41,7 +41,7 @@ object CameraAction: IKeyAction {
                 openFFC()
             }
             ICustomAction.KEY_CAMERA_SWITCH_TEMP_ALARM -> { // 开启/关闭高温报警
-                changeTempAlarm()
+//                changeTempAlarm()
             }
         }
     }
@@ -156,6 +156,8 @@ object CameraAction: IKeyAction {
         }
 
         XLogger.APP.i("CameraAction", "[changeModel] currentLightType = $current, nextIndex = $nextIndex, nextValue = $nextValue")
+
+        ICamera.get.switchImageMode(nextValue, null)
 //        ActivityManager.getInstance().flightHomeActivity?.let {
 //            HiltRouter.router(it, IVideoScopePApi::class.java).mainLightTypeController().switchLightType(LightType.get(nextValue.toInt()))
 //        }
