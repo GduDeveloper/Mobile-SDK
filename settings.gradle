@@ -1,5 +1,9 @@
 pluginManagement {
     repositories {
+        maven {
+            allowInsecureProtocol = true
+            url 'http://jfrog.gdu-tech.com/artifactory/releases/'
+        }
         maven { url 'https://mirrors.tencent.com/nexus/repository/maven-public/' }
         google()
         mavenCentral()
