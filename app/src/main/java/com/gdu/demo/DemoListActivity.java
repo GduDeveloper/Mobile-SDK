@@ -89,6 +89,10 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
                 Intent nestIntent = new Intent(mContext, NestControllerActivity.class);
                 startActivity(nestIntent);
                 break;
+            case R.id.drone_log_button:
+                Intent logIntent = new Intent(mContext, DroneLogActivity.class);
+                startActivity(logIntent);
+                break;
             default:
                 break;
         }
