@@ -3,11 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:textColor="#ff0000"
-        android:id="@+id/tv_show_msg"
-        android:layout_height="100dp" />
+
+    <include
+        android:id="@+id/layout_title"
+        layout="@layout/title_layout" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -55,6 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
@@ -146,6 +146,74 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/set_drtk_mode_button"
+                    android:onClick="onClick"
+                    android:text="设置DRTK模式"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_drtk_mode_button"
+                    android:onClick="onClick"
+                    android:text="获取DRTK模式"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/connect_nps_button"
+                    android:onClick="onClick"
+                    android:text="请求nps连接"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/rtk_cal_button"
+                    android:onClick="onClick"
+                    android:text="机库rtk自校准"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/rtk_cal_stop_button"
+                    android:onClick="onClick"
+                    android:text="停止机库rtk自校准"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/rtk_set_pos_button"
+                    android:onClick="onClick"
+                    android:text="设置机库rtk位置"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <Button
+                    android:id="@+id/rtk_get_pos_button"
+                    android:onClick="onClick"
+                    android:text="获取机库rtk位置"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/drtk_state_textview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:text="DRTK状态：等待更新"
+                android:textColor="#333333"
+                android:textSize="14sp" />
         </LinearLayout>
     </ScrollView>
 

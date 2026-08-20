@@ -49,6 +49,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
+        GDUSDKManager.getInstance().setCustomRCEnable(true);
         GDUSDKManager.getInstance().setCustomLogPath("/sdcard/gdu_log");
         GDUSDKManager.getInstance().setLogEnable(true);
     }

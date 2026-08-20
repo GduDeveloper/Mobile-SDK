@@ -13,6 +13,8 @@ import com.gdu.common.error.GDUError;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.remotecontroller.MultiControlInfo;
 import com.gdu.remotecontroller.MultiControlMode;
+import com.gdu.sdk.remotecontroller.DRTK;
+import com.gdu.sdk.remotecontroller.DRTKBaseStationCoord;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -25,6 +27,8 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
 
     private Context mContext;
     private GDURemoteController mGDURemoteController;
+
+    private int mDRTKModeIndex = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,7 +106,102 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_continue_send_rc_control_mid_value_enable_button:
                 getContinueSendRCControlMidValueEnable();
                 break;
+            case R.id.set_drtk_mode_button:
+                setDRTKMode();
+                break;
+            case R.id.get_drtk_mode_button:
+                getDRTKMode();
+                break;
+            case R.id.connect_nps_button:
+                mGDURemoteController.connectDRTK(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError var1) {
+                        if (var1 == null) {
+                            toastText("请求nps连接成功：");
+                        } else {
+                            toastText("请求nps连接失败：" + var1);
+                        }
+                    }
+                });
+                break;
+            case R.id.rtk_cal_button:
+                mGDURemoteController.getDRTK().startNestDRTKSelfCalibra("rtk.ntrip.qxwz.com", "8002", "", "", "AUTO" , new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError var1) {
+                        if (var1 == null) {
+                            toastText("请求rtk自校准成功：");
+                        } else {
+                            toastText("请求rtk自校准失败：" + var1);
+                        }
+                    }
+                });
+                break;
+            case R.id.rtk_cal_stop_button:
+                mGDURemoteController.getDRTK().stopNestDRTKSelfCalibra(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError var1) {
+
+                    }
+                });
+                break;
+            case R.id.rtk_set_pos_button:
+                DRTKBaseStationCoord coord = new DRTKBaseStationCoord();
+                coord.setLatitude(39.916527);
+                coord.setLongitude(116.397128);
+                coord.setAltitude(52.22f);
+                mGDURemoteController.getDRTK().setDRTKBaseStationCoord(coord, new CommonCallbacks.CompletionCallback(){
+
+                    @Override
+                    public void onResult(GDUError var1) {
+                        toastText("设置rtk位置信息：" + var1);
+                    }
+                });
+                break;
+            case R.id.rtk_get_pos_button:
+                mGDURemoteController.getDRTK().getDRTKBaseStationCoord(new CommonCallbacks.CompletionCallbackWith<DRTKBaseStationCoord>() {
+                    @Override
+                    public void onSuccess(DRTKBaseStationCoord coord) {
+                        toastText("获取rtk位置信息成功：" + coord);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toastText("获取rtk位置信息失败：" + gduError);
+                    }
+                });
+                break;
         }
+    }
+
+    private void setDRTKMode() {
+        DRTK.DRTKMode mode = mDRTKModeIndex % 2 == 0
+                ? DRTK.DRTKMode.BASE_STATION
+                : DRTK.DRTKMode.MOBILE_STATION;
+        mDRTKModeIndex++;
+        mGDURemoteController.getDRTK().setDRTKMode(mode, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置DRTK模式成功：" + mode);
+                } else {
+                    toastText("设置DRTK模式失败：" + error);
+                }
+            }
+        });
+    }
+
+    private void getDRTKMode() {
+        mGDURemoteController.getDRTK().getDRTKMode(new CommonCallbacks.CompletionCallbackWith<DRTK.DRTKMode>() {
+            @Override
+            public void onSuccess(DRTK.DRTKMode mode) {
+                toastText("获取DRTK模式成功：" + mode);
+            }
+
+            @Override
+            public void onFailure(GDUError gduError) {
+                toastText("获取DRTK模式失败：" + gduError);
+            }
+        });
     }
 
     int type = 1;
