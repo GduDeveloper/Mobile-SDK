@@ -5,13 +5,13 @@ import com.gdu.lib.util.core.ToastUtils
 import com.gdu.lib.util.core.XLogger
 import com.gdu.msdk.device.component.interfaces.ICamera
 import com.gdu.msdk.device.component.interfaces.IGimbal
-import com.gdu.msdk.device.component.pod.utils.CameraUtils
 import com.gdu.msdk.device.interfaces.IGduDroneDevice
 import com.gdu.msdk.key.callback.MSdkCallback
 import com.gdu.msdk.key.error.MError
 import com.gdu.msdk.key.value.bean.GimbalType
 import com.gdu.msdk.key.value.bean.LightType
 import com.gdu.msdk.key.value.common.EmptyMsg
+import com.gdu.sdk.camera.CameraUtils
 import kotlin.math.abs
 
 /**
