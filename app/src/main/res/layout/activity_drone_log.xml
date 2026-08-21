@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/iv_back"
+        android:layout_width="@dimen/dp_48"
+        android:layout_height="@dimen/dp_48"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:scaleType="fitCenter"
+        android:src="@drawable/app_black_back"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/get_drone_log_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="获取飞行器日志列表"
+        android:padding="@dimen/dp_7"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/white"
+        android:background="@color/color_00B4FF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_back"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/show_drone_log_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/color_238BFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/get_drone_log_data"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_10"
+        android:lineSpacingExtra="@dimen/dp_4"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/download_drone_log_file"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载飞行器日志"
+        android:padding="@dimen/dp_7"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/white"
+        android:background="@color/color_00B4FF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/show_drone_log_data"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_8"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/pkg_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="打包进度: 0%"
+        android:padding="@dimen/dp_7"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/color_00B4FF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/download_drone_log_file"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_5"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/download_progress_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载进度: 0%"
+        android:padding="@dimen/dp_7"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/color_00B4FF"
+        app:layout_constraintStart_toEndOf="@id/pkg_progress_tv"
+        app:layout_constraintTop_toTopOf="@id/pkg_progress_tv"
+        android:layout_marginStart="@dimen/dp_40"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/download_result_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_7"
+        android:textSize="@dimen/sp_13"
+        android:textColor="@color/color_00B4FF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/download_progress_tv"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_5"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
