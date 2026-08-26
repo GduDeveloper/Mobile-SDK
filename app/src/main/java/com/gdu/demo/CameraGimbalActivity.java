@@ -321,12 +321,11 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 mGDUCamera.getDisplayMode(new CommonCallbacks.CompletionCallbackWith<SettingsDefinitions.DisplayMode>() {
                     @Override
                     public void onSuccess(SettingsDefinitions.DisplayMode displayMode) {
-                        toast("发送成功 " + displayMode);
+                        toast("获取显示模式成功 " + displayMode);
                     }
-
                     @Override
                     public void onFailure(Error var1) {
-                        toast("发送失败");
+                        toast("获取显示模式失败");
                     }
                 });
                 break;
