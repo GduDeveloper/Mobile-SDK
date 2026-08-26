@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -20,9 +21,14 @@ import com.gdu.demo.config.MyConstants;
 import com.gdu.demo.utils.SPUtils;
 import com.gdu.demo.widget.rc.key.RCCustomKeyActionManager;
 import com.gdu.demo.widget.rc.key.RCCustomKeyRepository;
+import com.gdu.lib.protocol.config.DroneConnType;
 import com.gdu.lib.util.TimeUtil;
 import com.gdu.lib.util.core.XLogger;
+import com.gdu.msdk.device.interfaces.IDeviceListener;
+import com.gdu.msdk.device.interfaces.IGduDroneDevice;
+import com.gdu.msdk.device.interfaces.IGduRCDevice;
 import com.gdu.msdk.key.value.bean.GimbalType;
+import com.gdu.msdk.manager.interfaces.IDeviceManager;
 import com.gdu.sdk.airlink.AirLink;
 import com.gdu.sdk.base.BaseComponent;
 import com.gdu.sdk.base.BaseProduct;
@@ -64,6 +70,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
+//        SDKManager.getInstance().setCustomRCEnable(true);
 //        RonLog.showLog(true);
         copyAIBoxDataDb2Local();
     }
