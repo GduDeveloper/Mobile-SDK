@@ -24,6 +24,7 @@ import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.lib.util.ThreadHelper;
+import com.gdu.lib.util.core.ToastUtils;
 import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
@@ -280,11 +281,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     @Override
                     public void onSuccess(String version) {
                         show(mVersionTextView, version);
+                        ToastUtils.showShort("获取版本成功 " + version);
                     }
 
                     @Override
                     public void onFailure(Error var1) {
                         show(mVersionTextView, "fail");
+                        ToastUtils.showShort("获取版本失败");
                     }
                 });
                 break;
@@ -341,6 +344,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 break;
             case R.id.btn_get_digital_zoom:
                float zoom =  mGDUCamera.getCurrentZoom();
+                ToastUtils.showShort("数字变倍: " + zoom);
                 break;
             case R.id.btn_reset:
                 mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {
