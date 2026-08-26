@@ -32,6 +32,11 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
+    <com.gdu.demo.ai.view.TargetContainerView
+        android:id="@+id/smart_target_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <!-- 消息盒子 -->
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_msgBoxLabel"
@@ -44,6 +49,21 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/smart_track_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/ai_recognize_imageview"
+        app:layout_constraintBottom_toBottomOf="@id/ai_recognize_imageview"
+        app:layout_constraintStart_toEndOf="@id/ai_recognize_imageview"
+        android:text="智能\n跟踪"
+        android:layout_marginStart="@dimen/dp_12"
+        android:background="@drawable/bg_ffffff_radius_3"
+        android:textSize="@dimen/sp_10"
+        android:paddingStart="@dimen/dp_6"
+        android:paddingEnd="@dimen/dp_6"
+        android:textColor="@color/black"/>
+
     <!--  AI识别  -->
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ai_recognize_imageview"
@@ -51,7 +71,6 @@
         android:layout_height="@dimen/dp_26"
         android:layout_marginStart="@dimen/dp_12"
         android:src="@drawable/selector_ai_recognize"
-        android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/iv_msgBoxLabel"
         app:layout_constraintLeft_toRightOf="@id/iv_msgBoxLabel"/>
 

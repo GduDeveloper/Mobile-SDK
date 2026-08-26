@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!-- 智能跟踪控制按钮 -->
+    <RelativeLayout
+        android:id="@+id/rl_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:minWidth="@dimen/dp_36">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/but_stop"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_32"
+            android:contentDescription="@string/app_name"
+            android:text="@string/Label_cancel"
+            android:textSize="@dimen/sp_11"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bizai_bg_75333333_r_12_line_none"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/but_quitOut"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_32"
+            android:contentDescription="@string/app_name"
+            android:text="@string/string_exit"
+            android:textSize="@dimen/sp_11"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bizai_bg_75333333_r_12_line_none"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_follow"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_32"
+            android:contentDescription="@string/app_name"
+            android:text="@string/string_follow_title"
+            android:layout_toEndOf="@id/but_stop"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_11"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bizai_bg_e94609_r_12_line_none"
+            android:visibility="gone" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_stop_follow"
+            android:layout_width="@dimen/dp_44"
+            android:layout_height="@dimen/dp_32"
+            android:contentDescription="@string/app_name"
+            android:text="@string/string_stop_follow_title"
+            android:layout_toEndOf="@id/but_stop"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:textSize="@dimen/sp_11"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:background="@drawable/bizai_bg_e94609_r_12_line_none"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+</RelativeLayout>

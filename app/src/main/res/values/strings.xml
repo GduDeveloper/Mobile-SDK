@@ -1417,4 +1417,8 @@
     <string name="camera_no_infrared_light">The current light type is not the infrared mode</string>
     <string name="setting_rc_route_open_cannot_use_gimbal">During task execution, the gimbal is uncontrollable</string>
 
+    <string name="string_exit">Sign out</string>
+    <string name="string_stop">Stop</string>
+    <string name="string_follow_title">GO</string>
+    <string name="string_stop_follow_title">Stop</string>
 </resources>
