@@ -18,6 +18,7 @@ import com.gdu.demo.utils.AnimationUtils;
 import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.GeneralDialog;
 import com.gdu.lib.util.RCUtils;
+import com.gdu.lib.util.core.ToastUtils;
 import com.gdu.msdk.device.component.interfaces.IGimbal;
 import com.gdu.msdk.key.value.bean.ControlHand;
 import com.gdu.remotecontroller.AircraftMappingStyle;
@@ -100,6 +101,7 @@ public class SettingRControlFragment extends Fragment {
                     if (error == null) {
                         mViewBinding.controlHandView.setControlHandPic();
                     } else {
+                        ToastUtils.showShort("设置失败");
                     }
                 }
             });
