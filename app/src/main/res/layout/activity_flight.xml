@@ -25,6 +25,11 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <com.gdu.demo.ai.view.TargetContainerView
+        android:id="@+id/smart_target_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <!--顶部状态-->
     <com.gdu.demo.widget.TopStateView
         android:id="@+id/top_state_view"
@@ -32,10 +37,6 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <com.gdu.demo.ai.view.TargetContainerView
-        android:id="@+id/smart_target_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
 
     <!-- 消息盒子 -->
     <androidx.appcompat.widget.AppCompatImageView
