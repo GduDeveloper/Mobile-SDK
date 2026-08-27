@@ -34,7 +34,6 @@ import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
-import com.gdu.sdk.util.FileSaveUtil;
 
 import java.io.File;
 import java.util.ArrayList;
