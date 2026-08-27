@@ -413,7 +413,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     private void setLowBatteryWarningThreshold() {
-        mGDUFlightController.setLowBatteryWarningThreshold(35, new CommonCallbacks.CompletionCallback() {
+        mGDUFlightController.setLowBatteryWarningThreshold(15, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error var1) {
                 if (var1 == null) {
@@ -440,7 +440,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     private void setSeriousLowBatteryWarningThreshold() {
-        mGDUFlightController.setSeriousLowBatteryWarningThreshold(20, new CommonCallbacks.CompletionCallback() {
+        mGDUFlightController.setSeriousLowBatteryWarningThreshold(25, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error var1) {
                 if (var1 == null) {
@@ -456,7 +456,7 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
         mGDUFlightController.getLowBatteryWarningThreshold(new CommonCallbacks.CompletionCallbackWith<LowBatteryWarnInfo>() {
             @Override
             public void onSuccess(LowBatteryWarnInfo var1) {
-                toastText("获取严重低电量阈值成功 " + var1.getOneLevelWarn());
+                toastText("获取严重低电量阈值成功 " + var1.getTwoLevelWarn());
             }
 
             @Override

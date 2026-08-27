@@ -30,9 +30,12 @@ import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileDownCallback;
 
 import java.text.DecimalFormat;
+import com.gdu.sdk.codec.CodecManager;
+import com.gdu.sdk.manager.SDKManager;
+import com.gdu.sdk.products.Aircraft;
 
-public class MediaVideoPlayActivity extends Activity /*implements TextureView.SurfaceTextureListener*/ {
-
+public class MediaVideoPlayActivity extends Activity implements TextureView.SurfaceTextureListener {
+    private CodecManager mCodecManager;
 
 //    ActivityMediaVideoBinding viewBinding;
 //
@@ -61,6 +64,18 @@ public class MediaVideoPlayActivity extends Activity /*implements TextureView.Su
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_media_video);
+
+        // 初始化CodecManager
+        Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
+        if (aircraft != null) {
+            mCodecManager = aircraft.getCodecManager();
+        }
+
+        // 实时画面
+        TextureView textureView = findViewById(R.id.video_texture_view);
+        textureView.setSurfaceTextureListener(this);
+
 //        viewBinding = ActivityMediaVideoBinding.inflate(getLayoutInflater());
 //        setContentView(viewBinding.getRoot());
 //        handler = new Handler();
@@ -408,5 +423,31 @@ public class MediaVideoPlayActivity extends Activity /*implements TextureView.Su
 //
 //    }
 
+    @Override
+    public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
+        if (mCodecManager != null) {
+            mCodecManager.startPreview(0, surface);
+        }
+    }
+
+    @Override
+    public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
+        if (mCodecManager != null) {
+            mCodecManager.onSurfaceLayoutChanged(0, width, height);
+        }
+    }
+
+    @Override
+    public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        if (mCodecManager != null) {
+            mCodecManager.stopPreview(0);
+        }
+        return false;
+    }
+
+    @Override
+    public void onSurfaceTextureUpdated(SurfaceTexture surface) {
+
+    }
 
 }
