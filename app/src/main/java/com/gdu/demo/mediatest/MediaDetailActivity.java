@@ -226,7 +226,7 @@ public class MediaDetailActivity extends Activity {
             }
 
             @Override
-            public void onSuccess(Bitmap bitmap, String s) {
+            public void onSuccess(Bitmap bitmap, String path) {
                 if (handler != null) {
                     handler.post(new Runnable() {
                         @Override
