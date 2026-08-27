@@ -11,24 +11,22 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import com.gdu.common.error.Error;
+import com.gdu.demo.ai.AiDetectHelper;
 import com.gdu.demo.databinding.ActivityFlightBinding;
-import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
+import com.gdu.demo.ai.TargetDetectHelper;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
-import com.gdu.demo.viewmodel.FlightViewModel;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.demo.widget.zoomView.S220CustomSizeFocusHelper;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.lib.util.StringUtils;
-import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.ResourceUtils;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.key.value.CycleFCInfo1;
@@ -47,7 +45,6 @@ import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.sdk.vision.bean.AlgorithmType;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +59,15 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
-    private FlightViewModel viewModel;/**
-     * 目标检测类
+    /**
+     * 智能跟踪类
      */
     private TargetDetectHelper mTargetDetectHelper;
+
+    /**
+     * AI识别类
+     */
+    private AiDetectHelper aiDetectHelper;
 
 
     private KVObserver<Integer> mErrMsgSize;
@@ -79,7 +81,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         super.onCreate(savedInstanceState);
         viewBinding = ActivityFlightBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        viewModel = new ViewModelProvider(this).get(FlightViewModel.class);
 
         Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
         if (aircraft != null) {
@@ -148,11 +149,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             });
         }
 
-        viewModel.getToastLiveData().observe(this, data -> {
-            if (data != 0){
-                showToast(getResources().getString(data));
-            }
-        });
     }
 
 
@@ -182,8 +178,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
         viewBinding.ivMsgBoxLabel.setOnClickListener(this);
-        viewBinding.aiRecognizeImageview.setOnClickListener(this);
-        ViewUtils.setViewShowOrHide(viewBinding.aiRecognizeImageview, viewModel.isShowAiBox());
 
         SettingDao settingDao = SettingDao.getSingle();
         boolean show = settingDao.getBooleanValue(settingDao.ZORRORLabel_Grid, false);
@@ -194,6 +188,9 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         mTargetDetectHelper = TargetDetectHelper.getInstance();
         mTargetDetectHelper.init(this, viewBinding.smartTargetContainer);
         viewBinding.smartTrackBtn.setOnClickListener(this);
+
+        aiDetectHelper = new AiDetectHelper(this, viewBinding.aiTargetView);
+        viewBinding.aiRecognizeImageview.setOnClickListener(this);
     }
 
     private void initData() {
@@ -212,7 +209,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         msgBoxManager.getErrRollMsg().register(mErrRollMsg);
         msgBoxManager.getErrMsgList().register(mErrMsgList);
 //        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
-        viewModel.registerSeiData();
     }
 
 
@@ -346,9 +342,7 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
             showMsgBoxPopWindow(msgData);
             viewBinding.ivMsgBoxLabel.setSelected(!viewBinding.ivMsgBoxLabel.isSelected());
-        }else if (v.getId() == R.id.ai_recognize_imageview){
-            viewModel.switchAIRecognize();
-        }else if (v.getId() == R.id.smart_track_btn) {
+        }else if (v.getId() == R.id.smart_track_btn) { //智能跟踪
             if (SdkDemoApplication.getAircraftInstance().getVision().getAlgorithmType() == AlgorithmType.NONE){
                 SdkDemoApplication.getAircraftInstance().getVision().startSmartTrack(var1 -> {
                     Log.d("smartTrackBtn", "开启智能跟踪指令是否执行成功：" + (var1 == null));
@@ -361,6 +355,14 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 });
                 viewBinding.smartTrackBtn.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_ffffff_radius_3));
                 viewBinding.smartTrackBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+        } else if (v.getId() == R.id.ai_recognize_imageview) {//AI识别
+            if (SdkDemoApplication.getAircraftInstance().getVision().isAiDetectOpen()){
+                viewBinding.aiRecognizeImageview.setActivated(false);
+                aiDetectHelper.stopTargetDetect();
+            } else {
+                viewBinding.aiRecognizeImageview.setActivated(true);
+                aiDetectHelper.startTargetDetect();
             }
         }
     }
@@ -426,6 +428,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onStop() {
         super.onStop();
-        viewModel.stopTarget();
+        aiDetectHelper.stopTargetDetect();
     }
 }
