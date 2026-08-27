@@ -78,6 +78,7 @@
         <activity android:name=".PsdkMegaViewActivity" />
         <activity android:name=".PsdkCustomViewActivity" />
         <activity android:name=".LogActivity" />
+        <activity android:name=".GEOTestActivity" />
     </application>
 
 </manifest>

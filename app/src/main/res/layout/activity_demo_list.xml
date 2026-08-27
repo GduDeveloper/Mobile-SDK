@@ -111,6 +111,14 @@
                 android:layout_weight="1"
                 android:text="日志" />
 
+            <Button
+                android:id="@+id/bt_geo"
+                android:onClick="onClick"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="地理围栏" />
+
         </LinearLayout>
     </ScrollView>
 

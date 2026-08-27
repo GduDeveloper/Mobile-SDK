@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <include layout="@layout/title_layout" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.amap.api.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintLeft_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt_get_no_fly_list"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="获取临时禁飞区ID列表"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt_set_no_fly"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="设置临时禁飞区"
+            android:textSize="13sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_get_no_fly_list"/>
+
+        <Button
+            android:id="@+id/bt_get_removed_no_fly"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="解除的禁飞区"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_set_no_fly"/>
+
+        <Button
+            android:id="@+id/bt_get_virtual_fence"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="获取虚拟围栏"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_get_removed_no_fly"/>
+
+        <Button
+            android:id="@+id/bt_set_virtual_fence"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="设置虚拟围栏"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_get_virtual_fence"/>
+
+        <Button
+            android:id="@+id/bt_close_virtual_fence"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="关闭虚拟围栏"
+            android:textSize="13sp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_set_virtual_fence"/>
+
+
+
+        <TextView
+            android:id="@+id/tv_no_fly_zone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_close_virtual_fence"/>
+
+        <TextView
+            android:id="@+id/tv_removed_no_fly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_no_fly_zone"/>
+
+        <TextView
+            android:id="@+id/tv_virtual_fence_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_removed_no_fly"/>
+
+        <TextView
+            android:id="@+id/tv_flight_controller_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:scrollbars="vertical"
+            android:textColor="@color/red"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_virtual_fence_state"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>

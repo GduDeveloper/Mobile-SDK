@@ -57,7 +57,7 @@ android {
 dependencies {
 //    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
 
-    api  files('libs/GduLibrary-2.0.96.aar')
+    api  files('libs/GduLibrary-2.0.97.aar')
     implementation "androidx.appcompat:appcompat:1.3.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -76,7 +76,7 @@ dependencies {
 
     api 'com.google.code.gson:gson:2.8.2'
     api 'com.yolanda.nohttp:nohttp:1.0.3'
-    api 'com.amap.api:3dmap:7.3.0'
+    api 'com.amap.api:3dmap-location-search:10.0.1000_loc6.4.8_sea9.7.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1'
     // 替换Shape的背景库: https://github.com/JavaNoober/BackgroundLibrary
