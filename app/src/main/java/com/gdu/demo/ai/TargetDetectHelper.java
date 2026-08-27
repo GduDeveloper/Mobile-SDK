@@ -1,4 +1,4 @@
-package com.gdu.demo.flight.aibox.helper;
+package com.gdu.demo.ai;
 
 import static java.lang.Math.abs;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.gdu.common.error.Error;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.ai.util.DetectPositionCalUtil;
 import com.gdu.demo.ai.view.SelectTargetView;
@@ -18,7 +17,6 @@ import com.gdu.lib.util.core.GsonUtils;
 import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.interfaces.IGduDroneDevice;
 import com.gdu.msdk.key.value.ai.TargetMode;
-import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.vision.bean.AlgorithmType;
 import com.gdu.sdk.vision.bean.TrackMsg;
 import com.gdu.sdk.vision.bean.TrackPointInfo;
@@ -59,6 +57,7 @@ public class TargetDetectHelper {
     private void initListener(){
         targetContainerView.getSelectTargetView().setOnSelectCallBack(onSelectCb);
         targetContainerView.getSelectTargetView().setViewType(SelectTargetView.DRAW_TARGET_FRAME);
+        setSelectViewVisible(false);
         targetContainerView.setOnTargetViewListener(new TargetContainerView.OnTargetContainerViewListener() {
             @Override
             public void onTargetClick(TargetMode targetMode) {
@@ -188,6 +187,7 @@ public class TargetDetectHelper {
                 break;
             case SMART_FOLLOW_MSG:
                 log("进入到视频跟踪" );
+                setSelectViewVisible(true);
                 DroneUtils.setDiscernIsOpen(true);
                 DroneUtils.setTargetDetectMode(true);
                 sendShowFlow(true);
@@ -223,6 +223,7 @@ public class TargetDetectHelper {
                 break;
             case CLOSE_VIDEO_TRACK_SUCCEED:
             case STATE_QUIT_VIDEO_TRACK:
+                setSelectViewVisible(false);
                 sendClearFlow();
                 sendShowFlow(false);
                 sendClearDetectTargetFlow();
@@ -350,6 +351,14 @@ public class TargetDetectHelper {
         if (targetContainerView != null) {
             targetContainerView.post(()-> {
                 targetContainerView.getSelectTargetView().setViewType(viewType);
+            });
+        }
+    }
+
+    private void setSelectViewVisible(boolean isShow){
+        if (targetContainerView != null) {
+            targetContainerView.post(()-> {
+                targetContainerView.getSelectTargetView().setVisibility(isShow ? View.VISIBLE : View.GONE);
             });
         }
     }

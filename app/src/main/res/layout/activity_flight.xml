@@ -25,8 +25,15 @@
         android:layout_height="match_parent"
         android:visibility="gone"/>
 
+    <!--智能跟踪-->
     <com.gdu.demo.ai.view.TargetContainerView
         android:id="@+id/smart_target_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <!--AI识别-->
+    <com.gdu.demo.ai.view.AIDetectView
+        android:id="@+id/ai_target_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
