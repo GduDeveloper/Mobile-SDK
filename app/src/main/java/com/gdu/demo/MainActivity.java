@@ -15,6 +15,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.gdu.common.ConnectScene;
 import com.gdu.common.error.Error;
 import com.gdu.demo.config.MyConstants;
 import com.gdu.demo.utils.SPUtils;
@@ -64,7 +65,8 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         initView();
         initListener();
-//        RonLog.showLog(true);
+        //如果是需要连机库时，需要设置一次ConnectScene，如果是使用遥控器直连无人机则无需设置
+//        SDKManager.getInstance().setConnectScene(ConnectScene.HANGAR);
         copyAIBoxDataDb2Local();
     }
 
@@ -86,8 +88,10 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
                     XLogger.INSTANCE.init(mContext);
-                    //机库模式下，需要初始化CarNestReportIp
-                    CarNestReportIpInit.initCarNestReportIp();
+                    if (SDKManager.getInstance().getConnectScene() == ConnectScene.HANGAR) {
+                        //机库模式下，需要初始化CarNestReportIp
+                        CarNestReportIpInit.initCarNestReportIp();
+                    }
                     // 自定义按键初始化
                     RCCustomKeyRepository.INSTANCE.init();
                     RCCustomKeyActionManager.INSTANCE.init();
