@@ -24,6 +24,7 @@ import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.lib.util.ThreadHelper;
+import com.gdu.lib.util.core.ToastUtils;
 import com.gdu.msdk.device.component.interfaces.ICamera;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
@@ -31,12 +32,13 @@ import com.gdu.sdk.camera.SystemState;
 //import com.gdu.sdk.camera.VideoFeeder;
 //import com.gdu.sdk.codec.GDUCodecManager;
 //import com.gdu.sdk.codec.ImageProcessingManager;
+import com.gdu.sdk.codec.CodecManager;
 import com.gdu.sdk.gimbal.Gimbal;
+import com.gdu.sdk.manager.SDKManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -49,6 +51,8 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     private final String OUTPATH = Environment.getExternalStorageDirectory() + "/gdu/sdk/local/";//本地副本的保存路径
 //    private VideoFeeder.VideoDataListener videoDataListener = null;
 //    private GDUCodecManager codecManager = null;
+
+    private CodecManager mCodecManager;
 
     private TextureView mGduPlayView;
     private TextView mInfoTextView;
@@ -72,6 +76,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         super.onCreate(savedInstanceState);
         mContext = this;
         setContentView(R.layout.activity_camera_gimbal);
+
+        // 初始化CodecManager
+        Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
+        if (aircraft != null) {
+            mCodecManager = aircraft.getCodecManager();
+        }
+
         initView();
         initData();
         initListener();
@@ -270,11 +281,13 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     @Override
                     public void onSuccess(String version) {
                         show(mVersionTextView, version);
+                        ToastUtils.showShort("获取版本成功 " + version);
                     }
 
                     @Override
                     public void onFailure(Error var1) {
                         show(mVersionTextView, "fail");
+                        ToastUtils.showShort("获取版本失败");
                     }
                 });
                 break;
@@ -308,12 +321,11 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 mGDUCamera.getDisplayMode(new CommonCallbacks.CompletionCallbackWith<SettingsDefinitions.DisplayMode>() {
                     @Override
                     public void onSuccess(SettingsDefinitions.DisplayMode displayMode) {
-                        toast("发送成功 " + displayMode);
+                        toast("获取显示模式成功 " + displayMode);
                     }
-
                     @Override
                     public void onFailure(Error var1) {
-                        toast("发送失败");
+                        toast("获取显示模式失败");
                     }
                 });
                 break;
@@ -330,7 +342,8 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_get_digital_zoom:
-               float zoom =  mGDUCamera.getCurrentZoom();
+                float zoom =  mGDUCamera.getCurrentZoom();
+                ToastUtils.showShort("数字变倍: " + zoom);
                 break;
             case R.id.btn_reset:
                 mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {
@@ -598,18 +611,23 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-//        if (codecManager == null) {
-//            codecManager = new GDUCodecManager(mContext, mGduPlayView, width, height);
-//        }
+        if (mCodecManager != null) {
+            mCodecManager.startPreview(0, surface);
+        }
     }
 
     @Override
     public void onSurfaceTextureSizeChanged(SurfaceTexture surface, int width, int height) {
-
+        if (mCodecManager != null) {
+            mCodecManager.onSurfaceLayoutChanged(0, width, height);
+        }
     }
 
     @Override
     public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
+        if (mCodecManager != null) {
+            mCodecManager.stopPreview(0);
+        }
         return false;
     }
 
