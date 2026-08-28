@@ -88,10 +88,6 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
                     XLogger.INSTANCE.init(mContext);
-                    if (SDKManager.getInstance().getConnectScene() == ConnectScene.HANGAR) {
-                        //机库模式下，需要初始化CarNestReportIp
-                        CarNestReportIpInit.initCarNestReportIp();
-                    }
                     // 自定义按键初始化
                     RCCustomKeyRepository.INSTANCE.init();
                     RCCustomKeyActionManager.INSTANCE.init();
