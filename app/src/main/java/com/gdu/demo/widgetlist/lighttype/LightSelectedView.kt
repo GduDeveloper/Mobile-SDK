@@ -11,6 +11,7 @@ import com.gdu.sdk.camera.Camera
 import com.gdu.sdk.gimbal.Gimbal
 import com.gdu.sdk.products.Aircraft
 import com.gdu.demo.widgetlist.core.base.widget.ConstraintLayoutWidget
+import com.gdu.lib.util.ThreadHelper
 
 class LightSelectedView @JvmOverloads constructor(
     context: Context,
@@ -235,10 +236,12 @@ class LightSelectedView @JvmOverloads constructor(
     private fun changeLight(type: SettingsDefinitions.DisplayMode) {
         val mGDUCamera = (SdkDemoApplication.getProductInstance() as Aircraft).camera as? Camera
         mGDUCamera?.setDisplayMode(type) { error ->
-            if (error == null) {
-                Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "设置失败", Toast.LENGTH_SHORT).show()
+            ThreadHelper.runOnUiThread {
+                if (error == null) {
+                    Toast.makeText(context, "设置成功", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "设置失败", Toast.LENGTH_SHORT).show()
+                }
             }
         }
 

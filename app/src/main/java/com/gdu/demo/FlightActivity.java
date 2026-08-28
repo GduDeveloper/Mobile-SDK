@@ -3,41 +3,34 @@ package com.gdu.demo;
 import android.content.res.ColorStateList;
 import android.graphics.SurfaceTexture;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import com.gdu.common.error.Error;
+import com.gdu.demo.ai.AiDetectHelper;
 import com.gdu.demo.databinding.ActivityFlightBinding;
-import com.gdu.demo.flight.aibox.helper.TargetDetectHelper;
+import com.gdu.demo.ai.TargetDetectHelper;
 import com.gdu.demo.flight.msgbox.MsgBoxManager;
 import com.gdu.demo.flight.msgbox.MsgBoxPopView;
-import com.gdu.demo.flight.msgbox.MsgBoxViewCallBack;
 import com.gdu.demo.flight.setting.fragment.SettingDialogFragment;
-import com.gdu.demo.utils.DroneUtils;
 import com.gdu.demo.utils.GisUtil;
 import com.gdu.demo.utils.LoadingDialogUtils;
 import com.gdu.demo.utils.SettingDao;
-import com.gdu.demo.viewmodel.FlightViewModel;
 import com.gdu.demo.widget.TopStateView;
 import com.gdu.demo.widget.zoomView.S220CustomSizeFocusHelper;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.gimbal.GimbalState;
-import com.gdu.lib.util.CollectionUtils;
 import com.gdu.lib.util.StringUtils;
-import com.gdu.lib.util.ViewUtils;
 import com.gdu.lib.util.core.ResourceUtils;
-import com.gdu.lib.util.core.XLogger;
 import com.gdu.msdk.device.component.interfaces.IVision;
 import com.gdu.msdk.key.value.CycleFCInfo1;
 import com.gdu.msdk.key.value.CycleRadarInfo;
-import com.gdu.msdk.key.value.ai.TargetMode;
 import com.gdu.msdk.util.KVObserver;
 import com.gdu.radar.ObstaclePoint;
 import com.gdu.radar.PerceptionInformation;
@@ -51,11 +44,9 @@ import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.radar.Radar;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.lib.util.ThreadHelper;
-
+import com.gdu.sdk.vision.bean.AlgorithmType;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class FlightActivity extends FragmentActivity implements TextureView.SurfaceTextureListener, View.OnClickListener {
@@ -68,10 +59,15 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
 
     private boolean showSuccess = false;
     private S220CustomSizeFocusHelper mCustomSizeFocusHelper;
-    private FlightViewModel viewModel;/**
-     * 目标检测类
+    /**
+     * 智能跟踪类
      */
     private TargetDetectHelper mTargetDetectHelper;
+
+    /**
+     * AI识别类
+     */
+    private AiDetectHelper aiDetectHelper;
 
 
     private KVObserver<Integer> mErrMsgSize;
@@ -85,7 +81,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         super.onCreate(savedInstanceState);
         viewBinding = ActivityFlightBinding.inflate(getLayoutInflater());
         setContentView(viewBinding.getRoot());
-        viewModel = new ViewModelProvider(this).get(FlightViewModel.class);
 
         Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
         if (aircraft != null) {
@@ -154,11 +149,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             });
         }
 
-        viewModel.getToastLiveData().observe(this, data -> {
-            if (data != 0){
-                showToast(getResources().getString(data));
-            }
-        });
     }
 
 
@@ -188,8 +178,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         viewBinding.fpvRv.setShowObstacleOFF(!obstacleIsOpen);
         viewBinding.fpvRv.setObstacleMax(40);
         viewBinding.ivMsgBoxLabel.setOnClickListener(this);
-        viewBinding.aiRecognizeImageview.setOnClickListener(this);
-        ViewUtils.setViewShowOrHide(viewBinding.aiRecognizeImageview, viewModel.isShowAiBox());
 
         SettingDao settingDao = SettingDao.getSingle();
         boolean show = settingDao.getBooleanValue(settingDao.ZORRORLabel_Grid, false);
@@ -198,55 +186,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         mCustomSizeFocusHelper = new S220CustomSizeFocusHelper(viewBinding.zoomSeekBar);
 
         mTargetDetectHelper = TargetDetectHelper.getInstance();
-        mTargetDetectHelper.init(this);
-        mTargetDetectHelper.setOnTargetDetectListener(new TargetDetectHelper.OnTargetDetectListener() {
-            @Override
-            public void onTargetDetect(boolean isSuccess, List<TargetMode> targetModes) {
-                LoadingDialogUtils.cancelLoadingDialog();
-                //视频是主界面时，在视频上画框
-                if (isSuccess && targetModes != null && !targetModes.isEmpty()) {
-                    XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = " + targetModes.size());
-                    DroneUtils.setTargetDetectMode(true);
-                    mTargetDetectHelper.startShowTarget();
-                    ThreadHelper.runOnUiThread(() -> Toast.makeText(FlightActivity.this, "识别到"+targetModes.size()+"个", Toast.LENGTH_SHORT).show());
-                } else if (targetModes == null) {
-                    XLogger.INSTANCE.getAPP().i("TargetDetect", "onTargetDetect targetModes size = 0");
-                }
-            }
+        mTargetDetectHelper.init(this, viewBinding.smartTargetContainer);
+        viewBinding.smartTrackBtn.setOnClickListener(this);
 
-            @Override
-            public void onTargetDetectSend(boolean isSuccess) {
-                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetDetectSend() isSuccess = " + isSuccess);
-                if (isSuccess) {
-                    DroneUtils.setDiscernIsOpen(true);
-                    DroneUtils.setTargetDetectMode(true);
-                } else {
-                    DroneUtils.setTargetDetectMode(false);
-                }
-            }
-
-            @Override
-            public void onTargetLocateSend(boolean isSuccess) {
-                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetLocateSend() isSuccess = " + isSuccess);
-                if (isSuccess) {
-//                    DialogUtils.createLoadDialog(ZorroRealControlActivity.this);
-                } else {
-                }
-            }
-
-            @Override
-            public void onTargetLocate(boolean isSuccess, TargetMode targetMode) {
-                XLogger.INSTANCE.getAPP().i("mTargetDetectHelper onTargetLocate() isSuccess = " + isSuccess);
-//                DialogUtils.cancelLoadDialog();
-            }
-
-            @Override
-            public void onDetectClosed() {
-                //收到关闭目标识别成功回调后再次重置状态，防止部分极端场景本地重置状态到发送关闭中间时间段又收到周期回调，将状态还原导致无法退出的问题
-            }
-        });
+        aiDetectHelper = new AiDetectHelper(this, viewBinding.aiTargetView);
+        viewBinding.aiRecognizeImageview.setOnClickListener(this);
     }
-
 
     private void initData() {
         msgBoxManager = new MsgBoxManager();
@@ -264,7 +209,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         msgBoxManager.getErrRollMsg().register(mErrRollMsg);
         msgBoxManager.getErrMsgList().register(mErrMsgList);
 //        VideoFeeder.getInstance().getPrimaryVideoFeed().addVideoDataListener(videoDataListener);
-        viewModel.registerSeiData();
     }
 
 
@@ -398,8 +342,28 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
             }
             showMsgBoxPopWindow(msgData);
             viewBinding.ivMsgBoxLabel.setSelected(!viewBinding.ivMsgBoxLabel.isSelected());
-        }else if (v.getId() == R.id.ai_recognize_imageview){
-            viewModel.switchAIRecognize();
+        }else if (v.getId() == R.id.smart_track_btn) { //智能跟踪
+            if (SdkDemoApplication.getAircraftInstance().getVision().getAlgorithmType() == AlgorithmType.NONE){
+                SdkDemoApplication.getAircraftInstance().getVision().startSmartTrack(var1 -> {
+                    Log.d("smartTrackBtn", "开启智能跟踪指令是否执行成功：" + (var1 == null));
+                });
+                viewBinding.smartTrackBtn.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_ef4e22_radius_3));
+                viewBinding.smartTrackBtn.setTextColor(getResources().getColor(R.color.white));
+            } else {
+                SdkDemoApplication.getAircraftInstance().getVision().stopSmartTrack(var1 -> {
+                    Log.d("smartTrackBtn", "关闭智能跟踪指令是否执行成功：" + (var1 == null));
+                });
+                viewBinding.smartTrackBtn.setBackgroundDrawable(ContextCompat.getDrawable(this, R.drawable.bg_ffffff_radius_3));
+                viewBinding.smartTrackBtn.setTextColor(getResources().getColor(R.color.black));
+            }
+        } else if (v.getId() == R.id.ai_recognize_imageview) {//AI识别
+            if (SdkDemoApplication.getAircraftInstance().getVision().isAiDetectOpen()){
+                viewBinding.aiRecognizeImageview.setActivated(false);
+                aiDetectHelper.stopTargetDetect();
+            } else {
+                viewBinding.aiRecognizeImageview.setActivated(true);
+                aiDetectHelper.startTargetDetect();
+            }
         }
     }
 
@@ -464,6 +428,6 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
     @Override
     protected void onStop() {
         super.onStop();
-        viewModel.stopTarget();
+        aiDetectHelper.stopTargetDetect();
     }
 }

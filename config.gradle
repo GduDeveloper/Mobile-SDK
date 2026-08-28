@@ -140,7 +140,7 @@ ext{
 
     gduVers.gduAppSip = "com.gdu:gdu-app-sip:0.1.2"
 
-    gduVers.gduAppVideoSdk = "com.gdu:gdu-app-videosdk:0.0.8211059-develop"
+    gduVers.gduAppVideoSdk = "com.gdu:gdu-app-videosdk:0.0.8030943-develop"
     gduVers.gduRtp = "com.gdu:gdu-app-rtp:0.0.3-SNAPSHOT"
 }
 

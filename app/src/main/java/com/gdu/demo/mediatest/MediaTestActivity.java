@@ -226,7 +226,9 @@ public class MediaTestActivity extends Activity {
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            mediaFiles.get(index).setThumbnail(bitmap);
+                            MediaFile mediaFile = mediaFiles.get(index);
+                            mediaFile.setThumbnail(bitmap);
+                            mediaFile.localThumbPath = path;
                             adapter.notifyItemChanged(index);
                             if (index < 20 - 1 || index < mediaFiles.size()) {
                                 int nextIndex = index + 1;

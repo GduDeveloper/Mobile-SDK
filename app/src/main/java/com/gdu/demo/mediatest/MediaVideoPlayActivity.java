@@ -65,8 +65,8 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_video);
-        
-         // 初始化CodecManager
+
+        // 初始化CodecManager
         Aircraft aircraft = (Aircraft) SDKManager.getInstance().getProduct();
         if (aircraft != null) {
             mCodecManager = aircraft.getCodecManager();
@@ -423,7 +423,7 @@ public class MediaVideoPlayActivity extends Activity implements TextureView.Surf
 //
 //    }
 
-   @Override
+    @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
         if (mCodecManager != null) {
             mCodecManager.startPreview(0, surface);

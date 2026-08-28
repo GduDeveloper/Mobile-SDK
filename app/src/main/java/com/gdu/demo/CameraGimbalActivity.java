@@ -342,7 +342,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_get_digital_zoom:
-               float zoom =  mGDUCamera.getCurrentZoom();
+                float zoom =  mGDUCamera.getCurrentZoom();
                 ToastUtils.showShort("数字变倍: " + zoom);
                 break;
             case R.id.btn_reset:
@@ -614,9 +614,6 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         if (mCodecManager != null) {
             mCodecManager.startPreview(0, surface);
         }
-//        if (codecManager == null) {
-//            codecManager = new GDUCodecManager(mContext, mGduPlayView, width, height);
-//        }
     }
 
     @Override
