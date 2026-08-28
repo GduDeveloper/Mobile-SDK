@@ -228,14 +228,13 @@ public class MediaDetailActivity extends Activity {
 
             @Override
             public void onSuccess(Bitmap bitmap, String path) {
-                if (handler != null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewBinding.ivThumb.setImageBitmap(bitmap);
-                        }
-                    });
-                }
+                ThreadHelper.runOnUiThread(() -> {
+                    if (!TextUtils.isEmpty(path)) {
+                        GlideUtils.loadImage(MediaDetailActivity.this, new File(path), viewBinding.ivThumb);
+                    } else {
+                        viewBinding.ivThumb.setImageResource(R.drawable.default_photo_video);
+                    }
+                });
             }
 
 
