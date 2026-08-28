@@ -1421,4 +1421,7 @@
     <string name="string_stop">Stop</string>
     <string name="string_follow_title">GO</string>
     <string name="string_stop_follow_title">Stop</string>
+    <string name="gimbal_not_connect">Gimbal not connected</string>
+    <string name="camera_working_tip">The camera is working. Please end the current work and try again.</string>
+    <string name="switch_fail">Switch Fail</string>
 </resources>

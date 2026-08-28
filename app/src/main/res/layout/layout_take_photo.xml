@@ -12,11 +12,10 @@
     tools:background="@color/black">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.gdu.demo.widgetlist.takephoto.type.CaptureTypeView
         android:id="@+id/ivSwitchBtn"
         android:layout_width="@dimen/dp_25"
         android:layout_height="@dimen/dp_20"
-        android:src="@drawable/ic_camera_photo_type_single_photo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"

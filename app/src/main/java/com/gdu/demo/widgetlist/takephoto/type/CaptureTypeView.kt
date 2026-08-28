@@ -3,33 +3,35 @@ package com.gdu.demo.widgetlist.takephoto.type
 import android.content.Context
 import android.util.AttributeSet
 import android.view.animation.AccelerateInterpolator
-import androidx.appcompat.widget.AppCompatImageView
 import com.gdu.demo.R
+import com.gdu.demo.widgetlist.core.base.widget.ImageViewWidget
+import com.gdu.demo.widgetlist.core.base.widget.widgetCollectFlowData
+import com.gdu.demo.widgetlist.takephoto.type.vm.CaptureTypeViewModel
 
 /**
  * @author wuqb
  * @date 2026/8/28 15:13
- * @description 这里写描述
+ * @description 拍照类型切换视图
  */
 class CaptureTypeView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppCompatImageView(context, attrs, defStyleAttr){
+) : ImageViewWidget<CaptureTypeViewModel>(context,attrs,defStyleAttr){
 
     private var mCurrType = CaptureType.PICTURE // 标记当前显示的是正面还是反面
-    private var mTypeListener: ((CaptureType) -> Unit)? = null
     private var mInit = false //用于判断首次不显示动画效果
 
     init {
         setImageResource(R.drawable.gimbal_ic_mode_picture)
+        setOnClickListener { onClickHandle() }
     }
 
     private fun onClickHandle() {
         if (mCurrType == CaptureType.PICTURE) {
-            mTypeListener?.invoke(CaptureType.VIDEO)
+            widgetModel.setCaptureType(CaptureType.VIDEO)
         } else {
-            mTypeListener?.invoke(CaptureType.PICTURE)
+            widgetModel.setCaptureType(CaptureType.PICTURE)
         }
     }
 
@@ -62,6 +64,13 @@ class CaptureTypeView @JvmOverloads constructor(
         mInit = true
     }
 
+    override fun initData() {
+        super.initData()
+        widgetCollectFlowData(widgetModel.photoModeState) {
+            onSwitchTakeType(it, true)
+        }
+    }
+
     /***
      * 设置图标
      * */
@@ -75,4 +84,8 @@ class CaptureTypeView @JvmOverloads constructor(
             }
         }
     }
+
+    override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {}
+
+    override fun initWidgetModel(): CaptureTypeViewModel = CaptureTypeViewModel()
 }
