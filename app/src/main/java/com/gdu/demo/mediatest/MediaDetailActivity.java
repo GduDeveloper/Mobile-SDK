@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -16,11 +17,14 @@ import com.gdu.common.error.Error;
 import com.gdu.demo.R;
 import com.gdu.demo.SdkDemoApplication;
 import com.gdu.demo.databinding.ActivityMediaDetailBinding;
+import com.gdu.lib.util.GlideUtils;
+import com.gdu.lib.util.ThreadHelper;
 import com.gdu.sdk.camera.Camera;
 import com.gdu.sdk.camera.MediaManager;
 import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.FileDownCallback;
 
+import java.io.File;
 import java.text.DecimalFormat;
 
 public class MediaDetailActivity extends Activity {
@@ -169,16 +173,13 @@ public class MediaDetailActivity extends Activity {
 
             @Override
             public void onSuccess(Bitmap bitmap, String path) {
-
-                if (handler != null) {
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            viewBinding.ivPreview.setImageBitmap(bitmap);
-                        }
-                    });
-                }
-
+                ThreadHelper.runOnUiThread(() -> {
+                    if (!TextUtils.isEmpty(path)) {
+                        GlideUtils.loadImage(MediaDetailActivity.this, new File(path), viewBinding.ivPreview);
+                    } else {
+                        viewBinding.ivPreview.setImageResource(R.drawable.default_photo_video);
+                    }
+                });
             }
 
 
