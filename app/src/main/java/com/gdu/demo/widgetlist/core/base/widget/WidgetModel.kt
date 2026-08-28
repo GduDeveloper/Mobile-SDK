@@ -1,5 +1,6 @@
 package com.gdu.demo.widgetlist.core.base.widget
 
+import androidx.lifecycle.ViewModel
 import com.gdu.demo.SdkDemoApplication
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.asStateFlow
  * @date 2024/11/9
  * @description 通用Widget Model, 将被所有的WidgetModel继承
  */
-abstract class WidgetModel: CoroutineScope by MainScope() {
+abstract class WidgetModel: ViewModel(),CoroutineScope by MainScope() {
 
     protected var disposable: Disposable? = null
     //数据变更通知

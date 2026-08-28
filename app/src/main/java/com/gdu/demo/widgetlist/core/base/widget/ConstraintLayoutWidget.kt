@@ -7,9 +7,9 @@ import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.gdu.ux.core.base.notify.Observable
 import com.gdu.ux.core.base.notify.Observer
-import com.gdu.ux.core.base.widget.WidgetDataBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -104,6 +104,13 @@ abstract class ConstraintLayoutWidget<T: WidgetModel> @JvmOverloads constructor(
         widgetModel?.start()
     }
 
+    fun <T> widgetCollectFlowData(flow: StateFlow<T>?, callback: (T) -> Unit) {
+        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
+            flow?.collectLatest { data ->
+                callback.invoke(data)
+            }
+        }
+    }
 
     override fun setVisibility(visibility: Int) {
         super.setVisibility(visibility)
