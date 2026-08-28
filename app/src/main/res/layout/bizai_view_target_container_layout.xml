@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.gdu.demo.ai.view.SelectTargetView
+        android:id="@+id/zone_detect_view"
+        android:background="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"/>
+
+    <com.gdu.demo.ai.view.SmartButtonView
+        android:id="@+id/smart_button_view"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_90"
+        android:layout_marginStart="@dimen/dp_26"/>
+</RelativeLayout>

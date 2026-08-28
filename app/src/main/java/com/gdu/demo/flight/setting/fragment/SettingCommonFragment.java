@@ -413,8 +413,9 @@ public class SettingCommonFragment extends Fragment {
     }
 
     private void updateBackView() {
-        if (currentSecondLevelType == 1) {
+        if (currentSecondLevelType == 1 || currentSecondLevelType == 3) {
             setSecondLevelView(mViewBinding.layoutDroneInfo, false, "");
+            setSecondLevelView(mViewBinding.layoutTargetRecognition, false, "");
         }
         currentSecondLevelType = 0;
     }
