@@ -2,7 +2,9 @@ package com.gdu.demo.widgetlist.core.base.widget
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.gdu.ux.core.base.notify.Observable
@@ -102,14 +104,6 @@ abstract class ConstraintLayoutWidget<T: WidgetModel> @JvmOverloads constructor(
         }
 
         widgetModel?.start()
-    }
-
-    fun <T> widgetCollectFlowData(flow: StateFlow<T>?, callback: (T) -> Unit) {
-        findViewTreeLifecycleOwner()?.lifecycleScope?.launch {
-            flow?.collectLatest { data ->
-                callback.invoke(data)
-            }
-        }
     }
 
     override fun setVisibility(visibility: Int) {

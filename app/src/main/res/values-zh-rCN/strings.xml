@@ -1411,5 +1411,12 @@
     <string name="gimbal_not_connect">云台未连接</string>
     <string name="camera_working_tip">相机正在工作中，请结束当前工作后再试</string>
     <string name="switch_fail">切换失败</string>
+    <string name="take_photo_success">拍照成功</string>
+    <string name="take_photo_fail">拍照失败</string>
+    <string name="operation_failed">操作失败</string>
+    <string name="start_record">开始录像</string>
+    <string name="record_fail">录像失败</string>
+    <string name="photo_or_record_can_not_stop_recording">录像低于4S,禁止停止</string>
+    <string name="record_end">录像结束</string>
 
 </resources>
