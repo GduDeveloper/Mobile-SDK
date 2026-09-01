@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -217,9 +218,11 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         for (Waypoint waypoint : planPoints) {
             LocationCoordinate2D locationCoordinate2D = waypoint.getCoordinate();
             LatLng latLng = new LatLng(locationCoordinate2D.getLatitude(), locationCoordinate2D.getLongitude());
+            Log.i("WaypointMissionOperatorActivity", "addPolyline: latLng = " + latLng);
             coordinateConverter.coord(latLng);
             latLngs.add(coordinateConverter.convert());
         }
+        Log.i("WaypointMissionOperatorActivity", "addPolyline: latLngs.size = " + latLngs.size() + " latLngs.get(0) = " + latLngs.get(0).toString());
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16));
         mPlaneMarkerOptions = new MarkerOptions();
         mPlaneMarkerOptions.position(latLngs.get(0));
@@ -270,7 +273,8 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 waypointMissionOperator.uploadMission(new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(Error error) {
-                        if (error == null) {
+                        Log.i("WaypointMissionOperatorActivity", "uploadMission onResult: error = " + error);
+                        if (error == Error.SUCCESS) {
                             toast("上传航迹发送成功");
                         } else {
                             toast("上传航迹发送失败");
@@ -283,7 +287,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                     waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(Error error) {
-                            if (error == null) {
+                            if (error == Error.SUCCESS) {
                                 toast("开始航迹成功");
                             } else {
                                 toast("开始航迹失败");
