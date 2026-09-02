@@ -35,6 +35,7 @@ import com.gdu.common.mission.waypoint.WaypointMissionState;
 import com.gdu.common.mission.waypoint.WaypointMissionUploadEvent;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.msdk.key.value.bean.RouteTypeEnum;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.Camera;
@@ -284,7 +285,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 break;
             case R.id.start_waypoint_button:
                 if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
-                    waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+                    waypointMissionOperator.startMission(RouteTypeEnum.TYPE_GDU_ROUTE_2, new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(Error error) {
                             if (error == Error.SUCCESS) {
