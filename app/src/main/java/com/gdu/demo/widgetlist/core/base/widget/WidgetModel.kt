@@ -1,7 +1,9 @@
 package com.gdu.demo.widgetlist.core.base.widget
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.gdu.demo.SdkDemoApplication
+import com.gdu.demo.flight.base.BaseViewModel
 import io.reactivex.rxjava3.disposables.Disposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -15,12 +17,14 @@ import kotlinx.coroutines.flow.asStateFlow
  * @date 2024/11/9
  * @description 通用Widget Model, 将被所有的WidgetModel继承
  */
-abstract class WidgetModel: ViewModel(),CoroutineScope by MainScope() {
+abstract class WidgetModel: BaseViewModel(),CoroutineScope by MainScope() {
 
     protected var disposable: Disposable? = null
     //数据变更通知
     private val _dataState = MutableStateFlow<Any?>(null)
     val dataState: StateFlow<Any?> = _dataState.asStateFlow()
+
+    val showToastLiveData = MutableLiveData<Int>()
 
     @Synchronized
     open fun start() {

@@ -1424,4 +1424,11 @@
     <string name="gimbal_not_connect">Gimbal not connected</string>
     <string name="camera_working_tip">The camera is working. Please end the current work and try again.</string>
     <string name="switch_fail">Switch Fail</string>
+    <string name="take_photo_success">Photo taken successfully</string>
+    <string name="take_photo_fail">Photo taken failed</string>
+    <string name="operation_failed">Operation Failed</string>
+    <string name="start_record">Start Record</string>
+    <string name="record_fail">Record failed</string>
+    <string name="photo_or_record_can_not_stop_recording">Stoppen verboten, wenn weniger als 4 Sekunden.</string>
+    <string name="record_end">Record end</string>
 </resources>
