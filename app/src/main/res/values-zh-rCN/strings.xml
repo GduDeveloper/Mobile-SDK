@@ -1408,5 +1408,8 @@
     <string name="string_stop">停止</string>
     <string name="string_follow_title">GO</string>
     <string name="string_stop_follow_title">Stop</string>
+    <string name="gimbal_not_connect">云台未连接</string>
+    <string name="camera_working_tip">相机正在工作中，请结束当前工作后再试</string>
+    <string name="switch_fail">切换失败</string>
 
 </resources>

@@ -12,31 +12,14 @@
     tools:background="@color/black">
 
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <com.gdu.demo.widgetlist.takephoto.type.CaptureTypeView
         android:id="@+id/ivSwitchBtn"
         android:layout_width="@dimen/dp_25"
         android:layout_height="@dimen/dp_20"
-        android:src="@drawable/ic_camera_photo_type_single_photo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="@dimen/dp_10"/>
-
-    <com.gdu.demo.widget.RouteStrokeTextView
-        android:id="@+id/tvSwitchBtnParam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_10"
-        android:textStyle="bold"
-        app:layout_constraintLeft_toLeftOf="@+id/ivSwitchBtn"
-        app:layout_constraintRight_toRightOf="@+id/ivSwitchBtn"
-        app:layout_constraintTop_toBottomOf="@+id/ivSwitchBtn"
-        app:strokeColor="@color/black"
-        app:strokeWidth="@dimen/dp_0_5"
-        android:visibility="gone"
-        tools:text="1080P" />
-
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivPhotoAndVideoBtn"
@@ -49,7 +32,7 @@
         android:textSize="@dimen/sp_12"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSwitchBtnParam" />
+        app:layout_constraintTop_toBottomOf="@+id/ivSwitchBtn" />
 
     <com.gdu.demo.widget.RouteStrokeTextView
         android:id="@+id/tvChronometer"
