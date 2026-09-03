@@ -109,7 +109,7 @@ public class LTEActivity extends Activity {
                     changeLink(AirlinkType.IM_LINK);
                     break;
                 case R.id.btn_set_mqtt_service_url:
-                    setMqttServiceUrl("tcp://server.gdu-tech.com:5672");
+                    setMqttServiceUrl("");
                     break;
                 case R.id.btn_get_mqtt_service_url:
                     getMqttServiceUrl();
@@ -184,7 +184,7 @@ public class LTEActivity extends Activity {
     }
 
     private void setVideoServiceUrl() {
-        mLTEManager.setVideoServiceUrl("rtmp://media.uver.gdu-tech.com:1935/live/", error -> runOnUiThread(() -> {
+        mLTEManager.setVideoServiceUrl("", error -> runOnUiThread(() -> {
             if (error == null) {
                 Toast.makeText(this, "设置视频地址成功", Toast.LENGTH_SHORT).show();
             } else {
