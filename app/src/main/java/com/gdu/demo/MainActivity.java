@@ -86,7 +86,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
-                    XLogger.INSTANCE.init(mContext, "diyLog/mobile/link");
+                    XLogger.INSTANCE.init(mContext, "MSDKDemo");
                     // 自定义按键初始化
                     RCCustomKeyRepository.INSTANCE.init();
                     RCCustomKeyActionManager.INSTANCE.init();
