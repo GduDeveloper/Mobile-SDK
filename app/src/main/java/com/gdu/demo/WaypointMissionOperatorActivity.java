@@ -246,7 +246,8 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
 
     private void startSimulator() {
         if (null != mGDUFlightController) {
-            LocationCoordinate3D locationCoordinate3D = new LocationCoordinate3D(30.471033,114.4280014, 10);
+            //LocationCoordinate3D locationCoordinate3D = new LocationCoordinate3D(30.471033,114.4280014, 10);
+            LocationCoordinate3D locationCoordinate3D = new LocationCoordinate3D(31.063827884,112.250164831, 10);
             InitializationData initializationData = new InitializationData(locationCoordinate3D, (short) 90, PositioningSolution.FIXED_POINT, (byte) 30);
             mGDUFlightController.getSimulator().start(initializationData, new CommonCallbacks.CompletionCallback() {
                 @Override
@@ -282,9 +283,28 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                         }
                     }
                 });
+                //上传本地已有KMZ文件到飞机，航迹文件需要放在/sdcard/目录下
+//                waypointMissionOperator.pushKMZFileToAircraft("/sdcard/低空航线.kmz", new CommonCallbacks.CompletionCallbackWithProgress<Double>() {
+//
+//                    @Override
+//                    public void onSuccess() {
+//                        toast("上传航迹发送成功");
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Error error, String msg) {
+//                        toast("上传航迹发送失败 msg =" +msg);
+//                    }
+//
+//                    @Override
+//                    public void onProgress(Double progress) {
+//                        toast("上传航迹进度 progress =" +progress);
+//                    }
+//                });
                 break;
             case R.id.start_waypoint_button:
                 if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
+                    //执行普宙2.0航迹
                     waypointMissionOperator.startMission(RouteTypeEnum.TYPE_GDU_ROUTE_2, new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(Error error) {
@@ -295,6 +315,17 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                             }
                         }
                     });
+                    //执行大疆航迹
+//                    waypointMissionOperator.startMission(RouteTypeEnum.TYPE_DJI_ROUTE, new CommonCallbacks.CompletionCallback() {
+//                        @Override
+//                        public void onResult(Error error) {
+//                            if (error == Error.SUCCESS) {
+//                                toast("开始航迹成功");
+//                            } else {
+//                                toast("开始航迹失败");
+//                            }
+//                        }
+//                    });
                 }
                 break;
             case R.id.resume_waypoint_button:
