@@ -13,6 +13,8 @@ import com.gdu.common.error.Error;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.remotecontroller.MultiControlInfo;
 import com.gdu.remotecontroller.MultiControlMode;
+import com.gdu.sdk.remotecontroller.DRTK;
+import com.gdu.sdk.remotecontroller.DRTKBaseStationCoord;
 import com.gdu.sdk.remotecontroller.RemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
 
@@ -25,6 +27,10 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
 
     private Context mContext;
     private RemoteController mGDURemoteController;
+
+    private int mDRTKModeIndex = 0;
+
+    private int type = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +62,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.set_control_hand_button:
                 setControlHand();
                 break;
@@ -102,10 +108,102 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_continue_send_rc_control_mid_value_enable_button:
                 getContinueSendRCControlMidValueEnable();
                 break;
+            case R.id.set_drtk_mode_button:
+                setDRTKMode();
+                break;
+            case R.id.get_drtk_mode_button:
+                getDRTKMode();
+                break;
+            case R.id.connect_drtk_button:
+                mGDURemoteController.connectDRTK(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(Error var1) {
+                        if (var1 == null) {
+                            toastText("请求nps连接成功：");
+                        } else {
+                            toastText("请求nps连接失败：" + var1);
+                        }
+                    }
+                });
+                break;
+            case R.id.rtk_cal_button:
+                mGDURemoteController.getDRTK().startNestDRTKSelfCalibra("rtk.ntrip.qxwz.com", "8002", "", "", "AUTO", new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(Error var1) {
+                        if (var1 == null) {
+                            toastText("请求rtk自校准成功：");
+                        } else {
+                            toastText("请求rtk自校准失败：" + var1);
+                        }
+                    }
+                });
+            case R.id.rtk_cal_stop_button:
+                mGDURemoteController.getDRTK().stopNestDRTKSelfCalibra(new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(Error var1) {
+
+                    }
+                });
+            case R.id.rtk_set_pos_button:
+                DRTKBaseStationCoord coord = new DRTKBaseStationCoord();
+                coord.setLatitude(39.916527);
+                coord.setLongitude(116.397128);
+                coord.setAltitude(52.22f);
+                mGDURemoteController.getDRTK().setDRTKBaseStationCoord(coord, new CommonCallbacks.CompletionCallback() {
+
+                    @Override
+                    public void onResult(Error var1) {
+                        toastText("设置rtk位置信息：" + var1);
+                    }
+                });
+            case R.id.rtk_get_pos_button:
+                mGDURemoteController.getDRTK().getDRTKBaseStationCoord(new CommonCallbacks.CompletionCallbackWith<DRTKBaseStationCoord>() {
+                    @Override
+                    public void onSuccess(DRTKBaseStationCoord coord) {
+                        toastText("获取rtk位置信息成功：" + coord);
+                    }
+
+                    @Override
+                    public void onFailure(Error gduError) {
+                        toastText("获取rtk位置信息失败：" + gduError);
+                    }
+                });
         }
     }
 
-    int type = 1;
+
+    private void setDRTKMode() {
+        DRTK.DRTKMode mode = mDRTKModeIndex % 2 == 0
+                ? DRTK.DRTKMode.BASE_STATION
+                : DRTK.DRTKMode.MOBILE_STATION;
+        mDRTKModeIndex++;
+        mGDURemoteController.getDRTK().setDRTKMode(mode, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(Error error) {
+                if (error == null) {
+                    toastText("设置DRTK模式成功：" + mode);
+                } else {
+                    toastText("设置DRTK模式失败：" + error);
+                }
+            }
+        });
+    }
+
+    private void getDRTKMode() {
+        mGDURemoteController.getDRTK().getDRTKMode(new CommonCallbacks.CompletionCallbackWith<DRTK.DRTKMode>() {
+            @Override
+            public void onSuccess(DRTK.DRTKMode mode) {
+                toastText("获取DRTK模式成功：" + mode);
+            }
+
+            @Override
+            public void onFailure(Error gduError) {
+                toastText("获取DRTK模式失败：" + gduError);
+            }
+        });
+    }
+
+
     private void setControlHand() {
         AircraftMappingStyle aircraftMappingStyle;
         if (type % 3 == 0) {
@@ -132,7 +230,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private void setContinueSendRCControlMidValueEnable(){
+    private void setContinueSendRCControlMidValueEnable() {
         mGDURemoteController.setContinueSendRCControlMidValueEnable(true, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
@@ -145,7 +243,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getContinueSendRCControlMidValueEnable(){
+    private void getContinueSendRCControlMidValueEnable() {
         mGDURemoteController.getContinueSendRCControlMidValueEnable(new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean aBoolean) {
@@ -159,7 +257,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getMultiControlMode(){
+    private void getMultiControlMode() {
         mGDURemoteController.getMultiControlMode(new CommonCallbacks.CompletionCallbackWith<MultiControlMode>() {
             @Override
             public void onSuccess(MultiControlMode controlMode) {
@@ -173,7 +271,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void setMultiControlMode(){
+    private void setMultiControlMode() {
         mGDURemoteController.setMultiControlMode(MultiControlMode.TWO_C_ONE, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
@@ -186,7 +284,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getDroneList(){
+    private void getDroneList() {
         mGDURemoteController.getDroneList(new CommonCallbacks.CompletionCallbackWith<List<MultiControlInfo>>() {
             @Override
             public void onSuccess(List<MultiControlInfo> controlInfos) {
@@ -200,7 +298,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getRCList(){
+    private void getRCList() {
         mGDURemoteController.getRCList(new CommonCallbacks.CompletionCallbackWith<List<MultiControlInfo>>() {
             @Override
             public void onSuccess(List<MultiControlInfo> controlInfos) {
@@ -214,7 +312,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void setDroneControlEnable(){
+    private void setDroneControlEnable() {
         mGDURemoteController.setDroneControlEnable(0, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
@@ -227,7 +325,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getDroneControlEnable(){
+    private void getDroneControlEnable() {
         mGDURemoteController.getDroneControlEnable(0, new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
@@ -241,7 +339,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void setDroneLivingEnable(){
+    private void setDroneLivingEnable() {
         mGDURemoteController.setDroneLivingEnable(0, new CommonCallbacks.CompletionCallback() {
             @Override
             public void onResult(Error error) {
@@ -254,7 +352,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         });
     }
 
-    private void getDroneLivingEnable(){
+    private void getDroneLivingEnable() {
         mGDURemoteController.getDroneLivingEnable(0, new CommonCallbacks.CompletionCallbackWith<Boolean>() {
             @Override
             public void onSuccess(Boolean var1) {
@@ -284,7 +382,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private void startPairing(){
+    private void startPairing() {
         if (mGDURemoteController != null) {
             mGDURemoteController.startPairing(new CommonCallbacks.CompletionCallback() {
                 @Override
@@ -299,7 +397,7 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private void getRCVersion(){
+    private void getRCVersion() {
         if (mGDURemoteController != null) {
             mGDURemoteController.getFirmwareVersion(new CommonCallbacks.CompletionCallbackWith<String>() {
                 @Override
@@ -326,14 +424,14 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
     }
 
 
-    private void getRCSN(){
+    private void getRCSN() {
         if (mGDURemoteController != null) {
             String sn = mGDURemoteController.getRCSN();
             toastText("SN：" + sn);
         }
     }
 
-    private void toastText(final String content){
+    private void toastText(final String content) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

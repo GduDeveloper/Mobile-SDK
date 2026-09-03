@@ -9,7 +9,10 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.gdu.api.RTKManager;
 import com.gdu.common.error.Error;
+import com.gdu.drone.RTKNetConnectStatus;
+import com.gdu.lib.util.core.XLogger;
 import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.NetworkServiceState;
 import com.gdu.rtk.RTKState;
@@ -23,6 +26,8 @@ import com.gdu.sdk.util.CommonCallbacks;
  * RTK测试
  */
 public class RTKActivity extends Activity implements View.OnClickListener {
+
+    private static final String TAG = "RTKActivity";
 
    private Context mContext;
    private TextView mReadTextView;
@@ -149,14 +154,100 @@ public class RTKActivity extends Activity implements View.OnClickListener {
             case R.id.set_qx_account_button:
                 NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
                 networkServiceSettings.setMountPoint("RTCM32_GGB");
-                networkServiceSettings.setPassword("4b28b6e");
+                networkServiceSettings.setPassword("");
                 networkServiceSettings.setPort(8002);
                 networkServiceSettings.setServerAddress("rtk.ntrip.qxwz.com");
-                networkServiceSettings.setUserName("qxtdfk0016");
+                networkServiceSettings.setUserName("");
                 break;
             case R.id.connect_custom_network_service_button:
+                connectNetRTK();
+                break;
+            case R.id.connect_onboard_rtk_button:
+                connectOnboardRTK();
                 break;
         }
+    }
+
+    private void connectNetRTK(){
+        ReferenceStationSource stationSource = ReferenceStationSource.CUSTOM_NETWORK_SERVICE;
+        NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
+        networkServiceSettings.setMountPoint("AUTO");
+        networkServiceSettings.setPassword("");
+        networkServiceSettings.setPort(Integer.parseInt("8002"));
+        networkServiceSettings.setServerAddress("rtk.ntrip.qxwz.com");
+        networkServiceSettings.setUserName("");
+        rtk.connectRtk(stationSource, networkServiceSettings, new RTKManager.OnRtkConnectListener() {
+            @Override
+            public void onStartConnect() {
+                XLogger.APP.d(TAG,"开始连接");
+            }
+
+            @Override
+            public void onConnectSuccess() {
+                XLogger.APP.d(TAG,"连接成功");
+            }
+
+            @Override
+            public void onDisConnect() {
+                XLogger.APP.d(TAG,"断开连接");
+            }
+
+            @Override
+            public void onConnectFailed(RTKNetConnectStatus rtkNetConnectStatus) {
+                XLogger.APP.d(TAG,"连接失败");
+            }
+
+            @Override
+            public void onGgaGot(byte[] bytes) {
+                XLogger.APP.d(TAG,"收到GGA数据");
+            }
+
+            @Override
+            public void onRtcmGot(byte[] bytes) {
+                XLogger.APP.d(TAG,"收到RTCM数据");
+            }
+        });
+    }
+
+    private void connectOnboardRTK(){
+        ReferenceStationSource stationSource = ReferenceStationSource.ONBOARD_RTK;
+        NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
+        networkServiceSettings.setMountPoint("AUTO");
+        networkServiceSettings.setPassword("");
+        networkServiceSettings.setPort(Integer.parseInt("8002"));
+        networkServiceSettings.setServerAddress("rtk.ntrip.qxwz.com");
+        networkServiceSettings.setUserName("");
+        rtk.connectRtk(stationSource, networkServiceSettings, new RTKManager.OnRtkConnectListener() {
+            @Override
+            public void onStartConnect() {
+                XLogger.APP.d(TAG,"开始连接(机载)");
+            }
+
+            @Override
+            public void onConnectSuccess() {
+                XLogger.APP.d(TAG,"连接成功(机载)");
+            }
+
+            @Override
+            public void onDisConnect() {
+                XLogger.APP.d(TAG,"断开连接(机载)");
+            }
+
+            @Override
+            public void onConnectFailed(RTKNetConnectStatus rtkNetConnectStatus) {
+                XLogger.APP.d(TAG,"连接失败(机载)");
+            }
+
+            @Override
+            public void onGgaGot(byte[] bytes) {
+                XLogger.APP.d(TAG,"收到GGA数据(机载)");
+            }
+
+            @Override
+            public void onRtcmGot(byte[] bytes) {
+                XLogger.APP.d(TAG,"收到RTCM数据(机载)");
+            }
+        });
     }
 
 
