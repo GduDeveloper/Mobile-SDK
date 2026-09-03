@@ -1,4 +1,4 @@
-package com.gdu.ux.core.base.widget
+package com.gdu.demo.widgetlist.core.base.widget
 
 /**
  * @author wuqb

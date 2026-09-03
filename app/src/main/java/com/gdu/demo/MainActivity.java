@@ -67,7 +67,6 @@ public class MainActivity extends FragmentActivity {
         initListener();
         //如果是需要连机库时，需要设置一次ConnectScene，如果是使用遥控器直连无人机则无需设置
 //        SDKManager.getInstance().setConnectScene(ConnectScene.HANGAR);
-        copyAIBoxDataDb2Local();
     }
 
 
@@ -87,11 +86,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 if (checkAndRequestPermissions()) {
-                    XLogger.INSTANCE.init(mContext);
-                    if (SDKManager.getInstance().getConnectScene() == ConnectScene.HANGAR) {
-                        //机库模式下，需要初始化CarNestReportIp
-                        CarNestReportIpInit.initCarNestReportIp();
-                    }
+                    XLogger.INSTANCE.init(mContext, "diyLog/mobile/link");
                     // 自定义按键初始化
                     RCCustomKeyRepository.INSTANCE.init();
                     RCCustomKeyActionManager.INSTANCE.init();
@@ -259,53 +254,5 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    private void copyAIBoxDataDb2Local() {
-        Log.i(TAG,"copyAIBoxDataDb2Local()");
-        boolean isCopyDbFile = SPUtils.getBoolean(this, MyConstants.COPY_AI_BOX_MODEL_DB_KEY);
-        File databasePath = getDatabasePath("AIBoxData.db");
-        Log.i(TAG,"copyAIBoxDataDb2Local() databasePath = " + databasePath);
-        //根据最近修改时间决定考不拷贝（暂定时间为25年7月30号）
-        long fileLastModify = 0;
-        if (databasePath.exists()) {
-            fileLastModify = databasePath.lastModified();
-        }
-        boolean isNotNeedUpdate = fileLastModify > TimeUtil.getTimeStamp("2025-10-17 23:59:59", "yyyy-MM-dd HH:mm:ss");
-
-        if (isNotNeedUpdate && isCopyDbFile) {
-            Log.i(TAG,"copyAIBoxDataDb2Local() db file is exit");
-            return;
-        }
-        SPUtils.put(this, MyConstants.COPY_AI_BOX_MODEL_DB_KEY, true);
-        Observable.create(emitter -> {
-                    File dbShmPath = getApplicationContext().getDatabasePath("AIBoxData.db-shm");
-                    boolean delResult;
-                    if (dbShmPath.exists()) {
-                        delResult = dbShmPath.delete();
-                        Log.i(TAG,"copyAIBoxDataDb2Local() delShmResult = " + delResult);
-                    }
-                    File dbWalPath = getApplicationContext().getDatabasePath("AIBoxData.db-wal");
-                    if (dbWalPath.exists()) {
-                        delResult = dbWalPath.delete();
-                        Log.i(TAG,"copyAIBoxDataDb2Local() delWalResult = " + delResult);
-                    }
-                    if (databasePath.exists()) {
-                        delResult = databasePath.delete();
-                        Log.i(TAG,"copyAIBoxDataDb2Local() delDBResult = " + delResult);
-                    }
-                    try (InputStream is = getAssets().open("database/AIBoxData.db");
-                         FileOutputStream fos = new FileOutputStream(databasePath)) {
-                        byte[] data = new byte[1024];
-                        int len = 0;
-                        while ((len = is.read(data)) > 0) {
-                            fos.write(data, 0, len);
-                        }
-                        Log.i(TAG,"copyAIBoxDataDb2Local() 数据拷贝完成");
-                    } catch (IOException e) {
-                        Log.e(TAG,"拷贝数据库文件出错", e);
-                    }
-                }).subscribeOn(Schedulers.io())
-                .to(RxLife.toMain(this))
-                .subscribe(o -> {}, throwable -> Log.e(TAG,"拷贝数据库文件出错"));
-    }
 
 }

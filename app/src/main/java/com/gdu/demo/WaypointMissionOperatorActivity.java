@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ import com.gdu.common.mission.waypoint.WaypointMissionState;
 import com.gdu.common.mission.waypoint.WaypointMissionUploadEvent;
 import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
+import com.gdu.msdk.key.value.bean.RouteTypeEnum;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.camera.Camera;
@@ -217,9 +219,11 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         for (Waypoint waypoint : planPoints) {
             LocationCoordinate2D locationCoordinate2D = waypoint.getCoordinate();
             LatLng latLng = new LatLng(locationCoordinate2D.getLatitude(), locationCoordinate2D.getLongitude());
+            Log.i("WaypointMissionOperatorActivity", "addPolyline: latLng = " + latLng);
             coordinateConverter.coord(latLng);
             latLngs.add(coordinateConverter.convert());
         }
+        Log.i("WaypointMissionOperatorActivity", "addPolyline: latLngs.size = " + latLngs.size() + " latLngs.get(0) = " + latLngs.get(0).toString());
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngs.get(0), 16));
         mPlaneMarkerOptions = new MarkerOptions();
         mPlaneMarkerOptions.position(latLngs.get(0));
@@ -270,7 +274,8 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 waypointMissionOperator.uploadMission(new CommonCallbacks.CompletionCallback() {
                     @Override
                     public void onResult(Error error) {
-                        if (error == null) {
+                        Log.i("WaypointMissionOperatorActivity", "uploadMission onResult: error = " + error);
+                        if (error == Error.SUCCESS) {
                             toast("上传航迹发送成功");
                         } else {
                             toast("上传航迹发送失败");
@@ -280,10 +285,10 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                 break;
             case R.id.start_waypoint_button:
                 if (waypointMissionOperator.getCurrentState() == WaypointMissionState.READY_TO_EXECUTE) {
-                    waypointMissionOperator.startMission(new CommonCallbacks.CompletionCallback() {
+                    waypointMissionOperator.startMission(RouteTypeEnum.TYPE_GDU_ROUTE_2, new CommonCallbacks.CompletionCallback() {
                         @Override
                         public void onResult(Error error) {
-                            if (error == null) {
+                            if (error == Error.SUCCESS) {
                                 toast("开始航迹成功");
                             } else {
                                 toast("开始航迹失败");
