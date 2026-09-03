@@ -93,6 +93,11 @@ public class DemoListActivity extends Activity implements View.OnClickListener {
                 Intent geoIntent = new Intent(this, GEOTestActivity.class);
                 startActivity(geoIntent);
                 break;
+            case R.id.lte_button:
+                Intent lteIntent = new Intent(this, LTEActivity.class);
+                startActivity(lteIntent);
+                break;
+
         }
     }
 }

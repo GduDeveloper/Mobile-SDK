@@ -41,6 +41,7 @@ import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.flightcontroller.FlightControllerState;
 import com.gdu.sdk.flightcontroller.GDUFlightController;
 import com.gdu.sdk.mission.MissionControl;
+import com.gdu.sdk.mission.waypoint.TaskType;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperator;
 import com.gdu.sdk.mission.waypoint.WaypointMissionOperatorListener;
 import com.gdu.sdk.products.GDUAircraft;
@@ -275,6 +276,29 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
                         } else {
                             toast("上传航迹发送失败");
                         }
+                    }
+                });
+                break;
+            case R.id.push_kmz_button:
+                if (waypointMissionOperator == null) {
+                    toast("WaypointMissionOperator 未初始化");
+                    return;
+                }
+                String samplePath = "/sdcard/" + "低空航线.kmz";
+                waypointMissionOperator.pushKMZFileToAircraft(samplePath, TaskType.DJI_TASK, new CommonCallbacks.CompletionCallbackWithProgress<Double>() {
+                    @Override
+                    public void onProgress(Double progress) {
+                        show("KMZ 上传进度: " + (progress) + "%");
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        toast("KMZ 上传成功");
+                    }
+
+                    @Override
+                    public void onFailure(GDUError error) {
+                        toast("KMZ 上传失败: " + (error == null ? "unknown" : error.toString()));
                     }
                 });
                 break;

@@ -79,6 +79,7 @@
         <activity android:name=".PsdkCustomViewActivity" />
         <activity android:name=".LogActivity" />
         <activity android:name=".GEOTestActivity" />
+        <activity android:name=".LTEActivity" />
     </application>
 
 </manifest>

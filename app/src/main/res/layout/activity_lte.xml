@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/title_layout" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_layout">
+
+
+        <Button
+            android:id="@+id/bt_image"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="图传"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt_lte"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="4G模式"
+            app:layout_constraintLeft_toRightOf="@id/bt_image"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/bt_auto"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="智能切换"
+            app:layout_constraintLeft_toRightOf="@id/bt_lte"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <Button
+            android:id="@+id/btn_set_mqtt_service_url"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="设置MQTT地址"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bt_lte" />
+
+        <Button
+            android:id="@+id/btn_get_mqtt_service_url"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="获取MQTT地址"
+            app:layout_constraintLeft_toRightOf="@id/btn_set_mqtt_service_url"
+            app:layout_constraintTop_toBottomOf="@id/bt_image" />
+
+        <Button
+            android:id="@+id/btn_set_video_service_url"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="设置视频地址"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_get_mqtt_service_url" />
+
+        <Button
+            android:id="@+id/btn_get_video_service_url"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="获取视频地址"
+            app:layout_constraintLeft_toRightOf="@id/btn_set_video_service_url"
+            app:layout_constraintTop_toBottomOf="@id/btn_set_mqtt_service_url" />
+
+
+        <Button
+            android:id="@+id/btn_init_mqtt"
+            android:layout_width="180dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="连接MQTT服务器"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_get_video_service_url" />
+
+
+
+        <TextView
+            android:id="@+id/tv_air_net_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toRightOf="@id/btn_init_mqtt"
+            app:layout_constraintTop_toBottomOf="@id/btn_init_mqtt" />
+
+
+
+        <TextView
+            android:id="@+id/tv_lte_state_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:text="LTE 状态信息:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_air_net_state" />
+
+        <TextView
+            android:id="@+id/tv_lte_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_lte_state_title" />
+
+        <!-- Flight controller status -->
+        <TextView
+            android:id="@+id/tv_fc_state_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="12dp"
+            android:text="飞控状态信息:"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_lte_state" />
+
+        <TextView
+            android:id="@+id/tv_fc_state"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="8dp"
+            android:text=""
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_fc_state_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
