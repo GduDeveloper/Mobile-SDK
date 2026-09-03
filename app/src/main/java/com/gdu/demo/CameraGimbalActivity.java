@@ -3,7 +3,6 @@ package com.gdu.demo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,12 +25,9 @@ import com.gdu.gimbal.RotationMode;
 import com.gdu.lib.util.ThreadHelper;
 import com.gdu.lib.util.core.ToastUtils;
 import com.gdu.msdk.device.component.interfaces.ICamera;
-import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.Camera;
+import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.SystemState;
-//import com.gdu.sdk.camera.VideoFeeder;
-//import com.gdu.sdk.codec.GDUCodecManager;
-//import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.codec.CodecManager;
 import com.gdu.sdk.gimbal.Gimbal;
 import com.gdu.sdk.manager.SDKManager;
@@ -39,7 +35,12 @@ import com.gdu.sdk.products.Aircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 
 import java.io.File;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.math.BigDecimal;
+import java.util.Locale;
 
 /**
  *
@@ -71,6 +72,8 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
     private TextView tv_support_mode;
     private TextView tvPreviewFormat;
+
+    private TextView mLaserInfoTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,7 +182,20 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     show(mStorageInfoTextView, sb.toString());
                 }
             });
-
+            mGDUCamera.setLaserMeasureInformationCallback(laserMeasureInformation -> {
+                DecimalFormat df = new DecimalFormat("#0.0", new DecimalFormatSymbols(Locale.US));
+                String s = "直线距离：" +
+                        laserMeasureInformation.getDistance() +
+                        "米， 水平距离：" +
+                        laserMeasureInformation.getHorizontalDistance() +
+                        "米， 经纬度：" +
+                        BigDecimal.valueOf(laserMeasureInformation.getLon()).setScale(7, RoundingMode.HALF_UP).toPlainString() + ", "
+                        + BigDecimal.valueOf(laserMeasureInformation.getLat()).setScale(7, RoundingMode.HALF_UP).toPlainString() +
+                        " 高度：" +
+                        df.format(laserMeasureInformation.getAltitudeHeight())
+                        +"米";
+                show(mLaserInfoTextView, s);
+            });
         }
     }
 
@@ -212,24 +228,17 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         }
         tvPreviewFormat = findViewById(R.id.preview_format);
         tvPreviewFormat.setText(ICamera.get().getFlowCodingFormat().getValue() == 0 ? "H264" : "H265");
+
+        mLaserInfoTextView = findViewById(R.id.laser_info);
     }
 
     public void toast(final String toast) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show());
     }
 
     public void show(TextView textView, final String toast) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                textView.setText(toast);
-//                Toast.makeText(mContext, toast, Toast.LENGTH_SHORT).show();
-            }
+        runOnUiThread(() -> {
+            textView.setText(toast);
         });
     }
 
@@ -237,7 +246,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_record_video:
-                mGDUCamera.startRecordVideo(new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.startRecordVideo(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error var1) {
                         toast("开始录像成功");
@@ -245,7 +254,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_stop_record_video:
-                mGDUCamera.stopRecordVideo(new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.stopRecordVideo(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error var1) {
                         toast("停止录像成功");
@@ -253,7 +262,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_single_take_picture:
-                mGDUCamera.startShootPhoto(new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.startShootPhoto(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error var1) {
                         toast("拍照发送成功");
@@ -261,7 +270,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_model_change:
-                mGDUCamera.setMode(CameraMode.RECORD_VIDEO, new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.setMode(CameraMode.RECORD_VIDEO, new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error var1) {
                         toast("模式发送成功");
@@ -269,7 +278,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_format_sd_card:
-                mGDUCamera.formatSDCard(new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.formatSDCard(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error var1) {
                         toast("格式化SD发送成功");
@@ -330,7 +339,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_set_digital_zoom:
-                mGDUCamera.setZoom(10, new CommonCallbacks.CompletionCallback() {
+                mGDUCamera.setZoom(10, new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {
@@ -346,7 +355,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 ToastUtils.showShort("数字变倍: " + zoom);
                 break;
             case R.id.btn_reset:
-                mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {
+                mGDUGimbal.reset(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {
@@ -362,7 +371,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 rotation.setMode(RotationMode.ABSOLUTE_ANGLE);
                 rotation.setPitch(90);
 //                rotation.set
-                mGDUGimbal.rotate(rotation, new CommonCallbacks.CompletionCallback() {
+                mGDUGimbal.rotate(rotation, new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {
@@ -400,7 +409,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_start_calibration:
-                mGDUGimbal.startCalibration(new CommonCallbacks.CompletionCallback() {
+                mGDUGimbal.startCalibration(new CommonCallbacks.CompletionCallback<>() {
                     @Override
                     public void onResult(Error error) {
                         if (error == null) {
@@ -566,6 +575,31 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     @Override
                     public void onFailure(Error error) {
                         toast("设置失败： ");
+                    }
+                });
+                break;
+                case R.id.camera_laser_open:
+                    mGDUCamera.setLaserEnabled(true, new CommonCallbacks.CompletionCallback<>() {
+                        @Override
+                        public void onResult(Error error) {
+                            if (error == null) {
+                                toast("设置成功");
+                            } else {
+                                toast("设置失败");
+                            }
+                        }
+                    });
+                    break;
+            case R.id.camera_laser_off:
+                mGDUCamera.setLaserEnabled(false, new CommonCallbacks.CompletionCallback<>() {
+                    @Override
+                    public void onResult(Error error) {
+                        if (error == null) {
+                            toast("设置成功");
+                            ThreadHelper.runOnUiThread(() -> show(mLaserInfoTextView, ""));
+                        } else {
+                            toast("设置失败");
+                        }
                     }
                 });
                 break;

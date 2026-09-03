@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
  * @date 2026/8/28 16:57
  * @description 拍照类型切换视图模型
  */
-class CaptureTypeViewModel: WidgetModel() {
+class CaptureTypeWidgetModel: WidgetModel() {
     val shootTypeRepository: CaptureTypeRepository = CaptureTypeRepositoryImpl()
     /**
      * 是否正在切换拍照/录像模式

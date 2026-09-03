@@ -5,19 +5,19 @@ import android.util.AttributeSet
 import android.view.animation.AccelerateInterpolator
 import com.gdu.demo.R
 import com.gdu.demo.widgetlist.core.base.widget.ImageViewWidget
-import com.gdu.demo.widgetlist.core.base.widget.widgetCollectFlowData
-import com.gdu.demo.widgetlist.takephoto.type.vm.CaptureTypeViewModel
+import com.gdu.demo.widgetlist.takephoto.type.vm.CaptureTypeWidgetModel
+import com.gdu.lib.util.extension.collectFlowData
 
 /**
  * @author wuqb
  * @date 2026/8/28 15:13
  * @description 拍照类型切换视图
  */
-class CaptureTypeView @JvmOverloads constructor(
+class CaptureTypeWidget @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : ImageViewWidget<CaptureTypeViewModel>(context,attrs,defStyleAttr){
+) : ImageViewWidget<CaptureTypeWidgetModel>(context,attrs,defStyleAttr){
 
     private var mCurrType = CaptureType.PICTURE // 标记当前显示的是正面还是反面
     private var mInit = false //用于判断首次不显示动画效果
@@ -66,7 +66,7 @@ class CaptureTypeView @JvmOverloads constructor(
 
     override fun initData() {
         super.initData()
-        widgetCollectFlowData(widgetModel.photoModeState) {
+        collectFlowData(widgetModel.photoModeState) {
             onSwitchTakeType(it, true)
         }
     }
@@ -87,5 +87,5 @@ class CaptureTypeView @JvmOverloads constructor(
 
     override fun initView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) {}
 
-    override fun initWidgetModel(): CaptureTypeViewModel = CaptureTypeViewModel()
+    override fun initWidgetModel(): CaptureTypeWidgetModel = CaptureTypeWidgetModel()
 }

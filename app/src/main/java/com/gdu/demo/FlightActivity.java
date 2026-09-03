@@ -421,13 +421,9 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
         });
     }
 
-    public void showToast(String str) {
-        ThreadHelper.runOnUiThread(() -> Toast.makeText(this, str, Toast.LENGTH_SHORT).show());
-    }
-
     @Override
     protected void onStop() {
         super.onStop();
-        aiDetectHelper.stopTargetDetect();
+//        aiDetectHelper.stopTargetDetect();
     }
 }
