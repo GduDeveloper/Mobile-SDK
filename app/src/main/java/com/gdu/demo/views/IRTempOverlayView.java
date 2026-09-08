@@ -21,8 +21,23 @@ import java.util.List;
  * 坐标转换统一使用 {@link RectUtil}：
  * - 显示：协议坐标 → 屏幕坐标，用 {@link RectUtil#videoPoint2ScreenArg(int, int, int, int, int)}
  * - 选取：屏幕坐标 → 协议坐标，用 {@link RectUtil#screenPoint2VideoArg(int, int, int, int)}
+ * <p>
+ * 注意：GTIR800 测温协议坐标系为 800x600（X 0-799 / Y 0-599），而
+ * {@link RectUtil} 的缩放基准是 {@link GlobalVariable#FPVType} 对应的视频分辨率
+ * （默认 3 = 1920x1080）。因此协议坐标必须先归一化到视频分辨率坐标系，
+ * 再调用 RectUtil，否则框/点会整体偏移到屏幕左上角。
  */
 public class IRTempOverlayView extends View {
+
+    /**
+     * GTIR800 测温协议坐标系宽（0-799）
+     */
+    private static final int PROTO_WIDTH = 800;
+
+    /**
+     * GTIR800 测温协议坐标系高（0-599）
+     */
+    private static final int PROTO_HEIGHT = 600;
 
     /**
      * 测温点画笔
@@ -292,23 +307,90 @@ public class IRTempOverlayView extends View {
             return;
         }
         if (isDrag(upX, upY)) {
-            // 拖动选取测温区域：屏幕坐标 → 协议坐标
-            List<Short> proto = RectUtil.screenPoint2VideoArg(
+            // 拖动选取测温区域：屏幕坐标 → 视频坐标 → 协议坐标（800x600）
+            List<Short> video = RectUtil.screenPoint2VideoArg(
                     (int) mDownX, (int) upX, (int) mDownY, (int) upY);
-            if (proto == null || proto.size() < 4) {
+            if (video == null || video.size() < 4) {
                 return;
             }
-            int centerX = proto.get(0) + proto.get(2) / 2;
-            int centerY = proto.get(1) + proto.get(3) / 2;
-            mOnTempSelectListener.onAreaSelected(centerX, centerY, proto.get(2), proto.get(3));
+            // screenPoint2VideoArg 返回 [视频X, 视频Y, 视频宽, 视频高]（基于 FPVType 视频分辨率）
+            int videoX = video.get(0);
+            int videoY = video.get(1);
+            int videoW = video.get(2);
+            int videoH = video.get(3);
+            int centerX = videoToProtoX(videoX + videoW / 2);
+            int centerY = videoToProtoY(videoY + videoH / 2);
+            int protoW = videoToProtoX(videoW);
+            int protoH = videoToProtoY(videoH);
+            mOnTempSelectListener.onAreaSelected(centerX, centerY, protoW, protoH);
         } else {
-            // 点击选取测温点：屏幕坐标 → 协议坐标
-            List<Short> proto = RectUtil.screenPoint2VideoArg(
+            // 点击选取测温点：屏幕坐标 → 视频坐标 → 协议坐标（800x600）
+            List<Short> video = RectUtil.screenPoint2VideoArg(
                     (int) upX, (int) upX, (int) upY, (int) upY);
-            if (proto == null || proto.size() < 2) {
+            if (video == null || video.size() < 2) {
                 return;
             }
-            mOnTempSelectListener.onPointSelected(proto.get(0), proto.get(1));
+            int protoX = videoToProtoX(video.get(0));
+            int protoY = videoToProtoY(video.get(1));
+            mOnTempSelectListener.onPointSelected(protoX, protoY);
+        }
+    }
+
+    /**
+     * 协议坐标 X → 视频坐标 X（基于 FPVType 视频分辨率）
+     */
+    private int protoToVideoX(int x) {
+        return Math.round(x * getVideoWidth() / (float) PROTO_WIDTH);
+    }
+
+    /**
+     * 协议坐标 Y → 视频坐标 Y（基于 FPVType 视频分辨率）
+     */
+    private int protoToVideoY(int y) {
+        return Math.round(y * getVideoHeight() / (float) PROTO_HEIGHT);
+    }
+
+    /**
+     * 视频坐标 X → 协议坐标 X（800x600）
+     */
+    private int videoToProtoX(int videoX) {
+        return Math.round(videoX * PROTO_WIDTH / (float) getVideoWidth());
+    }
+
+    /**
+     * 视频坐标 Y → 协议坐标 Y（800x600）
+     */
+    private int videoToProtoY(int videoY) {
+        return Math.round(videoY * PROTO_HEIGHT / (float) getVideoHeight());
+    }
+
+    /**
+     * 当前 FPVType 对应的视频分辨率宽度
+     */
+    private int getVideoWidth() {
+        switch (GlobalVariable.FPVType) {
+            case 1:
+                return 640;
+            case 2:
+                return 1280;
+            case 3:
+            default:
+                return 1920;
+        }
+    }
+
+    /**
+     * 当前 FPVType 对应的视频分辨率高度
+     */
+    private int getVideoHeight() {
+        switch (GlobalVariable.FPVType) {
+            case 1:
+                return 480;
+            case 2:
+                return 720;
+            case 3:
+            default:
+                return 1080;
         }
     }
 
@@ -316,7 +398,8 @@ public class IRTempOverlayView extends View {
      * 协议坐标（点）转屏幕坐标
      */
     private float[] toScreenPoint(int x, int y) {
-        List<Short> screenPoint = RectUtil.videoPoint2ScreenArg(x, y, 0, 0, GlobalVariable.FPVType);
+        List<Short> screenPoint = RectUtil.videoPoint2ScreenArg(
+                protoToVideoX(x), protoToVideoY(y), 0, 0, GlobalVariable.FPVType);
         if (screenPoint == null || screenPoint.size() < 2) {
             return new float[]{x, y};
         }
@@ -327,7 +410,9 @@ public class IRTempOverlayView extends View {
      * 协议坐标（矩形）转屏幕坐标，返回 [left, top, right, bottom]
      */
     private float[] toScreenRect(int leftX, int leftY, int width, int height) {
-        List<Short> screenRect = RectUtil.videoPoint2ScreenArg(leftX, leftY, width, height, GlobalVariable.FPVType);
+        List<Short> screenRect = RectUtil.videoPoint2ScreenArg(
+                protoToVideoX(leftX), protoToVideoY(leftY),
+                protoToVideoX(width), protoToVideoY(height), GlobalVariable.FPVType);
         if (screenRect == null || screenRect.size() < 4) {
             return new float[]{leftX, leftY, leftX + width, leftY + height};
         }

@@ -1182,10 +1182,9 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         }
 
         if (hasArea) {
-            // 区域：优先用飞控上报的区域平均温坐标作为中心，否则用用户设置的区域参数
-            int areaCenterX = state.getAreaAvg_X() > 0 ? state.getAreaAvg_X() : mLastAreaCenterX;
-            int areaCenterY = state.getAreaAvg_Y() > 0 ? state.getAreaAvg_Y() : mLastAreaCenterY;
-            mIRTempOverlayView.setThermalArea(areaCenterX, areaCenterY, mLastAreaWidth, mLastAreaHeight, state.getAreaAvgTemp());
+            // 测温框：以用户设置的区域参数（中心 + 宽高，800x600 协议坐标）为准；
+            // 飞控回传的 AreaAvg_X/Y 是"区域平均温"测点坐标，并非框中心，不能用作框定位
+            mIRTempOverlayView.setThermalArea(mLastAreaCenterX, mLastAreaCenterY, mLastAreaWidth, mLastAreaHeight, state.getAreaAvgTemp());
         } else {
             mIRTempOverlayView.setThermalArea(-1, -1, 0, 0, 0f);
         }
