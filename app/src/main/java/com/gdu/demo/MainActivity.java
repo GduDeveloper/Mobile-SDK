@@ -2,11 +2,14 @@ package com.gdu.demo;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.gdu.common.error.GDUError;
+import com.gdu.config.GlobalVariable;
 import com.gdu.drone.GimbalType;
 import com.gdu.sdk.airlink.GDUAirLink;
 import com.gdu.sdk.base.BaseComponent;
@@ -56,6 +60,16 @@ public class MainActivity extends Activity {
 
 
     private void initView(){
+
+        WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        Point outSize = new Point();
+        windowManager.getDefaultDisplay().getRealSize(outSize);
+        int x = outSize.x;
+        int y = outSize.y;
+
+        GlobalVariable.screenWidth = x;     // 屏幕宽度（像素）
+        GlobalVariable.screenHeight = y;   // 屏幕高度（像素）
+        GlobalVariable.screenRealHeight = GlobalVariable.screenHeight;
         mRegisterAppButton = findViewById(R.id.register_app_button);
         mOpenButton = findViewById(R.id.open_button);
         mPairingButton = findViewById(R.id.pairing_button);

@@ -9,9 +9,15 @@ import android.graphics.SurfaceTexture;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.text.InputType;
 import android.view.TextureView;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,14 +29,18 @@ import com.gdu.camera.StorageState;
 import com.gdu.common.error.GDUError;
 import com.gdu.config.GduConfig;
 import com.gdu.config.GlobalVariable;
+import com.gdu.demo.views.IRTempOverlayView;
+import com.gdu.drone.TMSGimbalState;
 import com.gdu.gimbal.GimbalState;
 import com.gdu.gimbal.Rotation;
 import com.gdu.gimbal.RotationMode;
 import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.CameraStreamSettings;
+import com.gdu.sdk.camera.CameraThermalPalette;
 import com.gdu.sdk.camera.CameraVideoStreamSource;
 import com.gdu.sdk.camera.GDUCamera;
 import com.gdu.sdk.camera.SystemState;
+import com.gdu.sdk.camera.ThermalTemperatureMeasureMode;
 import com.gdu.sdk.camera.VideoFeeder;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.codec.ImageProcessingManager;
@@ -38,6 +48,7 @@ import com.gdu.sdk.gimbal.GDUGimbal;
 import com.gdu.sdk.products.GDUAircraft;
 import com.gdu.sdk.util.CommonCallbacks;
 import com.gdu.sdk.util.FileSaveUtil;
+import com.gdu.util.RectUtil;
 import com.gdu.util.ThreadHelper;
 import com.gdu.util.logs.RonLog;
 
@@ -56,6 +67,7 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     private VideoFeeder.VideoDataListener videoDataListener = null;
     private GDUCodecManager codecManager = null;
 
+    private FrameLayout mVideoContainerLayout;
     private TextureView mGduPlayView;
     private TextView mInfoTextView;
     private TextView mStorageInfoTextView;
@@ -67,6 +79,49 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     private GDUCamera mGDUCamera;
 
     private GDUGimbal mGDUGimbal;
+
+    private Handler mHandler;
+
+    /**
+     * 红外测温叠加层（实时显示测温点和测温框）
+     */
+    private IRTempOverlayView mIRTempOverlayView;
+
+    /**
+     * 测温叠加层刷新周期（毫秒）
+     */
+    private static final long IR_TEMP_REFRESH_INTERVAL = 500L;
+
+    /**
+     * 用户最近一次设置的测温点（协议坐标），-1 表示未设置
+     */
+    private int mLastSpotX = -1;
+
+    private int mLastSpotY = -1;
+
+    /**
+     * 用户最近一次设置的测温区域（协议坐标），-1 表示未设置
+     */
+    private int mLastAreaCenterX = -1;
+
+    private int mLastAreaCenterY = -1;
+
+    private int mLastAreaWidth = 0;
+
+    private int mLastAreaHeight = 0;
+
+    /**
+     * 测温叠加层刷新任务
+     */
+    private final Runnable mIRTempRefreshTask = new Runnable() {
+        @Override
+        public void run() {
+            updateIRTempOverlay();
+            if (mHandler != null) {
+                mHandler.postDelayed(this, IR_TEMP_REFRESH_INTERVAL);
+            }
+        }
+    };
 
     private ImageProcessingManager mImageProcessingManager;
     private ImageView mYUVImageView;
@@ -81,7 +136,18 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         initView();
         initData();
         initListener();
+        initHandler();
+        mHandler.postDelayed(mIRTempRefreshTask, IR_TEMP_REFRESH_INTERVAL);
 //        timeShow();
+    }
+
+    private void initHandler() {
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+
+            }
+        };
     }
 
     private void initData() {
@@ -185,8 +251,64 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
 
 
     private void initView() {
+        mVideoContainerLayout = findViewById(R.id.video_container_layout);
         mGduPlayView = findViewById(R.id.video_texture_view);
         mGduPlayView.setOpaque(false);
+
+        // 红外测温叠加层：覆盖在视频画面之上，实时显示测温点和测温框，支持触摸选取
+        mIRTempOverlayView = new IRTempOverlayView(mContext);
+        mVideoContainerLayout.addView(mIRTempOverlayView,
+                new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mIRTempOverlayView.setOnTempSelectListener(new IRTempOverlayView.OnTempSelectListener() {
+            @Override
+            public void onPointSelected(final int protoX, final int protoY) {
+                // 点击画面选取测温点：屏幕坐标已由 RectUtil.screenPoint2VideoArg 转为协议坐标
+                runOnUiThread(() -> {
+                    if (mGDUCamera == null) {
+                        toast("相机未连接");
+                        return;
+                    }
+                    mGDUCamera.setThermalSpotMeteringTargetPoint((short) protoX, (short) protoY, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError error) {
+                            if (error == null) {
+                                mLastSpotX = protoX;
+                                mLastSpotY = protoY;
+                                toast("设置测温点成功：" + protoX + "," + protoY);
+                            } else {
+                                toast("设置测温点失败：" + error.getDescription());
+                            }
+                        }
+                    });
+                });
+            }
+
+            @Override
+            public void onAreaSelected(final int centerX, final int centerY, final int width, final int height) {
+                // 拖动画面选取测温区域：屏幕坐标已由 RectUtil.screenPoint2VideoArg 转为协议坐标
+                runOnUiThread(() -> {
+                    if (mGDUCamera == null) {
+                        toast("相机未连接");
+                        return;
+                    }
+                    mGDUCamera.setThermalMeteringArea((short) width, (short) height, (short) centerX, (short) centerY, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError error) {
+                            if (error == null) {
+                                mLastAreaCenterX = centerX;
+                                mLastAreaCenterY = centerY;
+                                mLastAreaWidth = width;
+                                mLastAreaHeight = height;
+                                toast("设置测温区域成功：" + width + "," + height + "," + centerX + "," + centerY);
+                            } else {
+                                toast("设置测温区域失败：" + error.getDescription());
+                            }
+                        }
+                    });
+                });
+            }
+        });
+
         mInfoTextView = (TextView) findViewById(R.id.camera_info_textview);
         mStorageInfoTextView = (TextView) findViewById(R.id.camera_storage_info_textview);
         mVersionTextView = (TextView) findViewById(R.id.version_textview);
@@ -570,6 +692,73 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
             case R.id.btn_set_record_storage:
                     showStorageConfigDialog(false);
                 break;
+            case R.id.btn_set_thermal_palette:
+                showThermalPaletteDialog();
+                break;
+            case R.id.btn_get_thermal_palette:
+                mGDUCamera.getThermalPalette(new CommonCallbacks.CompletionCallbackWith<CameraThermalPalette>() {
+                    @Override
+                    public void onSuccess(CameraThermalPalette palette) {
+                        toast("获取伪彩成功：" + palette.description());
+                    }
+
+                    @Override
+                    public void onFailure(GDUError var1) {
+                        toast("获取伪彩失败：" + var1.getDescription());
+                    }
+                });
+                break;
+            case R.id.btn_set_thermal_measure_mode:
+                showThermalMeasureModeDialog();
+                break;
+            case R.id.btn_set_thermal_spot_point:
+                showThermalSpotPointDialog();
+                break;
+            case R.id.btn_set_thermal_area:
+                showThermalAreaDialog();
+                break;
+            case R.id.btn_enable_thermal_temp:
+                mGDUCamera.setThermalTemperatureDataEnabled(true, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("开启测温成功");
+                        } else {
+                            toast("开启测温失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_disable_thermal_temp:
+                mGDUCamera.setThermalTemperatureDataEnabled(false, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("关闭测温成功");
+                        } else {
+                            toast("关闭测温失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_thermal_temp_data:
+                mGDUCamera.getThermalTemperatureData(new CommonCallbacks.CompletionCallbackWith<TMSGimbalState>() {
+                    @Override
+                    public void onSuccess(TMSGimbalState state) {
+                        toast("最高温：" + state.getHighestTemp()
+                                + " 最低温：" + state.getLowestTemp()
+                                + " 中心温：" + state.getCenterTemp()
+                                + " 光标温：" + state.getCursorPointTemp()
+                                + " 区域平均温：" + state.getAreaAvgTemp()
+                        );
+                    }
+
+                    @Override
+                    public void onFailure(GDUError var1) {
+                        toast("获取测温数据失败：" + var1.getDescription());
+                    }
+                });
+                break;
         }
     }
 
@@ -604,6 +793,9 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacks(mIRTempRefreshTask);
+        }
         if (codecManager != null) {
             codecManager.onDestroy();
         }
@@ -767,5 +959,249 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
         } else {
             mGDUCamera.getRecordCameraStreamSettings(callback);
         }
+    }
+
+    private void showThermalPaletteDialog() {
+        if (mGDUCamera == null) {
+            toast("相机未连接");
+            return;
+        }
+        final List<CameraThermalPalette> palettes = new ArrayList<>();
+        for (CameraThermalPalette palette : CameraThermalPalette.values()) {
+            if (palette != CameraThermalPalette.UNKNOWN) {
+                palettes.add(palette);
+            }
+        }
+        String[] items = new String[palettes.size()];
+        for (int i = 0; i < palettes.size(); i++) {
+            items[i] = palettes.get(i).value() + " " + palettes.get(i).description();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("选择红外伪彩");
+        builder.setItems(items, (dialog, which) -> {
+            final CameraThermalPalette palette = palettes.get(which);
+            mGDUCamera.setThermalPalette(palette, new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(GDUError error) {
+                    if (error == null) {
+                        toast("设置伪彩成功：" + palette.description());
+                    } else {
+                        toast("设置伪彩失败：" + error.getDescription());
+                    }
+                }
+            });
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    /**
+     * 选择红外测温模式
+     */
+    private void showThermalMeasureModeDialog() {
+        if (mGDUCamera == null) {
+            toast("相机未连接");
+            return;
+        }
+        final List<ThermalTemperatureMeasureMode> modes = new ArrayList<>();
+        for (ThermalTemperatureMeasureMode mode : ThermalTemperatureMeasureMode.values()) {
+            if (mode != ThermalTemperatureMeasureMode.UNKNOWN) {
+                modes.add(mode);
+            }
+        }
+        String[] items = new String[modes.size()];
+        for (int i = 0; i < modes.size(); i++) {
+            items[i] = modes.get(i).value() + " " + modes.get(i).description();
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("选择红外测温模式");
+        builder.setItems(items, (dialog, which) -> {
+            final ThermalTemperatureMeasureMode mode = modes.get(which);
+            mGDUCamera.setThermalMeasurementMode(mode, new CommonCallbacks.CompletionCallback() {
+                @Override
+                public void onResult(GDUError error) {
+                    if (error == null) {
+                        toast("设置测温模式成功：" + mode.description());
+                    } else {
+                        toast("设置测温模式失败：" + error.getDescription());
+                    }
+                }
+            });
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    /**
+     * 设置红外测温光标点位置（点测温）
+     * 输入屏幕坐标，经 RectUtil.screenPoint2VideoArg 转换为协议坐标后发送
+     */
+    private void showThermalSpotPointDialog() {
+        if (mGDUCamera == null) {
+            toast("相机未连接");
+            return;
+        }
+        final EditText xEt = new EditText(mContext);
+        xEt.setHint("屏幕X坐标");
+        xEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        final EditText yEt = new EditText(mContext);
+        yEt.setHint("屏幕Y坐标");
+        yEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(xEt);
+        layout.addView(yEt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("设置测温点（输入屏幕坐标）");
+        builder.setView(layout);
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            try {
+                int screenX = Integer.parseInt(xEt.getText().toString().trim());
+                int screenY = Integer.parseInt(yEt.getText().toString().trim());
+                // 屏幕坐标 → 协议坐标（与 ZorroRealControlActivity 选取逻辑一致，经 RectUtil 转换）
+                List<Short> proto = RectUtil.screenPoint2VideoArg(screenX, screenX, screenY, screenY);
+                if (proto == null || proto.size() < 2) {
+                    toast("坐标转换失败");
+                    return;
+                }
+                short x = proto.get(0);
+                short y = proto.get(1);
+                mGDUCamera.setThermalSpotMeteringTargetPoint(x, y, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            mLastSpotX = x;
+                            mLastSpotY = y;
+                            toast("设置测温点成功：" + x + "," + y);
+                        } else {
+                            toast("设置测温点失败：" + error.getDescription());
+                        }
+                    }
+                });
+            } catch (NumberFormatException e) {
+                toast("请输入数字");
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    /**
+     * 设置红外测温矩形区域（区域测温）
+     * 输入屏幕坐标（左上角 + 右下角），经 RectUtil.screenPoint2VideoArg 转换为协议坐标后发送
+     */
+    private void showThermalAreaDialog() {
+        if (mGDUCamera == null) {
+            toast("相机未连接");
+            return;
+        }
+        final EditText leftXEt = new EditText(mContext);
+        leftXEt.setHint("左上角X（屏幕坐标）");
+        leftXEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        final EditText leftYEt = new EditText(mContext);
+        leftYEt.setHint("左上角Y（屏幕坐标）");
+        leftYEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        final EditText rightXEt = new EditText(mContext);
+        rightXEt.setHint("右下角X（屏幕坐标）");
+        rightXEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        final EditText rightYEt = new EditText(mContext);
+        rightYEt.setHint("右下角Y（屏幕坐标）");
+        rightYEt.setInputType(InputType.TYPE_CLASS_NUMBER);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
+        layout.addView(leftXEt);
+        layout.addView(leftYEt);
+        layout.addView(rightXEt);
+        layout.addView(rightYEt);
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("设置测温区域（输入屏幕坐标）");
+        builder.setView(layout);
+        builder.setPositiveButton("确定", (dialog, which) -> {
+            try {
+                int leftX = Integer.parseInt(leftXEt.getText().toString().trim());
+                int leftY = Integer.parseInt(leftYEt.getText().toString().trim());
+                int rightX = Integer.parseInt(rightXEt.getText().toString().trim());
+                int rightY = Integer.parseInt(rightYEt.getText().toString().trim());
+                // 屏幕坐标 → 协议坐标（与 ZorroRealControlActivity irSetTempArea 逻辑一致，经 RectUtil 转换）
+                List<Short> proto = RectUtil.screenPoint2VideoArg(leftX, rightX, leftY, rightY);
+                if (proto == null || proto.size() < 4) {
+                    toast("坐标转换失败");
+                    return;
+                }
+                short width = proto.get(2);
+                short height = proto.get(3);
+                short centerX = (short) (proto.get(0) + width / 2);
+                short centerY = (short) (proto.get(1) + height / 2);
+                mGDUCamera.setThermalMeteringArea(width, height, centerX, centerY, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            mLastAreaCenterX = centerX;
+                            mLastAreaCenterY = centerY;
+                            mLastAreaWidth = width;
+                            mLastAreaHeight = height;
+                            toast("设置测温区域成功：" + width + "," + height + "," + centerX + "," + centerY);
+                        } else {
+                            toast("设置测温区域失败：" + error.getDescription());
+                        }
+                    }
+                });
+            } catch (NumberFormatException e) {
+                toast("请输入数字");
+            }
+        });
+        builder.setNegativeButton("取消", null);
+        builder.show();
+    }
+
+    /**
+     * 更新红外测温叠加层：从 GlobalVariable.sInfraredCameraStatus 读取
+     * 实时温度点/区域数据，叠加显示在视频画面上。
+     * <p>
+     * 测温点取"光标点"（用户设置的测温点），测温框取"区域平均温坐标"（区域测温时由飞控上报）；
+     * 用户手动设置的测温区域参数作为框的兜底。
+     */
+    private void updateIRTempOverlay() {
+        if (mIRTempOverlayView == null) {
+            return;
+        }
+        TMSGimbalState state = GlobalVariable.sInfraredCameraStatus;
+        if (state == null) {
+            return;
+        }
+        boolean hasSpot = mLastSpotX >= 0 && mLastSpotY >= 0;
+        boolean hasArea = mLastAreaCenterX >= 0 && mLastAreaCenterY >= 0 && mLastAreaWidth > 0 && mLastAreaHeight > 0;
+
+        if (hasSpot) {
+            // 光标点：优先用飞控上报的光标坐标，否则用用户设置的坐标
+            int spotX = state.getCursorPoint_X() > 0 ? state.getCursorPoint_X() : mLastSpotX;
+            int spotY = state.getCursorPoint_Y() > 0 ? state.getCursorPoint_Y() : mLastSpotY;
+            mIRTempOverlayView.setSpotPoint(spotX, spotY, state.getCursorPointTemp());
+        } else {
+            mIRTempOverlayView.setSpotPoint(-1, -1, 0f);
+        }
+
+        if (hasArea) {
+            // 区域：优先用飞控上报的区域平均温坐标作为中心，否则用用户设置的区域参数
+            int areaCenterX = state.getAreaAvg_X() > 0 ? state.getAreaAvg_X() : mLastAreaCenterX;
+            int areaCenterY = state.getAreaAvg_Y() > 0 ? state.getAreaAvg_Y() : mLastAreaCenterY;
+            mIRTempOverlayView.setThermalArea(areaCenterX, areaCenterY, mLastAreaWidth, mLastAreaHeight, state.getAreaAvgTemp());
+        } else {
+            mIRTempOverlayView.setThermalArea(-1, -1, 0, 0, 0f);
+        }
+
+        // 最高温/最低温点
+        if (state.getHighestTempPoint_X() > 0 && state.getHighestTempPoint_Y() > 0) {
+            mIRTempOverlayView.setHighestTempPoint(state.getHighestTempPoint_X(), state.getHighestTempPoint_Y(), state.getHighestTemp());
+        } else {
+            mIRTempOverlayView.setHighestTempPoint(-1, -1, 0f);
+        }
+        if (state.getLowestTempPoint_X() > 0 && state.getLowestTempPoint_Y() > 0) {
+            mIRTempOverlayView.setLowestTempPoint(state.getLowestTempPoint_X(), state.getLowestTempPoint_Y(), state.getLowestTemp());
+        } else {
+            mIRTempOverlayView.setLowestTempPoint(-1, -1, 0f);
+        }
+
+        mIRTempOverlayView.postInvalidate();
     }
 }

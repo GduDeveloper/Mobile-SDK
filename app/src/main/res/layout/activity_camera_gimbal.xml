@@ -5,10 +5,15 @@
     android:background="#000000"
     android:orientation="vertical">
 
-    <TextureView
-        android:id="@+id/video_texture_view"
+    <FrameLayout
+        android:id="@+id/video_container_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <TextureView
+            android:id="@+id/video_texture_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/camera_layout"
@@ -249,10 +254,72 @@
             android:layout_height="wrap_content"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/thermal_palette_layout"
+        android:layout_below="@+id/camera_fun1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_set_thermal_palette"
+            android:text="设置红外伪彩"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_get_thermal_palette"
+            android:text="获取红外伪彩"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/thermal_measure_layout"
+        android:layout_below="@+id/thermal_palette_layout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_set_thermal_measure_mode"
+            android:text="设置测温模式"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_set_thermal_spot_point"
+            android:text="设置测温点"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_set_thermal_area"
+            android:text="设置测温区域"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_enable_thermal_temp"
+            android:text="开启测温"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_disable_thermal_temp"
+            android:text="关闭测温"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:id="@+id/btn_get_thermal_temp_data"
+            android:text="获取测温数据"
+            android:onClick="onClick"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_below="@+id/camera_fun1">
+        android:layout_below="@+id/thermal_measure_layout">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
