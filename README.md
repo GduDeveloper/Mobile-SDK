@@ -165,8 +165,8 @@ K05 车载机库安装于车辆顶部，与配套无人机组成车载无人机�
 - 机库对外提供 WiFi（AP）、4G 网络，行业版支持有线网口；
 - 车机 APP 连接机库 WiFi 后，通过蓝牙与机库对频，并在舱门关闭的状态下完成无人机对频；
 - MSDK 以机巢模式发现并连接机库与无人机，经无线链路下发飞行控制、接收图传与状态数据。
-
-![msdk_v4_for_k05](document/drone_communication_diagram_v5.png)
+- 
+![msdk_v4_for_k05.png](document/msdk_v4_for_k05.png)
 
 #### MSDK V4 适配步骤
 
