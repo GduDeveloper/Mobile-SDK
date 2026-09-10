@@ -47,7 +47,7 @@ SDK 提供一组高层 API，便于控制无人机与获取数据。主要接口
 示例与调用方式详见上方的 SDK_API 文档链接。
 
 ## 使用场景
-### MSDK 配合图传盒子 — 机场场景
+### 一、MSDK 配合图传盒子 — 机场场景
    本设备为**无人机图传 + 双 RTK 一体化接收盒子**，集成无线图传接收、双路 RTK 定位接收模块，支持 Android MSDK 对接，可对接工控板、带网口 Android 设备，适配车机、自动化机库、船载等地面 / 舰载无人机地面接收场景。
 
 - 设备对外接口：双 RTK 天线接口（左 RTK、右 RTK）、双图传天线接口（图传 1、图传 2）；电源接口、千兆网口
@@ -142,6 +142,63 @@ SDK 提供一组高层 API，便于控制无人机与获取数据。主要接口
 3. 设备工作风扇不要堵塞，保证散热，高温会造成链路卡顿、断连；
 4. RTK 天线尽量远离大功率电源、电机等电磁干扰源；
 5. 船载 / 车载震动环境使用，所有接头做好防震紧固，避免接头松动断连。
+
+### 二、MSDK V4 适配 K05 车载机库（机巢场景）
+
+本节介绍如何基于 **GDU Android MSDK V4**（SDK 版本号 V4.0）在车机 / 机库控制终端上适配 **普宙科技天鹰车载无人机系统 K05 系列车载机库**（K05 机库），实现无人机随车部署、移动起降、任务作业与自动返航回舱的一体化集成。
+
+#### 产品概述
+
+K05 车载机库安装于车辆顶部，与配套无人机组成车载无人机系统，适用于公路交通巡检、山区林地巡护监测、地表测绘、应急搜救、山林火情监测等移动作业场景：
+
+- 模块化设计，快速拆装、即刻出发，兼容硬派越野车、SUV、轿车等多种车型；
+- 支持最高 30km/h 车速下的移动起降，车辆行驶中可一键跟飞，并支持行驶中精准返航回舱；
+- 支持定点绕飞、跟踪飞行、指点飞行等多种智能飞行模式；
+- 云台搭载 4800 万像素广角和变焦相机，支持 10 倍连续光学变焦、160 倍混合变焦，三轴机械云台 + EIS 数字防抖联合增稳；
+- 具备高精度红外感知与热成像能力，支持 RTK、通讯喊话器、4G/5G、探照灯等多元载荷；
+- 多端操控、一屏掌控。
+
+#### 系统通信架构
+
+车机 / 机库控制终端（Android 设备）运行基于 MSDK V4 的应用，通过无线Wifi网络与K05机库及舱内无人机建立通信链路：
+
+- 机库对外提供 WiFi（AP）、4G 网络，行业版支持有线网口；
+- 车机 APP 连接机库 WiFi 后，通过蓝牙与机库对频，并在舱门关闭的状态下完成无人机对频；
+- MSDK 以机巢模式发现并连接机库与无人机，经无线链路下发飞行控制、接收图传与状态数据。
+
+![msdk_v4_for_k05](document/drone_communication_diagram_v5.png)
+
+#### MSDK V4 适配步骤
+
+1. **集成 SDK V4**：将 `GduLibrary-*.aar` 及依赖库放入 libs 目录，配置 `dependencies` 与 `jniLibs.srcDirs`，声明网络、定位等所需权限。
+2. **设置机巢连接场景**：注册 SDK 前将连接场景设置为机巢模式：
+   ```java
+   SDKManager.getInstance().setConnectScene(ConnectScene.HANGAR);
+   SDKManager.getInstance().registerApp(context, callback);
+   ```
+3. **连接机库与无人机**：`registerApp` 成功后调用 `SDKManager.getInstance().startConnectionToProduct()` 建立连接，通过 `onProductConnect` 回调获取 `Aircraft` 实例。
+4. **开启无遥控器持续中值发送**（机库场景通常无物理遥控器摇杆）：
+   ```java
+   aircraft.getRemoteController().setContinueSendRCControlMidValueEnable(true, callback);
+   ```
+   可避免飞行器起飞后误触发摇杆丢失降落或航线中断。
+5. **机库控制**：通过 `aircraft.nestController`（`NestController` 机库控制组件）实现机库相关控制。
+6. **起飞与任务**：调用 `flightController.startTakeoff(...)` 一键起飞；通过 Mission 模块（如 `WaypointMissionOperator`）下发航线任务。
+7. **返航回舱**：调用移动精准返航或车载机库精准返航：
+   ```java
+   flightController.exactBack(true, callback);                                        // 移动精准返航（车载/移动平台降落）
+   flightController.carNestExactBack(true, frontDis, right, topDis, returnType, callback); // 车载机库精准返航
+   ```
+   降落流程分为高空进近、二维码靶标视觉识别定位、精准对准降落三个阶段；发生大风或标靶遮挡异常时，系统最多自动复飞重试 3 次，仍失败则自动直飞预设备降点安全降落。
+
+
+#### 注意事项
+
+- 移动起降时车速不超过 30km/h，并保持匀速直线行驶；起降风速不超过 8m/s、飞行风速不超过 12m/s；
+- 机库供电电压 24V-26V，可选 220V 交流、车载点烟器（12V）、车辆 V2L 或 12V-48V 电源转接盒供电；机库电池仅支撑舱门开 / 关，接入外接电源后机库才可为无人机充电；
+- 无人机对频需在舱内且舱门关闭，未对频的无人机无法展示状态、无法通过 APP 控制；
+- 车辆行驶前确认舱门已关闭（车速超 5km/h 且舱门未关闭时，机库会自动关闭舱门）；
+- 机库防护等级 IP56，禁止高压水枪冲洗；大风、降雪、下雨、有雾等恶劣天气请勿飞行。
 
 ## 七、支持
    有问题可以联系dev@gdu-tech.com
