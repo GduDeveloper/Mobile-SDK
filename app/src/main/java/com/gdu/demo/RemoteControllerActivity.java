@@ -13,10 +13,14 @@ import com.gdu.common.error.GDUError;
 import com.gdu.remotecontroller.AircraftMappingStyle;
 import com.gdu.remotecontroller.MultiControlInfo;
 import com.gdu.remotecontroller.MultiControlMode;
+import com.gdu.remotecontroller.RCState;
 import com.gdu.sdk.remotecontroller.DRTK;
 import com.gdu.sdk.remotecontroller.DRTKBaseStationCoord;
+import com.gdu.sdk.remotecontroller.DRTKSelfCalibrateCallback;
+import com.gdu.sdk.remotecontroller.DRTKStateInfo;
 import com.gdu.sdk.remotecontroller.GDURemoteController;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.logs.AppLog;
 
 import java.util.List;
 
@@ -25,8 +29,11 @@ import java.util.List;
  */
 public class RemoteControllerActivity extends Activity implements View.OnClickListener {
 
+    private static final String TAG = "RemoteControllerActivity";
     private Context mContext;
     private GDURemoteController mGDURemoteController;
+
+    private TextView mDRTKStateTextView;
 
     private int mDRTKModeIndex = 0;
 
@@ -41,11 +48,45 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
 
 
     private void initView() {
-
+        mDRTKStateTextView = findViewById(R.id.drtk_state_textview);
+        mDRTKStateTextView.setText("DRTK状态：等待更新");
     }
 
     private void initData() {
         mGDURemoteController = SdkDemoApplication.getAircraftInstance().getRemoteController();
+        mGDURemoteController.setRCStateCallback(new RCState.Callback() {
+            @Override
+            public void onUpdate(RCState state) {
+                AppLog.i(TAG,"test RCState Lat " + state.getMobileStationLat()
+                        + " Lng " + state.getMobileStationLng() + " Yaw " + state.getMobileStationYaw() + " enable " + state.isMobileStationEnable());
+            }
+        });
+        mGDURemoteController.getDRTK().setNestDRTKSelfCalibrateCallback(new DRTKSelfCalibrateCallback() {
+            @Override
+            public void onCalibrateStart() {
+                toastText("DRTK标定开始：");
+            }
+
+            @Override
+            public void onCalibrateStatus(Status status) {
+                toastText("DRTK标定进度：" + status);
+            }
+
+            @Override
+            public void onCalibrateEnd() {
+                toastText("DRTK标定结束：");
+            }
+        });
+        mGDURemoteController.getDRTK().setDRTKStateCallback(new DRTKStateInfo.Callback() {
+            @Override
+            public void onUpdate(DRTKStateInfo drtkStateInfo) {
+                if (drtkStateInfo == null) {
+                    showText(mDRTKStateTextView, "DRTK状态：null");
+                    return;
+                }
+                showText(mDRTKStateTextView, formatDRTKStateInfo(drtkStateInfo));
+            }
+        });
     }
 
     @Override
@@ -439,5 +480,16 @@ public class RemoteControllerActivity extends Activity implements View.OnClickLi
                 Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private String formatDRTKStateInfo(DRTKStateInfo drtkStateInfo) {
+        String latitudeDirection = drtkStateInfo.getLatitudeDirection() == 0 ? "N" : "S";
+        String longitudeDirection = drtkStateInfo.getLongitudeDirection() == 0 ? "E" : "W";
+        return "UTC=" + drtkStateInfo.getUtcTime() + "\n"
+                + "纬度=" + drtkStateInfo.getLatitude() + latitudeDirection + "\n"
+                + "经度=" + drtkStateInfo.getLongitude() + longitudeDirection + "\n"
+                + "GPS状态=" + drtkStateInfo.getGpsStatus() + "\n"
+                + "卫星数=" + drtkStateInfo.getSatelliteNums() + "\n"
+                + "海拔高度=" + drtkStateInfo.getOrthometricHeight();
     }
 }
