@@ -458,7 +458,17 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                 });
                 break;
             case R.id.btn_get_digital_zoom:
-               float zoom =  mGDUCamera.getCurrentZoom();
+               mGDUCamera.getOpticalZoomFactor(new CommonCallbacks.CompletionCallbackWith<Float>() {
+                   @Override
+                   public void onSuccess(Float aFloat) {
+
+                   }
+
+                   @Override
+                   public void onFailure(GDUError gduError) {
+
+                   }
+               });
                 break;
             case R.id.btn_reset:
                 mGDUGimbal.reset(new CommonCallbacks.CompletionCallback() {

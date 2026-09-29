@@ -84,8 +84,18 @@ public class S220CustomSizeFocusHelper extends CustomSizeFocusHelper {
         } else {
             mRangeSeekBar.setVisibility(View.GONE);
         }
-        float currentZoom = mGduCamera.getCurrentZoom();
-        updateCurFocusSize(currentZoom);
+        mGduCamera.getOpticalZoomFactor(new CommonCallbacks.CompletionCallbackWith<Float>() {
+            @Override
+            public void onSuccess(Float currentZoom) {
+                updateCurFocusSize(currentZoom);
+            }
+
+            @Override
+            public void onFailure(GDUError gduError) {
+
+            }
+        });
+
     }
 
     @Override
