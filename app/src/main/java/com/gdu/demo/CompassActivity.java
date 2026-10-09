@@ -13,6 +13,7 @@ import com.gdu.common.error.GDUError;
 import com.gdu.flightcontroller.CompassCalibrationState;
 import com.gdu.sdk.flightcontroller.Compass;
 import com.gdu.sdk.util.CommonCallbacks;
+import com.gdu.util.logger.MyLogUtils;
 
 /**
  * 指南针校准
@@ -37,6 +38,7 @@ public class CompassActivity extends Activity implements View.OnClickListener {
         mCompass.setCalibrationStateCallback(new CompassCalibrationState.Callback() {
             @Override
             public void onUpdate(CompassCalibrationState state) {
+                MyLogUtils.i("state = " + state.name() + "");
                 showText(mCalibrationStateTextView, state.name());
             }
         });
