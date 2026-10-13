@@ -18,6 +18,7 @@ import com.gdu.drone.LocationCoordinate2D;
 import com.gdu.drone.LocationCoordinate3D;
 import com.gdu.flightcontroller.ConnectionFailSafeBehavior;
 import com.gdu.gimbal.RotationMode;
+import com.gdu.sdk.flightcontroller.ConnectionFailSafeState;
 import com.gdu.rtk.PositioningSolution;
 import com.gdu.sdk.base.BaseProduct;
 import com.gdu.sdk.flightcontroller.AircraftOperationScenarioMode;
@@ -263,6 +264,39 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
     }
 
     /**
+     * 设置机场备降点高度（单位 cm，测试值 3200 cm = 32 m）
+     */
+    public void setDockAlternateHeight() {
+        mGDUFlightController.setReturnToDockAlternateHeight(3200, new CommonCallbacks.CompletionCallback() {
+            @Override
+            public void onResult(GDUError error) {
+                if (error == null) {
+                    toastText("设置备降点高度成功: 3200 cm");
+                } else {
+                    toastText("设置备降点高度失败");
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取机场备降点高度（单位 cm）
+     */
+    public void getDockAlternateHeight() {
+        mGDUFlightController.getReturnToDockAlternateHeight(new CommonCallbacks.CompletionCallbackWith<Integer>() {
+            @Override
+            public void onSuccess(Integer heightCm) {
+                toastText("获取备降点高度: " + heightCm + " cm");
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取备降点高度失败");
+            }
+        });
+    }
+
+    /**
      * 获取飞控版本
      */
     private void getFCVersion(){
@@ -415,6 +449,35 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             @Override
             public void onFailure(GDUError var1) {
                 toastText("获取失联行为失败 " + var1);
+            }
+        });
+    }
+
+    private void setConnectionFailSafeBehaviorWithTime() {
+        // 测试值：返航动作，单次失联 30 秒
+        mGDUFlightController.setConnectionFailSafeBehavior(ConnectionFailSafeBehavior.GO_HOME,
+                (short) 30, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError var1) {
+                        if (var1 == null) {
+                            toastText("设置失联行为+时间成功");
+                        } else {
+                            toastText("设置失联行为+时间失败 " + var1);
+                        }
+                    }
+                });
+    }
+
+    private void getConnectionFailSafeStateTest() {
+        mGDUFlightController.getConnectionFailSafeState(new CommonCallbacks.CompletionCallbackWith<ConnectionFailSafeState>() {
+            @Override
+            public void onSuccess(ConnectionFailSafeState state) {
+                toastText("获取失联配置成功: " + state);
+            }
+
+            @Override
+            public void onFailure(GDUError var1) {
+                toastText("获取失联配置失败 " + var1);
             }
         });
     }
@@ -675,6 +738,12 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
             case R.id.get_go_home_height_button:
                 getGoHomeHeightInMeters();
                 break;
+            case R.id.set_dock_alternate_height_button:
+                setDockAlternateHeight();
+                break;
+            case R.id.get_dock_alternate_height_button:
+                getDockAlternateHeight();
+                break;
             case R.id.get_version_button:
                 getFCVersion();
                 break;
@@ -730,6 +799,12 @@ public class FlightControllerActivity extends Activity implements View.OnClickLi
                 break;
             case R.id.set_connection_fail_safe_behavior_button:
                 setConnectionFailSafeBehavior();
+                break;
+            case R.id.set_connection_fail_safe_with_time_button:
+                setConnectionFailSafeBehaviorWithTime();
+                break;
+            case R.id.get_connection_fail_safe_state_button:
+                getConnectionFailSafeStateTest();
                 break;
             case R.id.set_low_battery_warning_threshold_button:
                 setLowBatteryWarningThreshold();

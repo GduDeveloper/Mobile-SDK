@@ -104,6 +104,18 @@
                     android:text="获取返航高度"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/set_dock_alternate_height_button"
+                    android:onClick="onClick"
+                    android:text="设置备降点高度"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:id="@+id/get_dock_alternate_height_button"
+                    android:onClick="onClick"
+                    android:text="获取备降点高度"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
                 <TextView
                     android:id="@+id/go_home_height_textview"
                     android:layout_width="wrap_content"
@@ -324,6 +336,18 @@
                     android:id="@+id/get_connection_fail_safe_behavior_button"
                     android:onClick="onClick"
                     android:text="获取失联行为"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/set_connection_fail_safe_with_time_button"
+                    android:onClick="onClick"
+                    android:text="设置失联行为+时间"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <Button
+                    android:id="@+id/get_connection_fail_safe_state_button"
+                    android:onClick="onClick"
+                    android:text="获取失联行为+时间"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView

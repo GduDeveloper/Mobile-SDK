@@ -129,11 +129,12 @@ public class FlightActivity extends FragmentActivity implements TextureView.Surf
                 public void onSuccess(PerceptionInformation information) {
                     List<ObstaclePoint> pointList = information.getObstaclePoints();
                     List<ObstaclePoint> showPointList = new ArrayList<>();
-                    for (ObstaclePoint point : pointList) {
-                        if (point.getDirection() <= 4) {
-                            showPointList.add(point);
+                    if (pointList != null) {
+                        for (ObstaclePoint point : pointList) {
+                            if (point.getDirection() <= 4) {
+                                showPointList.add(point);
+                            }
                         }
-
                     }
                     runOnUiThread(() -> viewBinding.fpvRv.setObstacle(showPointList,300));
                 }

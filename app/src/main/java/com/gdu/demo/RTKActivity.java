@@ -9,7 +9,9 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.gdu.api.GduRtkManager;
 import com.gdu.common.error.GDUError;
+import com.gdu.drone.RTKNetConnectStatus;
 import com.gdu.rtk.NetworkServiceSettings;
 import com.gdu.rtk.NetworkServiceState;
 import com.gdu.rtk.RTKState;
@@ -113,6 +115,12 @@ public class RTKActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (SdkDemoApplication.getAircraftInstance().getFlightController() != null) {
+            SdkDemoApplication.getAircraftInstance().getFlightController().setStateCallback(null);
+        }
+        if (rtk != null) {
+            rtk.setStateCallback(null);
+        }
     }
 
     @Override
@@ -146,15 +154,66 @@ public class RTKActivity extends Activity implements View.OnClickListener {
                     });
                 }
                 break;
+            case R.id.base_station_rtk_button:
+                if (rtk != null) {
+                    rtk.setReferenceStationSource(ReferenceStationSource.BASE_STATION, new CommonCallbacks.CompletionCallback() {
+                        @Override
+                        public void onResult(GDUError error) {
+                            if (error == null) {
+                                toastText("设置基站RTK成功");
+                            } else {
+                                toastText("设置基站RTK失败");
+                            }
+                        }
+                    });
+                }
+                break;
             case R.id.set_qx_account_button:
                 NetworkServiceSettings networkServiceSettings = new NetworkServiceSettings();
                 networkServiceSettings.setMountPoint("RTCM32_GGB");
-                networkServiceSettings.setPassword("4b28b6e");
+                networkServiceSettings.setPassword("");
                 networkServiceSettings.setPort(8002);
                 networkServiceSettings.setServerAddress("rtk.ntrip.qxwz.com");
-                networkServiceSettings.setUserName("qxtdfk0016");
+                networkServiceSettings.setUserName("");
                 break;
             case R.id.connect_custom_network_service_button:
+                NetworkServiceSettings networkServiceSettings2 = new NetworkServiceSettings();
+                networkServiceSettings2.setMountPoint("AUTO");
+                networkServiceSettings2.setPassword("");
+                networkServiceSettings2.setPort(8002);
+                networkServiceSettings2.setServerAddress("rtk.ntrip.qxwz.com");
+                networkServiceSettings2.setUserName("");
+                rtk.connectRtk(ReferenceStationSource.CUSTOM_NETWORK_SERVICE, networkServiceSettings2, new GduRtkManager.OnRtkConnectListener() {
+                    @Override
+                    public void onStartConnect() {
+                        System.out.println("test rtk onStartConnect");
+                    }
+
+                    @Override
+                    public void onConnectSuccess() {
+                        System.out.println("test rtk onConnectSuccess");
+                    }
+
+                    @Override
+                    public void onDisConnect() {
+                        System.out.println("test rtk onDisConnect");
+                    }
+
+                    @Override
+                    public void onConnectFailed(RTKNetConnectStatus status) {
+                        System.out.println("test rtk onConnectFailed status = " + status);
+                    }
+
+                    @Override
+                    public void onGgaGot(byte[] data) {
+                        System.out.println("test rtk onGgaGot");
+                    }
+
+                    @Override
+                    public void onRtcmGot(byte[] data) {
+                        System.out.println("test rtk onRtcmGot");
+                    }
+                });
                 break;
         }
     }

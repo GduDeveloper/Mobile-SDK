@@ -387,7 +387,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         // Waypoint 0: (0,0)
         Waypoint waypoint0 = new Waypoint(baseLatitude, baseLongitude, baseAltitude);
         waypoint0.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT,0 + calculateTurnAngle()));
-        waypoint0.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
+        waypoint0.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0, "aaa"));
         waypoint0.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, -90));
         waypoint0.setSpeed(5);
         waypoint0.setGimbalPitch(-90);
@@ -396,7 +396,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         // Waypoint 1: (0,30)
         Waypoint waypoint1 = new Waypoint(baseLatitude, baseLongitude + HORIZONTAL_DISTANCE * ONE_METER_OFFSET, baseAltitude);
         waypoint1.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT, 0 - calculateTurnAngle()));
-        waypoint1.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
+        waypoint1.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0, "bbb"));
         waypoint1.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, -45));
         waypoint1.setSpeed(5);
         waypoint1.setGimbalPitch(-45);
@@ -405,7 +405,7 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         // Waypoint 2: (30,30)
         Waypoint waypoint2 = new Waypoint(baseLatitude + VERTICAL_DISTANCE * ONE_METER_OFFSET, baseLongitude + HORIZONTAL_DISTANCE * ONE_METER_OFFSET, baseAltitude);
         waypoint2.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT, -180 + calculateTurnAngle()));
-        waypoint2.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
+        waypoint2.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0, "ccc"));
         waypoint2.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, -90));
         waypoint2.setSpeed(5);
         waypoint2.setGimbalPitch(-90);
@@ -414,11 +414,30 @@ public class WaypointMissionOperatorActivity extends Activity implements Locatio
         // Waypoint 3: (30,0)
         Waypoint waypoint3 = new Waypoint(baseLatitude + VERTICAL_DISTANCE * ONE_METER_OFFSET, baseLongitude, baseAltitude);
         waypoint3.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT, 180 - calculateTurnAngle()));
-        waypoint3.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0));
+        waypoint3.addAction(new WaypointAction(WaypointActionType.START_TAKE_PHOTO, 0, "ddd"));
         waypoint3.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, 0));
         waypoint3.setSpeed(5);
         waypoint3.setGimbalPitch(0);
         waypointList.add(waypoint3);
+
+        // Waypoint 4: 航点子任务录像开始
+        Waypoint waypoint4 = new Waypoint(baseLatitude + 2 * VERTICAL_DISTANCE * ONE_METER_OFFSET, baseLongitude + HORIZONTAL_DISTANCE * ONE_METER_OFFSET, baseAltitude);
+        waypoint4.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT, 180 - calculateTurnAngle()));
+        waypoint4.addAction(new WaypointAction(WaypointActionType.START_RECORD, 0, "eee"));
+        waypoint4.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, 0));
+        waypoint4.setSpeed(5);
+        waypoint4.setGimbalPitch(0);
+        waypointList.add(waypoint4);
+
+        // Waypoint 5: 航点子任务悬停后录像结束
+        Waypoint waypoint5 = new Waypoint(baseLatitude + 3 * VERTICAL_DISTANCE * ONE_METER_OFFSET, baseLongitude + HORIZONTAL_DISTANCE * ONE_METER_OFFSET, baseAltitude);
+        waypoint5.addAction(new WaypointAction(WaypointActionType.ROTATE_AIRCRAFT, 180 - calculateTurnAngle()));
+        waypoint5.addAction(new WaypointAction(WaypointActionType.STAY, 10));
+        waypoint5.addAction(new WaypointAction(WaypointActionType.GIMBAL_PITCH, 0));
+        waypoint5.addAction(new WaypointAction(WaypointActionType.STOP_RECORD, 0, "eee"));
+        waypoint5.setSpeed(5);
+        waypoint5.setGimbalPitch(0);
+        waypointList.add(waypoint5);
 
         waypointMission.setWaypointCount(waypointList.size());
         waypointMission.setWaypointList(waypointList);

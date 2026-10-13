@@ -38,10 +38,15 @@ import com.gdu.sdk.camera.CameraMode;
 import com.gdu.sdk.camera.CameraStreamSettings;
 import com.gdu.sdk.camera.CameraThermalPalette;
 import com.gdu.sdk.camera.CameraVideoStreamSource;
+import com.gdu.sdk.camera.ExposureMode;
+import com.gdu.sdk.camera.FocusMode;
+import com.gdu.sdk.camera.FocusTarget;
 import com.gdu.sdk.camera.GDUCamera;
+import com.gdu.sdk.camera.MeteringMode;
 import com.gdu.sdk.camera.SystemState;
 import com.gdu.sdk.camera.ThermalTemperatureMeasureMode;
 import com.gdu.sdk.camera.VideoFeeder;
+import com.gdu.sdk.camera.VideoStreamType;
 import com.gdu.sdk.codec.GDUCodecManager;
 import com.gdu.sdk.codec.ImageProcessingManager;
 import com.gdu.sdk.gimbal.GDUGimbal;
@@ -643,6 +648,56 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     }
                 });
                 break;
+            case R.id.btn_set_metering_mode:
+                mGDUCamera.setMeteringMode(MeteringMode.AVERAGE, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置测光模式成功：AVERAGE");
+                        } else {
+                            toast("设置测光模式失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_metering_mode:
+                mGDUCamera.getMeteringMode(new CommonCallbacks.CompletionCallbackWith<MeteringMode>() {
+                    @Override
+                    public void onSuccess(MeteringMode mode) {
+                        toast("获取测光模式成功：" + mode);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("获取测光模式失败：" + gduError.getDescription());
+                    }
+                });
+                break;
+            case R.id.btn_set_exposure_mode:
+                mGDUCamera.setExposureMode(ExposureMode.MANUAL, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置曝光模式成功：MANUAL");
+                        } else {
+                            toast("设置曝光模式失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_exposure_mode:
+                mGDUCamera.getExposureMode(new CommonCallbacks.CompletionCallbackWith<ExposureMode>() {
+                    @Override
+                    public void onSuccess(ExposureMode mode) {
+                        toast("获取曝光模式成功：" + mode);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("获取曝光模式失败：" + gduError.getDescription());
+                    }
+                });
+                break;
             case R.id.btn_set_hd_liveview_enabled:
                 mGDUCamera.setHDLiveViewEnabled(false, new CommonCallbacks.CompletionCallback() {
                     @Override
@@ -766,6 +821,55 @@ public class CameraGimbalActivity extends Activity implements TextureView.Surfac
                     @Override
                     public void onFailure(GDUError var1) {
                         toast("获取测温数据失败：" + var1.getDescription());
+                    }
+                });
+                break;
+            case R.id.btn_set_video_stream_type:
+                mGDUCamera.setVideoStreamType(VideoStreamType.H265, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置视频码流类型成功：H265");
+                        } else {
+                            toast("设置视频码流类型失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_get_video_stream_type:
+                mGDUCamera.getVideoStreamType(new CommonCallbacks.CompletionCallbackWith<VideoStreamType>() {
+                    @Override
+                    public void onSuccess(VideoStreamType type) {
+                        toast("获取视频码流类型成功：" + type);
+                    }
+
+                    @Override
+                    public void onFailure(GDUError gduError) {
+                        toast("获取视频码流类型失败：" + gduError.getDescription());
+                    }
+                });
+                break;
+            case R.id.btn_set_focus_mode:
+                mGDUCamera.setFocusMode(FocusMode.AUTO, new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置对焦模式成功：AUTO");
+                        } else {
+                            toast("设置对焦模式失败：" + error.getDescription());
+                        }
+                    }
+                });
+                break;
+            case R.id.btn_set_focus_target:
+                mGDUCamera.setFocusTarget(new FocusTarget(0.5f, 0.5f), new CommonCallbacks.CompletionCallback() {
+                    @Override
+                    public void onResult(GDUError error) {
+                        if (error == null) {
+                            toast("设置对焦目标成功：(0.5,0.5)");
+                        } else {
+                            toast("设置对焦目标失败：" + error.getDescription());
+                        }
                     }
                 });
                 break;

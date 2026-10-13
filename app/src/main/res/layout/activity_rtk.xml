@@ -22,6 +22,14 @@
             android:layout_weight="1"
             android:onClick="onClick"
             android:text="机载网络RTK" />
+
+        <Button
+            android:id="@+id/base_station_rtk_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="基站RTK" />
     </LinearLayout>
 
 
